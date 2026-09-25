@@ -119,15 +119,16 @@ code {
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 18%, transparent);
 }
 .topnav { display: flex; gap: .35rem; }
-.topnav button, .searchlink button {
+.topnav button, .searchlink button, .topnav .navlink {
     font-family: var(--sans);
     border: 1px solid var(--border); background: var(--surface); color: var(--ink);
     border-radius: 999px; padding: .42rem .7rem; font-size: .92rem; cursor: pointer;
     min-width: 42px; min-height: 38px;
     transition: border-color .15s, transform .1s;
 }
-.topnav button:hover, .searchlink button:hover { border-color: var(--brand); }
-.topnav button:active { transform: scale(.95); }
+.topnav .navlink { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+.topnav button:hover, .searchlink button:hover, .topnav .navlink:hover { border-color: var(--brand); }
+.topnav button:active, .topnav .navlink:active { transform: scale(.95); }
 
 .page { max-width: var(--measure); margin: 0 auto; padding: 1.1rem .95rem 3.5rem; }
 
