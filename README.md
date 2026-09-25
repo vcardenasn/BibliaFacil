@@ -41,6 +41,8 @@ Verificación: `php tests/run.php` · `php public/check.php` · http://127.0.0.1
    `php /home/<user>/<app>/scripts/import_bible.php --file=/home/<user>/<app>/database/sources/rvr1909.json --code=rvr1909 >> /home/<user>/<app>/logs/import.log 2>&1`
    o localmente con Remote MySQL habilitado con tu IP.
 6. **Verificar**: `https://<host>/check.php?key=<HEALTHCHECK_TOKEN>[&fix=1]`.
+   Si algo falla en el setup (404, permisos, docroot): `https://<host>/diag.php[?fix=1]`
+   — diagnóstico standalone que no depende de `.env` (borrar al terminar).
 
 ## Versiones y licencias
 
