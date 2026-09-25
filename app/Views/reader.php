@@ -26,10 +26,6 @@
     <?php foreach ($verses as $v): ?>
     <p class="verse<?= (int) $v['verse'] === 1 ? ' first-verse' : '' ?>" id="v<?= (int) $v['verse'] ?>" data-ref="<?= e("{$book['name']} {$chapter}:{$v['verse']}") ?>" data-text="<?= e($v['text']) ?>">
         <sup><?= (int) $v['verse'] ?></sup><?= verseHtml($v['text'], $v['wj'] ?? null, (int) $v['verse'] === 1) ?>
-        <span class="verse-actions">
-            <button type="button" class="va" data-act="copy" title="Copiar versículo">Copiar</button>
-            <button type="button" class="va" data-act="share" title="Compartir versículo">Compartir</button>
-        </span>
     </p>
     <?php endforeach; ?>
 </article>

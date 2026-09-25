@@ -52,23 +52,23 @@ Leyenda: ✅ implementado en MVP · ⬜ pendiente
 ## EPIC 09 — Cuentas opcionales ⬜
 - US-090 Login liviano para sincronizar marcadores/notas entre dispositivos
 
-## EPIC 10 — Personalización de lectura (local-first) ⬜
-*Todo sin login: localStorage + `prefers-*`. Un panel "Apariencia" con preview en vivo.*
-- US-100 ⬜ Temas: claro / oscuro / **sepia** (papel) / **alto contraste** — separado del modo día/noche
+## EPIC 10 — Personalización de lectura (local-first) ✅ (parcial)
+*Todo sin login: localStorage + `prefers-*`. Panel "Apariencia" (⚙) con preview en vivo.*
+- US-100 ✅ Temas: claro / oscuro / **sepia** (papel). ⬜ alto contraste pendiente
 - US-101 ⬜ Paleta de acento elegible: índigo+dorado (default), olivo, terracota, púrpura, teal — 1 variable CSS
-- US-102 ⬜ Tipografía: slider de tamaño granular + familia (serif / sans / **OpenDyslexic**) + interlineado + ancho de columna
-- US-103 ⬜ Modo de lectura: **versículo-por-línea** (actual) ⇄ **párrafo fluido** (números inline pequeños)
-- US-104 ⬜ Toggles: palabras de Jesús en rojo on/off · números de versículo on/off · modo zen (oculta chrome)
-- US-105 ⬜ Panel "Apariencia" (⚙ en topbar): preview en vivo + reset a defaults
+- US-102 ✅ Tipografía: slider tamaño + familia (serif/sans). ⬜ OpenDyslexic + interlineado + ancho columna
+- US-103 ✅ Modo de lectura: versículo-por-línea ⇄ **párrafo fluido**
+- US-104 ✅ Toggles: letras rojas on/off · números on/off. ⬜ modo zen
+- US-105 ✅ Panel "Apariencia" (⚙ en topbar) con preview en vivo
 
-## EPIC 11 — Anotaciones personales (local-first) ⬜
-*El core de YouVersion. IndexedDB (no localStorage — crece sin límite). Sin cuenta: export JSON manual.*
-- US-110 ⬜ **Resaltado por color** en versículos — paleta tipo marcador (amarillo/verde/azul/rosa/naranja) como subrayado o fondo sutil
-- US-111 ⬜ **Notas** por versículo: crear/editar/borrar, indicador visual (dot/icono) en el texto
-- US-112 ⬜ **Favoritos** (♥) — distinct de resaltado: marca rápida sin color
-- US-113 ⬜ Vista "Mis anotaciones": lista filtrable por tipo/color/libro/versión + buscar en notas
-- US-114 ⬜ Exportar/importar JSON de anotaciones (backup + migración de dispositivo sin cuenta)
-- US-115 ⬜ Sheet de acción al tap versículo: resaltar · nota · favorito · copiar · compartir · comparar
+## EPIC 11 — Anotaciones personales (local-first) ✅ (base)
+*IndexedDB `bibliafacil.ann` — crece sin límite, sin cuenta. Export JSON manual.*
+- US-110 ✅ **Resaltado por color** — 5 colores tipo marcador (fondo sutil del versículo, por tema)
+- US-111 ✅ **Notas** por versículo: crear/editar/borrar + indicador ✎ en el texto
+- US-112 ✅ **Favoritos** (♥) — marca rápida con indicador
+- US-113 ✅ Vista `/mias`: filtros por tipo + salto al versículo. ⬜ buscar en notas / filtro por libro
+- US-114 ✅ Exportar/importar JSON de anotaciones (backup sin cuenta)
+- US-115 ✅ Sheet al tap versículo: resaltar (5 swatches) · nota · favorito · copiar · compartir. ⬜ comparar
 
 ## EPIC 12 — Compartir como imagen ⬜
 *El feature más viral de apps de Biblia — comunidad lo pedirá.*

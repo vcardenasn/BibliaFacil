@@ -55,6 +55,16 @@ if (($seg[0] ?? '') === 'buscar') {
     exit;
 }
 
+// ---- /mias — anotaciones personales (IndexedDB del navegador) ----------------
+if (($seg[0] ?? '') === 'mias') {
+    view('mias', [
+        'title' => 'Mis anotaciones',
+        'versions' => $versions,
+        'version' => $versions[0] ?? null,
+    ]);
+    exit;
+}
+
 // ---- / — continuar donde quedó o capítulo por defecto ------------------------
 if ($seg === []) {
     $default = config('app.default_version') . '/genesis/1';

@@ -31,8 +31,9 @@
             <button type="submit" title="Buscar" aria-label="Buscar">🔍</button>
         </form>
         <?php endif; ?>
-        <button type="button" id="fontBtn" title="Tamaño de letra" aria-label="Tamaño de letra">A+</button>
+        <a class="navlink" href="<?= e(url('mias')) ?>" title="Mis anotaciones" aria-label="Mis anotaciones">✎</a>
         <button type="button" id="themeBtn" title="Modo oscuro" aria-label="Modo oscuro">☾</button>
+        <button type="button" id="prefBtn" title="Apariencia" aria-label="Apariencia">⚙</button>
     </nav>
 </header>
 
