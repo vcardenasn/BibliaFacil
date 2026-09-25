@@ -66,7 +66,8 @@
             panel.addEventListener('click', function (ev) {
                 var b = ev.target.closest('[data-v], .tog');
                 if (!b) { return; }
-                var k = b.getAttribute('data-k');
+                var k = b.getAttribute('data-k') || b.parentElement.getAttribute('data-k');
+                if (!k) { return; }
                 if (b.classList.contains('tog')) {
                     var on = b.getAttribute('data-on') || 'on', off = on === 'on' ? 'off' : 'verse';
                     var cur = root.getAttribute('data-' + k);
