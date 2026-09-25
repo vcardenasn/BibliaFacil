@@ -12,7 +12,7 @@ Leyenda: ✅ implementado en MVP · ⬜ pendiente
 - US-003 ✅ Migraciones `0001_*` + `schema.sql` importable por phpMyAdmin + `build_schema.php`
 
 ## EPIC 02 — Contenido bíblico ✅ (parcial)
-- US-010 ✅ `scripts/import_bible.php` — idempotente, formatos scrollmapper JSON + normalizado. ⬜ USX/USFM para fuentes DBL
+- US-010 ✅ `scripts/import_bible.php` (CLI) + `scripts/build_verses_sql.php` → `database/verses_<code>.sql` importable por phpMyAdmin (INSERT IGNORE, FKs por subquery). ⬜ USX/USFM para fuentes DBL
 - US-011 ✅ Seed de 66 libros con slugs + aliases ES (`config/books.php`)
 - US-012 ✅ RVR1909 + KJV importadas (31.084 + 31.102 versículos). ⬜ RVG, VBL, BLM (eBible.org)
 - US-013 ✅ `ReferenceParser`: "Juan 3:16", "jn 3.16-18", "1cor 13" → referencia
