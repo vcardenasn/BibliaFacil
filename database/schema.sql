@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS migrations (
     executed_at DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO migrations (name, batch) VALUES ('0001_create_biblia.php', 1), ('0002_verses_wj.php', 1)
+INSERT INTO migrations (name, batch) VALUES ('0001_create_biblia.php', 1), ('0002_verses_wj.php', 1), ('0003_stats.php', 1)
 ON DUPLICATE KEY UPDATE name = name;
 
 CREATE TABLE IF NOT EXISTS versions (
@@ -55,6 +55,13 @@ CREATE TABLE IF NOT EXISTS verses (
     FULLTEXT KEY ft_verses_text (text),
     CONSTRAINT fk_verses_version FOREIGN KEY (version_id) REFERENCES versions(id),
     CONSTRAINT fk_verses_book FOREIGN KEY (book_id) REFERENCES books(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS stats (
+    metric VARCHAR(40) NOT NULL,
+    d DATE NOT NULL,
+    n INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (metric, d)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Seeds: versions

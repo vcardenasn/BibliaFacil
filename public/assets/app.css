@@ -320,3 +320,6 @@ code {
 
 /* Copyright de la versión — atribución requerida por licencias CC */
 .copyright { font-size: .78rem; margin-top: -.4rem; }
+
+/* Contador de visitas en el footer */
+.visits { font-size: .75rem; color: var(--muted); margin: .2rem 0 0; font-variant-numeric: tabular-nums; }

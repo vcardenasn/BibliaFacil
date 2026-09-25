@@ -54,6 +54,7 @@ function view(string $name, array $data = []): void
     ob_start();
     require $viewFile;
     $content = ob_get_clean();
+    $visits = \Biblia\Core\Stats::bump('pv'); // [hoy, total] o null si falta la tabla
     require BASE_PATH . '/app/Views/layout.php';
 }
 

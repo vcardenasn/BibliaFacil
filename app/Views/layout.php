@@ -45,6 +45,9 @@
     <p><?= e($version['name']) ?><?= !empty($version['copyright']) ? ' · ' . e($version['copyright']) : '' ?></p>
     <?php endif; ?>
     <p>Biblia Fácil — lee la Biblia, fácil.</p>
+    <?php if (!empty($visits) && env('FF_COUNTER', '1') === '1'): ?>
+    <p class="visits">Hoy: <?= number_format($visits[0]) ?> · Visitas: <?= number_format($visits[1]) ?></p>
+    <?php endif; ?>
 </footer>
 
 <script src="<?= e(asset('app.js')) ?>"></script>
