@@ -92,6 +92,12 @@ final class UsfmParser
 
         $flush = function () use (&$chapters, &$buf, &$verse, &$chapter, &$wjOpen, &$wjPending) {
             if ($verse > 0) {
+                // Atributos de palabra USFM: palabra|strong="H7225" lemma="x" → palabra
+                $buf = (string) preg_replace(
+                    '/\|(?:[A-Za-z0-9_.:-]+="[^"]*"(?:\s+[A-Za-z0-9_.:-]+="[^"]*")*)/u',
+                    '',
+                    $buf
+                );
                 $t = trim((string) preg_replace('/\s+/u', ' ', $buf));
                 if ($t !== '') {
                     $chapters[$chapter][$verse] = ['v' => $verse, 't' => $t];
