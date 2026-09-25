@@ -56,11 +56,25 @@ final class BibleRepository
         return $row ?: null;
     }
 
+    private static ?bool $hasWj = null;
+
+    /** La columna verses.wj es opcional (upgrade_verses_wj.sql en prod). */
+    private function hasWj(): bool
+    {
+        if (self::$hasWj === null) {
+            $driver = $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
+            self::$hasWj = $driver === 'sqlite'
+                ? (bool) $this->pdo->query("SELECT 1 FROM pragma_table_info('verses') WHERE name = 'wj'")->fetch()
+                : (bool) $this->pdo->query("SHOW COLUMNS FROM verses LIKE 'wj'")->fetch();
+        }
+        return self::$hasWj;
+    }
+
     /** @return array<int,array> versículos de un capítulo */
     public function chapter(int $versionId, int $bookId, int $chapter): array
     {
         $stmt = $this->pdo->prepare(
-            'SELECT verse, text, wj FROM verses
+            'SELECT verse, text' . ($this->hasWj() ? ', wj' : '') . ' FROM verses
              WHERE version_id = :v AND book_id = :b AND chapter = :c
              ORDER BY verse'
         );
