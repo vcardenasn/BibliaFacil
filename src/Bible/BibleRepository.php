@@ -1,0 +1,159 @@
+<?php
+
+namespace Biblia\Bible;
+
+use Biblia\Core\Database;
+use PDO;
+
+final class BibleRepository
+{
+    private PDO $pdo;
+
+    public function __construct(?PDO $pdo = null)
+    {
+        $this->pdo = $pdo ?? Database::getPdo();
+    }
+
+    /** @return array<int,array> versiones visibles (open/approved + active) */
+    public function versions(): array
+    {
+        return $this->pdo->query(
+            "SELECT * FROM versions
+             WHERE active = 1 AND license_status IN ('open','approved')
+             ORDER BY language = 'es' DESC, code"
+        )->fetchAll();
+    }
+
+    public function versionByCode(string $code): ?array
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT * FROM versions
+             WHERE code = :code AND active = 1 AND license_status IN ('open','approved')"
+        );
+        $stmt->execute(['code' => $code]);
+        $row = $stmt->fetch();
+        return $row ?: null;
+    }
+
+    /** @return array<int,array> 66 libros ordenados */
+    public function books(): array
+    {
+        return $this->pdo->query('SELECT * FROM books ORDER BY ord')->fetchAll();
+    }
+
+    /** Libro por slug, osis u ord. */
+    public function book(string $identifier): ?array
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT * FROM books WHERE slug = :s OR osis = :o OR ord = :n LIMIT 1'
+        );
+        $stmt->execute([
+            's' => $identifier,
+            'o' => strtoupper($identifier),
+            'n' => ctype_digit($identifier) ? (int) $identifier : -1,
+        ]);
+        $row = $stmt->fetch();
+        return $row ?: null;
+    }
+
+    /** @return array<int,array> versículos de un capítulo */
+    public function chapter(int $versionId, int $bookId, int $chapter): array
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT verse, text FROM verses
+             WHERE version_id = :v AND book_id = :b AND chapter = :c
+             ORDER BY verse'
+        );
+        $stmt->execute(['v' => $versionId, 'b' => $bookId, 'c' => $chapter]);
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Navegación anterior/siguiente cruzando límites de libro.
+     * @return array{prev:?string,next:?string} rutas relativas
+     */
+    public function chapterNav(array $version, array $book, int $chapter): array
+    {
+        $books = $this->books();
+        $idx = array_search($book['ord'], array_column($books, 'ord'), true);
+        $prev = null;
+        $next = null;
+        if ($chapter > 1) {
+            $prev = "/{$version['code']}/{$book['slug']}/" . ($chapter - 1);
+        } elseif ($idx > 0) {
+            $pb = $books[$idx - 1];
+            $prev = "/{$version['code']}/{$pb['slug']}/{$pb['chapters']}";
+        }
+        if ($chapter < (int) $book['chapters']) {
+            $next = "/{$version['code']}/{$book['slug']}/" . ($chapter + 1);
+        } elseif ($idx !== false && $idx < count($books) - 1) {
+            $nb = $books[$idx + 1];
+            $next = "/{$version['code']}/{$nb['slug']}/1";
+        }
+        return ['prev' => $prev, 'next' => $next];
+    }
+
+    /** Búsqueda: MATCH AGAINST en MySQL, LIKE en SQLite. */
+    public function search(int $versionId, string $query, int $limit = 50): array
+    {
+        $query = trim($query);
+        if ($query === '' || mb_strlen($query) < 3) {
+            return [];
+        }
+        if ($this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql') {
+            $sql = "SELECT v.book_id, v.chapter, v.verse, v.text, b.name AS book_name, b.slug AS book_slug
+                    FROM verses v JOIN books b ON b.id = v.book_id
+                    WHERE v.version_id = :v AND MATCH(v.text) AGAINST (:q IN NATURAL LANGUAGE MODE)
+                    ORDER BY b.ord, v.chapter, v.verse LIMIT :lim";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue('v', $versionId, PDO::PARAM_INT);
+            $stmt->bindValue('q', $query);
+            $stmt->bindValue('lim', $limit, PDO::PARAM_INT);
+        } else {
+            $sql = "SELECT v.book_id, v.chapter, v.verse, v.text, b.name AS book_name, b.slug AS book_slug
+                    FROM verses v JOIN books b ON b.id = v.book_id
+                    WHERE v.version_id = :v AND v.text LIKE :q
+                    ORDER BY b.ord, v.chapter, v.verse LIMIT :lim";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue('v', $versionId, PDO::PARAM_INT);
+            $stmt->bindValue('q', '%' . $query . '%');
+            $stmt->bindValue('lim', $limit, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /** Versículo del día: referencia rotativa determinística. */
+    public function verseOfTheDay(int $versionId): ?array
+    {
+        $refs = [
+            ['JHN', 3, 16], ['PSA', 23, 1], ['PRO', 3, 5], ['ROM', 8, 28],
+            ['PHP', 4, 13], ['JER', 29, 11], ['ISA', 41, 10], ['MAT', 11, 28],
+            ['PSA', 46, 1], ['ROM', 12, 2], ['GAL', 5, 22], ['EPH', 2, 8],
+            ['JOS', 1, 9], ['PSA', 119, 105], ['PRO', 22, 6], ['MAT', 6, 33],
+            ['1CO', 13, 4], ['PSA', 37, 4], ['ISA', 40, 31], ['HEB', 11, 1],
+            ['JHN', 14, 6], ['ROM', 5, 8], ['PSA', 91, 1], ['1PE', 5, 7],
+            ['COL', 3, 23], ['PRO', 16, 3], ['LAM', 3, 22], ['MIC', 6, 8],
+            ['REV', 21, 4], ['DEU', 31, 6],
+        ];
+        $ref = $refs[((int) date('z')) % count($refs)];
+        $stmt = $this->pdo->prepare(
+            'SELECT v.text, b.name AS book_name, b.slug AS book_slug, v.chapter, v.verse
+             FROM verses v JOIN books b ON b.id = v.book_id
+             WHERE v.version_id = :v AND b.osis = :o AND v.chapter = :c AND v.verse = :n'
+        );
+        $stmt->execute(['v' => $versionId, 'o' => $ref[0], 'c' => $ref[1], 'n' => $ref[2]]);
+        $row = $stmt->fetch();
+        return $row ?: null;
+    }
+
+    /** Conteo de versículos por versión (import status / check). */
+    public function verseCounts(): array
+    {
+        return $this->pdo->query(
+            'SELECT v.code, COUNT(s.id) AS total
+             FROM versions v LEFT JOIN verses s ON s.version_id = v.id
+             GROUP BY v.id ORDER BY v.code'
+        )->fetchAll(PDO::FETCH_KEY_PAIR);
+    }
+}

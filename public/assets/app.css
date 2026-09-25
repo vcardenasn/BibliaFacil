@@ -1,0 +1,147 @@
+/* Biblia Fácil — mobile-first, lectura limpia */
+:root {
+    --bg: #faf8f5;
+    --fg: #26221d;
+    --muted: #7a7268;
+    --card: #ffffff;
+    --accent: #7a4f2b;
+    --accent-soft: #f0e6dc;
+    --border: #e8e2da;
+    --font-size: 1.15rem;
+}
+[data-theme="dark"] {
+    --bg: #171512;
+    --fg: #e8e2da;
+    --muted: #9a9186;
+    --card: #211e1a;
+    --accent: #d4a374;
+    --accent-soft: #322a22;
+    --border: #38322a;
+}
+[data-font="1"] { --font-size: 1rem; }
+[data-font="2"] { --font-size: 1.15rem; }
+[data-font="3"] { --font-size: 1.35rem; }
+[data-font="4"] { --font-size: 1.55rem; }
+
+* { box-sizing: border-box; }
+html { color-scheme: light dark; }
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+    font-size: var(--font-size);
+    line-height: 1.75;
+    transition: background .2s, color .2s;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1 { font-size: 1.5em; line-height: 1.3; margin: .3em 0 .5em; }
+h2 { font-size: 1.05em; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin: 1.6em 0 .5em; }
+.muted { color: var(--muted); font-size: .9em; }
+code { background: var(--accent-soft); padding: .1em .35em; border-radius: 4px; font-size: .85em; }
+
+/* Topbar */
+.topbar {
+    position: sticky; top: 0; z-index: 10;
+    display: flex; align-items: center; gap: .6rem;
+    padding: .55rem .9rem;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+}
+.brand { font-weight: bold; font-size: 1rem; white-space: nowrap; }
+.goto { flex: 1; min-width: 0; }
+.goto input {
+    width: 100%; padding: .45rem .8rem; font-size: .95rem;
+    border: 1px solid var(--border); border-radius: 999px;
+    background: var(--card); color: var(--fg);
+}
+.topnav { display: flex; gap: .3rem; }
+.topnav button, .searchlink button {
+    border: 1px solid var(--border); background: var(--card); color: var(--fg);
+    border-radius: 999px; padding: .4rem .65rem; font-size: .9rem; cursor: pointer;
+}
+
+.page { max-width: 720px; margin: 0 auto; padding: 1rem .95rem 3rem; }
+.card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1rem 1.1rem;
+}
+.notice { text-align: center; }
+
+/* Versículo del día */
+.votd { margin-bottom: 1.2rem; border-left: 4px solid var(--accent); }
+.votd-label { font-size: .8em; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+.votd blockquote { margin: .4em 0; font-style: italic; }
+.votd-ref { font-size: .9em; }
+
+/* Pills de versión */
+.version-pills { display: flex; gap: .5rem; flex-wrap: wrap; margin: .4rem 0 1rem; }
+.pill {
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: .3rem .9rem; font-size: .85rem; text-transform: uppercase;
+    color: var(--fg); background: var(--card);
+}
+.pill.active { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: bold; }
+
+/* Grids */
+.book-grid, .chapter-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+.book-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+.chapter-grid { grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); }
+.book-grid a, .chapter-grid a {
+    display: block; text-align: center; padding: .65rem .4rem;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    color: var(--fg); font-size: .95rem;
+}
+.book-grid a:hover, .chapter-grid a:hover { border-color: var(--accent); text-decoration: none; }
+
+/* Lector */
+.crumbs { font-size: .85em; color: var(--muted); }
+.reader-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+.reader-head h1 { text-align: center; margin: 0; }
+.nav-btn {
+    padding: .45rem .8rem; border: 1px solid var(--border); border-radius: 999px;
+    background: var(--card); color: var(--fg); font-size: .85rem; white-space: nowrap;
+}
+.nav-btn:hover { border-color: var(--accent); text-decoration: none; }
+.nav-btn.disabled { visibility: hidden; }
+.nav-btn.up { border: none; background: none; color: var(--muted); text-decoration: underline; }
+
+.chapter { margin: 1rem 0 2rem; }
+.verse { position: relative; margin: 0 0 .1em; padding: .18em .2em; border-radius: 8px; }
+.verse sup { color: var(--accent); font-size: .62em; margin-right: .45em; font-family: ui-sans-serif, system-ui, sans-serif; }
+.verse:target, .verse.hl { background: var(--accent-soft); }
+.verse-actions { display: none; margin-left: .4em; }
+.verse:hover .verse-actions, .verse:focus-within .verse-actions { display: inline-flex; gap: .15rem; }
+.va {
+    border: 1px solid var(--border); background: var(--card); color: var(--fg);
+    border-radius: 6px; font-size: .75rem; padding: .1rem .35rem; cursor: pointer;
+}
+.va:hover { border-color: var(--accent); }
+.reader-foot { display: flex; justify-content: space-between; align-items: center; gap: .5rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+
+/* Búsqueda */
+.search-form { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.search-form input[type="search"] {
+    flex: 1; min-width: 180px; padding: .55rem .9rem; font-size: 1rem;
+    border: 1px solid var(--border); border-radius: 10px; background: var(--card); color: var(--fg);
+}
+.search-form select, .search-form button {
+    padding: .55rem .8rem; border: 1px solid var(--border); border-radius: 10px;
+    background: var(--card); color: var(--fg); font-size: .95rem;
+}
+.results { list-style: none; padding: 0; display: grid; gap: .6rem; }
+.result { font-size: .95rem; }
+.result a { font-weight: bold; }
+.result p { margin: .35em 0 0; }
+
+.footer {
+    border-top: 1px solid var(--border); text-align: center;
+    padding: 1.2rem; color: var(--muted); font-size: .8rem;
+}
+.footer p { margin: .2rem 0; }
+
+@media (max-width: 480px) {
+    .topbar { flex-wrap: wrap; }
+    .goto { order: 3; flex-basis: 100%; }
+    .reader-head .nav-btn { font-size: .75rem; padding: .35rem .6rem; }
+}

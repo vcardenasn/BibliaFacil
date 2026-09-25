@@ -1,0 +1,49 @@
+name: Deploy BibliaFacil to hosting
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - 'tests/**'
+      - '*.md'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Normalize FTP_DIR
+        run: |
+          dir="${{ secrets.FTP_DIR }}"
+          dir="${dir:-/}"
+          [[ "$dir" != /* ]] && dir="/$dir"
+          [[ "$dir" != */ ]] && dir="$dir/"
+          echo "FTP_SERVER_DIR=$dir" >> $GITHUB_ENV
+
+      - name: Sync BibliaFacil via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.1
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          local-dir: ./
+          server-dir: ${{ env.FTP_SERVER_DIR }}
+          # Si el hosting soporta FTPS, agregar: protocol: ftps
+          #
+          # FTP_DIR = directorio de la app en el host (el que contiene public/).
+          # El docroot del subdominio debe apuntar a <FTP_DIR>public/.
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .github/**
+            .env
+            .env.example
+            *.zip
+            tests/**
+            docs/**
+            cache/**
+            logs/**
+            storage/**

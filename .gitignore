@@ -1,0 +1,9 @@
+.env
+cache/*
+!cache/.gitkeep
+logs/*
+!logs/.gitkeep
+storage/*
+!storage/.gitkeep
+.DS_Store
+*.zip

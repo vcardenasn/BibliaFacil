@@ -1,0 +1,11 @@
+Options -Indexes
+
+RewriteEngine On
+
+# Archivos/dirs reales se sirven directo (assets, check.php)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Todo lo demás → front controller
+RewriteRule ^ index.php [L,QSA]
