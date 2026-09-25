@@ -222,8 +222,13 @@ code {
 .verse {
     position: relative; margin: 0; padding: .16em .35em; border-radius: 8px;
     scroll-margin-top: 84px;
+    text-align: justify; hyphens: auto;
     transition: background .2s;
 }
+
+/* Palabras de Jesús — edición "red letter" */
+.wj { color: var(--wj, #B3271E); font-style: normal; }
+[data-theme="dark"] .wj { color: #E57373; }
 .verse sup {
     font-family: var(--sans); font-weight: 700;
     color: var(--gold); font-size: .6em; margin-right: .5em;
@@ -312,3 +317,6 @@ code {
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* Copyright de la versión — atribución requerida por licencias CC */
+.copyright { font-size: .78rem; margin-top: -.4rem; }

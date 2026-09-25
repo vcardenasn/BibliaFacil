@@ -57,6 +57,25 @@ function view(string $name, array $data = []): void
     require BASE_PATH . '/app/Views/layout.php';
 }
 
+/**
+ * HTML del cuerpo de un versículo: palabras de Jesús en <em class="wj">
+ * y capitular opcional (versículo 1). Si el rango wj cubre el primer
+ * carácter, se omite la capitular para no partir el span.
+ */
+function verseHtml(string $text, ?string $wjJson, bool $dropcap = false): string
+{
+    $ranges = $wjJson ? json_decode($wjJson, true) : null;
+    $coversStart = is_array($ranges) && isset($ranges[0]) && (int) $ranges[0][0] === 0;
+    if (!$dropcap || $coversStart) {
+        return \Biblia\Bible\VerseText::render($text, $wjJson);
+    }
+    if (is_array($ranges)) {
+        $wjJson = json_encode(array_map(fn ($r) => [$r[0] - 1, $r[1]], $ranges));
+    }
+    return '<span class="dropcap">' . e(mb_substr($text, 0, 1)) . '</span>'
+        . \Biblia\Bible\VerseText::render(mb_substr($text, 1), $wjJson);
+}
+
 /** Quita acentos para comparaciones (búsqueda, parser). */
 function unaccent(string $value): string
 {

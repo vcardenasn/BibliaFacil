@@ -18,6 +18,9 @@
 
 <h1><?= e($version['name']) ?></h1>
 <p class="muted">Elige un libro para empezar a leer.</p>
+<?php if (!empty($version['copyright'])): ?>
+<p class="muted copyright"><?= e($version['copyright']) ?></p>
+<?php endif; ?>
 
 <?php foreach (['AT' => 'Antiguo Testamento', 'NT' => 'Nuevo Testamento'] as $t => $label): ?>
 <h2><?= e($label) ?></h2>

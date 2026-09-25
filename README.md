@@ -34,8 +34,10 @@ Verificación: `php tests/run.php` · `php public/check.php` · http://127.0.0.1
 3. **`.env` en el host**: crear a mano vía File Manager (NUNCA se deploya): `APP_ENV=production`, `DB_DRIVER=mysql`, `DB_*` de la base cPanel, `HEALTHCHECK_TOKEN=<random largo>`, `FF_SEARCH=1`.
 4. **Base de datos**: phpMyAdmin → importar en orden:
    - `database/schema.sql` (estructura + versions + books)
+   - `database/upgrade_verses_wj.sql` (columna `wj` — solo si la tabla ya existía sin ella; con schema.sql nuevo no es necesario)
    - `database/verses_rvr1909.sql` (o el `.zip` si el límite de upload es bajo)
    - `database/verses_kjv.sql`
+   - `database/verses_onbv.sql`, `verses_pddpt.sql`, `verses_v1602p.sql`, `verses_sbl.sql` (con palabras de Jesús marcadas)
    Los `verses_*.sql` son idempotentes (`INSERT IGNORE`, FKs por subquery) — re-importar no duplica.
 5. **Alternativa CLI** (si prefieres el importador en lugar de phpMyAdmin): Cron Job one-shot cPanel (+2 min, borrar después):
    `php /home/<user>/<app>/scripts/import_bible.php --file=/home/<user>/<app>/database/sources/rvr1909.json --code=rvr1909 >> /home/<user>/<app>/logs/import.log 2>&1`
@@ -47,10 +49,10 @@ Verificación: `php tests/run.php` · `php public/check.php` · http://127.0.0.1
 ## Versiones y licencias
 
 - `config/versions.php` — catálogo; `license_status` controla visibilidad (`open`/`approved` + `active=1` se muestran).
-- RVR1909 y KJV: dominio público, importadas desde `database/sources/` (formato scrollmapper).
-- RVR1960, NVI, NTV, LBLA, NBLA, DHH, TLA, PDT…: copyrighted — requieren licencia vía DBL (library.bible). Al aprobarse: `license_status=approved`, `active=1`, descargar USX y adaptar/importar. Ver `docs/BACKLOG.md`.
+- Importadas (dominio público / licencias libres): RVR1909, KJV (scrollmapper) y ONBV, PDDPT, V1602P, SBL (eBible.org USFM, con palabras de Jesús `\wj` → columna `verses.wj` JSON `[ini,len]`).
+- ONBV = "Biblica® Open Nueva Biblia Viva 2008" (CC BY-SA 4.0) — la edición open de NBV. PDDPT = "Palabra de Dios para Ti" (CC BY 4.0). El copyright se muestra en la página de la versión (atribución obligatoria).
+- RVR1960, NVI, NTV, LBLA, NBLA, DHH, TLA, PDT…: copyrighted — requieren licencia vía DBL (library.bible). Al aprobarse: `license_status=approved`, `active=1`, descargar USX/USFM e importar con `usfm2json.php` + `import_bible.php`. Ver `docs/BACKLOG.md`.
 - Nunca importar texto de versiones con copyright sin licencia escrita — aunque la app sea gratis.
-- El aviso de copyright se muestra en el footer del lector (obligatorio en todas las licencias).
 
 ## Convenciones del stack
 
@@ -58,5 +60,6 @@ Verificación: `php tests/run.php` · `php public/check.php` · http://127.0.0.1
 - Migraciones numeradas en `database/migrations/`; runner `database/migrate.php` (acepta `up` callable o SQL string; portable MySQL/SQLite).
 - `scripts/build_schema.php` regenera `schema.sql` tras cambiar `config/books.php`/`versions.php`.
 - `scripts/build_verses_sql.php <fuente.json> <code>` genera `database/verses_<code>.sql` (phpMyAdmin).
+- `scripts/usfm2json.php <dir-usfm> <code> [nombre]` convierte USFM (eBible/DBL) → `database/sources/<code>.json` preservando `\wj` (palabras de Jesús → `[wj]` inline → rangos JSON en `verses.wj`).
 - Tests: `tests/run.php` (runner custom, SQLite in-memory).
 - Feature flags `FF_*` → `FeatureFlags::requireEnabled()` → 503 `feature_disabled`.

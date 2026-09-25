@@ -60,7 +60,7 @@ final class BibleRepository
     public function chapter(int $versionId, int $bookId, int $chapter): array
     {
         $stmt = $this->pdo->prepare(
-            'SELECT verse, text FROM verses
+            'SELECT verse, text, wj FROM verses
              WHERE version_id = :v AND book_id = :b AND chapter = :c
              ORDER BY verse'
         );

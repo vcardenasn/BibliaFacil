@@ -10,8 +10,9 @@ return function (TestCase $t): void {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-    $migration = require BASE_PATH . '/database/migrations/0001_create_biblia.php';
-    $migration['up']($pdo);
+    foreach (glob(BASE_PATH . '/database/migrations/*.php') as $m) {
+        (require $m)['up']($pdo);
+    }
 
     // seed mínimo
     $pdo->exec("INSERT INTO versions (code, name, language, license, license_status, active)
@@ -32,6 +33,8 @@ return function (TestCase $t): void {
             [['name' => 'Genesis', 'chapters' => [
                 ['chapter' => 1, 'verses' => [['verse' => 1, 'text' => 'En el principio'], ['verse' => 2, 'text' => 'Y la tierra']]],
                 ['chapter' => 2, 'verses' => [['verse' => 1, 'text' => 'Fueron acabados los cielos']]],
+                // formato USFM normalizado: {v,t} con sentinels [wj]
+                [['v' => 1, 't' => 'Dijo Jesús: [wj]Yo soy el pan[/wj] de vida'], ['v' => 2, 't' => '[wj] Todo [/wj] en rojo']],
             ]]],
             array_fill(1, 65, ['name' => 'x', 'chapters' => [['chapter' => 1, 'verses' => [['verse' => 1, 'text' => 'x']]]]]),
             [['name' => 'Revelation', 'chapters' => [['chapter' => 1, 'verses' => [['verse' => 1, 'text' => 'Apocalipsis test']]]]]]
@@ -41,11 +44,30 @@ return function (TestCase $t): void {
     $stats = (new BibleImporter($pdo))->importFile($fixture, 'rvr1909');
     $repo = new BibleRepository($pdo);
 
-    $t->run('import: 68 versículos insertados', fn () => $t->assertSame(68, $stats['inserted']));
+    $t->run('import: 70 versículos insertados', fn () => $t->assertSame(70, $stats['inserted']));
     $t->run('import: idempotente (segundo run = 0)', function () use ($pdo, $fixture, $t) {
         $s = (new BibleImporter($pdo))->importFile($fixture, 'rvr1909');
         $t->assertSame(0, $s['inserted']);
-        $t->assertSame(68, $s['skipped']);
+        $t->assertSame(70, $s['skipped']);
+    });
+
+    $t->run('wj: ranges guardados y texto limpio', function () use ($repo, $pdo, $t) {
+        $vid = (int) $pdo->query("SELECT id FROM versions WHERE code='rvr1909'")->fetchColumn();
+        $bid = (int) $pdo->query("SELECT id FROM books WHERE osis='GEN'")->fetchColumn();
+        $v3 = $repo->chapter($vid, $bid, 3);
+        // v1: "Dijo Jesús: [wj]Yo soy el pan[/wj] de vida"
+        $t->assertSame('Dijo Jesús: Yo soy el pan de vida', $v3[0]['text']);
+        $t->assertSame([[12, 13]], json_decode($v3[0]['wj'], true));
+        // v2: rango con espacios en bordes → recortado a "Todo"
+        $t->assertSame('Todo en rojo', $v3[1]['text']);
+        $t->assertSame([[0, 4]], json_decode($v3[1]['wj'], true));
+    });
+
+    $t->run('wj: render em.wj escapado', function () use ($t) {
+        $html = \Biblia\Bible\VerseText::render('Dijo: Yo soy el pan', '[[6,13]]');
+        $t->assertSame('Dijo: <em class="wj">Yo soy el pan</em>', $html);
+        $t->assertSame('<em class="wj">a &lt;b&gt;</em>', \Biblia\Bible\VerseText::render('a <b>', '[[0,5]]'));
+        $t->assertSame('plain &amp; text', \Biblia\Bible\VerseText::render('plain & text', null));
     });
 
     $t->run('versions(): solo activas con licencia abierta', function () use ($repo, $t) {

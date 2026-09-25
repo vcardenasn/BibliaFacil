@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS migrations (
     executed_at DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO migrations (name, batch) VALUES ('0001_create_biblia.php', 1)
+INSERT INTO migrations (name, batch) VALUES ('0001_create_biblia.php', 1), ('0002_verses_wj.php', 1)
 ON DUPLICATE KEY UPDATE name = name;
 
 CREATE TABLE IF NOT EXISTS versions (
@@ -67,6 +67,7 @@ CREATE TABLE IF NOT EXISTS verses (
     chapter INT NOT NULL,
     verse INT NOT NULL,
     text TEXT NOT NULL,
+    wj TEXT NULL,
     UNIQUE KEY uq_verses_ref (version_id, book_id, chapter, verse),
     KEY idx_verses_chapter (version_id, book_id, chapter),
     FULLTEXT KEY ft_verses_text (text),

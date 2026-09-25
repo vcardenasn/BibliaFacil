@@ -27,7 +27,9 @@ foreach ($versions as $v) {
     $checkV->execute(['code' => $v['code']]);
     if ($checkV->fetch()) {
         // active no se sobreescribe: es decisión operativa del admin.
-        $updV->execute($v);
+        $updV->execute(array_intersect_key($v, array_flip(
+            ['name', 'language', 'copyright', 'license', 'license_status', 'source_url', 'code']
+        )));
         continue;
     }
     $insV->execute($v);

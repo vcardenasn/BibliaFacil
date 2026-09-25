@@ -40,8 +40,8 @@ final class BibleImporter
             'SELECT id FROM verses WHERE version_id = :v AND book_id = :b AND chapter = :c AND verse = :n'
         );
         $insert = $this->pdo->prepare(
-            'INSERT INTO verses (version_id, book_id, chapter, verse, text)
-             VALUES (:v, :b, :c, :n, :t)'
+            'INSERT INTO verses (version_id, book_id, chapter, verse, text, wj)
+             VALUES (:v, :b, :c, :n, :t, :w)'
         );
 
         $inserted = 0;
@@ -58,7 +58,9 @@ final class BibleImporter
                     $verses = isset($ch['verses']) ? $ch['verses'] : $ch;
                     $chapter = isset($ch['chapter']) ? (int) $ch['chapter'] : $ci + 1;
                     foreach ($verses as $vi => $v) {
-                        $text = $this->clean(is_array($v) ? (string) ($v['text'] ?? '') : (string) $v);
+                        // Formatos: "texto", {verse,text} o USFM normalizado {v,t} con sentinels [wj].
+                        $raw = is_array($v) ? (string) ($v['t'] ?? $v['text'] ?? '') : (string) $v;
+                        [$text, $wj] = VerseText::split($raw);
                         if ($text === '') {
                             continue;
                         }
@@ -66,7 +68,7 @@ final class BibleImporter
                             'v' => $version,
                             'b' => $bookId,
                             'c' => $chapter,
-                            'n' => is_array($v) && isset($v['verse']) ? (int) $v['verse'] : $vi + 1,
+                            'n' => is_array($v) ? (int) ($v['v'] ?? $v['verse'] ?? $vi + 1) : $vi + 1,
                         ];
                         $check->execute($params);
                         if ($check->fetch()) {
@@ -74,6 +76,7 @@ final class BibleImporter
                             continue;
                         }
                         $params['t'] = $text;
+                        $params['w'] = $wj;
                         $insert->execute($params);
                         $inserted++;
                     }
@@ -107,8 +110,6 @@ final class BibleImporter
     /** Limpia markup residual (tags, Strong's) y normaliza espacios. */
     private function clean(string $text): string
     {
-        $text = strip_tags($text);
-        $text = (string) preg_replace('/\s+/u', ' ', $text);
-        return trim($text);
+        return VerseText::split($text)[0];
     }
 }

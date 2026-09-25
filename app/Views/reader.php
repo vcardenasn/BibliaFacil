@@ -25,15 +25,7 @@
 <article class="chapter" data-pos="<?= e("{$version['code']}/{$book['slug']}/{$chapter}") ?>">
     <?php foreach ($verses as $v): ?>
     <p class="verse<?= (int) $v['verse'] === 1 ? ' first-verse' : '' ?>" id="v<?= (int) $v['verse'] ?>" data-ref="<?= e("{$book['name']} {$chapter}:{$v['verse']}") ?>" data-text="<?= e($v['text']) ?>">
-        <sup><?= (int) $v['verse'] ?></sup><?php
-            if ((int) $v['verse'] === 1):
-                $first = e(mb_substr($v['text'], 0, 1));
-                $rest = e(mb_substr($v['text'], 1));
-                ?><span class="dropcap"><?= $first ?></span><?= $rest ?><?php
-            else:
-                ?><?= e($v['text']) ?><?php
-            endif;
-        ?>
+        <sup><?= (int) $v['verse'] ?></sup><?= verseHtml($v['text'], $v['wj'] ?? null, (int) $v['verse'] === 1) ?>
         <span class="verse-actions">
             <button type="button" class="va" data-act="copy" title="Copiar versículo">Copiar</button>
             <button type="button" class="va" data-act="share" title="Compartir versículo">Compartir</button>

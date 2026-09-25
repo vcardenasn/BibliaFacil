@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS migrations (
     executed_at DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO migrations (name, batch) VALUES ('0001_create_biblia.php', 1)
+INSERT INTO migrations (name, batch) VALUES ('0001_create_biblia.php', 1), ('0002_verses_wj.php', 1)
 ON DUPLICATE KEY UPDATE name = name;
 
 CREATE TABLE IF NOT EXISTS versions (
@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS verses (
     chapter INT NOT NULL,
     verse INT NOT NULL,
     text TEXT NOT NULL,
+    wj TEXT NULL,
     UNIQUE KEY uq_verses_ref (version_id, book_id, chapter, verse),
     KEY idx_verses_chapter (version_id, book_id, chapter),
     FULLTEXT KEY ft_verses_text (text),
@@ -60,6 +61,10 @@ CREATE TABLE IF NOT EXISTS verses (
 INSERT INTO versions (code, name, language, copyright, license, license_status, source_url, active) VALUES
 ('rvr1909', 'Reina-Valera 1909', 'es', 'Dominio público', 'public_domain', 'open', 'https://ebible.org/sparvr/', 1),
 ('kjv', 'King James Version', 'en', 'Public Domain', 'public_domain', 'open', 'https://ebible.org/eng-kjv2006/', 1),
+('onbv', 'Biblica® Open Nueva Biblia Viva 2008', 'es', '© 2006, 2008 Biblica, Inc. — CC BY-SA 4.0', 'cc-by-sa-4.0', 'open', 'https://ebible.org/spaonbv/', 1),
+('pddpt', 'Palabra de Dios para Ti', 'es', '© 2020 Asociación Bíblica Latinoamericana — CC BY 4.0', 'cc-by-4.0', 'open', 'https://ebible.org/spapddpt/', 1),
+('v1602p', 'Valera 1602 Purificada', 'es', '© 2007-2024 Iglesia Bautista Bíblica de la Gracia — distribución gratuita', 'free-distribution', 'open', 'https://ebible.org/spav1602p/', 1),
+('sbl', 'Santa Biblia Libre Latinoamericano', 'es', 'Dominio público', 'public_domain', 'open', 'https://ebible.org/spabll/', 1),
 ('rvr1960', 'Reina-Valera 1960', 'es', '© 1960 Sociedades Bíblicas en América Latina; © renovado 1988 Sociedades Bíblicas Unidas', 'copyrighted', 'requested', NULL, 0),
 ('nvi', 'Nueva Versión Internacional', 'es', '© Biblica, Inc.', 'copyrighted', 'requested', NULL, 0),
 ('ntv', 'Nueva Traducción Viviente', 'es', '© Tyndale House Foundation', 'copyrighted', 'requested', NULL, 0),
