@@ -20,7 +20,7 @@
         <a href="<?= e(url("{$version['code']}/{$r['book_slug']}/{$r['chapter']}#v{$r['verse']}")) ?>">
             <?= e("{$r['book_name']} {$r['chapter']}:{$r['verse']}") ?>
         </a>
-        <p><?= e($r['text']) ?></p>
+        <p><?= preg_replace('/(' . preg_quote(e($q), '/') . ')/iu', '<mark>$1</mark>', e($r['text'])) ?></p>
     </li>
     <?php endforeach; ?>
     <?php if (!$results): ?>

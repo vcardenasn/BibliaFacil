@@ -5,12 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= e($title ?? 'Biblia Fácil') ?> · Biblia Fácil</title>
 <meta name="description" content="Lee la Biblia en múltiples versiones, fácil y rápido.">
+<meta name="theme-color" content="#2e4a8a">
 <link rel="stylesheet" href="<?= e(asset('app.css')) ?>">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
 </head>
 <body>
 <header class="topbar">
-    <a class="brand" href="<?= e(url('/')) ?>">📖 Biblia Fácil</a>
+    <a class="brand" href="<?= e(url('/')) ?>"><span class="cross">✝</span> Biblia Fácil</a>
+    <?php if (!empty($versions) && !empty($version)): ?>
+    <select class="vswitch" id="versionSwitch" data-version="<?= e($version['code']) ?>" aria-label="Cambiar versión" title="Cambiar versión">
+        <?php foreach ($versions as $v): ?>
+        <option value="<?= e($v['code']) ?>"<?= $v['id'] === $version['id'] ? ' selected' : '' ?>><?= e(strtoupper($v['code'])) ?></option>
+        <?php endforeach; ?>
+    </select>
+    <?php endif; ?>
     <form class="goto" method="get" action="<?= e(url('ir')) ?>" role="search">
         <?php if (!empty($version)): ?>
         <input type="hidden" name="v" value="<?= e($version['code']) ?>">
@@ -20,11 +28,11 @@
     <nav class="topnav">
         <?php if (!empty($versions)): ?>
         <form method="get" action="<?= e(url('buscar')) ?>" class="searchlink">
-            <button type="submit" title="Buscar">🔍</button>
+            <button type="submit" title="Buscar" aria-label="Buscar">🔍</button>
         </form>
         <?php endif; ?>
-        <button type="button" id="fontBtn" title="Tamaño de letra">A±</button>
-        <button type="button" id="themeBtn" title="Modo oscuro">◐</button>
+        <button type="button" id="fontBtn" title="Tamaño de letra" aria-label="Tamaño de letra">A+</button>
+        <button type="button" id="themeBtn" title="Modo oscuro" aria-label="Modo oscuro">☾</button>
     </nav>
 </header>
 
@@ -34,7 +42,7 @@
 
 <footer class="footer">
     <?php if (!empty($version)): ?>
-    <p><?= e($version['copyright'] ?? '') ?><?= !empty($version['copyright']) ? ' · ' : '' ?><?= e($version['name']) ?></p>
+    <p><?= e($version['name']) ?><?= !empty($version['copyright']) ? ' · ' . e($version['copyright']) : '' ?></p>
     <?php endif; ?>
     <p>Biblia Fácil — lee la Biblia, fácil.</p>
 </footer>
