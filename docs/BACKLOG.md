@@ -30,7 +30,7 @@ Leyenda: ✅ implementado en MVP · ⬜ pendiente
 
 ## EPIC 04 — Búsqueda ✅ (básica)
 - US-030 ✅ FULLTEXT MySQL / LIKE SQLite, `/buscar?q=&v=`, flag `FF_SEARCH`
-- US-032 ⬜ Favoritos/resaltados por color (localStorage) + vista "Mis versículos"
+- US-032 ⬜ Favoritos/resaltados → **movido a EPIC 11** (IndexedDB, no localStorage)
 
 ## EPIC 05 — Planes de lectura (FF_PLANS) ⬜
 - US-040 Seeds: "Biblia en un año", "NT 90 días", "Salmos+Proverbios mensual"
@@ -51,6 +51,55 @@ Leyenda: ✅ implementado en MVP · ⬜ pendiente
 
 ## EPIC 09 — Cuentas opcionales ⬜
 - US-090 Login liviano para sincronizar marcadores/notas entre dispositivos
+
+## EPIC 10 — Personalización de lectura (local-first) ⬜
+*Todo sin login: localStorage + `prefers-*`. Un panel "Apariencia" con preview en vivo.*
+- US-100 ⬜ Temas: claro / oscuro / **sepia** (papel) / **alto contraste** — separado del modo día/noche
+- US-101 ⬜ Paleta de acento elegible: índigo+dorado (default), olivo, terracota, púrpura, teal — 1 variable CSS
+- US-102 ⬜ Tipografía: slider de tamaño granular + familia (serif / sans / **OpenDyslexic**) + interlineado + ancho de columna
+- US-103 ⬜ Modo de lectura: **versículo-por-línea** (actual) ⇄ **párrafo fluido** (números inline pequeños)
+- US-104 ⬜ Toggles: palabras de Jesús en rojo on/off · números de versículo on/off · modo zen (oculta chrome)
+- US-105 ⬜ Panel "Apariencia" (⚙ en topbar): preview en vivo + reset a defaults
+
+## EPIC 11 — Anotaciones personales (local-first) ⬜
+*El core de YouVersion. IndexedDB (no localStorage — crece sin límite). Sin cuenta: export JSON manual.*
+- US-110 ⬜ **Resaltado por color** en versículos — paleta tipo marcador (amarillo/verde/azul/rosa/naranja) como subrayado o fondo sutil
+- US-111 ⬜ **Notas** por versículo: crear/editar/borrar, indicador visual (dot/icono) en el texto
+- US-112 ⬜ **Favoritos** (♥) — distinct de resaltado: marca rápida sin color
+- US-113 ⬜ Vista "Mis anotaciones": lista filtrable por tipo/color/libro/versión + buscar en notas
+- US-114 ⬜ Exportar/importar JSON de anotaciones (backup + migración de dispositivo sin cuenta)
+- US-115 ⬜ Sheet de acción al tap versículo: resaltar · nota · favorito · copiar · compartir · comparar
+
+## EPIC 12 — Compartir como imagen ⬜
+*El feature más viral de apps de Biblia — comunidad lo pedirá.*
+- US-120 ⬜ Generador de tarjeta de versículo (canvas client-side): fondos gradiente/imagen, tipografía grande, referencia + código de versión + logo
+- US-121 ⬜ Formatos: story 9:16 + cuadrado + wide → Web Share / descarga PNG
+- US-122 ⬜ Plantillas con accesibilidad (contraste AA) y marca de la app
+
+## EPIC 13 — Hábito de lectura ⬜
+- US-130 ⬜ Historial de lectura reciente ("leíste ayer…") + lista de capítulos visitados
+- US-131 ⬜ Racha de días consecutivos + hora de lectura preferida (localStorage; push opcional con PWA)
+- US-132 ⬜ Marcador automático "última posición dentro del capítulo" (scroll restore, no solo capítulo)
+- US-133 ⬜ Audio-lectura vía Web Speech API (TTS del navegador — gratis, sin licencia de audio) con velocidad y pause por versículo
+
+## EPIC 14 — Estudio y comparación ⬜
+- US-140 ⬜ Comparador lado a lado de 2 versiones (alineado por versículo, diff visual)
+- US-141 ⬜ Versículos cruzados inline (fuentes con \x) cuando la fuente USFM los traiga
+- US-142 ⬜ Contexto: expandir versículo en resultados de búsqueda (±3 versículos sin salir)
+- US-143 ⬜ Copiar múltiple: selección de rango de versículos → copiar con formato (referencia + versión)
+
+## EPIC 15 — Accesibilidad e inclusión ⬜
+- US-150 ⬜ Auditoría ARIA: landmarks, anuncios live en navegación de capítulo, foco visible en todo
+- US-151 ⬜ Fuente OpenDyslexic + espaciado de letras configurable (dislexia)
+- US-152 ⬜ Contraste alto + desactivar animaciones (ya respeta prefers-reduced-motion — ampliar)
+- US-153 ⬜ Navegación completa por teclado (atajos: `/` buscar, `g` ir a, `j/k` versículo arriba/abajo)
+
+## Orden sugerido (impacto/costo)
+1. **US-104 + US-115** (toggle wj rojo + sheet de acciones) — ya existe infraestructura wj
+2. **US-110/111/112** (anotaciones IndexedDB) — mayor valor percibido
+3. **US-120** (compartir imagen) — viralidad comunitaria
+4. **US-100/101/102** (panel apariencia) — bajo costo, alta percepción de "app moderna"
+5. EPIC 13/14 según tracción
 
 ## Notas técnicas
 - `use` arriba en entry points + smoke test `php -S` (convención stack).
