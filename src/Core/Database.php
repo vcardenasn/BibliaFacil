@@ -19,7 +19,8 @@ final class Database
             return self::$pdo;
         }
         $cfg = config('database');
-        if ($cfg['driver'] === 'sqlite') {
+        // driver opcional: default mysql (formato .env canónico VCN)
+        if (($cfg['driver'] ?? 'mysql') === 'sqlite') {
             $path = $cfg['sqlite_path'];
             if ($path !== ':memory:') {
                 $dir = dirname($path);

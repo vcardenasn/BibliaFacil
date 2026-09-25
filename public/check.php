@@ -68,7 +68,7 @@ if (!is_file($envPath)) {
 } else {
     $out('OK', '.env existe (' . filesize($envPath) . ' bytes)');
     $env = parse_ini_file($envPath, false, INI_SCANNER_RAW) ?: [];
-    foreach (['DB_DRIVER', 'DB_NAME', 'DB_USER'] as $k) {
+    foreach (['DB_HOST', 'DB_NAME', 'DB_USER'] as $k) {
         $out(!empty($env[$k]) ? 'OK' : 'WARN', ".env {$k}" . (empty($env[$k]) ? ' vacío' : ''));
     }
     $out(($env['FF_SEARCH'] ?? '0') === '1' ? 'OK' : 'WARN', '.env FF_SEARCH=' . ($env['FF_SEARCH'] ?? 'no definido'));
