@@ -94,12 +94,41 @@ Leyenda: ✅ implementado en MVP · ⬜ pendiente
 - US-152 ⬜ Contraste alto + desactivar animaciones (ya respeta prefers-reduced-motion — ampliar)
 - US-153 ⬜ Navegación completa por teclado (atajos: `/` buscar, `g` ir a, `j/k` versículo arriba/abajo)
 
+## EPIC 16 — Métricas de uso (privacy-first) ⬜
+*Sin GA ni terceros: contadores agregados propios, anónimos, sin PII ni fingerprinting.
+Beacon `track.php` + tabla de agregados diarios. Flag `FF_METRICS`.*
+- US-160 ⬜ Infraestructura: tabla `metrics_daily` (fecha, métrica, dimensión, contador) + endpoint `track.php` (POST beacon, sin cookies nuevas, IP nunca se guarda) + batched send desde `app.js` (navigator.sendBeacon)
+- US-161 ⬜ **Adopción**: páginas vistas por ruta (lector/búsqueda/índice), sesiones únicas por día (hash diario rotativo, no persistente), DAU/MAU
+- US-162 ⬜ **Contenido**: top libros/capítulos leídos, versión más usada, versículo del día visto/compartido
+- US-163 ⬜ **Features**: uso de búsqueda (conteo, NO el texto de la query), "ir a", cambio de versión, tema oscuro/claro/sepia, tamaño de fuente, toggle wj rojo, modo párrafo
+- US-164 ⬜ **Engagement**: anotaciones creadas por tipo (resalte/nota/favorito), compartir por canal, tiempo de lectura por capítulo (aprox: visibilitychange)
+- US-165 ⬜ **Embudo de retorno**: primera visita → segunda visita → racha (localStorage cuenta visitas, beacon solo envía bucket "visita Nº")
+- US-166 ⬜ Dashboard admin: `check.php?key=…&metrics=1` → resumen 7/30 días en HTML + export CSV
+- US-167 ⬜ Performance: p95 de tiempo de carga por ruta (performance.timing del navegador, agregado)
+
+### KPIs por EPIC (qué medir el éxito)
+| EPIC | KPI norte | Métricas |
+|---|---|---|
+| 10 Apariencia | % usuarios que personalizan | toggle de tema/fuente/paleta (US-163) |
+| 11 Anotaciones | anotaciones/usuario-activo | creates por tipo (US-164) |
+| 12 Compartir | % sesiones con share | share por canal (US-164) |
+| 13 Hábito | D7 retention | racha, visita Nº (US-165) |
+| 14 Estudio | uso comparador | opens de comparar/contexto (US-163) |
+| 15 Accesibilidad | adopción features accesibles | OpenDyslexic/alto contraste activados (US-163) |
+
+### Guardrails de privacidad
+- Nunca: IPs, query strings de búsqueda, contenido de notas, identificadores persistentes
+- Hash de sesión rota cada 24h (irreversible, no cruza días)
+- Respeto a `navigator.doNotTrack` / GPC → no se envía beacon
+- Nota en footer/"Acerca de": qué se mide y por qué
+
 ## Orden sugerido (impacto/costo)
 1. **US-104 + US-115** (toggle wj rojo + sheet de acciones) — ya existe infraestructura wj
 2. **US-110/111/112** (anotaciones IndexedDB) — mayor valor percibido
 3. **US-120** (compartir imagen) — viralidad comunitaria
 4. **US-100/101/102** (panel apariencia) — bajo costo, alta percepción de "app moderna"
-5. EPIC 13/14 según tracción
+5. **US-160/161** (métricas básicas) — sin esto no hay forma de saber qué sigue
+6. EPIC 13/14 según tracción medida
 
 ## Notas técnicas
 - `use` arriba en entry points + smoke test `php -S` (convención stack).
