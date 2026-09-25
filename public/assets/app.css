@@ -325,6 +325,78 @@ code {
 /* Contador de visitas en el footer */
 .visits { font-size: .75rem; color: var(--muted); margin: .2rem 0 0; font-variant-numeric: tabular-nums; }
 
+/* ---- Tema alto contraste ---- */
+[data-theme="contrast"] {
+    --bg: #fff; --surface: #fff; --ink: #000; --muted: #333;
+    --brand: #002fa7; --brand-strong: #00247e; --brand-ink: #fff;
+    --gold: #6f4e00; --gold-soft: #ffe9a8; --brand-soft: #dfe9ff;
+    --border: #555; --shadow: none; --shadow-hover: none;
+}
+
+/* ---- Paleta de acento (1 variable → todo el sistema) ---- */
+[data-accent="oliva"]     { --brand:#5a7233; --brand-strong:#465a26; --gold:#8a7a2f; --brand-soft:#e7edd7; --gold-soft:#efe9c8; }
+[data-accent="terracota"] { --brand:#b0492e; --brand-strong:#8a3823; --gold:#a5762a; --brand-soft:#f6e0d6; --gold-soft:#f0e0bb; }
+[data-accent="purpura"]   { --brand:#6b3fa0; --brand-strong:#522d7c; --gold:#b8912f; --brand-soft:#e9dff3; --gold-soft:#efe0bb; }
+[data-accent="teal"]      { --brand:#1f7a72; --brand-strong:#165e58; --gold:#b8912f; --brand-soft:#d9ecea; --gold-soft:#efe0bb; }
+
+/* ---- Interlineado ---- */
+[data-lineh="compact"] .chapter { line-height: 1.6; }
+[data-lineh="normal"]  .chapter { line-height: 1.9; }
+[data-lineh="ample"]   .chapter { line-height: 2.25; }
+
+/* ---- Modo zen: solo el texto ---- */
+[data-zen="on"] .topbar, [data-zen="on"] .footer,
+[data-zen="on"] .crumbs, [data-zen="on"] .reader-foot { display: none; }
+.zen-exit {
+    position: fixed; right: .9rem; bottom: .9rem; z-index: 58;
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid var(--border); background: var(--surface); color: var(--ink);
+    font-size: 1rem; cursor: pointer; box-shadow: var(--shadow);
+}
+
+/* ---- Estados del versículo ---- */
+.verse { transition: background .15s; }
+.verse.open, .verse.focused { outline: 2px solid var(--brand); outline-offset: 1px; }
+.verse.speaking { background: var(--gold-soft); }
+
+/* ---- Escuchar capítulo ---- */
+.listenbar {
+    position: fixed; left: 0; right: 0; bottom: .9rem; z-index: 56;
+    display: flex; justify-content: center; gap: .4rem; pointer-events: none;
+}
+.listenbar button {
+    pointer-events: auto; font-family: var(--sans); font-size: .85rem;
+    padding: .55rem 1.1rem; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--brand); color: var(--brand-ink);
+    box-shadow: var(--shadow-hover);
+}
+.listenbar button[data-l="stop"] { background: var(--surface); color: var(--ink); }
+
+/* ---- Imagen de versículo ---- */
+.vs-imgwrap { margin: .4rem 0 .7rem; text-align: center; }
+.vs-imgwrap img { max-width: 100%; max-height: 46vh; border-radius: 12px; box-shadow: var(--shadow); }
+.seg-acc button { font-size: .95rem; }
+.seg-acc button[data-v="indigo"]    { color: #2e4a8a; }
+.seg-acc button[data-v="oliva"]     { color: #5a7233; }
+.seg-acc button[data-v="terracota"] { color: #b0492e; }
+.seg-acc button[data-v="purpura"]   { color: #6b3fa0; }
+.seg-acc button[data-v="teal"]      { color: #1f7a72; }
+
+/* ---- Racha / Mis anotaciones extra ---- */
+.streak {
+    display: flex; align-items: baseline; gap: .7rem; flex-wrap: wrap;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: .7rem 1rem; margin-top: .8rem;
+    font-family: var(--sans); box-shadow: var(--shadow);
+}
+.streak strong { color: var(--brand); font-size: 1.05rem; }
+.streak span { color: var(--muted); font-size: .82rem; }
+#miasQ {
+    flex: 1; min-width: 140px; font-family: var(--sans); font-size: .85rem;
+    padding: .45rem .8rem; border: 1px solid var(--border); border-radius: 8px;
+    background: var(--surface); color: var(--ink);
+}
+
 /* ==========================================================================
    Personalización — temas, toggles, resaltado, sheet, panel, anotaciones
    ========================================================================== */

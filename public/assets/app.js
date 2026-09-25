@@ -21,6 +21,10 @@
     apply('vnum', P.get('vnum', 'on'));   // números de versículo
     apply('flow', P.get('flow', 'verse'));// 'verse' | 'para' (párrafo fluido)
     apply('family', P.get('family', 'serif'));
+    apply('accent', P.get('accent', 'indigo'));
+    apply('lineh', P.get('lineh', 'normal'));
+    apply('zen', P.get('zen', 'off'));
+    syncZen();
 
     var themeBtn = document.getElementById('themeBtn');
     if (themeBtn) {
@@ -47,12 +51,16 @@
             panel.setAttribute('aria-label', 'Apariencia');
             panel.innerHTML =
                 '<div class="pp-row"><span>Tema</span><div class="seg" data-k="theme">' +
-                seg('light', '☀ Claro') + seg('dark', '☾ Oscuro') + seg('sepia', '◐ Sepia') + '</div></div>' +
+                seg('light', '☀') + seg('dark', '☾') + seg('sepia', '◐') + seg('contrast', '◆') + '</div></div>' +
+                '<div class="pp-row"><span>Acento</span><div class="seg seg-acc" data-k="accent">' +
+                seg('indigo', '●') + seg('oliva', '●') + seg('terracota', '●') + seg('purpura', '●') + seg('teal', '●') + '</div></div>' +
                 '<div class="pp-row"><span>Tamaño</span><input type="range" min="1" max="4" step="1" data-k="font" value="' + P.get('font', '2') + '" aria-label="Tamaño de letra"></div>' +
                 '<div class="pp-row"><span>Letra</span><div class="seg" data-k="family">' + seg('serif', 'Serif') + seg('sans', 'Sans') + '</div></div>' +
+                '<div class="pp-row"><span>Interlineado</span><div class="seg" data-k="lineh">' + seg('compact', 'Compacto') + seg('normal', 'Normal') + seg('ample', 'Amplio') + '</div></div>' +
                 '<div class="pp-row"><span>Palabras de Jesús en rojo</span><button class="tog" data-k="wj" role="switch"></button></div>' +
                 '<div class="pp-row"><span>Números de versículo</span><button class="tog" data-k="vnum" role="switch"></button></div>' +
-                '<div class="pp-row"><span>Párrafo fluido</span><button class="tog" data-k="flow" data-on="para" role="switch"></button></div>';
+                '<div class="pp-row"><span>Párrafo fluido</span><button class="tog" data-k="flow" data-on="para" role="switch"></button></div>' +
+                '<div class="pp-row"><span>Modo zen (sin barras)</span><button class="tog" data-k="zen" role="switch"></button></div>';
             document.body.appendChild(panel);
             syncPanel();
             panel.addEventListener('click', function (ev) {
@@ -67,7 +75,7 @@
                 } else {
                     apply(k, b.getAttribute('data-v')); P.set(k, b.getAttribute('data-v'));
                 }
-                syncPanel(); syncThemeBtn();
+                syncPanel(); syncThemeBtn(); syncZen();
             });
             document.addEventListener('click', outsidePanel);
         });
@@ -99,6 +107,26 @@
         document.removeEventListener('click', outsidePanel);
     }
 
+    // ---- Modo zen: oculta chrome, sale con ✕ flotante -------------------------
+    var zenBtn = null;
+    function syncZen() {
+        var on = root.getAttribute('data-zen') === 'on';
+        if (on && !zenBtn) {
+            zenBtn = document.createElement('button');
+            zenBtn.type = 'button';
+            zenBtn.className = 'zen-exit';
+            zenBtn.textContent = '✕';
+            zenBtn.title = 'Salir del modo zen';
+            zenBtn.setAttribute('aria-label', 'Salir del modo zen');
+            zenBtn.addEventListener('click', function () {
+                apply('zen', 'off'); P.set('zen', 'off'); syncZen(); syncPanel();
+            });
+            document.body.appendChild(zenBtn);
+        } else if (!on && zenBtn) {
+            zenBtn.remove(); zenBtn = null;
+        }
+    }
+
     // ---- Switcher de versión --------------------------------------------------
     var vswitch = document.getElementById('versionSwitch');
     if (vswitch) {
@@ -110,11 +138,44 @@
         });
     }
 
-    // ---- Continuar donde quedé ------------------------------------------------
+    // ---- Continuar donde quedé + historial/racha + scroll-restore -------------
     var chapterEl = document.querySelector('.chapter[data-pos]');
     if (chapterEl) {
-        document.cookie = 'bf_pos=' + encodeURIComponent(chapterEl.getAttribute('data-pos'))
+        var pos = chapterEl.getAttribute('data-pos');
+        document.cookie = 'bf_pos=' + encodeURIComponent(pos)
             + ';path=/;max-age=31536000;SameSite=Lax';
+
+        // Racha: día leído en localStorage (YYYY-MM-DD)
+        var days = [];
+        try { days = JSON.parse(P.get('days', '[]')); } catch (e) {}
+        var today = new Date().toISOString().slice(0, 10);
+        if (days.indexOf(today) < 0) {
+            days.push(today);
+            P.set('days', JSON.stringify(days.slice(-500)));
+        }
+
+        // Scroll-restore por capítulo
+        var posKey = 'bf_scr_' + pos;
+        if (!window.location.hash) {
+            var sv = localStorage.getItem(posKey);
+            if (sv && sv !== '1') {
+                var t = document.getElementById('v' + sv);
+                if (t) { setTimeout(function () { t.scrollIntoView(); }, 60); }
+            }
+        }
+        var scrT = null;
+        window.addEventListener('scroll', function () {
+            clearTimeout(scrT);
+            scrT = setTimeout(function () {
+                var vs = document.querySelectorAll('.chapter .verse');
+                for (var i = 0; i < vs.length; i++) {
+                    if (vs[i].getBoundingClientRect().top > 70) {
+                        localStorage.setItem(posKey, vs[i].id.slice(1));
+                        return;
+                    }
+                }
+            }, 220);
+        }, { passive: true });
     }
 
     // ============================ Anotaciones (IndexedDB) ======================
@@ -199,6 +260,7 @@
         var text = el.getAttribute('data-text') || el.textContent.trim();
 
         sheet = document.createElement('div');
+        sheet._vtext = text; sheet._vref = ref;
         sheet.className = 'vsheet';
         sheet.setAttribute('role', 'dialog');
         sheet.innerHTML =
@@ -215,6 +277,7 @@
             '<button type="button" data-a="fav" class="va2' + (rec.fav ? ' on' : '') + '">♥ Favorito</button>' +
             '<button type="button" data-a="copy" class="va2">⧉ Copiar</button>' +
             '<button type="button" data-a="share" class="va2">↗ Compartir</button>' +
+            '<button type="button" data-a="img" class="va2">🖼 Imagen</button>' +
             '</div>' +
             '<div class="vs-note" hidden><textarea rows="3" maxlength="2000" placeholder="Escribe tu nota…">' + esc(rec.note || '') + '</textarea>' +
             '<div class="vs-note-btns"><button type="button" data-a="save" class="va2 on">Guardar</button>' +
@@ -270,6 +333,21 @@
                 var pl = '“' + text + '” — ' + ref;
                 if (navigator.share) { navigator.share({ title: ref, text: pl }).catch(function () {}); }
                 else { window.open('https://wa.me/?text=' + encodeURIComponent(pl), '_blank', 'noopener'); }
+            } else if (a === 'img') {
+                imgMode(sheet, text, ref, 'story');
+            } else if (a === 'fmt') {
+                imgMode(sheet, sheet._vtext, sheet._vref, act.getAttribute('data-fmt'));
+            } else if (a === 'back') {
+                var el2 = sheetVerse; closeSheet(); openSheet(el2);
+            } else if (a === 'dl') {
+                sheet._cv.toBlob(function (b) { downloadBlob(b, ref); });
+            } else if (a === 'shimg') {
+                sheet._cv.toBlob(function (b) {
+                    var f = new File([b], 'versiculo.png', { type: 'image/png' });
+                    if (navigator.canShare && navigator.canShare({ files: [f] })) {
+                        navigator.share({ files: [f], title: ref }).catch(function () {});
+                    } else { downloadBlob(b, ref); }
+                });
             }
         });
     }
@@ -298,6 +376,85 @@
         });
     }
 
+    // ============================ Imagen de versículo ==========================
+    var IMG_FMTS = { story: [1080, 1920], square: [1080, 1080], wide: [1600, 840] };
+
+    function imgMode(sh, text, ref, fmt) {
+        sh._vtext = text; sh._vref = ref;
+        var card = sh.querySelector('.vs-card');
+        card.innerHTML =
+            '<div class="vs-head"><button type="button" class="vs-x" data-a="back">← Volver</button>' +
+            '<strong>' + esc(ref) + '</strong><span></span></div>' +
+            '<div class="vs-row"><div class="seg">' +
+            '<button type="button" data-a="fmt" data-fmt="story"' + (fmt === 'story' ? ' class="on"' : '') + '>Historia</button>' +
+            '<button type="button" data-a="fmt" data-fmt="square"' + (fmt === 'square' ? ' class="on"' : '') + '>Cuadrada</button>' +
+            '<button type="button" data-a="fmt" data-fmt="wide"' + (fmt === 'wide' ? ' class="on"' : '') + '>Ancha</button></div></div>' +
+            '<div class="vs-imgwrap"><img alt="Vista previa de la imagen"></div>' +
+            '<div class="vs-row vs-acts">' +
+            '<button type="button" data-a="dl" class="va2 on">⬇ Descargar PNG</button>' +
+            '<button type="button" data-a="shimg" class="va2">↗ Compartir</button></div>';
+        sh._cv = drawVerseImage(text, ref, fmt);
+        card.querySelector('.vs-imgwrap img').src = sh._cv.toDataURL('image/png');
+    }
+
+    function drawVerseImage(text, ref, fmt) {
+        var w = IMG_FMTS[fmt][0], h = IMG_FMTS[fmt][1];
+        var cv = document.createElement('canvas');
+        cv.width = w; cv.height = h;
+        var x = cv.getContext('2d');
+
+        var g = x.createLinearGradient(0, 0, w * .3, h);
+        g.addColorStop(0, '#2e4a8a'); g.addColorStop(1, '#16233f');
+        x.fillStyle = g; x.fillRect(0, 0, w, h);
+
+        var glow = x.createRadialGradient(w / 2, h * .3, 0, w / 2, h * .3, w * .85);
+        glow.addColorStop(0, 'rgba(255,235,180,.16)'); glow.addColorStop(1, 'rgba(255,235,180,0)');
+        x.fillStyle = glow; x.fillRect(0, 0, w, h);
+
+        x.fillStyle = '#b8912f';
+        x.fillRect(w / 2 - 70, h * .14, 140, 7);
+
+        var maxW = w * .8, fs = Math.round(w * .075), lh = 1.38, lines;
+        x.textAlign = 'center';
+        x.fillStyle = '#fdf7ea';
+        do {
+            x.font = 'italic 600 ' + fs + 'px Georgia, "Times New Roman", serif';
+            lines = wrapLines(x, '“' + text + '”', maxW);
+            if (lines.length * fs * lh < h * .5 || fs <= 26) { break; }
+            fs -= 4;
+        } while (fs > 26);
+        var y0 = h * .52 - (lines.length * fs * lh) / 2;
+        lines.forEach(function (l, i) { x.fillText(l, w / 2, y0 + i * fs * lh); });
+
+        x.font = '700 ' + Math.round(w * .032) + 'px Georgia, serif';
+        x.fillStyle = '#d9b95c';
+        x.fillText(ref.toUpperCase(), w / 2, y0 + lines.length * fs * lh + w * .055);
+
+        x.font = '600 ' + Math.round(w * .024) + 'px Georgia, serif';
+        x.fillStyle = 'rgba(253,247,234,.7)';
+        x.fillText('✝ Biblia Fácil', w / 2, h * .94);
+        return cv;
+    }
+
+    function wrapLines(x, text, maxW) {
+        var words = text.split(/\s+/), lines = [], line = '';
+        words.forEach(function (wd) {
+            var t = line ? line + ' ' + wd : wd;
+            if (line && x.measureText(t).width > maxW) { lines.push(line); line = wd; }
+            else { line = t; }
+        });
+        if (line) { lines.push(line); }
+        return lines;
+    }
+
+    function downloadBlob(blob, ref) {
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = ref.replace(/[^\wáéíóúñ]+/gi, '-').toLowerCase() + '.png';
+        a.click();
+        URL.revokeObjectURL(a.href);
+    }
+
     // Tap/click en versículo → sheet (no si el click fue en un botón/enlace)
     document.addEventListener('click', function (ev) {
         var verse = ev.target.closest ? ev.target.closest('.verse') : null;
@@ -313,15 +470,35 @@
     // ============================ Mis anotaciones ==============================
     var mias = document.getElementById('miasApp');
     if (mias) {
-        var filter = 'all';
-        var miasBase = document.querySelector('.chapter[data-pos]');
+        var filter = 'all', q = '';
+
+        // Racha de lectura
+        var sb = document.getElementById('streakBox');
+        if (sb) {
+            var dlist = [];
+            try { dlist = JSON.parse(P.get('days', '[]')); } catch (e) {}
+            if (dlist.length) {
+                var st = 0, t = new Date();
+                if (dlist.indexOf(t.toISOString().slice(0, 10)) < 0) { t.setDate(t.getDate() - 1); }
+                while (dlist.indexOf(t.toISOString().slice(0, 10)) >= 0) {
+                    st++; t.setDate(t.getDate() - 1);
+                }
+                sb.hidden = false;
+                sb.innerHTML = '<strong>🔥 ' + st + (st === 1 ? ' día' : ' días') + ' seguidos</strong>' +
+                    '<span>' + dlist.length + (dlist.length === 1 ? ' día' : ' días') + ' de lectura en total</span>';
+            }
+        }
+
         function renderMias() {
             DB.all().then(function (list) {
                 list = list.filter(function (r) {
-                    if (filter === 'all') { return true; }
-                    if (filter === 'hl') { return !!r.color; }
-                    if (filter === 'note') { return !!r.note; }
-                    if (filter === 'fav') { return !!r.fav; }
+                    if (filter === 'hl' && !r.color) { return false; }
+                    if (filter === 'note' && !r.note) { return false; }
+                    if (filter === 'fav' && !r.fav) { return false; }
+                    if (q) {
+                        var hay = ((r.ref || '') + ' ' + (r.note || '')).toLowerCase();
+                        if (hay.indexOf(q) < 0) { return false; }
+                    }
                     return true;
                 }).sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); });
 
@@ -373,6 +550,13 @@
                 });
             });
         }
+        var qInput = document.getElementById('miasQ');
+        if (qInput) {
+            qInput.addEventListener('input', function () {
+                q = qInput.value.trim().toLowerCase();
+                renderMias();
+            });
+        }
         var impInput = document.getElementById('miasImport');
         if (impInput) {
             impInput.addEventListener('change', function () {
@@ -397,12 +581,83 @@
         renderMias();
     }
 
-    // ---- Flechas ←/→ ----------------------------------------------------------
+    // ============================ Escuchar capítulo (TTS) =====================
+    var vv = [].slice.call(document.querySelectorAll('.chapter .verse'));
+    var lbar = null, li = 0, lstate = 'off';
+    if (vv.length && 'speechSynthesis' in window) {
+        lbar = document.createElement('div');
+        lbar.className = 'listenbar';
+        document.body.appendChild(lbar);
+        renderBar();
+        lbar.addEventListener('click', function (ev) {
+            var b = ev.target.closest('[data-l]');
+            if (!b) { return; }
+            var a = b.getAttribute('data-l');
+            if (a === 'play') {
+                if (lstate === 'pause') { speechSynthesis.resume(); lstate = 'play'; }
+                else { speechSynthesis.cancel(); li = 0; speakCur(); }
+            } else if (a === 'pause') {
+                speechSynthesis.pause(); lstate = 'pause';
+            } else if (a === 'stop') {
+                stopListen();
+            }
+            renderBar();
+        });
+        window.addEventListener('beforeunload', function () { speechSynthesis.cancel(); });
+    }
+    function renderBar() {
+        if (!lbar) { return; }
+        lbar.innerHTML = lstate === 'off'
+            ? '<button type="button" data-l="play">▶ Escuchar capítulo</button>'
+            : '<button type="button" data-l="' + (lstate === 'pause' ? 'play' : 'pause') + '">' +
+              (lstate === 'pause' ? '▶ Seguir' : '⏸ Pausar') + '</button>' +
+              '<button type="button" data-l="stop" aria-label="Detener">■</button>';
+    }
+    function speakCur() {
+        lstate = 'play';
+        vv.forEach(function (v) { v.classList.remove('speaking'); });
+        var el = vv[li];
+        el.classList.add('speaking');
+        el.scrollIntoView({ block: 'center' });
+        var u = new SpeechSynthesisUtterance(el.getAttribute('data-text') || el.textContent);
+        u.lang = (chapterEl && (chapterEl.getAttribute('data-pos') || '').indexOf('kjv') === 0) ? 'en-US' : 'es-ES';
+        u.rate = 0.95;
+        u.onend = function () {
+            if (lstate !== 'play') { return; }
+            li++;
+            if (li < vv.length) { speakCur(); } else { stopListen(); renderBar(); }
+        };
+        speechSynthesis.speak(u);
+    }
+    function stopListen() {
+        speechSynthesis.cancel();
+        lstate = 'off'; li = 0;
+        vv.forEach(function (v) { v.classList.remove('speaking'); });
+    }
+
+    // ---- Teclado: ←/→ capítulos · j/k versículos · Enter abre sheet · / ir a ---
+    var vcur = -1;
     document.addEventListener('keydown', function (ev) {
         if (ev.target && /input|textarea|select/i.test(ev.target.tagName)) { return; }
         var link = null;
         if (ev.key === 'ArrowLeft') { link = document.querySelector('a[rel="prev"]'); }
         if (ev.key === 'ArrowRight') { link = document.querySelector('a[rel="next"]'); }
-        if (link) { window.location.href = link.href; }
+        if (link) { window.location.href = link.href; return; }
+        if (ev.key === '/' || ev.key === 'i') {
+            var gi = document.querySelector('.goto input');
+            if (gi) { ev.preventDefault(); gi.focus(); gi.select(); }
+            return;
+        }
+        if (!vv.length) { return; }
+        if (ev.key === 'j' || ev.key === 'k') {
+            vcur += ev.key === 'j' ? 1 : -1;
+            vcur = Math.max(0, Math.min(vv.length - 1, vcur));
+            vv.forEach(function (v) { v.classList.remove('focused'); });
+            vv[vcur].classList.add('focused');
+            vv[vcur].scrollIntoView({ block: 'center', behavior: 'smooth' });
+        } else if (ev.key === 'Enter' && vcur >= 0) {
+            ev.preventDefault();
+            openSheet(vv[vcur]);
+        }
     });
 })();

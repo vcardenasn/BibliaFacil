@@ -54,11 +54,11 @@ Leyenda: ✅ implementado en MVP · ⬜ pendiente
 
 ## EPIC 10 — Personalización de lectura (local-first) ✅ (parcial)
 *Todo sin login: localStorage + `prefers-*`. Panel "Apariencia" (⚙) con preview en vivo.*
-- US-100 ✅ Temas: claro / oscuro / **sepia** (papel). ⬜ alto contraste pendiente
-- US-101 ⬜ Paleta de acento elegible: índigo+dorado (default), olivo, terracota, púrpura, teal — 1 variable CSS
-- US-102 ✅ Tipografía: slider tamaño + familia (serif/sans). ⬜ OpenDyslexic + interlineado + ancho columna
+- US-100 ✅ Temas: claro / oscuro / **sepia** / **alto contraste**
+- US-101 ✅ Paleta de acento: índigo (default), oliva, terracota, púrpura, teal
+- US-102 ✅ Tipografía: tamaño + familia (serif/sans) + interlineado. ⬜ OpenDyslexic + ancho columna
 - US-103 ✅ Modo de lectura: versículo-por-línea ⇄ **párrafo fluido**
-- US-104 ✅ Toggles: letras rojas on/off · números on/off. ⬜ modo zen
+- US-104 ✅ Toggles: letras rojas · números · **modo zen** (oculta barras, ✕ flotante sale)
 - US-105 ✅ Panel "Apariencia" (⚙ en topbar) con preview en vivo
 
 ## EPIC 11 — Anotaciones personales (local-first) ✅ (base)
@@ -66,21 +66,20 @@ Leyenda: ✅ implementado en MVP · ⬜ pendiente
 - US-110 ✅ **Resaltado por color** — 5 colores tipo marcador (fondo sutil del versículo, por tema)
 - US-111 ✅ **Notas** por versículo: crear/editar/borrar + indicador ✎ en el texto
 - US-112 ✅ **Favoritos** (♥) — marca rápida con indicador
-- US-113 ✅ Vista `/mias`: filtros por tipo + salto al versículo. ⬜ buscar en notas / filtro por libro
+- US-113 ✅ Vista `/mias`: filtros por tipo + buscar en notas + salto al versículo. ⬜ filtro por libro
 - US-114 ✅ Exportar/importar JSON de anotaciones (backup sin cuenta)
 - US-115 ✅ Sheet al tap versículo: resaltar (5 swatches) · nota · favorito · copiar · compartir. ⬜ comparar
 
-## EPIC 12 — Compartir como imagen ⬜
-*El feature más viral de apps de Biblia — comunidad lo pedirá.*
-- US-120 ⬜ Generador de tarjeta de versículo (canvas client-side): fondos gradiente/imagen, tipografía grande, referencia + código de versión + logo
-- US-121 ⬜ Formatos: story 9:16 + cuadrado + wide → Web Share / descarga PNG
-- US-122 ⬜ Plantillas con accesibilidad (contraste AA) y marca de la app
+## EPIC 12 — Compartir como imagen ✅
+- US-120 ✅ Generador canvas en sheet: gradiente índigo, texto serif grande, ref + marca ✝
+- US-121 ✅ Formatos historia/cuadrada/ancha → descarga PNG o Web Share (archivo)
+- US-122 ⬜ Más plantillas (papel, foto de fondo) — base única índigo/dorado AA
 
-## EPIC 13 — Hábito de lectura ⬜
+## EPIC 13 — Hábito de lectura ✅ (base)
 - US-130 ⬜ Historial de lectura reciente ("leíste ayer…") + lista de capítulos visitados
-- US-131 ⬜ Racha de días consecutivos + hora de lectura preferida (localStorage; push opcional con PWA)
-- US-132 ⬜ Marcador automático "última posición dentro del capítulo" (scroll restore, no solo capítulo)
-- US-133 ⬜ Audio-lectura vía Web Speech API (TTS del navegador — gratis, sin licencia de audio) con velocidad y pause por versículo
+- US-131 ✅ Racha de días consecutivos — visible en /mias. ⬜ hora preferida + push PWA
+- US-132 ✅ Scroll-restore: última posición dentro del capítulo por versículo
+- US-133 ✅ Audio-lectura Web Speech API — barra ▶/⏸/■, resalta versículo actual. ⬜ velocidad configurable
 
 ## EPIC 14 — Estudio y comparación ⬜
 - US-140 ⬜ Comparador lado a lado de 2 versiones (alineado por versículo, diff visual)
@@ -91,8 +90,8 @@ Leyenda: ✅ implementado en MVP · ⬜ pendiente
 ## EPIC 15 — Accesibilidad e inclusión ⬜
 - US-150 ⬜ Auditoría ARIA: landmarks, anuncios live en navegación de capítulo, foco visible en todo
 - US-151 ⬜ Fuente OpenDyslexic + espaciado de letras configurable (dislexia)
-- US-152 ⬜ Contraste alto + desactivar animaciones (ya respeta prefers-reduced-motion — ampliar)
-- US-153 ⬜ Navegación completa por teclado (atajos: `/` buscar, `g` ir a, `j/k` versículo arriba/abajo)
+- US-152 ✅ Contraste alto (tema ◆) · ya respeta prefers-reduced-motion
+- US-153 ✅ Teclado: `/` o `i` enfoca "Ir a" · `j`/`k` navega versículos · `Enter` abre sheet · ←/→ capítulos
 
 ## EPIC 16 — Métricas de uso (privacy-first) ⬜
 *Sin GA ni terceros: contadores agregados propios, anónimos, sin PII ni fingerprinting.
