@@ -40,12 +40,25 @@
 <?php endforeach; ?>
 </head>
 <body<?= !empty($bodyClass) ? ' class="' . e($bodyClass) . '"' : '' ?>>
+<a class="skip-link" href="#main-content">Saltar al contenido</a>
 <header class="topbar">
-    <a class="brand" href="<?= e(url('/')) ?>"><span class="cross">✝</span> Biblia Fácil</a>
+    <a class="brand" href="<?= e(url('/')) ?>"><span class="cross" aria-hidden="true">✝</span> Biblia Fácil</a>
+    <?php
+    $activeSection = explode('/', trim((string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/'))[0];
+    $defaultRead = (string) config('app.default_version', 'rvr1909');
+    $readCode = in_array($defaultRead, array_column($versions ?? [], 'code'), true) ? $defaultRead : ($versions[0]['code'] ?? 'rvr1909');
+    ?>
+    <nav class="primary-nav" aria-label="Navegación principal">
+        <a href="<?= e(url('/')) ?>"<?= $activeSection === '' ? ' aria-current="page"' : '' ?>><span aria-hidden="true">⌂</span><span>Inicio</span></a>
+        <a href="<?= e(url($readCode)) ?>"<?= in_array($activeSection, array_column($versions ?? [], 'code'), true) ? ' aria-current="true"' : '' ?>><span aria-hidden="true">▤</span><span>Leer</span></a>
+        <a href="<?= e(url('temas')) ?>"<?= in_array($activeSection, ['temas', 'guias', 'versiculo', 'versiculo-del-dia', 'v'], true) ? ' aria-current="true"' : '' ?>><span aria-hidden="true">◇</span><span>Explorar</span></a>
+        <a href="<?= e(url('juegos')) ?>"<?= $activeSection === 'juegos' ? ' aria-current="true"' : '' ?>><span aria-hidden="true">✦</span><span>Juegos</span></a>
+        <a href="<?= e(url('mias')) ?>"<?= $activeSection === 'mias' ? ' aria-current="page"' : '' ?>><span aria-hidden="true">♡</span><span>Mis notas</span></a>
+    </nav>
     <?php if (!empty($versions) && !empty($version)): ?>
     <select class="vswitch" id="versionSwitch" data-version="<?= e($version['code']) ?>" aria-label="Cambiar versión" title="Cambiar versión">
         <?php foreach ($versions as $v): ?>
-        <option value="<?= e($v['code']) ?>"<?= $v['id'] === $version['id'] ? ' selected' : '' ?>><?= e(strtoupper($v['code'])) ?></option>
+        <option value="<?= e($v['code']) ?>"<?= $v['id'] === $version['id'] ? ' selected' : '' ?>><?= e($v['name']) ?></option>
         <?php endforeach; ?>
     </select>
     <?php endif; ?>
@@ -53,22 +66,19 @@
         <?php if (!empty($version)): ?>
         <input type="hidden" name="v" value="<?= e($version['code']) ?>">
         <?php endif; ?>
-        <input type="text" name="q" placeholder="Ir a: Juan 3:16" aria-label="Ir a referencia" autocomplete="off">
+        <label class="sr-only" for="quick-reference">Ir a una referencia bíblica</label>
+        <input id="quick-reference" type="text" name="q" placeholder="Ir a: Juan 3:16" autocomplete="off">
     </form>
-    <nav class="topnav">
+    <div class="topnav">
         <?php if (!empty($versions)): ?>
-        <form method="get" action="<?= e(url('buscar')) ?>" class="searchlink">
-            <button type="submit" title="Buscar" aria-label="Buscar">🔍</button>
-        </form>
+        <a class="navlink" href="<?= e(url('buscar')) ?>" title="Buscar en la Biblia" aria-label="Buscar en la Biblia">⌕</a>
         <?php endif; ?>
-        <a class="navlink" href="<?= e(url('juegos')) ?>" title="Juegos" aria-label="Juegos">🎮</a>
-        <a class="navlink" href="<?= e(url('mias')) ?>" title="Mis anotaciones" aria-label="Mis anotaciones">✎</a>
         <button type="button" id="themeBtn" title="Modo oscuro" aria-label="Modo oscuro">☾</button>
         <button type="button" id="prefBtn" title="Apariencia" aria-label="Apariencia">⚙</button>
-    </nav>
+    </div>
 </header>
 
-<main class="page">
+<main class="page" id="main-content">
 <?php if (!empty($meta['crumbs'])): ?>
 <nav class="crumbs" aria-label="Breadcrumb"><?php
     $last = count($meta['crumbs']) - 1;

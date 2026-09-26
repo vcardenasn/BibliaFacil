@@ -22,7 +22,7 @@ Leyenda: ✅ implementado en MVP · ⬜ pendiente
 - US-020 ✅ Vista de lectura mobile-first, tipografía serif grande
 - US-021 ✅ Selector versión (pills) + índice libro/capítulo
 - US-022 ✅ Nav anterior/siguiente + flechas ←/→ teclado + cruces de libro
-- US-023 ✅ "Continuar donde quedé" vía cookie `bf_pos` (redirect en `/`)
+- US-023 ✅ "Continuar donde quedé" vía cookie `bf_pos` (acceso directo en la portada `/`; sin redirección automática)
 - US-024 ✅ Modo oscuro + tamaño de fuente (localStorage)
 - US-025 ✅ Tap versículo → copiar / compartir (Web Share API, fallback WhatsApp)
 - US-026 ✅ "Ir a" → `/ir?q=` con ReferenceParser + anchor #vN

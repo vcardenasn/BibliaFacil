@@ -58,6 +58,17 @@ final class Seo
         }
 
         switch ($view) {
+            case 'home':
+                $meta['desc'] = 'Lee la Biblia en línea gratis y sin anuncios. Encuentra versículos, explora temas y aprende con juegos bíblicos, sin crear una cuenta.';
+                $meta['canonical'] = self::abs('/');
+                $meta['jsonld'] = [self::websiteLd()];
+                $votd = $data['votd'] ?? null;
+                $votdVersion = $data['votdVersion'] ?? null;
+                if ($votd && $votdVersion) {
+                    $meta['image'] = self::abs("img/{$votdVersion['code']}/{$votd['book_slug']}/{$votd['chapter']}/{$votd['verse']}");
+                }
+                break;
+
             case 'reader':
                 $meta['desc'] = self::chapterDesc($data['verses'] ?? []);
                 $meta['ogType'] = 'article';

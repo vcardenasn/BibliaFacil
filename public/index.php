@@ -333,12 +333,30 @@ if (($seg[0] ?? '') === 'juegos') {
     exit;
 }
 
-// ---- / — continuar donde quedó o capítulo por defecto ------------------------
+// ---- / — portada y continuación de lectura -----------------------------------
 if ($seg === []) {
-    $default = config('app.default_version') . '/genesis/1';
+    $homeVersion = $repo->versionByCode((string) config('app.default_version', 'rvr1909')) ?: ($versions[0] ?? null);
+    $startVersion = $repo->versionByCode('onbv') ?: $homeVersion;
+    $continue = null;
     $pos = (string) ($_COOKIE['bf_pos'] ?? '');
-    $target = preg_match('#^[a-z0-9\-]+/[a-z0-9\-]+/\d+$#', $pos) ? $pos : $default;
-    header('Location: ' . url($target));
+    if (preg_match('#^([a-z0-9-]+)/([a-z0-9-]+)/([1-9][0-9]{0,2})$#', $pos, $matches)) {
+        $savedVersion = $repo->versionByCode($matches[1]);
+        $savedBook = $repo->book($matches[2]);
+        if ($savedVersion && $savedBook && (int) $matches[3] <= (int) $savedBook['chapters']) {
+            $continue = ['path' => $pos, 'label' => $savedBook['name'] . ' ' . $matches[3], 'version' => $savedVersion['name']];
+        }
+    }
+    view('home', [
+        'title' => 'Lee la Biblia en línea, gratis y sin anuncios',
+        'versions' => $versions,
+        'bodyClass' => 'home-page',
+        'votdVersion' => $homeVersion,
+        'startVersion' => $startVersion,
+        'votd' => $homeVersion ? $repo->verseOfTheDay((int) $homeVersion['id']) : null,
+        'continue' => $continue,
+        'featuredThemes' => array_intersect_key(config('temas'), array_flip(['amor', 'animo', 'paz', 'familia'])),
+        'featuredGames' => array_slice(config('games'), 0, 3, true),
+    ]);
     exit;
 }
 
