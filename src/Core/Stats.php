@@ -12,6 +12,14 @@ use Throwable;
  */
 final class Stats
 {
+    public static function visit(?string $snapshot): ?array
+    {
+        if ($snapshot !== null && preg_match('/^[1-9][0-9]{0,9}$/D', $snapshot)) {
+            return [0, (int) $snapshot];
+        }
+        return self::bump('pv');
+    }
+
     /**
      * Suma 1 a la métrica del día.
      * @return ?array{0:int,1:int} [hoy, total acumulado] o null si no hay tabla.

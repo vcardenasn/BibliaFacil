@@ -26,6 +26,13 @@ return function (TestCase $t): void {
         $t->assertSame([5, 5], Stats::bump('pv'));
     });
 
+    $t->run('stats: una visita conserva el número entre páginas de la sesión', function () use ($t) {
+        $first = Stats::visit(null);
+        $t->assertSame([6, 6], $first);
+        $t->assertSame([0, 6], Stats::visit((string) $first[1]));
+        $t->assertSame([7, 7], Stats::visit('valor-inválido'));
+    });
+
     $t->run('stats: tabla inexistente → null sin romper', function () use ($t) {
         $bad = new PDO('sqlite::memory:');
         $bad->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

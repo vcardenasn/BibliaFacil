@@ -16,4 +16,4 @@
 </div>
 
 <p class="share-label">Comparte este versículo:</p>
-<?= sharebar(\Biblia\Core\Seo::abs('versiculo/' . $entry['slug']), $entry['title'] . ' — Biblia Fácil') ?>
+<?= sharebar(\Biblia\Core\Seo::abs('versiculo/' . $slug), $entry['title'] . ' — Biblia Fácil') ?>

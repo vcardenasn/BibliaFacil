@@ -57,9 +57,24 @@ function view(string $name, array $data = []): void
     }
     extract($data, EXTR_SKIP);
     ob_start();
-    require $viewFile;
-    $content = ob_get_clean();
-    $visits = \Biblia\Core\Stats::bump('pv'); // [hoy, total] o null si falta la tabla
+    try {
+        require $viewFile;
+        $content = ob_get_clean();
+    } catch (Throwable $exception) {
+        ob_end_clean();
+        throw $exception;
+    }
+    $snapshot = isset($_COOKIE['bf_visit_count']) ? (string) $_COOKIE['bf_visit_count'] : null;
+    $visits = \Biblia\Core\Stats::visit($snapshot); // [hoy, total] o null si falta la tabla
+    if ($visits && (!$snapshot || !preg_match('/^[1-9][0-9]{0,9}$/D', $snapshot))) {
+        setcookie('bf_visit_count', (string) $visits[1], [
+            'expires' => time() + 1800,
+            'path' => '/',
+            'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+    }
 
     // EPIC 16 — métricas agregadas (anónimas, tolerantes a fallos)
     \Biblia\Core\Metrics::session();
@@ -78,7 +93,14 @@ function view(string $name, array $data = []): void
     }
 
     $meta = \Biblia\Core\Seo::build($name, $data); // EPIC 18 — meta dinámico por vista
-    require BASE_PATH . '/app/Views/layout.php';
+    ob_start();
+    try {
+        require BASE_PATH . '/app/Views/layout.php';
+        echo ob_get_clean();
+    } catch (Throwable $exception) {
+        ob_end_clean();
+        throw $exception;
+    }
 }
 
 /**
