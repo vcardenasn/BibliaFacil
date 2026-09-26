@@ -129,29 +129,29 @@ Beacon `track.php` + tabla de agregados diarios. Flag `FF_METRICS`.*
 5. **US-160/161** (métricas básicas) — sin esto no hay forma de saber qué sigue
 6. EPIC 13/14 según tracción medida
 
-## EPIC 17 — Juegos bíblicos para niños ⬜
+## EPIC 17 — Juegos bíblicos para niños ✅
 *Sección `/juegos` dentro de BibliaFacil. Público: niños ~6-12. Visual: emoji grande +
 gradientes/SVG animados + confetti canvas, sin assets pesados. Progreso (estrellas/
 stickers) en localStorage — sin cuentas. Sonidos vía Web Audio API (sintetizados,
 sin archivos). Mobile-first: botones gigantes, texto mínimo.*
 
 ### Motor compartido
-- US-170 ⬜ Hub `/juegos`: tarjetas animadas por juego + tablero "mis estrellas ⭐" + badge de nivel (Explorador → Aprendiz → Maestro)
-- US-171 ⬜ Motor común `juegos.js`: estado de estrellas por juego, confetti (canvas), sonidos sintetizados (acierto/error/fanfarria), timer con barra animada, shake en error, navegación `/juegos/<slug>`
-- US-179 ⬜ Recompensas: stickers desbloqueables por hitos (10/50/100 ⭐, racha 5, primer juego de cada tipo) + pantalla de celebración
+- US-170 ✅ Hub `/juegos`: tarjetas animadas + total ⭐ + badge de nivel (🌱 Explorador → 👑 Leyenda)
+- US-171 ✅ Motor `juegos.js` (BFJ): estrellas localStorage, confetti canvas, sonidos Web Audio, timer animado, shake/pop, celebración, `BFJ.define(slug)`
+- US-179 ✅ Recompensas: 8 stickers por hitos (medallas ⭐, 4 juegos distintos, los 7, ronda perfecta) + álbum en hub + "🎁 ¡Sticker nuevo!" en celebración
 
 ### Los 7 juegos
-- US-172 ⬜ **Completa el versículo** ⭐ *único que usa la BD*: endpoint que devuelve versículo aleatorio de la versión activa con palabra oculta + 3 distractores del mismo capítulo. Niveles: 1 palabra / 2 / frase. Racha multiplica puntos
-- US-173 ⬜ **Trivia bíblica**: banco JSON ~120 preguntas por categorías (personajes, historias, milagros, animales) × dificultad. 10 preguntas por ronda, timer, puntos por velocidad
-- US-174 ⬜ **Ordena la historia**: 4-6 tarjetas-escena (emoji) drag&drop o tap-en-orden. Sets: creación, José, Noé, Pascua, sembrador, David. Estrellas por intentos usados
-- US-175 ⬜ **Memory de personajes**: parejas personaje↔hazaña (emoji↔emoji) grid 4×3/4×4. Timer, estrellas por movimientos, flip animation CSS 3D
-- US-176 ⬜ **Ordena los libros**: canon por bloques (Pentateuco, historia, poesía, profetas, evangelios, cartas, Apocalipsis) — tap en orden sobre tarjetas mezcladas. Datos de `config/books.php`
-- US-177 ⬜ **Verdadero o falso**: ráfaga de afirmaciones con 2 botones gigantes ✓/✗, racha + comodines. Banco ~80 afirmaciones con picardía infantil ("David peleó contra un dragón")
-- US-178 ⬜ **Adivina el personaje**: 3 pistas progresivas reveladas una a una; menos pistas = más ⭐. ~30 personajes con pistas curadas
+- US-172 ✅ **Completa el versículo**: `VerseQuiz` PHP → `/juegos/api/versiculo?n=10` (palabra ≥5 oculta + distractores del capítulo). ⬜ niveles 2 palabras/frase
+- US-173 ✅ **Trivia bíblica**: 55 preguntas × 4 categorías + mezcla, 10/ronda, timer 15s, racha
+- US-174 ✅ **Ordena la historia**: 8 historias × 4-6 escenas, tap-en-orden a slots numerados
+- US-175 ✅ **Memory**: 8 parejas personaje↔hazaña (14 en banco), flip 3D, ⭐ por movimientos
+- US-176 ✅ **Ordena los libros**: 8 bloques del canon (66 libros desde `config/books.php`)
+- US-177 ✅ **Verdadero o falso**: 28 afirmaciones con notas curiosas, timer 12s
+- US-178 ✅ **Adivina el personaje**: 30 personajes × 3 pistas; pista 1 = 3⭐ … pista 3 = 1⭐
 
 ### Datos y contenido
-- US-180 ⬜ Bancos de contenido en `database/games/*.json` (trivia, historias, parejas, v/f, pistas) — curados a mano, español neutro
-- US-181 ⬜ Endpoint versículo aleatorio con distractores (`/juegos/api/versiculo`) — solo lectura, cacheable, sin PII
+- US-180 ✅ Bancos en `public/assets/games/*.json` — curados a mano. ⬜ engordar (trivia →120, v/f →80)
+- US-181 ✅ Endpoint versículo aleatorio con distractores — solo lectura, sin PII
 
 ## Notas técnicas
 - `use` arriba en entry points + smoke test `php -S` (convención stack).
