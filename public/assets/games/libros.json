@@ -1,0 +1,132 @@
+[
+    {
+        "id": "pentateuco",
+        "name": "El Pentateuco",
+        "emoji": "📜",
+        "diff": "Fácil",
+        "books": [
+            "Génesis",
+            "Éxodo",
+            "Levítico",
+            "Números",
+            "Deuteronomio"
+        ]
+    },
+    {
+        "id": "historia",
+        "name": "Historia del AT",
+        "emoji": "⚔️",
+        "diff": "Difícil",
+        "books": [
+            "Josué",
+            "Jueces",
+            "Rut",
+            "1 Samuel",
+            "2 Samuel",
+            "1 Reyes",
+            "2 Reyes",
+            "1 Crónicas",
+            "2 Crónicas",
+            "Esdras",
+            "Nehemías",
+            "Ester"
+        ]
+    },
+    {
+        "id": "poesia",
+        "name": "Poesía",
+        "emoji": "🎵",
+        "diff": "Fácil",
+        "books": [
+            "Job",
+            "Salmos",
+            "Proverbios",
+            "Eclesiastés",
+            "Cantares"
+        ]
+    },
+    {
+        "id": "profetas-may",
+        "name": "Profetas Mayores",
+        "emoji": "📣",
+        "diff": "Fácil",
+        "books": [
+            "Isaías",
+            "Jeremías",
+            "Lamentaciones",
+            "Ezequiel",
+            "Daniel"
+        ]
+    },
+    {
+        "id": "profetas-men",
+        "name": "Profetas Menores",
+        "emoji": "🗣️",
+        "diff": "Difícil",
+        "books": [
+            "Oseas",
+            "Joel",
+            "Amós",
+            "Abdías",
+            "Jonás",
+            "Miqueas",
+            "Nahúm",
+            "Habacuc",
+            "Sofonías",
+            "Hageo",
+            "Zacarías",
+            "Malaquías"
+        ]
+    },
+    {
+        "id": "evangelios",
+        "name": "Evangelios y Hechos",
+        "emoji": "✝️",
+        "diff": "Fácil",
+        "books": [
+            "Mateo",
+            "Marcos",
+            "Lucas",
+            "Juan",
+            "Hechos"
+        ]
+    },
+    {
+        "id": "pablo",
+        "name": "Cartas de Pablo",
+        "emoji": "✉️",
+        "diff": "Difícil",
+        "books": [
+            "Romanos",
+            "1 Corintios",
+            "2 Corintios",
+            "Gálatas",
+            "Efesios",
+            "Filipenses",
+            "Colosenses",
+            "1 Tesalonicenses",
+            "2 Tesalonicenses",
+            "1 Timoteo",
+            "2 Timoteo",
+            "Tito",
+            "Filemón",
+            "Hebreos"
+        ]
+    },
+    {
+        "id": "generales",
+        "name": "Cartas y Apocalipsis",
+        "emoji": "🌟",
+        "diff": "Medio",
+        "books": [
+            "Santiago",
+            "1 Pedro",
+            "2 Pedro",
+            "1 Juan",
+            "2 Juan",
+            "3 Juan",
+            "Judas",
+            "Apocalipsis"
+        ]
+    }
+]

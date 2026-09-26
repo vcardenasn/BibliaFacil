@@ -11,6 +11,6 @@ return [
     'versiculo' => ['name' => 'Completa el Versículo',  'emoji' => '📖', 'desc' => '¿Qué palabra falta en la Biblia?', 'ready' => false],
     'historia'  => ['name' => 'Ordena la Historia',     'emoji' => '🎬', 'desc' => 'Pon las escenas en orden.', 'ready' => true],
     'memory'    => ['name' => 'Memory Bíblico',         'emoji' => '🃏', 'desc' => 'Encuentra todas las parejas.', 'ready' => true],
-    'libros'    => ['name' => 'Ordena los Libros',      'emoji' => '📚', 'desc' => '¿Sabes el orden de la Biblia?', 'ready' => false],
+    'libros'    => ['name' => 'Ordena los Libros',      'emoji' => '📚', 'desc' => '¿Sabes el orden de la Biblia?', 'ready' => true],
     'personaje' => ['name' => 'Adivina el Personaje',   'emoji' => '🔍', 'desc' => 'Descubre quién es con pistas.', 'ready' => false],
 ];

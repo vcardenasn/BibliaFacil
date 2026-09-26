@@ -225,6 +225,16 @@
 .hs-card:hover { transform: translateY(-3px); border-color: var(--brand); }
 .hs-card:active { transform: scale(.95); }
 
+/* ---- Ordena los Libros ---- */
+.lb-diff { font-size: .65rem; color: var(--muted); font-weight: 600; }
+.lb-slot { min-width: 86px; flex: 0 0 86px; }
+.lb-name { font-size: .68rem !important; font-weight: 700; }
+.lb-pool { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+.lb-card {
+    font-size: .82rem; font-weight: 700; padding: .8rem .4rem;
+    min-height: 44px;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .jh-card:hover .jh-emoji, .bfj-shake, .bfj-pop, .mm-face { animation: none; transition: none; }
 }
