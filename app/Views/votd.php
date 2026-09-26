@@ -23,3 +23,8 @@
     <?php endforeach; ?>
 </p>
 <p class="ver-note"><a href="<?= e(url('versiculo-del-dia/rss')) ?>">RSS 📡</a> — suscríbete para recibirlo cada día</p>
+
+<?php if ($votd): ?>
+<p class="share-label">Comparte el versículo del día:</p>
+<?= sharebar(\Biblia\Core\Seo::abs('versiculo-del-dia' . ($d !== date('Y-m-d') ? '?d=' . $d : '')), 'Versículo del día: ' . $votd['book_name'] . ' ' . $votd['chapter'] . ':' . $votd['verse'] . ' — Biblia Fácil') ?>
+<?php endif; ?>

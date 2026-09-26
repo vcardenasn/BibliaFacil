@@ -95,6 +95,25 @@ function verseHtml(string $text, ?string $wjJson, bool $dropcap = false): string
         . \Biblia\Bible\VerseText::render(mb_substr($text, 1), $wjJson);
 }
 
+/** Barra de compartir (US-202): links server-side, sin JS obligatorio. */
+function sharebar(string $absUrl, string $text): string
+{
+    $u = rawurlencode($absUrl);
+    $t = rawurlencode($text);
+    $btns = [
+        ['wa', 'WhatsApp', '💬', "https://wa.me/?text={$t}%20{$u}"],
+        ['tg', 'Telegram', '✈️', "https://t.me/share/url?url={$u}&text={$t}"],
+        ['x', 'X', '𝕏', "https://twitter.com/intent/tweet?text={$t}&url={$u}"],
+        ['fb', 'Facebook', 'ⓕ', "https://www.facebook.com/sharer/sharer.php?u={$u}"],
+    ];
+    $h = '<div class="sharebar">';
+    foreach ($btns as [$cls, $name, $ico, $href]) {
+        $h .= '<a class="share-btn share-' . $cls . '" href="' . e($href) . '" target="_blank" rel="noopener" title="Compartir en ' . $name . '" aria-label="' . $name . '">' . $ico . '</a>';
+    }
+    $h .= '<button type="button" class="share-btn share-cp" data-copy="' . e($absUrl) . '" title="Copiar enlace" aria-label="Copiar enlace">🔗</button>';
+    return $h . '</div>';
+}
+
 /** Quita acentos para comparaciones (búsqueda, parser). */
 function unaccent(string $value): string
 {

@@ -290,6 +290,8 @@
         var rec = annMap[id] || {};
         var ref = el.getAttribute('data-ref') || '';
         var text = el.getAttribute('data-text') || el.textContent.trim();
+        var kp = id.split('|'); // version|slug|cap|ver → URL corta /v/slug/cap/ver (US-201)
+        var surl = kp.length === 4 ? location.origin + '/v/' + kp[1] + '/' + kp[2] + '/' + kp[3] + '?v=' + kp[0] : location.href;
 
         sheet = document.createElement('div');
         sheet._vtext = text; sheet._vref = ref;
@@ -357,7 +359,7 @@
                 act.classList.toggle('on', !!rec.fav);
                 paintVerse(sheetVerse, rec.color || rec.note || rec.fav ? rec : null);
             } else if (a === 'copy') {
-                var payload = '“' + text + '” — ' + ref;
+                var payload = '“' + text + '” — ' + ref + '\n' + surl;
                 TK('share', 'copy');
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(payload).then(function () {
@@ -366,7 +368,7 @@
                     });
                 }
             } else if (a === 'share') {
-                var pl = '“' + text + '” — ' + ref;
+                var pl = '“' + text + '” — ' + ref + ' ' + surl;
                 TK('share', navigator.share ? 'native' : 'wa');
                 if (navigator.share) { navigator.share({ title: ref, text: pl }).catch(function () {}); }
                 else { window.open('https://wa.me/?text=' + encodeURIComponent(pl), '_blank', 'noopener'); }
@@ -473,7 +475,7 @@
 
         x.font = '600 ' + Math.round(w * .024) + 'px Georgia, serif';
         x.fillStyle = 'rgba(253,247,234,.7)';
-        x.fillText('✝ Biblia Fácil', w / 2, h * .94);
+        x.fillText('✝ ' + (location.host || 'Biblia Fácil'), w / 2, h * .94); // US-203: dominio transparente
         return cv;
     }
 
@@ -754,6 +756,18 @@
         lstate = 'off'; li = 0;
         vv.forEach(function (v) { v.classList.remove('speaking'); });
     }
+
+    // ---- Sharebar: botón copiar enlace (US-202) ------------------------------
+    document.addEventListener('click', function (ev) {
+        var b = ev.target.closest('[data-copy]');
+        if (!b || !navigator.clipboard) { return; }
+        navigator.clipboard.writeText(b.getAttribute('data-copy')).then(function () {
+            var old = b.textContent;
+            b.textContent = '✓';
+            setTimeout(function () { b.textContent = old; }, 1200);
+            TK('share', 'copy');
+        });
+    });
 
     // ---- Teclado: ←/→ capítulos · j/k versículos · Enter abre sheet · / ir a ---
     var vcur = -1;

@@ -14,3 +14,6 @@
     </article>
     <?php endforeach; ?>
 </div>
+
+<p class="share-label">Comparte este tema:</p>
+<?= sharebar(\Biblia\Core\Seo::abs('temas/' . $tema['slug']), 'Versículos sobre ' . $tema['name'] . ' — Biblia Fácil') ?>

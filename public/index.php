@@ -233,6 +233,49 @@ if (($seg[0] ?? '') === 'guias') {
     exit;
 }
 
+// ---- /img/{v}/{libro}/{cap}/{ver} — og:image del versículo (US-200) ----------
+if (($seg[0] ?? '') === 'img' && count($seg) === 5) {
+    $iv = $repo->versionByCode($seg[1]);
+    $ib = $iv ? $repo->book($seg[2]) : null;
+    $ivv = $ib ? $repo->verseByRef((int) $iv['id'], (string) $ib['osis'], (int) $seg[3], (int) $seg[4]) : null;
+    $png = $ivv ? \Biblia\Core\VerseImage::png(
+        strip_tags((string) $ivv['text']),
+        $ivv['book_name'] . ' ' . $ivv['chapter'] . ':' . $ivv['verse'],
+        "{$seg[1]}-{$seg[2]}-{$seg[3]}-{$seg[4]}"
+    ) : null;
+    if (!$png) {
+        http_response_code(404);
+        exit;
+    }
+    header('Content-Type: image/png');
+    header('Cache-Control: public, max-age=604800'); // 7 días — el contenido no cambia
+    echo $png;
+    exit;
+}
+
+// ---- /v/{libro}/{cap}/{ver} — URL corta compartible (US-201) -----------------
+if (($seg[0] ?? '') === 'v' && count($seg) === 4) {
+    $sv = $repo->versionByCode((string) ($_GET['v'] ?? ''))
+        ?: $repo->versionByCode((string) config('app.default_version', 'rvr1909'))
+        ?: ($versions[0] ?? null);
+    $sb = $repo->book($seg[1]);
+    $svv = ($sv && $sb) ? $repo->verseByRef((int) $sv['id'], (string) $sb['osis'], (int) $seg[2], (int) $seg[3]) : null;
+    if (!$svv) {
+        $notFound('Ese versículo no existe.');
+        exit;
+    }
+    $ref = $svv['book_name'] . ' ' . $svv['chapter'] . ':' . $svv['verse'];
+    view('shareverse', [
+        'title' => $ref . ' — ' . $sv['name'],
+        'versions' => $versions, 'version' => $sv,
+        'verse' => $svv, 'ref' => $ref,
+        'shareUrl' => \Biblia\Core\Seo::abs("v/{$seg[1]}/{$seg[2]}/{$seg[3]}?v={$sv['code']}"),
+        'imgUrl' => \Biblia\Core\Seo::abs("img/{$sv['code']}/{$seg[1]}/{$seg[2]}/{$seg[3]}"),
+        'chapterUrl' => url("{$sv['code']}/{$seg[1]}/{$seg[2]}#v{$seg[3]}"),
+    ]);
+    exit;
+}
+
 // ---- /mias — anotaciones personales (IndexedDB del navegador) ----------------
 if (($seg[0] ?? '') === 'mias') {
     view('mias', [

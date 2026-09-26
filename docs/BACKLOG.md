@@ -172,13 +172,13 @@ vía `view()` → layout. Guardrails: `/mias`, `/buscar`, `check.php`, `track.ph
 - US-193 ✅ `/versiculo-del-dia` + archivo `?d=YYYY-MM-DD` (nav ayer/mañana + chips 14d) + RSS `/versiculo-del-dia/rss` (30 ítems)
 - US-194 ✅ `/guias` — "¿Qué versión elegir?" (comparativa de las 6) + "Cómo empezar a leer la Biblia" (plan de ruta)
 
-## EPIC 20 — Viralidad / compartir ⬜
+## EPIC 20 — Viralidad / compartir ✅
 *Ya existe el generador canvas — falta que el preview del link (lo que se ve en
 WhatsApp antes de abrir) sea una tarjeta atractiva.*
-- US-200 ⬜ `og:image` dinámico por versículo: `GET /img/{v}/{libro}/{cap}/{ver}.png` con GD (gradiente + texto + ref + marca dominio) → WhatsApp/X muestran el versículo como tarjeta
-- US-201 ⬜ Página compartible `/v/{ref}` (de US-191): URL corta con OG completo — la que circula en grupos
-- US-202 ⬜ Share buttons visibles: WhatsApp/Telegram/X/Facebook en reader y `/temas` — no escondidos en el sheet
-- US-203 ⬜ Watermark con dominio en la imagen canvas del sheet (la descarga ya existe)
+- US-200 ✅ `og:image` dinámico por versículo: `GET /img/{v}/{libro}/{cap}/{ver}.png` con GD (gradiente + texto + ref + marca dominio) → WhatsApp/X muestran el versículo como tarjeta
+- US-201 ✅ Página compartible `/v/{ref}` (de US-191): URL corta con OG completo — la que circula en grupos
+- US-202 ✅ Share buttons visibles: WhatsApp/Telegram/X/Facebook en reader y `/temas` — no escondidos en el sheet
+- US-203 ✅ Watermark con dominio en la imagen canvas del sheet (la descarga ya existe)
 
 ## EPIC 21 — Performance / Core Web Vitals ⬜
 *CWV es factor de ranking. La app ya es liviana (vanilla JS/CSS) — falta cache,

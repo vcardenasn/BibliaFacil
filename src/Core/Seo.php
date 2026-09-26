@@ -43,6 +43,7 @@ final class Seo
             'ogType' => 'website',
             'locale' => 'es_LA',
             'htmlLang' => 'es',
+            'image' => null,
             'hreflang' => [],
             'jsonld' => [],
             'crumbs' => [],
@@ -124,6 +125,11 @@ final class Seo
                 $en2 = $data['entry'] ?? [];
                 $meta['desc'] = ($en2['context'] ?? '') . ' Léelo en varias versiones en Biblia Fácil.';
                 $meta['ogType'] = 'article';
+                // og:image con la versión por defecto (US-200)
+                if (!empty($data['texts'][0])) {
+                    $t0 = $data['texts'][0];
+                    $meta['image'] = self::abs("img/{$t0['code']}/{$t0['book_slug']}/{$t0['chapter']}/{$t0['verse']}");
+                }
                 $meta['crumbs'] = self::pageCrumbs('Versículos', $en2['title'] ?? null, 'versiculo');
                 $meta['jsonld'] = [self::breadcrumbLd($meta['crumbs']), [
                     '@context' => 'https://schema.org',
@@ -142,10 +148,22 @@ final class Seo
                 $meta['crumbs'] = self::pageCrumbs('Versículo del día');
                 break;
 
-            case 'guias':
-                $meta['desc'] = 'Guías para leer y entender la Biblia — qué versión elegir, cómo empezar.';
-                $meta['crumbs'] = self::pageCrumbs('Guías');
+            case 'shareverse':
+                $sv = $data['verse'] ?? [];
+                $meta['desc'] = '"' . mb_substr(strip_tags((string) ($sv['text'] ?? '')), 0, 140) . '…" — ' . ($data['ref'] ?? '');
+                $meta['ogType'] = 'article';
+                $meta['image'] = $data['imgUrl'] ?? null;
+                $meta['crumbs'] = self::pageCrumbs('Versículo', $data['ref'] ?? null);
+                $meta['jsonld'] = [[
+                    '@context' => 'https://schema.org',
+                    '@type' => 'Article',
+                    'headline' => ($data['ref'] ?? '') . ' — ' . (($data['version'] ?? [])['name'] ?? ''),
+                    'inLanguage' => ($data['version'] ?? [])['language'] === 'en' ? 'en' : 'es',
+                    'isAccessibleForFree' => true,
+                ]];
                 break;
+
+            case 'guias':
 
             case 'guia':
                 $g = $data['guia'] ?? [];
@@ -165,7 +183,7 @@ final class Seo
         if ($current === null) {
             $c[] = ['label' => $section, 'url' => null];
         } else {
-            $c[] = ['label' => $section, 'url' => url($sectionUrl)];
+            $c[] = ['label' => $section, 'url' => $sectionUrl === '' ? null : url($sectionUrl)];
             $c[] = ['label' => $current, 'url' => null];
         }
         return $c;

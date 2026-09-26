@@ -15,7 +15,15 @@
 <meta property="og:url" content="<?= e($meta['canonical'] ?? '') ?>">
 <meta property="og:site_name" content="Biblia Fácil">
 <meta property="og:locale" content="<?= e($meta['locale'] ?? 'es_LA') ?>">
+<?php if (!empty($meta['image'])): ?>
+<meta property="og:image" content="<?= e($meta['image']) ?>">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="<?= e($meta['image']) ?>">
+<?php else: ?>
 <meta name="twitter:card" content="summary">
+<?php endif; ?>
 <meta name="twitter:title" content="<?= e(($title ?? 'Biblia Fácil') . ' · Biblia Fácil') ?>">
 <meta name="twitter:description" content="<?= e($meta['desc'] ?? '') ?>">
 <?php foreach (($meta['hreflang'] ?? []) as $lang => $u): ?>

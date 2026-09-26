@@ -169,6 +169,23 @@ a.crumb:hover { color: var(--accent); }
 .tema-verse .mi-ver { display: inline-block; margin-bottom: .4rem; }
 .votd-big blockquote { font-size: 1.3rem; line-height: 1.8; }
 .votd-nav { display: flex; gap: .6rem; margin-top: 1rem; }
+
+/* Barra de compartir (EPIC 20) */
+.sharebar { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; margin: .8rem 0 1.4rem; }
+.share-label { text-align: center; font-weight: 600; color: var(--muted); margin: 1.6rem 0 .2rem; font-family: var(--sans); font-size: .9rem; }
+.share-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px; border-radius: 50%; font-size: 1.35rem;
+    text-decoration: none; border: none; cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .18); transition: transform .15s, box-shadow .15s;
+}
+.share-btn:hover { transform: translateY(-3px) scale(1.06); box-shadow: 0 6px 16px rgba(0, 0, 0, .24); }
+.share-wa { background: #25d366; }
+.share-tg { background: #229ed9; }
+.share-x { background: #14171a; color: #fff; }
+.share-fb { background: #1877f2; color: #fff; }
+.share-cp { background: var(--card, #fff); }
+.share-preview { display: block; max-width: 100%; margin: 0 auto; border-radius: 12px; box-shadow: 0 4px 18px rgba(0, 0, 0, .2); }
 .chip {
     display: inline-block; padding: .2rem .55rem; margin: .15rem;
     border: 1px solid var(--border); border-radius: 20px; font-size: .72rem;
