@@ -252,6 +252,29 @@
         }
     }
 
+    // US-234 — mini-explosión de estrellas desde un elemento (pareja, acierto)
+    function burst(el) {
+        if (reducedMotion() || !el || !Element.prototype.animate) { return; }
+        var r = el.getBoundingClientRect();
+        var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        for (var i = 0; i < 5; i++) {
+            var s = document.createElement('span');
+            s.textContent = '⭐'; s.className = 'bfj-fly';
+            s.style.left = (cx - 8) + 'px'; s.style.top = (cy - 8) + 'px';
+            s.style.fontSize = '.95rem';
+            document.body.appendChild(s);
+            var ang = (Math.PI * 2 * i) / 5 + Math.random() * .5;
+            var dist = 46 + Math.random() * 32;
+            var dx = Math.cos(ang) * dist, dy = Math.sin(ang) * dist;
+            var anim = s.animate([
+                { transform: 'translate(0,0) scale(.4)', opacity: 1 },
+                { transform: 'translate(' + dx + 'px,' + (dy - 26) + 'px) scale(1.05)', opacity: 1, offset: .6 },
+                { transform: 'translate(' + (dx * 1.25) + 'px,' + (dy - 14) + 'px) scale(.3)', opacity: 0 }
+            ], { duration: 560, easing: 'ease-out', fill: 'forwards' });
+            anim.onfinish = (function (node) { return function () { node.remove(); }; })(s);
+        }
+    }
+
     // BFJ.celebrate({slug, stars, emoji, title, extra, perfect, onAgain})
     function celebrate(o) {
         // US-233 — bonus ×2 una sola vez por fecha+slug del desafío
@@ -356,6 +379,7 @@
             return muted;
         },
         confetti: confetti,
+        burst: burst,
         shake: shake,
         pop: pop,
         timer: timer,

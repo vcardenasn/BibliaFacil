@@ -50,6 +50,7 @@ BFJ.define('historia', function (el) {
                         var s = story.scenes[si];
                         slot.innerHTML = '<div class="hs-placed bfj-pop"><span>' + s.e + '</span><small>' + BFJ.esc(s.t) + '</small></div>';
                         el.querySelector('.hs-slot[data-i="' + si + '"]').classList.add('filled');
+                        BFJ.burst(slot); // US-234
                         card.remove();
                         next++;
                         done++;

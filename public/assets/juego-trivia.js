@@ -36,12 +36,15 @@ BFJ.define('trivia', function (el) {
                 locked = false;
                 var q = qs[i];
                 var opts = q.o.map(function (txt, ix) {
-                    return '<button type="button" class="jbtn tr-opt" data-i="' + ix + '">' + BFJ.esc(txt) + '</button>';
+                    // US-234 — las opciones entran volteando como cartas, escalonadas
+                    return '<button type="button" class="jbtn tr-opt tr-in" data-i="' + ix + '"' +
+                        ' style="--d:' + ix * 70 + 'ms">' + BFJ.esc(txt) + '</button>';
                 }).join('');
                 el.innerHTML =
                     '<div class="vf-qbox">' +
                     '<div class="vf-prog"><span>' + CATS[cat].emoji + ' ' + (i + 1) + ' / ' + qs.length + '</span>' +
-                    '<span class="vf-streak">' + (streak > 1 ? '🔥 x' + streak : '') + '</span></div>' +
+                    '<span class="vf-streak' + (streak >= 3 ? ' hot' : '') + '">' +
+                    (streak > 1 ? '🔥 x' + streak : '') + '</span></div>' +
                     '<div class="jtimer" id="trt" aria-hidden="true"></div>' +
                     '<p class="vf-q tr-q">' + BFJ.esc(q.q) + '</p>' +
                     '<div class="tr-opts">' + opts + '</div></div>';
@@ -63,7 +66,7 @@ BFJ.define('trivia', function (el) {
                     else if (bi === ix) { b.classList.add('bad'); }
                     b.disabled = true;
                 });
-                if (hit) { ok++; streak++; BFJ.snd('ok'); }
+                if (hit) { ok++; streak++; BFJ.snd('ok'); BFJ.burst(el.querySelector('.tr-opt.ok')); }
                 else { streak = 0; BFJ.snd('bad'); BFJ.shake(el.firstElementChild); }
                 i++;
                 setTimeout(render, hit ? 750 : 1600);

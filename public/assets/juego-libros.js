@@ -50,6 +50,7 @@ BFJ.define('libros', function (el) {
                             '<div class="hs-placed bfj-pop"><small class="lb-name">' +
                             BFJ.esc(block.books[bi]) + '</small></div>';
                         slot.classList.add('filled');
+                        BFJ.burst(slot); // US-234
                         card.remove();
                         next++;
                         done++;

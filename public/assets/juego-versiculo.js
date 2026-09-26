@@ -16,12 +16,14 @@ BFJ.define('versiculo', function (el) {
             el.innerHTML =
                 '<div class="vf-qbox">' +
                 '<div class="vf-prog"><span>📖 ' + (i + 1) + ' / ' + qs.length + '</span>' +
-                '<span class="vf-streak">' + (streak > 1 ? '🔥 x' + streak : '') + '</span></div>' +
+                '<span class="vf-streak' + (streak >= 3 ? ' hot' : '') + '">' +
+                (streak > 1 ? '🔥 x' + streak : '') + '</span></div>' +
                 '<div class="jtimer" id="vjt" aria-hidden="true"></div>' +
                 '<p class="vf-q vj-q">' + BFJ.esc(q.q) + '</p>' +
                 '<div class="tr-opts">' +
                 q.options.map(function (o, ix) {
-                    return '<button type="button" class="jbtn tr-opt vj-opt" data-i="' + ix + '">' + BFJ.esc(o) + '</button>';
+                    return '<button type="button" class="jbtn tr-opt vj-opt tr-in" data-i="' + ix + '"' +
+                        ' style="--d:' + ix * 70 + 'ms">' + BFJ.esc(o) + '</button>';
                 }).join('') +
                 '</div></div>';
             t = BFJ.timer(document.getElementById('vjt'), 15, function () { answer(-1); });
@@ -41,12 +43,17 @@ BFJ.define('versiculo', function (el) {
                 else if (bi === ix) { b.classList.add('bad'); }
                 b.disabled = true;
             });
-            if (hit) { ok++; streak++; BFJ.snd('ok'); }
+            if (hit) { ok++; streak++; BFJ.snd('ok'); BFJ.burst(el.querySelector('.tr-opt.ok')); }
             else { streak = 0; BFJ.snd('bad'); BFJ.shake(el.firstElementChild); }
-            // Revela el versículo completo con referencia
+            // Revela el versículo completo con la respuesta resaltada
             var rv = document.createElement('div');
             rv.className = 'vj-reveal bfj-pop';
-            rv.innerHTML = '<p>' + BFJ.esc(q.full) + '</p><em>' + BFJ.esc(q.ref) + '</em>';
+            var fullTxt = BFJ.esc(q.full);
+            var ans = q.options[q.a];
+            if (ans && fullTxt.indexOf(BFJ.esc(ans)) >= 0) {
+                fullTxt = fullTxt.replace(BFJ.esc(ans), '<mark>' + BFJ.esc(ans) + '</mark>');
+            }
+            rv.innerHTML = '<p>' + fullTxt + '</p><em>' + BFJ.esc(q.ref) + '</em>';
             el.querySelector('.vf-qbox').appendChild(rv);
             i++;
             setTimeout(render, hit ? 1600 : 2200);

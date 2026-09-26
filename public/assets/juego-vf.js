@@ -12,7 +12,8 @@ BFJ.define('vf', function (el) {
             el.innerHTML =
                 '<div class="vf-qbox" id="vfbox">' +
                 '<div class="vf-prog"><span>Pregunta ' + (i + 1) + ' / ' + qs.length + '</span>' +
-                '<span class="vf-streak">' + (streak > 1 ? '🔥 x' + streak : '') + '</span></div>' +
+                '<span class="vf-streak' + (streak >= 3 ? ' hot' : '') + '">' +
+                (streak > 1 ? '🔥 x' + streak : '') + '</span></div>' +
                 '<div class="jtimer" id="vftimer" aria-hidden="true"></div>' +
                 '<p class="vf-q">' + BFJ.esc(q.t) + '</p>' +
                 '<div class="vf-btns">' +

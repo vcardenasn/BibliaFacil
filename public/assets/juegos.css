@@ -318,6 +318,23 @@
 .tr-opts { display: grid; gap: .6rem; grid-template-columns: 1fr; }
 .tr-opt { text-align: left; font-size: 1rem; }
 @media (min-width: 520px) { .tr-opts { grid-template-columns: 1fr 1fr; } }
+/* US-234 — las opciones entran volteando como cartas, escalonadas por --d */
+.tr-opt.tr-in { animation: bfj-flipin .38s var(--d, 0s) backwards; }
+@keyframes bfj-flipin {
+    from { transform: perspective(600px) rotateX(-78deg); opacity: 0; }
+    to   { transform: perspective(600px) rotateX(0);    opacity: 1; }
+}
+/* acierto: halo verde que se expande desde la opción */
+.tr-opt.ok { animation: bfj-okglow .55s ease-out; }
+@keyframes bfj-okglow {
+    0%   { box-shadow: 0 4px 0 var(--border-strong), 0 0 0 0 color-mix(in srgb, var(--fun3) 65%, transparent); }
+    100% { box-shadow: 0 4px 0 var(--border-strong), 0 0 0 16px transparent; }
+}
+/* racha en llamas: el fuego crece a partir de x3 (color gold-ink mantiene AA) */
+.vf-streak.hot {
+    display: inline-block; font-size: 1.06em;
+    animation: bfj-pop .3s;
+}
 
 /* ---- Memory ---- */
 .mm-grid {
@@ -398,6 +415,14 @@
 }
 
 /* ---- Adivina el Personaje ---- */
+/* US-234 — silueta misteriosa: el emoji se ve negro hasta revelar */
+.pj-mystery { display: flex; justify-content: center; margin: .2rem 0 .4rem; }
+.pj-sil {
+    font-size: 3rem; line-height: 1; display: inline-block;
+    filter: brightness(0) opacity(.5);
+    transition: filter .55s ease, transform .35s;
+}
+.pj-sil.show { filter: none; transform: scale(1.18); }
 .pj-clues { display: flex; flex-direction: column; gap: .5rem; margin: .4rem 0 1rem; }
 .pj-clue {
     background: var(--brand-soft); border-radius: 12px; padding: .6rem .9rem;
@@ -423,11 +448,17 @@
 }
 .vj-reveal p { margin: 0 0 .3rem; font-size: .95rem; }
 .vj-reveal em { font-style: normal; font-family: var(--sans); font-size: .75rem; font-weight: 800; color: var(--gold-ink); }
+.vj-reveal mark {
+    background: var(--gold-soft); color: var(--gold-ink);
+    border-radius: .3rem; padding: 0 .25rem; font-weight: 800;
+}
 
 @media (prefers-reduced-motion: reduce) {
     .jh-node:hover .jh-emoji, .bfj-shake, .bfj-pop, .mm-face { animation: none; transition: none; }
     .jh-rays, .bfj-gift, .bfj-ovstick .st-pop, .jh-node.is-now .jh-node-ring { animation: none; }
     .jh-levelbar span { transition: none; }
+    .tr-opt.tr-in, .tr-opt.ok, .vf-streak.hot, .jh-daily-emoji { animation: none; }
+    .pj-sil { transition: none; }
 }
 @media (min-width: 640px) {
     .jh-hero h1 { font-size: 2rem; }
