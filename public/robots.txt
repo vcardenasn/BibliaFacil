@@ -1,9 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /ir
-Disallow: /check.php
-Disallow: /track.php
-Disallow: /juegos/api/
-Disallow: /mias
-
-Sitemap: https://biblia.omni-hosting.com/sitemap.xml

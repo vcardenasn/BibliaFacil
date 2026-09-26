@@ -21,7 +21,15 @@ $notFound = function (string $msg = 'Página no encontrada.') use ($versions): v
     view('notfound', ['title' => 'No encontrado', 'message' => $msg, 'versions' => $versions]);
 };
 
-// ---- /sitemap.xml + /sitemap/{version} — SEO (EPIC 18) -----------------------
+// ---- /robots.txt — dinámico: el Sitemap toma el dominio actual (EPIC 18) ----
+if (($seg[0] ?? '') === 'robots.txt') {
+    header('Content-Type: text/plain; charset=utf-8');
+    echo "User-agent: *\nAllow: /\n",
+        "Disallow: /ir\nDisallow: /check.php\nDisallow: /track.php\n",
+        "Disallow: /juegos/api/\nDisallow: /mias\n\n",
+        'Sitemap: ', \Biblia\Core\Seo::abs('sitemap.xml'), "\n";
+    exit;
+}
 if (($seg[0] ?? '') === 'sitemap.xml' || (($seg[0] ?? '') === 'sitemap' && isset($seg[1]))) {
     header('Content-Type: application/xml; charset=utf-8');
     $abs = fn (string $p) => \Biblia\Core\Seo::abs($p);

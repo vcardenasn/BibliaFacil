@@ -9,15 +9,24 @@ namespace Biblia\Core;
  */
 final class Seo
 {
-    /** URL absoluta del sitio para un path relativo. */
+    /**
+     * URL absoluta para un path relativo.
+     * Deriva el dominio del Host de la petición (transparente si el dominio
+     * cambia — soporta proxies vía X-Forwarded-*); `APP_URL` es respaldo CLI.
+     */
     public static function abs(string $path = ''): string
     {
-        $base = rtrim((string) config('app.url', ''), '/');
-        if ($base === '') {
-            $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-            $base = $scheme . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost');
+        $host = (string) ($_SERVER['HTTP_X_FORWARDED_HOST'] ?? $_SERVER['HTTP_HOST'] ?? '');
+        $host = explode(',', $host)[0];
+        if (trim($host) !== '' && preg_match('/^[a-z0-9.\-]+(:\d+)?$/i', trim($host))) {
+            $proto = (string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '');
+            if ($proto === '') {
+                $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+            }
+            return $proto . '://' . trim($host) . url($path);
         }
-        return $base . url($path);
+        $base = rtrim((string) config('app.url', ''), '/');
+        return ($base === '' ? 'http://localhost' : $base) . url($path);
     }
 
     /**
