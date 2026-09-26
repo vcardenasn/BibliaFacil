@@ -252,6 +252,16 @@
 .pj-reveal strong { font-family: var(--sans); font-size: 1.1rem; }
 .pj-reveal em { font-style: normal; font-family: var(--sans); font-weight: 800; color: var(--gold); }
 
+/* ---- Completa el Versículo ---- */
+.vj-q { font-family: var(--serif, Georgia, serif); font-style: italic; }
+.vj-opt { text-align: center; font-weight: 700; }
+.vj-reveal {
+    margin-top: 1rem; padding-top: .8rem; border-top: 1px dashed var(--border);
+    font-family: var(--serif, Georgia, serif); font-style: italic;
+}
+.vj-reveal p { margin: 0 0 .3rem; font-size: .95rem; }
+.vj-reveal em { font-style: normal; font-family: var(--sans); font-size: .75rem; font-weight: 800; color: var(--gold); }
+
 @media (prefers-reduced-motion: reduce) {
     .jh-card:hover .jh-emoji, .bfj-shake, .bfj-pop, .mm-face { animation: none; transition: none; }
 }

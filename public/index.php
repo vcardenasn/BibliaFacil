@@ -5,6 +5,7 @@ require __DIR__ . '/../bootstrap.php';
 use Biblia\Bible\BibleRepository;
 use Biblia\Bible\ReferenceParser;
 use Biblia\Core\FeatureFlags;
+use Biblia\Games\VerseQuiz;
 
 $repo = new BibleRepository();
 $versions = $repo->versions();
@@ -67,6 +68,20 @@ if (($seg[0] ?? '') === 'mias') {
 
 // ---- /juegos — hub de juegos bíblicos ---------------------------------------
 if (($seg[0] ?? '') === 'juegos') {
+    // API: ronda de versículos para "Completa el Versículo" (solo lectura)
+    if (($seg[1] ?? '') === 'api' && ($seg[2] ?? '') === 'versiculo') {
+        header('Content-Type: application/json; charset=utf-8');
+        $n = min(15, max(1, (int) ($_GET['n'] ?? 10)));
+        $gv = $repo->versionByCode((string) ($_GET['v'] ?? '')) ?: ($versions[0] ?? null);
+        try {
+            $qs = $gv ? (new VerseQuiz())->round($repo, (int) $gv['id'], $n) : [];
+            echo json_encode(['ok' => true, 'qs' => $qs], JSON_UNESCAPED_UNICODE);
+        } catch (Throwable $e) {
+            http_response_code(500);
+            echo json_encode(['ok' => false]);
+        }
+        exit;
+    }
     $games = config('games');
     if (count($seg) === 1) {
         view('juegos', [
