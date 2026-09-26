@@ -45,9 +45,9 @@ Leyenda: ✅ implementado en MVP · ⬜ pendiente
 - US-071 ⬜ Solicitar licencias: RVR1960, RVR1995, RVC, RVA-2015, DHH, TLA (SBU) · NTV, NBV (Tyndale) · LBLA, NBLA (Lockman) · NVI (Biblica) · PDT (Bible League)
 - US-072 ⬜ Por cada aprobada: `license_status=approved`, `active=1`, descargar USX, adaptar importador, importar
 
-## EPIC 08 — PWA (FF_PWA) ⬜
-- US-080 manifest + service worker (cache capítulos visitados → lectura offline)
-- US-081 Instalable (iconos, splash, standalone)
+## EPIC 08 — PWA (FF_PWA) ✅
+- US-080 ✅ `manifest.webmanifest` + `sw.js`: páginas network-first con caché de las visitadas (máx 80) → lectura offline; assets stale-while-revalidate; nunca cachea /api, track.php ni POST; fallback "Sin conexión"; `.htaccess` exime sw/manifest del cache anual
+- US-081 ✅ Instalable: íconos 192/512/maskable/apple-touch generados con GD (`scripts/build_icons.php`), meta iOS, standalone; registro tras `load`. Requiere `FF_PWA=1` en el .env del hosting
 
 ## EPIC 09 — Cuentas opcionales ⬜
 - US-090 Login liviano para sincronizar marcadores/notas entre dispositivos

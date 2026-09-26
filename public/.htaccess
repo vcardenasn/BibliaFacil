@@ -21,6 +21,17 @@ Options -Indexes
   AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
 </IfModule>
 
+# PWA (EPIC 08): manifest con MIME correcto; sw.js/manifest sin cache largo
+AddType application/manifest+json .webmanifest
+<FilesMatch "^(sw\.js|manifest\.webmanifest)$">
+  <IfModule mod_expires.c>
+    ExpiresDefault "access plus 0 seconds"
+  </IfModule>
+  <IfModule mod_headers.c>
+    Header set Cache-Control "no-cache"
+  </IfModule>
+</FilesMatch>
+
 RewriteEngine On
 
 # Archivos/dirs reales se sirven directo (assets, check.php)

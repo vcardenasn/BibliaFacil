@@ -30,6 +30,14 @@
 <link rel="alternate" hreflang="<?= e($lang) ?>" href="<?= e($u) ?>">
 <?php endforeach; ?>
 <meta name="theme-color" content="#2e4a8a">
+<?php if (\Biblia\Core\FeatureFlags::enabled('FF_PWA')): ?>
+<link rel="manifest" href="<?= e(url('manifest.webmanifest')) ?>">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Biblia Fácil">
+<?php endif; ?>
+<link rel="apple-touch-icon" href="<?= e(asset('icons/apple-touch-icon.png')) ?>">
 <link rel="stylesheet" href="<?= e(asset('app.css')) ?>">
 <?php foreach (($extraCss ?? []) as $c): ?>
 <link rel="stylesheet" href="<?= e(asset($c)) ?>">
@@ -112,5 +120,13 @@
 <?php foreach (($extraJs ?? []) as $j): ?>
 <script src="<?= e(asset($j)) ?>"></script>
 <?php endforeach; ?>
+<?php if (\Biblia\Core\FeatureFlags::enabled('FF_PWA')): ?>
+<script>
+// EPIC 08 / US-080 — registra el service worker tras cargar la página
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () { navigator.serviceWorker.register(<?= json_encode(url('sw.js')) ?>); });
+}
+</script>
+<?php endif; ?>
 </body>
 </html>
