@@ -12,6 +12,25 @@
     </div>
 </div>
 
+<?php
+// US-233 — Desafío del día: juego determinístico por fecha (crc32 del día).
+$readySlugs = array_keys(array_filter($games, function ($g) { return !empty($g['ready']); }));
+$dailyDate = date('Ymd');
+$dailySlug = $readySlugs[crc32($dailyDate) % count($readySlugs)];
+$dailyGame = $games[$dailySlug];
+?>
+<a class="jh-daily" id="dailyCard" href="<?= e(url('juegos/' . $dailySlug . '?desafio=' . $dailyDate)) ?>"
+    data-slug="<?= e($dailySlug) ?>" data-date="<?= $dailyDate ?>"
+    style="--gc:<?= e($dailyGame['color'] ?? '#4dabf7') ?>">
+    <span class="jh-daily-emoji" aria-hidden="true"><?= $dailyGame['emoji'] ?></span>
+    <span class="jh-daily-info">
+        <span class="jh-daily-tag">🗓 Desafío de hoy · <?= date('d/m') ?></span>
+        <strong><?= e($dailyGame['name']) ?></strong>
+        <small id="dailyHint">Complétalo hoy y gana ⭐×2</small>
+    </span>
+    <span class="jh-daily-state" id="dailyState">▶ Jugar</span>
+</a>
+
 <div class="jh-path">
     <?php foreach ($games as $gslug => $g): ?>
         <?php if (!empty($g['ready'])): ?>

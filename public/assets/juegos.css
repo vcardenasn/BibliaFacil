@@ -53,6 +53,51 @@
     font-size: 1.1rem; cursor: pointer; font-family: var(--sans);
 }
 .jg-head .bfj-sound { background: var(--brand-soft); }
+.jg-daily-tag {
+    flex-basis: 100%; text-align: center; font-family: var(--sans);
+    font-size: .72rem; font-weight: 800; letter-spacing: .04em;
+    background: var(--gold-soft); color: var(--gold-ink);
+    border-radius: 999px; padding: .25rem .8rem; margin-top: .4rem;
+}
+
+/* ---- Desafío del día (US-233) ---- */
+.jh-daily {
+    position: relative; display: flex; align-items: center; gap: .8rem;
+    margin-bottom: 1.3rem; padding: .85rem 1rem;
+    border-radius: 18px; text-decoration: none; color: var(--ink); overflow: hidden;
+    background:
+        radial-gradient(circle at 8% 20%, color-mix(in srgb, var(--gc, var(--brand)) 25%, transparent), transparent 55%),
+        linear-gradient(115deg, color-mix(in srgb, var(--gold) 22%, var(--surface)), var(--surface) 80%);
+    border: 2px solid color-mix(in srgb, var(--gold) 75%, var(--border-strong));
+    box-shadow: var(--shadow);
+    transition: transform .15s, box-shadow .15s;
+}
+.jh-daily:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+.jh-daily:active { transform: scale(.98); }
+.jh-daily:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+.jh-daily-emoji {
+    font-size: 2.2rem; line-height: 1;
+    filter: drop-shadow(0 3px 4px rgba(0,0,0,.2));
+    animation: bfj-bounce 2.6s ease-in-out infinite;
+}
+.jh-daily-info { display: flex; flex-direction: column; gap: .15rem; min-width: 0; flex: 1; }
+.jh-daily-tag {
+    align-self: flex-start; font-family: var(--sans); font-size: .64rem; font-weight: 800;
+    letter-spacing: .05em; text-transform: uppercase;
+    background: var(--gold-soft); color: var(--gold-ink);
+    border-radius: 999px; padding: .15rem .6rem;
+}
+.jh-daily-info strong { font-family: var(--sans); font-size: 1rem; }
+.jh-daily-info small { color: var(--muted); font-family: var(--sans); font-size: .74rem; }
+.jh-daily-state {
+    flex: 0 0 auto; font-family: var(--sans); font-size: .8rem; font-weight: 800;
+    background: var(--brand); color: var(--brand-ink);
+    border-radius: 999px; padding: .45rem .9rem;
+    box-shadow: 0 3px 0 color-mix(in srgb, var(--brand) 60%, #000);
+}
+.jh-daily.done { border-color: var(--fun3); }
+.jh-daily.done .jh-daily-state { background: var(--fun3); color: #fff; box-shadow: none; }
+.jh-daily.done .jh-daily-emoji { animation: none; }
 
 /* ---- Mapa de camino (US-232): nodos serpenteantes sobre línea punteada ---- */
 .jh-path {
@@ -148,6 +193,12 @@
     font-family: var(--sans); font-size: .8rem; font-weight: 700; color: var(--ink);
 }
 .bfj-ovstick span { display: inline-block; margin: .25rem .3rem 0; }
+.bfj-ovdaily {
+    margin: .55rem auto 0; display: inline-block;
+    font-family: var(--sans); font-size: .8rem; font-weight: 800;
+    background: var(--gold-soft); color: var(--gold-ink);
+    border-radius: 999px; padding: .3rem .9rem;
+}
 
 /* ---- Shell del juego ---- */
 .jg-shell { max-width: 620px; margin: 0 auto; }

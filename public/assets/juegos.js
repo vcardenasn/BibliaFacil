@@ -75,6 +75,14 @@
         var next = LEVELS[i + 1] || null;
         return { name: LEVELS[i][1], t: t, base: LEVELS[i][0], next: next ? next[0] : null };
     }
+
+    // Desafío del día (US-233) — bf_daily = "Ymd:slug" del reto ya completado.
+    // `daily` se activa solo si ?desafio= coincide con la fecha del servidor
+    // (data-daily del shell), así no se puede inventar una fecha para el bonus.
+    var daily = null;
+    function dailyGet() { try { return localStorage.getItem('bf_daily') || ''; } catch (e) { return ''; } }
+    function dailyDone(date, slug) { return dailyGet() === date + ':' + slug; }
+    function dailyMarkDone(date, slug) { try { localStorage.setItem('bf_daily', date + ':' + slug); } catch (e) {} }
     function checkStickers(ctx) {
         var news = [];
         STICKERS.forEach(function (s) {
@@ -246,6 +254,13 @@
 
     // BFJ.celebrate({slug, stars, emoji, title, extra, perfect, onAgain})
     function celebrate(o) {
+        // US-233 — bonus ×2 una sola vez por fecha+slug del desafío
+        var dBonus = false;
+        if (daily && daily.slug === o.slug && !dailyDone(daily.date, daily.slug)) {
+            o = Object.assign({}, o, { stars: o.stars * 2 });
+            dailyMarkDone(daily.date, o.slug);
+            dBonus = true;
+        }
         BFJ.stars.add(o.slug, o.stars);
         if (window.BF_TRACK) {
             window.BF_TRACK('game_win', o.slug);
@@ -269,6 +284,7 @@
             '<div class="bfj-ovstars">' + (o.stars > 0
                 ? '⭐'.repeat(Math.min(o.stars, 10)) : '☆') + '</div>' +
             '<p class="bfj-ovpts">+' + o.stars + ' estrella' + (o.stars === 1 ? '' : 's') + '</p>' +
+            (dBonus ? '<div class="bfj-ovdaily">🗓 ¡Desafío del día! ⭐×2</div>' : '') +
             (o.extra ? '<p class="bfj-ovextra">' + esc(o.extra) + '</p>' : '') +
             (news.length ? '<div class="bfj-ovstick bfj-pop">🎁 ¡Sticker nuevo!<br>' +
                 news.map(function (s) {
@@ -421,6 +437,15 @@
             }
             var score = document.querySelector('.jh-score');
             if (score) { soundToggle(score); }
+            // US-233 — estado del desafío del día en el hub
+            var dc = document.getElementById('dailyCard');
+            if (dc && dailyDone(dc.getAttribute('data-date'), dc.getAttribute('data-slug'))) {
+                dc.classList.add('done');
+                var ds = document.getElementById('dailyState');
+                if (ds) { ds.textContent = '✅ ¡Hecho!'; }
+                var dh = document.getElementById('dailyHint');
+                if (dh) { dh.textContent = 'Vuelve mañana por otro desafío'; }
+            }
             // US-232 — estados del camino: done / now (siguiente) / todo / master
             var nowMarked = false;
             document.querySelectorAll('.jh-node[data-slug]').forEach(function (node) {
@@ -459,6 +484,20 @@
                 soundToggle(gs.parentElement);
             }
             BFJ.played(slug);
+            // US-233 — activar desafío si la URL trae la fecha correcta del servidor
+            var dm = location.search.match(/[?&]desafio=(\d{8})/);
+            if (dm && dm[1] === app.getAttribute('data-daily')) {
+                daily = { date: dm[1], slug: slug };
+                var head = document.querySelector('.jg-head');
+                if (head) {
+                    var tag = document.createElement('span');
+                    tag.className = 'jg-daily-tag';
+                    tag.textContent = dailyDone(daily.date, slug)
+                        ? '🗓 Desafío completado hoy'
+                        : '🗓 Desafío del día · ⭐×2';
+                    head.appendChild(tag);
+                }
+            }
             if (BFJ.games[slug]) {
                 BFJ._t0 = Date.now(); // para métrica game_s (tiempo por ronda)
                 BFJ.games[slug](app);
