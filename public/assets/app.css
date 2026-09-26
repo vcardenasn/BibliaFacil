@@ -132,6 +132,13 @@ code {
 
 .page { max-width: var(--measure); margin: 0 auto; padding: 1.1rem .95rem 3.5rem; }
 
+/* Breadcrumbs SEO (US-186) */
+.crumbs { font-family: var(--sans); font-size: .72rem; color: var(--muted); margin-bottom: .4rem; display: flex; flex-wrap: wrap; align-items: center; gap: .3rem; }
+a.crumb { color: var(--muted); text-decoration: none; }
+a.crumb:hover { color: var(--accent); }
+.crumb.cur { color: var(--ink); font-weight: 700; }
+.crumb-sep { opacity: .5; }
+
 .card {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 1.1rem 1.2rem;

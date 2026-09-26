@@ -153,16 +153,15 @@ sin archivos). Mobile-first: botones gigantes, texto mínimo.*
 - US-180 ✅ Bancos engordados: trivia 113 (niveles 1-3), V/F 80, historias 8, parejas 14, pistas 30
 - US-181 ✅ Endpoint versículo aleatorio con distractores — solo lectura, sin PII
 
-## EPIC 18 — SEO técnico base ⬜
-*Hoy solo hay `<title>` genérico + descripción estática — cero canonical, OG, sitemap,
-robots ni datos estructurados. Guardrails: `/mias`, resultados de `/buscar`, `check.php`
-y `track.php` → `noindex`; nada de cloaking ni thin content.*
-- US-182 ⬜ Meta dinámico por ruta: title/description únicos por capítulo ("Juan 3 — RVR1909 | Biblia Fácil", descripción = primeras ~150 letras del capítulo), canonical + `og:url` vía `$meta` pasado a view()
-- US-183 ⬜ Open Graph + Twitter Cards: `og:type=article`, `og:site_name`, `og:locale` (es / en_US para KJV), `twitter:card=summary_large_image`, imagen default
-- US-184 ⬜ `robots.txt` (bloquea check/track/mias, apunta a sitemap) + `sitemap.xml` dinámico: índice → sitemap por versión → ~7k URLs de capítulos con `lastmod` + `xhtml:link` hreflang
-- US-185 ⬜ JSON-LD: `WebSite`+`SearchAction` (sitelinks searchbox → `/buscar?q=`), `BreadcrumbList` por ruta, `Article`/`Chapter` en reader con `isPartOf`
-- US-186 ⬜ Breadcrumbs visibles (Versión › Libro › Capítulo) — además del JSON-LD mejora CTR en SERP y UX
-- US-187 ⬜ hreflang es ↔ en: capítulos enlazan equivalente KJV + `x-default` → versión default
+## EPIC 18 — SEO técnico base ✅
+*`src/Core/Seo.php` genera meta por vista (description/canonical/OG/hreflang/JSON-LD/crumbs)
+vía `view()` → layout. Guardrails: `/mias`, `/buscar`, `check.php`, `track.php` → `noindex`.*
+- US-182 ✅ Meta dinámico: title/description únicos por vista (desc del reader = primeras 155 letras del capítulo), canonical siempre
+- US-183 ✅ Open Graph + Twitter: `og:type/locale/site_name/url`, `twitter:card` (summary; large_image cuando haya og:image — US-200)
+- US-184 ✅ `robots.txt` (bloquea ir/check/track/api/mias) + `/sitemap.xml` índice → `/sitemap/{ver}` (~1.256 URLs/versión) + `/sitemap/paginas`
+- US-185 ✅ JSON-LD: `WebSite`+`SearchAction` en índice, `BreadcrumbList` + `Article` en reader
+- US-186 ✅ Breadcrumbs visibles `.crumbs` (Inicio › Versión › Libro › Capítulo)
+- US-187 ✅ hreflang es↔en (self + KJV/default) + `x-default` → versión default; `<html lang>` dinámico
 
 ## EPIC 19 — Contenido indexable (captar búsquedas) ⬜
 *El lector solo captura quien ya busca "juan 3". El volumen real está en intenciones:

@@ -1,16 +1,35 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="<?= e($meta['htmlLang'] ?? 'es') ?>">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= e($title ?? 'Biblia Fácil') ?> · Biblia Fácil</title>
-<meta name="description" content="Lee la Biblia en múltiples versiones, fácil y rápido.">
+<meta name="description" content="<?= e($meta['desc'] ?? 'Lee la Biblia en múltiples versiones, fácil y rápido.') ?>">
+<?php if (!empty($meta['noindex'])): ?>
+<meta name="robots" content="noindex,follow">
+<?php endif; ?>
+<link rel="canonical" href="<?= e($meta['canonical'] ?? '') ?>">
+<meta property="og:type" content="<?= e($meta['ogType'] ?? 'website') ?>">
+<meta property="og:title" content="<?= e(($title ?? 'Biblia Fácil') . ' · Biblia Fácil') ?>">
+<meta property="og:description" content="<?= e($meta['desc'] ?? '') ?>">
+<meta property="og:url" content="<?= e($meta['canonical'] ?? '') ?>">
+<meta property="og:site_name" content="Biblia Fácil">
+<meta property="og:locale" content="<?= e($meta['locale'] ?? 'es_LA') ?>">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="<?= e(($title ?? 'Biblia Fácil') . ' · Biblia Fácil') ?>">
+<meta name="twitter:description" content="<?= e($meta['desc'] ?? '') ?>">
+<?php foreach (($meta['hreflang'] ?? []) as $lang => $u): ?>
+<link rel="alternate" hreflang="<?= e($lang) ?>" href="<?= e($u) ?>">
+<?php endforeach; ?>
 <meta name="theme-color" content="#2e4a8a">
 <link rel="stylesheet" href="<?= e(asset('app.css')) ?>">
 <?php foreach (($extraCss ?? []) as $c): ?>
 <link rel="stylesheet" href="<?= e(asset($c)) ?>">
 <?php endforeach; ?>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+<?php foreach (($meta['jsonld'] ?? []) as $block): ?>
+<script type="application/ld+json"><?= json_encode($block, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
+<?php endforeach; ?>
 </head>
 <body<?= !empty($bodyClass) ? ' class="' . e($bodyClass) . '"' : '' ?>>
 <header class="topbar">
@@ -42,6 +61,16 @@
 </header>
 
 <main class="page">
+<?php if (!empty($meta['crumbs'])): ?>
+<nav class="crumbs" aria-label="Breadcrumb"><?php
+    $last = count($meta['crumbs']) - 1;
+    foreach ($meta['crumbs'] as $i => $c): ?>
+        <?php if ($i): ?><span class="crumb-sep" aria-hidden="true">›</span><?php endif; ?>
+        <?php if ($c['url'] && $i < $last): ?><a class="crumb" href="<?= e($c['url']) ?>"><?= e($c['label']) ?></a>
+        <?php else: ?><span class="crumb<?= $i === $last ? ' cur' : '' ?>" aria-current="<?= $i === $last ? 'page' : 'false' ?>"><?= e($c['label']) ?></span><?php endif; ?>
+    <?php endforeach; ?>
+</nav>
+<?php endif; ?>
 <?= $content ?>
 </main>
 

@@ -21,6 +21,48 @@ $notFound = function (string $msg = 'Página no encontrada.') use ($versions): v
     view('notfound', ['title' => 'No encontrado', 'message' => $msg, 'versions' => $versions]);
 };
 
+// ---- /sitemap.xml + /sitemap/{version} — SEO (EPIC 18) -----------------------
+if (($seg[0] ?? '') === 'sitemap.xml' || (($seg[0] ?? '') === 'sitemap' && isset($seg[1]))) {
+    header('Content-Type: application/xml; charset=utf-8');
+    $abs = fn (string $p) => \Biblia\Core\Seo::abs($p);
+    if (($seg[0] ?? '') === 'sitemap.xml') {
+        echo '<?xml version="1.0" encoding="UTF-8"?>', "\n",
+            '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', "\n",
+            '<sitemap><loc>', $abs('sitemap/paginas'), '</loc></sitemap>', "\n";
+        foreach ($versions as $v) {
+            if (!empty($v['active'])) {
+                echo '<sitemap><loc>', $abs('sitemap/' . $v['code']), '</loc></sitemap>', "\n";
+            }
+        }
+        echo '</sitemapindex>';
+        exit;
+    }
+    // sitemap de páginas estáticas o de una versión (capítulos)
+    echo '<?xml version="1.0" encoding="UTF-8"?>', "\n",
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', "\n";
+    if ($seg[1] === 'paginas') {
+        echo '<url><loc>', $abs(''), '</loc><priority>1.0</priority></url>', "\n",
+            '<url><loc>', $abs('juegos'), '</loc><priority>0.7</priority></url>', "\n";
+        foreach (config('games') as $gslug => $g) {
+            if (!empty($g['ready'])) {
+                echo '<url><loc>', $abs('juegos/' . $gslug), '</loc><priority>0.5</priority></url>', "\n";
+            }
+        }
+    } else {
+        $sv = $repo->versionByCode($seg[1]);
+        if (!$sv) { http_response_code(404); echo '</urlset>'; exit; }
+        echo '<url><loc>', $abs((string) $sv['code']), '</loc><priority>0.9</priority></url>', "\n";
+        foreach ($repo->books() as $b) {
+            echo '<url><loc>', $abs("{$sv['code']}/{$b['slug']}"), '</loc><priority>0.6</priority></url>', "\n";
+            for ($c = 1; $c <= (int) $b['chapters']; $c++) {
+                echo '<url><loc>', $abs("{$sv['code']}/{$b['slug']}/{$c}"), '</loc><priority>0.8</priority></url>', "\n";
+            }
+        }
+    }
+    echo '</urlset>';
+    exit;
+}
+
 // ---- /ir — "ir a referencia" (Juan 3:16, salmos 23…) -------------------------
 if (($seg[0] ?? '') === 'ir') {
     $q = (string) ($_GET['q'] ?? '');

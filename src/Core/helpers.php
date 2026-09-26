@@ -72,6 +72,7 @@ function view(string $name, array $data = []): void
         \Biblia\Core\Metrics::bump('game', $data['slug']);
     }
 
+    $meta = \Biblia\Core\Seo::build($name, $data); // EPIC 18 — meta dinámico por vista
     require BASE_PATH . '/app/Views/layout.php';
 }
 
