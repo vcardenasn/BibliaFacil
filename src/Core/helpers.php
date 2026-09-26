@@ -41,7 +41,12 @@ function url(string $path = ''): string
 
 function asset(string $path): string
 {
-    return url('assets/' . ltrim($path, '/'));
+    $path = ltrim($path, '/');
+    $file = BASE_PATH . '/public/assets/' . $path;
+    // Fingerprint por contenido (US-210): la URL cambia al editar el asset
+    // → el navegador puede cachearlo largo sin riesgo de servir uno viejo.
+    $v = is_file($file) ? '?v=' . substr(md5_file($file), 0, 8) : '';
+    return url('assets/' . $path) . $v;
 }
 
 function view(string $name, array $data = []): void

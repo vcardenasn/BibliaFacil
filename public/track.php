@@ -15,6 +15,7 @@ use Biblia\Core\Metrics;
 http_response_code(204);
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
+header('X-Robots-Tag: noindex');
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || !Metrics::enabled()) {
     exit;

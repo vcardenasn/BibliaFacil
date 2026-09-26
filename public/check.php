@@ -15,6 +15,7 @@ $fix = $isCli ? in_array('--fix', $argv ?? [], true) : (($_GET['fix'] ?? '') ===
 
 if (!$isCli) {
     header('Content-Type: text/plain; charset=utf-8');
+    header('X-Robots-Tag: noindex');
     $envFile = dirname(__DIR__) . '/.env';
     $token = null;
     if (is_file($envFile)) {
@@ -91,6 +92,14 @@ if (!$isCli && ((($_GET['metrics'] ?? '') === '1') || (($_GET['csv'] ?? '') === 
         'visit_n' => 'Visita Nº del usuario', 'read_s' => 'Segundos de lectura',
         'perf' => 'Tiempo de carga (ms total)', 'perf_c' => 'Muestras de carga',
     ];
+    // p75 aproximado desde el histograma perf_b (US-213)
+    $BLAB = ['a:u05' => '<0.5s', 'b:u1' => '0.5–1s', 'c:u2' => '1–2s', 'd:u4' => '2–4s', 'e:g4' => '>4s'];
+    $BORD = ['a:u05', 'b:u1', 'c:u2', 'd:u4', 'e:g4'];
+    $p75 = [];
+    foreach (($agg[30]['perf_b'] ?? []) as $dim => $n) {
+        [$sec, $b] = explode('.', (string) $dim, 2) + ['', ''];
+        $p75[$sec][$b] = ($p75[$sec][$b] ?? 0) + $n;
+    }
     echo '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">',
         '<title>Métricas — BibliaFacil</title><style>',
         'body{font-family:system-ui,sans-serif;max-width:820px;margin:2rem auto;padding:0 1rem;color:#1e1b4b}',
@@ -101,6 +110,27 @@ if (!$isCli && ((($_GET['metrics'] ?? '') === '1') || (($_GET['csv'] ?? '') === 
         '<h1>📊 Métricas — BibliaFacil <small>(anónimas, agregadas)</small></h1>',
         '<div class="kpis"><div class="kpi"><b>', $dau7, '</b>usuarios únicos · 7d</div>',
         '<div class="kpi"><b>', $dau30, '</b>usuarios únicos · 30d</div></div>';
+    if ($p75) {
+        echo '<h2>⏱ Velocidad de carga · 30 días</h2><table><tr><th>sección</th><th>distribución</th><th>p75 aprox</th></tr>';
+        foreach ($p75 as $sec => $buckets) {
+            $tot = array_sum($buckets);
+            if (!$tot) {
+                continue;
+            }
+            $cum = 0;
+            $p = '—';
+            foreach ($BORD as $b) {
+                $cum += $buckets[$b] ?? 0;
+                if ($cum / $tot >= .75) {
+                    $p = $BLAB[$b];
+                    break;
+                }
+            }
+            $dist = implode(' · ', array_map(fn ($b) => $BLAB[$b] . ' ' . ($buckets[$b] ?? 0), $BORD));
+            echo '<tr><td>', htmlspecialchars($sec === '' ? '(otros)' : $sec), '</td><td><small>', htmlspecialchars($dist), '</small></td><td><b>', htmlspecialchars($p), '</b></td></tr>';
+        }
+        echo '</table>';
+    }
     foreach ($NAMES as $m => $label) {
         $d30 = $agg[30][$m] ?? [];
         if (!$d30) {

@@ -710,6 +710,9 @@
             if (ms > 0 && ms < 60000) {
                 TK('perf', chapterEl ? 'reader' : 'other', ms);
                 TK('perf_c', '', 1);
+                // US-213: histograma por buckets → p75 aproximado en el dashboard
+                var b = ms < 500 ? 'a:u05' : ms < 1000 ? 'b:u1' : ms < 2000 ? 'c:u2' : ms < 4000 ? 'd:u4' : 'e:g4';
+                TK('perf_b', (chapterEl ? 'reader.' : 'other.') + b, 1);
             }
         } catch (e) {}
     });

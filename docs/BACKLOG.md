@@ -180,13 +180,13 @@ WhatsApp antes de abrir) sea una tarjeta atractiva.*
 - US-202 ✅ Share buttons visibles: WhatsApp/Telegram/X/Facebook en reader y `/temas` — no escondidos en el sheet
 - US-203 ✅ Watermark con dominio en la imagen canvas del sheet (la descarga ya existe)
 
-## EPIC 21 — Performance / Core Web Vitals ⬜
+## EPIC 21 — Performance / Core Web Vitals ✅
 *CWV es factor de ranking. La app ya es liviana (vanilla JS/CSS) — falta cache,
 compresión y medición continua.*
-- US-210 ⬜ Cache: `Cache-Control` largo en assets + fingerprint (`app.<hash>.css` o `?v=deploy`)
-- US-211 ⬜ Compresión gzip/brotli en `.htaccess` + minify de assets (en deploy o pre-minificado)
-- US-212 ⬜ LCP/CLS: `font-display: swap`, dimensiones reservadas, preconnect si se agregan fuentes
-- US-213 ⬜ CWV medido con métrica `perf` existente → p75 en dashboard `check.php?metrics=1`
+- US-210 ✅ Cache: `Cache-Control` largo en assets + fingerprint (`app.<hash>.css` o `?v=deploy`)
+- US-211 ✅ Compresión gzip/brotli en `.htaccess` + minify de assets (en deploy o pre-minificado)
+- US-212 ✅ LCP/CLS: fuentes del sistema (font-display N/A), dimensiones reservadas (aspect-ratio), preconnect si se agregan fuentes
+- US-213 ✅ CWV medido con métrica `perf` existente → p75 en dashboard `check.php?metrics=1`
 
 ### Guardrails SEO
 - `noindex`: `/mias`, `/buscar` resultados, `check.php`, `track.php`, redirects `/ir`

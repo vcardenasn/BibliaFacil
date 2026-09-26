@@ -18,7 +18,7 @@ final class Metrics
     /** Métricas permitidas vía beacon (evita basura en la tabla). */
     public const ALLOWED = [
         'pref', 'vswitch', 'ann', 'share', 'listen',
-        'visit_n', 'read_s', 'perf', 'perf_c',
+        'visit_n', 'read_s', 'perf', 'perf_c', 'perf_b',
         'game_win', 'game_stars', 'game_perfect', 'game_s',
         'sheet', 'img', 'votd', 'nav',
     ];

@@ -185,7 +185,7 @@ a.crumb:hover { color: var(--accent); }
 .share-x { background: #14171a; color: #fff; }
 .share-fb { background: #1877f2; color: #fff; }
 .share-cp { background: var(--card, #fff); }
-.share-preview { display: block; max-width: 100%; margin: 0 auto; border-radius: 12px; box-shadow: 0 4px 18px rgba(0, 0, 0, .2); }
+.share-preview { display: block; max-width: 100%; height: auto; aspect-ratio: 1200 / 630; margin: 0 auto; border-radius: 12px; box-shadow: 0 4px 18px rgba(0, 0, 0, .2); }
 .chip {
     display: inline-block; padding: .2rem .55rem; margin: .15rem;
     border: 1px solid var(--border); border-radius: 20px; font-size: .72rem;
