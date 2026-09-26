@@ -282,6 +282,7 @@
     // ============================ Sheet de versículo ===========================
     var sheet = null, sheetVerse = null;
     function openSheet(el) {
+        TK('sheet');
         closeSheet();
         sheetVerse = el;
         el.classList.add('open');
@@ -370,8 +371,10 @@
                 if (navigator.share) { navigator.share({ title: ref, text: pl }).catch(function () {}); }
                 else { window.open('https://wa.me/?text=' + encodeURIComponent(pl), '_blank', 'noopener'); }
             } else if (a === 'img') {
+                TK('img', 'story');
                 imgMode(sheet, text, ref, 'story');
             } else if (a === 'fmt') {
+                TK('img', act.getAttribute('data-fmt'));
                 imgMode(sheet, sheet._vtext, sheet._vref, act.getAttribute('data-fmt'));
             } else if (a === 'back') {
                 var el2 = sheetVerse; closeSheet(); openSheet(el2);
@@ -578,6 +581,7 @@
         var expBtn = document.getElementById('miasExport');
         if (expBtn) {
             expBtn.addEventListener('click', function () {
+                TK('ann', 'export');
                 DB.all().then(function (list) {
                     var blob = new Blob([JSON.stringify({ app: 'bibliafacil', v: 1, ann: list }, null, 2)], { type: 'application/json' });
                     var a = document.createElement('a');
@@ -610,6 +614,7 @@
                             if (r && r.id) { chain = chain.then(function () { return DB.put(r); }); }
                         });
                         chain.then(renderMias);
+                        TK('ann', 'import');
                     } catch (e) { alert('No pude leer ese archivo JSON.'); }
                 };
                 rd.readAsText(f);
@@ -669,7 +674,14 @@
         window.addEventListener('beforeunload', function () { speechSynthesis.cancel(); });
     }
 
-    // ============================ Métricas de sesión/lectura ==================
+    // ---- Métricas extra: votd, navegación, export/import ----------------------
+    if (document.querySelector('.votd')) {
+        TK('votd', vswitch ? vswitch.getAttribute('data-version') : '');
+    }
+    document.addEventListener('click', function (ev) {
+        var nb = ev.target.closest('a.nav-btn[rel]');
+        if (nb) { TK('nav', nb.getAttribute('rel')); }
+    });
     // visit_n: bucket de "día Nº del usuario" (bf_days) — una vez por día.
     try {
         var dlist = JSON.parse(P.get('days', '[]'));

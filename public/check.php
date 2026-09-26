@@ -81,9 +81,13 @@ if (!$isCli && ((($_GET['metrics'] ?? '') === '1') || (($_GET['csv'] ?? '') === 
     $dau30 = array_sum(array_map(fn ($r) => (int) $r['n'], $dau));
     $NAMES = [
         'pv' => 'Páginas vistas por sección', 'ver' => 'Versión más usada', 'cap' => 'Capítulos más leídos',
-        'search' => 'Búsquedas (solo conteo)', 'goto' => '"Ir a" usado', 'game' => 'Juegos abiertos',
-        'game_win' => 'Rondas completadas', 'pref' => 'Cambios de preferencia', 'vswitch' => 'Cambios de versión',
-        'ann' => 'Anotaciones creadas', 'share' => 'Compartidos', 'listen' => 'Audio escuchado',
+        'search' => 'Búsquedas (solo conteo)', 'search_r' => 'Búsquedas con/sin resultados', 'goto' => '"Ir a" usado',
+        'sheet' => 'Versículos tocados (sheet)', 'img' => 'Imágenes generadas por formato',
+        'votd' => 'Versículo del día visto', 'nav' => 'Navegación anterior/siguiente',
+        'game' => 'Juegos abiertos', 'game_win' => 'Rondas completadas', 'game_stars' => 'Estrellas ganadas por juego',
+        'game_perfect' => 'Rondas perfectas', 'game_s' => 'Segundos jugando por ronda',
+        'pref' => 'Cambios de preferencia', 'vswitch' => 'Cambios de versión',
+        'ann' => 'Anotaciones/export', 'share' => 'Compartidos', 'listen' => 'Audio escuchado',
         'visit_n' => 'Visita Nº del usuario', 'read_s' => 'Segundos de lectura',
         'perf' => 'Tiempo de carga (ms total)', 'perf_c' => 'Muestras de carga',
     ];

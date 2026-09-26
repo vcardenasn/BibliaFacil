@@ -190,7 +190,14 @@
     // BFJ.celebrate({slug, stars, emoji, title, extra, perfect, onAgain})
     function celebrate(o) {
         BFJ.stars.add(o.slug, o.stars);
-        if (window.BF_TRACK) { window.BF_TRACK('game_win', o.slug); }
+        if (window.BF_TRACK) {
+            window.BF_TRACK('game_win', o.slug);
+            window.BF_TRACK('game_stars', o.slug, o.stars);
+            if (o.perfect) { window.BF_TRACK('game_perfect', o.slug); }
+            var secs = BFJ._t0 ? Math.round((Date.now() - BFJ._t0) / 1000) : 0;
+            BFJ._t0 = Date.now(); // siguiente ronda mide desde aquí
+            if (secs >= 3 && secs <= 1800) { window.BF_TRACK('game_s', o.slug, secs); }
+        }
         var news = checkStickers({ slug: o.slug, perfect: o.perfect });
         var ov = document.createElement('div');
         ov.className = 'bfj-ov';
@@ -311,6 +318,7 @@
             if (gs) { gs.textContent = BFJ.stars.of(slug); }
             BFJ.played(slug);
             if (BFJ.games[slug]) {
+                BFJ._t0 = Date.now(); // para métrica game_s (tiempo por ronda)
                 BFJ.games[slug](app);
             } else {
                 app.innerHTML = '<section class="card notice"><p>Este juego está en camino 🔧</p></section>';

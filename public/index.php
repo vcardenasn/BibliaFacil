@@ -47,6 +47,9 @@ if (($seg[0] ?? '') === 'buscar') {
     $v = (string) ($_GET['v'] ?? '');
     $version = $repo->versionByCode($v) ?: $versions[0] ?? null;
     $results = ($version && $q !== '') ? $repo->search((int) $version['id'], $q) : [];
+    if ($q !== '') {
+        \Biblia\Core\Metrics::bump('search_r', $results === [] ? 'empty' : 'hit');
+    }
     view('search', [
         'title' => 'Buscar',
         'versions' => $versions,
