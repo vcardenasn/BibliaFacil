@@ -141,8 +141,57 @@
     100% { transform: scale(1); opacity: 1; }
 }
 
+/* ---- Trivia ---- */
+.tr-cats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: .8rem; margin-top: .5rem; }
+.tr-cat {
+    display: flex; flex-direction: column; align-items: center; gap: .4rem;
+    background: var(--surface); border: 2px solid var(--border); border-radius: 18px;
+    padding: 1.2rem .6rem; cursor: pointer; font-family: var(--sans);
+    transition: transform .15s, border-color .15s;
+}
+.tr-cat span { font-size: 2.2rem; }
+.tr-cat strong { font-size: .9rem; color: var(--ink); }
+.tr-cat:hover { transform: translateY(-3px); border-color: var(--brand); }
+.tr-cat:active { transform: scale(.96); }
+.tr-q { font-size: 1.25rem; }
+.tr-opts { display: grid; gap: .6rem; grid-template-columns: 1fr; }
+.tr-opt { text-align: left; font-size: 1rem; }
+@media (min-width: 520px) { .tr-opts { grid-template-columns: 1fr 1fr; } }
+
+/* ---- Memory ---- */
+.mm-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: .55rem;
+    max-width: 480px; margin: 0 auto;
+}
+.mm-card {
+    position: relative; aspect-ratio: 3/4; border: none; background: none;
+    cursor: pointer; perspective: 500px; padding: 0;
+}
+.mm-face {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    border-radius: 14px; backface-visibility: hidden;
+    transition: transform .35s ease; font-size: 2rem;
+}
+.mm-back {
+    background: linear-gradient(135deg, var(--brand), var(--fun5));
+    color: rgba(255,255,255,.85); box-shadow: var(--shadow);
+}
+.mm-front {
+    background: var(--surface); border: 2px solid var(--border);
+    transform: rotateY(180deg);
+}
+.mm-card.open .mm-back { transform: rotateY(180deg); }
+.mm-card.open .mm-front { transform: rotateY(0); }
+.mm-card.done .mm-front { border-color: var(--gold); background: var(--gold-soft); animation: bfj-pop .35s; }
+.mm-found { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: center; margin-top: .9rem; min-height: 1.6rem; }
+.mm-tag {
+    font-family: var(--sans); font-size: .72rem; font-weight: 700; color: var(--brand);
+    background: var(--brand-soft); border-radius: 999px; padding: .25rem .7rem;
+    animation: bfj-pop .3s;
+}
+
 @media (prefers-reduced-motion: reduce) {
-    .jh-card:hover .jh-emoji, .bfj-shake, .bfj-pop { animation: none; }
+    .jh-card:hover .jh-emoji, .bfj-shake, .bfj-pop, .mm-face { animation: none; transition: none; }
 }
 @media (min-width: 640px) {
     .jh-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
