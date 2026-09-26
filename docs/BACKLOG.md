@@ -66,7 +66,7 @@ Leyenda: ✅ implementado en MVP · ⬜ pendiente
 - US-110 ✅ **Resaltado por color** — 5 colores tipo marcador (fondo sutil del versículo, por tema)
 - US-111 ✅ **Notas** por versículo: crear/editar/borrar + indicador ✎ en el texto
 - US-112 ✅ **Favoritos** (♥) — marca rápida con indicador
-- US-113 ✅ Vista `/mias`: filtros por tipo + buscar en notas + salto al versículo. ⬜ filtro por libro
+- US-113 ✅ Vista `/mias`: filtros por tipo + buscar en notas + salto al versículo + ✅ filtro por libro + radiogroup accesible (aria-checked, flechas, roving tabindex) + contador role=status + estado vacío diferenciado + botón Importar operable por teclado
 - US-114 ✅ Exportar/importar JSON de anotaciones (backup sin cuenta)
 - US-115 ✅ Sheet al tap versículo: resaltar (5 swatches) · nota · favorito · copiar · compartir. ⬜ comparar
 
@@ -192,6 +192,18 @@ compresión y medición continua.*
 - `noindex`: `/mias`, `/buscar` resultados, `check.php`, `track.php`, redirects `/ir`
 - Search Console: verificación por meta/archivo en `public/` + monitoreo de cobertura
 - Priorizar landings con datos reales: `cap`/`search`/`share` del dashboard (EPIC 16)
+
+## EPIC 22 — Rediseño UX «Biblioteca viva»
+*Home indexable con caminos claros, lector sereno, acciones accesibles.*
+- US-220 ✅ Home real en `/` (ya no redirige): hero + Empezar/Explorar/Continuar, votd, buscar, temas, juegos, confianza
+- US-221 ✅ Navegación etiquetada: Inicio/Leer/Explorar/Juegos/Mis notas + barra inferior móvil + skip-link
+- US-222 ✅ Sheet accesible: `role=dialog`/`aria-modal`, foco inicial, trampa de Tab, retorno de foco al versículo
+- US-223 ✅ Versículo operable por teclado: `role=button` + `tabindex=-1` + Enter/Espacio abre sheet (además de j/k+Enter)
+- US-224 ✅ Búsqueda clara: etiqueta visible, ayuda texto-vs-referencia, `role=status` en conteo, estado vacío con salidas
+- US-225 ✅ Juegos: confetti respeta `prefers-reduced-motion`, celebración como diálogo (foco+Escape), mute 🔊 persistente
+- US-226 ✅ Explorar Biblia: secciones AT/NT enlazables, filtro de libros progresivo sin ocultar enlaces HTML para buscadores/usuarios sin JS y entrada editorial por Juan 1
+- US-227 ✅ Panel de apariencia modal nativo (`dialog`): foco inicial, Escape, retorno del foco y cierre visible; pendientes las pruebas manuales con lector de pantalla
+- US-228 ✅ Auditoría contraste AA: prueba automática sobre tokens de los 4 temas × 5 acentos (tests/Unit/ContrastTest.php); corregidos acentos en tema oscuro (rompían brand/brand-soft/gold-soft), gold→gold-ink para texto pequeño, bordes de controles ≥3:1, var(--accent) no definido, blanco sobre --brand claro en dark, wj sobre resaltados. ⬜ pendiente recorrido manual VoiceOver/NVDA
 
 ## Notas técnicas
 - `use` arriba en entry points + smoke test `php -S` (convención stack).

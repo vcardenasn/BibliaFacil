@@ -80,8 +80,15 @@
         return news;
     }
 
+    // Movimiento reducido (UX-04): sin confetti ni animaciones JS intensas
+    function reducedMotion() {
+        return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
     // ============================ Sonidos (Web Audio) =========================
     var actx = null;
+    var muted = false;
+    try { muted = localStorage.getItem('bf_sound') === '0'; } catch (e) {}
     function ctx() {
         if (!actx) {
             var AC = window.AudioContext || window.webkitAudioContext;
@@ -104,6 +111,7 @@
         o.stop(c.currentTime + t0 + dur + .02);
     }
     function snd(kind) {
+        if (muted) { return; }
         try {
             if (kind === 'click') { tone(660, 0, .07, 'triangle'); }
             else if (kind === 'ok') { tone(523, 0, .12, 'triangle'); tone(784, .09, .18, 'triangle'); }
@@ -116,6 +124,7 @@
 
     // ============================ Confetti (canvas) ===========================
     function confetti(dur) {
+        if (reducedMotion()) { return; }
         var cv = document.createElement('canvas');
         cv.className = 'bfj-confetti';
         cv.width = innerWidth; cv.height = innerHeight;
@@ -199,8 +208,12 @@
             if (secs >= 3 && secs <= 1800) { window.BF_TRACK('game_s', o.slug, secs); }
         }
         var news = checkStickers({ slug: o.slug, perfect: o.perfect });
+        var retFocus = document.activeElement;
         var ov = document.createElement('div');
         ov.className = 'bfj-ov';
+        ov.setAttribute('role', 'dialog');
+        ov.setAttribute('aria-modal', 'true');
+        ov.setAttribute('aria-label', o.title || '¡Bien hecho!');
         ov.innerHTML =
             '<div class="bfj-ovcard bfj-pop">' +
             '<div class="bfj-ovemoji">' + (o.emoji || '🎉') + '</div>' +
@@ -217,16 +230,28 @@
             '<button type="button" class="jbtn jbtn-ghost" data-c="hub">🎮 Juegos</button>' +
             '</div></div>';
         document.body.appendChild(ov);
+        var firstBtn = ov.querySelector('[data-c]');
+        if (firstBtn) { firstBtn.focus(); }
+        function dismiss(goHub) {
+            ov.remove();
+            if (retFocus && retFocus.focus) { retFocus.focus(); }
+            if (goHub) {
+                var hub = document.querySelector('.jg-head a');
+                window.location.href = hub ? hub.href : '/juegos';
+            }
+        }
         snd('win');
         confetti();
+        ov.addEventListener('keydown', function (ev) {
+            if (ev.key === 'Escape') { ev.stopPropagation(); dismiss(false); }
+        });
         ov.addEventListener('click', function (ev) {
             var c = ev.target.closest('[data-c]');
             if (!c) { return; }
             if (c.getAttribute('data-c') === 'again' && o.onAgain) {
-                ov.remove(); o.onAgain();
+                dismiss(false); o.onAgain();
             } else {
-                var hub = document.querySelector('.jg-head a');
-                window.location.href = hub ? hub.href : '/juegos';
+                dismiss(true);
             }
         });
     }
@@ -238,6 +263,12 @@
         shuffle: shuffle,
         pick: pick,
         snd: snd,
+        muted: function (m) {
+            if (m === undefined) { return muted; }
+            muted = !!m;
+            try { localStorage.setItem('bf_sound', muted ? '0' : '1'); } catch (e) {}
+            return muted;
+        },
         confetti: confetti,
         shake: shake,
         pop: pop,
@@ -283,6 +314,20 @@
     window.BFJ = BFJ;
 
     // ============================ Arranque ====================================
+    function soundToggle(host) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'bfj-sound';
+        function paint() {
+            b.textContent = muted ? '🔇' : '🔊';
+            b.setAttribute('aria-label', muted ? 'Activar sonido' : 'Silenciar sonidos');
+            b.setAttribute('aria-pressed', muted ? 'true' : 'false');
+        }
+        b.addEventListener('click', function () { BFJ.muted(!muted); paint(); });
+        paint();
+        host.appendChild(b);
+    }
+
     function start() {
         // Hub: pintar progreso
         var ts = document.getElementById('totalStars');
@@ -290,6 +335,8 @@
             ts.textContent = BFJ.stars.total();
             var lb = document.getElementById('levelBadge');
             if (lb) { lb.textContent = BFJ.level(); }
+            var score = document.querySelector('.jh-score');
+            if (score) { soundToggle(score); }
             document.querySelectorAll('.jh-card[data-slug]').forEach(function (card) {
                 var n = BFJ.stars.of(card.getAttribute('data-slug'));
                 if (n > 0) {
@@ -315,7 +362,10 @@
         if (app) {
             var slug = app.getAttribute('data-game');
             var gs = document.getElementById('gameStars');
-            if (gs) { gs.textContent = BFJ.stars.of(slug); }
+            if (gs) {
+                gs.textContent = BFJ.stars.of(slug);
+                soundToggle(gs.parentElement);
+            }
             BFJ.played(slug);
             if (BFJ.games[slug]) {
                 BFJ._t0 = Date.now(); // para métrica game_s (tiempo por ronda)

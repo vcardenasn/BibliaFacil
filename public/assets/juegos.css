@@ -3,29 +3,38 @@
    Colores vivos, tarjetas gordas, animaciones juguetonas.
    ========================================================================== */
 
-.jpage { --fun1:#4dabf7; --fun2:#f06595; --fun3:#37b24d; --fun4:#f76707; --fun5:#9775fa; }
+.jpage { --fun1:#4dabf7; --fun2:#d6336c; --fun3:#2f9e44; --fun4:#f76707; --fun5:#7450f0; }
+[data-theme="dark"] .jpage { --fun5:#9775fa; }
 .jpage main.page { max-width: 760px; }
 
 /* ---- Hub ---- */
 .jh-hero {
     text-align: center; padding: 1.6rem 1rem 1.2rem;
     background: linear-gradient(135deg, var(--brand) 0%, var(--fun5) 100%);
-    border-radius: 22px; color: #fff; box-shadow: var(--shadow-hover);
+    border-radius: 22px; color: var(--brand-ink); box-shadow: var(--shadow-hover);
     margin-bottom: 1.4rem;
 }
+[data-theme="contrast"] .jh-hero { background: var(--brand); }
 .jh-hero h1 { font-family: var(--sans); font-size: 1.7rem; margin: 0; }
 .jh-hero p { margin: .3rem 0 .9rem; opacity: .92; font-family: var(--sans); }
 .jh-score { display: flex; justify-content: center; gap: .7rem; flex-wrap: wrap; }
 .jh-stars {
     display: inline-flex; align-items: center; gap: .4rem;
-    background: rgba(255,255,255,.2); border-radius: 999px;
-    padding: .4rem 1rem; font-family: var(--sans); font-weight: 700; color: #fff;
+    background: color-mix(in srgb, var(--brand-ink) 18%, transparent); border-radius: 999px;
+    padding: .4rem 1rem; font-family: var(--sans); font-weight: 700; color: var(--brand-ink);
 }
 .jh-level {
     display: inline-flex; align-items: center;
-    background: var(--gold); color: #fff; border-radius: 999px;
+    background: var(--gold-soft); color: var(--gold-ink); border-radius: 999px;
     padding: .4rem 1.1rem; font-family: var(--sans); font-weight: 800; font-size: .9rem;
 }
+.bfj-sound {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 44px; min-height: 44px;
+    background: color-mix(in srgb, var(--brand-ink) 18%, transparent); border: none; border-radius: 999px;
+    font-size: 1.1rem; cursor: pointer; font-family: var(--sans);
+}
+.jg-head .bfj-sound { background: var(--brand-soft); }
 
 .jh-grid {
     display: grid; gap: .9rem;
@@ -34,7 +43,7 @@
 .jh-card {
     position: relative; display: flex; flex-direction: column; align-items: center;
     gap: .35rem; text-align: center; text-decoration: none; color: var(--ink);
-    background: var(--surface); border: 2px solid var(--border);
+    background: var(--surface); border: 2px solid var(--border-strong);
     border-radius: 20px; padding: 1.3rem .8rem 1rem; box-shadow: var(--shadow);
     transition: transform .15s, border-color .15s, box-shadow .15s;
 }
@@ -61,7 +70,7 @@
 }
 .st {
     display: flex; flex-direction: column; align-items: center; gap: .25rem;
-    background: var(--surface); border: 2px solid var(--border); border-radius: 14px;
+    background: var(--surface); border: 2px solid var(--border-strong); border-radius: 14px;
     padding: .8rem .4rem; text-align: center; opacity: .5; filter: saturate(.3);
 }
 .st.got { opacity: 1; filter: none; border-color: var(--gold); background: color-mix(in srgb, var(--gold) 8%, var(--surface)); animation: bfj-pop .35s; }
@@ -81,30 +90,30 @@
     margin-bottom: 1rem; flex-wrap: wrap;
 }
 .jg-head h1 { font-family: var(--sans); font-size: 1.15rem; margin: 0; flex: 1; text-align: center; }
-.jg-head .jh-stars { background: var(--gold-soft); color: var(--gold); font-size: .95rem; }
+.jg-head .jh-stars { background: var(--gold-soft); color: var(--gold-ink); font-size: .95rem; }
 .jg-head .nav-btn { font-size: .8rem; }
 
 /* ---- Botones de juego gigantes ---- */
 .jbtn {
     font-family: var(--sans); font-size: 1.05rem; font-weight: 700; cursor: pointer;
     border: none; border-radius: 16px; padding: .9rem 1.4rem; color: var(--ink);
-    background: var(--surface); box-shadow: 0 4px 0 var(--border);
+    background: var(--surface); box-shadow: 0 4px 0 var(--border-strong);
     transition: transform .08s, box-shadow .08s;
     min-height: 52px;
 }
-.jbtn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--border); }
+.jbtn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--border-strong); }
 .jbtn-main { background: var(--brand); color: var(--brand-ink); box-shadow: 0 4px 0 var(--brand-strong); }
-.jbtn-ghost { background: var(--surface); box-shadow: 0 4px 0 var(--border); }
-.jbtn.ok { background: var(--fun3); color: #fff; box-shadow: 0 4px 0 #2b8a3e; }
+.jbtn-ghost { background: var(--surface); box-shadow: 0 4px 0 var(--border-strong); }
+.jbtn.ok { background: var(--fun3); color: #14202b; box-shadow: 0 4px 0 #2b8a3e; }
 .jbtn.bad { background: var(--fun2); color: #fff; box-shadow: 0 4px 0 #c2255c; }
 
 /* ---- Verdadero/Falso ---- */
 .vf-qbox {
     background: var(--surface); border-radius: 22px; padding: 1.6rem 1.2rem;
-    text-align: center; box-shadow: var(--shadow); border: 2px solid var(--border);
+    text-align: center; box-shadow: var(--shadow); border: 2px solid var(--border-strong);
 }
 .vf-prog { font-family: var(--sans); font-size: .8rem; color: var(--muted); display: flex; justify-content: space-between; margin-bottom: .6rem; }
-.vf-streak { color: var(--fun4); font-weight: 800; }
+.vf-streak { color: var(--gold-ink); font-weight: 800; }
 .vf-q { font-size: 1.35rem; line-height: 1.45; margin: .8rem 0 1.3rem; }
 .vf-note { font-family: var(--sans); font-size: .85rem; color: var(--muted); margin: -.6rem 0 1rem; }
 .vf-btns { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
@@ -137,7 +146,7 @@
 .bfj-ovemoji { font-size: 3.4rem; }
 .bfj-ovcard h2 { font-family: var(--sans); margin: .4rem 0; }
 .bfj-ovstars { font-size: 1.5rem; letter-spacing: .1em; }
-.bfj-ovpts { font-family: var(--sans); font-weight: 800; color: var(--gold); font-size: 1.15rem; margin: .3rem 0 .6rem; }
+.bfj-ovpts { font-family: var(--sans); font-weight: 800; color: var(--gold-ink); font-size: 1.15rem; margin: .3rem 0 .6rem; }
 .bfj-ovextra { font-family: var(--sans); font-size: .85rem; color: var(--muted); }
 .bfj-ovbtns { display: flex; gap: .6rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
 .bfj-confetti { position: fixed; inset: 0; z-index: 90; pointer-events: none; }
@@ -165,7 +174,7 @@
 .tr-cats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: .8rem; margin-top: .5rem; }
 .tr-cat {
     display: flex; flex-direction: column; align-items: center; gap: .4rem;
-    background: var(--surface); border: 2px solid var(--border); border-radius: 18px;
+    background: var(--surface); border: 2px solid var(--border-strong); border-radius: 18px;
     padding: 1.2rem .6rem; cursor: pointer; font-family: var(--sans);
     transition: transform .15s, border-color .15s;
 }
@@ -194,10 +203,11 @@
 }
 .mm-back {
     background: linear-gradient(135deg, var(--brand), var(--fun5));
-    color: rgba(255,255,255,.85); box-shadow: var(--shadow);
+    color: color-mix(in srgb, var(--brand-ink) 85%, transparent); box-shadow: var(--shadow);
 }
+[data-theme="contrast"] .mm-back { background: var(--brand); }
 .mm-front {
-    background: var(--surface); border: 2px solid var(--border);
+    background: var(--surface); border: 2px solid var(--border-strong);
     transform: rotateY(180deg);
 }
 .mm-card.open .mm-back { transform: rotateY(180deg); }
@@ -217,7 +227,7 @@
 }
 .hs-slot {
     min-width: 76px; flex: 0 0 76px; min-height: 100px;
-    border: 2px dashed var(--border); border-radius: 14px;
+    border: 2px dashed var(--border-strong); border-radius: 14px;
     display: flex; flex-direction: column; align-items: center; padding: .3rem;
     transition: border-color .2s, background .2s;
 }
@@ -235,7 +245,7 @@
 }
 .hs-card {
     display: flex; flex-direction: column; align-items: center; gap: .35rem;
-    background: var(--surface); border: 2px solid var(--border); border-radius: 16px;
+    background: var(--surface); border: 2px solid var(--border-strong); border-radius: 16px;
     padding: .9rem .5rem; cursor: pointer; font-family: var(--sans); color: var(--ink);
     box-shadow: var(--shadow); transition: transform .12s, border-color .15s;
     animation: bfj-pop .3s backwards;
@@ -270,7 +280,7 @@
 .pj-reveal { margin-top: 1rem; display: flex; flex-direction: column; align-items: center; gap: .15rem; }
 .pj-reveal span { font-size: 2.6rem; }
 .pj-reveal strong { font-family: var(--sans); font-size: 1.1rem; }
-.pj-reveal em { font-style: normal; font-family: var(--sans); font-weight: 800; color: var(--gold); }
+.pj-reveal em { font-style: normal; font-family: var(--sans); font-weight: 800; color: var(--gold-ink); }
 
 /* ---- Completa el Versículo ---- */
 .vj-q { font-family: var(--serif, Georgia, serif); font-style: italic; }
@@ -280,7 +290,7 @@
     font-family: var(--serif, Georgia, serif); font-style: italic;
 }
 .vj-reveal p { margin: 0 0 .3rem; font-size: .95rem; }
-.vj-reveal em { font-style: normal; font-family: var(--sans); font-size: .75rem; font-weight: 800; color: var(--gold); }
+.vj-reveal em { font-style: normal; font-family: var(--sans); font-size: .75rem; font-weight: 800; color: var(--gold-ink); }
 
 @media (prefers-reduced-motion: reduce) {
     .jh-card:hover .jh-emoji, .bfj-shake, .bfj-pop, .mm-face { animation: none; transition: none; }

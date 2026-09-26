@@ -48,6 +48,7 @@
     apply('accent', P.get('accent', 'indigo'));
     apply('lineh', P.get('lineh', 'normal'));
     apply('zen', P.get('zen', 'off'));
+    var zenBtn = null;
     syncZen();
 
     var themeBtn = document.getElementById('themeBtn');
@@ -70,25 +71,40 @@
     if (prefBtn) {
         prefBtn.addEventListener('click', function () {
             if (panel) { closePanel(); return; }
-            panel = document.createElement('div');
+            panel = document.createElement('dialog');
             panel.className = 'prefpanel';
-            panel.setAttribute('role', 'dialog');
             panel.setAttribute('aria-label', 'Apariencia');
             panel.innerHTML =
+                '<div class="pp-head"><strong>Apariencia</strong><button type="button" class="pp-close" aria-label="Cerrar apariencia">✕</button></div>' +
                 '<div class="pp-row"><span>Tema</span><div class="seg" data-k="theme">' +
-                seg('light', '☀') + seg('dark', '☾') + seg('sepia', '◐') + seg('contrast', '◆') + '</div></div>' +
+                seg('light', '☀', 'Claro') + seg('dark', '☾', 'Oscuro') + seg('sepia', '◐', 'Sepia') + seg('contrast', '◆', 'Alto contraste') + '</div></div>' +
                 '<div class="pp-row"><span>Acento</span><div class="seg seg-acc" data-k="accent">' +
-                seg('indigo', '●') + seg('oliva', '●') + seg('terracota', '●') + seg('purpura', '●') + seg('teal', '●') + '</div></div>' +
+                seg('indigo', '●', 'Índigo') + seg('oliva', '●', 'Oliva') + seg('terracota', '●', 'Terracota') + seg('purpura', '●', 'Púrpura') + seg('teal', '●', 'Verde azulado') + '</div></div>' +
                 '<div class="pp-row"><span>Tamaño</span><input type="range" min="1" max="4" step="1" data-k="font" value="' + P.get('font', '2') + '" aria-label="Tamaño de letra"></div>' +
                 '<div class="pp-row"><span>Letra</span><div class="seg" data-k="family">' + seg('serif', 'Serif') + seg('sans', 'Sans') + '</div></div>' +
                 '<div class="pp-row"><span>Interlineado</span><div class="seg" data-k="lineh">' + seg('compact', 'Compacto') + seg('normal', 'Normal') + seg('ample', 'Amplio') + '</div></div>' +
-                '<div class="pp-row"><span>Palabras de Jesús en rojo</span><button class="tog" data-k="wj" role="switch"></button></div>' +
-                '<div class="pp-row"><span>Números de versículo</span><button class="tog" data-k="vnum" role="switch"></button></div>' +
-                '<div class="pp-row"><span>Párrafo fluido</span><button class="tog" data-k="flow" data-on="para" role="switch"></button></div>' +
-                '<div class="pp-row"><span>Modo zen (sin barras)</span><button class="tog" data-k="zen" role="switch"></button></div>';
+                '<div class="pp-row"><span>Palabras de Jesús en rojo</span><button type="button" class="tog" data-k="wj" role="switch" aria-label="Palabras de Jesús en rojo"></button></div>' +
+                '<div class="pp-row"><span>Números de versículo</span><button type="button" class="tog" data-k="vnum" role="switch" aria-label="Números de versículo"></button></div>' +
+                '<div class="pp-row"><span>Párrafo fluido</span><button type="button" class="tog" data-k="flow" data-on="para" role="switch" aria-label="Párrafo fluido"></button></div>' +
+                '<div class="pp-row"><span>Modo zen (sin barras)</span><button type="button" class="tog" data-k="zen" role="switch" aria-label="Modo zen (sin barras)"></button></div>';
             document.body.appendChild(panel);
+            panel.showModal();
+            prefBtn.setAttribute('aria-expanded', 'true');
+            panel.querySelector('.pp-close').focus();
             syncPanel();
+            panel.addEventListener('close', function () {
+                panel.remove(); panel = null;
+                prefBtn.setAttribute('aria-expanded', 'false');
+                var restore = prefBtn.offsetParent !== null ? prefBtn : zenBtn;
+                if (restore) { restore.focus(); }
+            });
             panel.addEventListener('click', function (ev) {
+                if (ev.target === panel) {
+                    var box = panel.getBoundingClientRect();
+                    if (ev.clientX < box.left || ev.clientX > box.right || ev.clientY < box.top || ev.clientY > box.bottom) { closePanel(); }
+                    return;
+                }
+                if (ev.target.closest('.pp-close')) { closePanel(); return; }
                 var b = ev.target.closest('[data-v], .tog');
                 if (!b) { return; }
                 var k = b.getAttribute('data-k') || b.parentElement.getAttribute('data-k');
@@ -104,15 +120,17 @@
                     TK('pref', k + ':' + b.getAttribute('data-v'));
                 }
                 syncPanel(); syncThemeBtn(); syncZen();
+                if (k === 'zen' && root.getAttribute('data-zen') === 'on') { closePanel(); }
             });
-            document.addEventListener('click', outsidePanel);
         });
     }
-    function seg(v, label) { return '<button type="button" data-v="' + v + '">' + label + '</button>'; }
+    function seg(v, label, accessibleName) { return '<button type="button" data-v="' + v + '"' + (accessibleName ? ' aria-label="' + accessibleName + '"' : '') + '>' + label + '</button>'; }
     function syncPanel() {
         if (!panel) { return; }
         panel.querySelectorAll('.seg [data-v]').forEach(function (b) {
-            b.classList.toggle('on', root.getAttribute('data-' + b.parentElement.getAttribute('data-k')) === b.getAttribute('data-v'));
+            var selected = root.getAttribute('data-' + b.parentElement.getAttribute('data-k')) === b.getAttribute('data-v');
+            b.classList.toggle('on', selected);
+            b.setAttribute('aria-pressed', String(selected));
         });
         panel.querySelectorAll('.tog').forEach(function (b) {
             var on = b.getAttribute('data-on') || 'on';
@@ -128,16 +146,11 @@
             r.addEventListener('change', function () { TK('pref', 'font:' + r.value); });
         }
     }
-    function outsidePanel(ev) {
-        if (panel && !panel.contains(ev.target) && ev.target.id !== 'prefBtn') { closePanel(); }
-    }
     function closePanel() {
-        if (panel) { panel.remove(); panel = null; }
-        document.removeEventListener('click', outsidePanel);
+        if (panel && panel.open) { panel.close(); }
     }
 
     // ---- Modo zen: oculta chrome, sale con ✕ flotante -------------------------
-    var zenBtn = null;
     function syncZen() {
         var on = root.getAttribute('data-zen') === 'on';
         if (on && !zenBtn) {
@@ -170,6 +183,33 @@
     }
 
     // ---- Continuar donde quedé + historial/racha + scroll-restore -------------
+    var bookFilter = document.getElementById('book-filter');
+    if (bookFilter) {
+        var bookSections = document.querySelectorAll('.book-section');
+        var bookStatus = document.getElementById('book-filter-status');
+        document.querySelectorAll('.book-tools nav a').forEach(function (link) {
+            link.addEventListener('click', function () {
+                bookFilter.value = '';
+                bookFilter.dispatchEvent(new Event('input'));
+            });
+        });
+        bookFilter.addEventListener('input', function () {
+            var query = bookFilter.value.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+            var count = 0;
+            bookSections.forEach(function (section) {
+                var visible = 0;
+                section.querySelectorAll('.book-grid li').forEach(function (item) {
+                    var name = item.textContent.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+                    item.hidden = !name.includes(query);
+                    if (!item.hidden) { visible++; }
+                });
+                section.hidden = visible === 0;
+                count += visible;
+            });
+            bookStatus.hidden = !query;
+            bookStatus.textContent = count ? count + ' libro(s) encontrado(s).' : 'No se encontraron libros. Prueba otro nombre.';
+        });
+    }
     var chapterEl = document.querySelector('.chapter[data-pos]');
     if (chapterEl) {
         var pos = chapterEl.getAttribute('data-pos');
@@ -280,11 +320,13 @@
     }
 
     // ============================ Sheet de versículo ===========================
-    var sheet = null, sheetVerse = null;
+    var sheet = null, sheetVerse = null, sheetReturnFocus = null;
     function openSheet(el) {
         TK('sheet');
         closeSheet();
         sheetVerse = el;
+        var ae = document.activeElement;
+        sheetReturnFocus = (ae && ae !== document.body && ae !== document.documentElement) ? ae : el;
         el.classList.add('open');
         var id = keyOf(el);
         var rec = annMap[id] || {};
@@ -297,6 +339,8 @@
         sheet._vtext = text; sheet._vref = ref;
         sheet.className = 'vsheet';
         sheet.setAttribute('role', 'dialog');
+        sheet.setAttribute('aria-modal', 'true');
+        sheet.setAttribute('aria-label', 'Opciones del versículo ' + ref);
         sheet.innerHTML =
             '<div class="vs-backdrop"></div><div class="vs-card">' +
             '<div class="vs-head"><strong>' + esc(ref) + '</strong>' +
@@ -322,6 +366,19 @@
 
         sheet.querySelector('.vs-backdrop').addEventListener('click', closeSheet);
         sheet.querySelector('.vs-x').addEventListener('click', closeSheet);
+
+        // Foco dentro del diálogo + trampa de Tab (UX-04)
+        var closeBtn = sheet.querySelector('.vs-x');
+        if (closeBtn) { closeBtn.focus(); }
+        sheet.addEventListener('keydown', function (ev) {
+            if (ev.key !== 'Tab') { return; }
+            var items = sheet.querySelectorAll('button, textarea, [href], input, select, [tabindex]:not([tabindex="-1"])');
+            var vis = [].filter.call(items, function (n) { return !n.disabled && n.offsetParent !== null; });
+            if (!vis.length) { return; }
+            var first = vis[0], last = vis[vis.length - 1];
+            if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
+            else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
+        });
 
         sheet.addEventListener('click', function (ev) {
             var sw = ev.target.closest('.sw');
@@ -412,6 +469,10 @@
     function closeSheet() {
         if (sheet) { sheet.remove(); sheet = null; }
         if (sheetVerse) { sheetVerse.classList.remove('open'); sheetVerse = null; }
+        if (sheetReturnFocus && sheetReturnFocus.focus) {
+            sheetReturnFocus.focus();
+        }
+        sheetReturnFocus = null;
     }
     function esc(s) {
         return String(s).replace(/[&<>"']/g, function (c) {
@@ -513,7 +574,13 @@
     // ============================ Mis anotaciones ==============================
     var mias = document.getElementById('miasApp');
     if (mias) {
-        var filter = 'all', q = '';
+        var filter = 'all', q = '', book = '';
+        var bookSel = document.getElementById('miasBook');
+        var countEl = document.getElementById('miasCount');
+
+        function bookName(r) {
+            return ((r.ref || '').replace(/\s+\d+:\d+.*$/, '').trim()) || r.slug || '';
+        }
 
         // Racha de lectura
         var sb = document.getElementById('streakBox');
@@ -533,8 +600,20 @@
         }
 
         function renderMias() {
-            DB.all().then(function (list) {
-                list = list.filter(function (r) {
+            DB.all().then(function (all) {
+                if (bookSel) {
+                    var names = {};
+                    all.forEach(function (r) { if (r.slug) { names[r.slug] = bookName(r); } });
+                    var slugs = Object.keys(names).sort(function (a, b) { return names[a].localeCompare(names[b], 'es'); });
+                    if (book && !(book in names)) { book = ''; }
+                    bookSel.innerHTML = '<option value="">Todos los libros</option>' +
+                        slugs.map(function (s) {
+                            return '<option value="' + esc(s) + '"' + (s === book ? ' selected' : '') + '>' + esc(names[s]) + '</option>';
+                        }).join('');
+                    bookSel.hidden = !slugs.length;
+                }
+                var filtered = all.filter(function (r) {
+                    if (book && r.slug !== book) { return false; }
                     if (filter === 'hl' && !r.color) { return false; }
                     if (filter === 'note' && !r.note) { return false; }
                     if (filter === 'fav' && !r.fav) { return false; }
@@ -545,11 +624,21 @@
                     return true;
                 }).sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); });
 
+                if (countEl) {
+                    countEl.textContent = !all.length ? ''
+                        : (!filtered.length ? 'Sin anotaciones con estos filtros.'
+                        : filtered.length + (filtered.length === 1 ? ' anotación' : ' anotaciones') +
+                          (filter !== 'all' || q || book ? ' con los filtros actuales.' : ' en total.'));
+                }
+
                 var box = document.getElementById('miasList');
-                if (!list.length) {
-                    box.innerHTML = '<p class="muted" style="padding:2rem 0;text-align:center">Aún no tienes anotaciones.<br>Toca un versículo en el lector para resaltarlo, anotarlo o marcarlo ♥.</p>';
+                if (!filtered.length) {
+                    box.innerHTML = all.length
+                        ? '<p class="muted" style="padding:2rem 0;text-align:center">Nada coincide con los filtros actuales.<br><button type="button" data-clear>Limpiar filtros</button></p>'
+                        : '<p class="muted" style="padding:2rem 0;text-align:center">Aún no tienes anotaciones.<br>Toca un versículo en el lector para resaltarlo, anotarlo o marcarlo ♥.</p>';
                     return;
                 }
+                var list = filtered;
                 box.innerHTML = list.map(function (r) {
                     var url = '/' + r.version + '/' + r.slug + '/' + r.chapter + '#v' + r.verse;
                     var tags = '';
@@ -564,13 +653,48 @@
                 }).join('');
             });
         }
+        function setChip(chip) {
+            filter = chip.getAttribute('data-f');
+            mias.querySelectorAll('[data-f]').forEach(function (c) {
+                var on = c === chip;
+                c.classList.toggle('on', on);
+                c.setAttribute('aria-checked', String(on));
+                c.tabIndex = on ? 0 : -1;
+            });
+            renderMias();
+        }
+        function clearFilters() {
+            filter = 'all'; q = ''; book = '';
+            var chips = mias.querySelectorAll('[data-f]');
+            chips.forEach(function (c) {
+                var on = c.getAttribute('data-f') === 'all';
+                c.classList.toggle('on', on);
+                c.setAttribute('aria-checked', String(on));
+                c.tabIndex = on ? 0 : -1;
+            });
+            var qInput2 = document.getElementById('miasQ');
+            if (qInput2) { qInput2.value = ''; }
+            if (bookSel) { bookSel.value = ''; }
+            renderMias();
+        }
+        mias.addEventListener('keydown', function (ev) {
+            var chip = ev.target.closest ? ev.target.closest('[data-f]') : null;
+            if (!chip) { return; }
+            var chips = [].slice.call(mias.querySelectorAll('[data-f]'));
+            var i = chips.indexOf(chip);
+            var next = -1;
+            if (ev.key === 'ArrowRight') { next = (i + 1) % chips.length; }
+            else if (ev.key === 'ArrowLeft') { next = (i - 1 + chips.length) % chips.length; }
+            else if (ev.key === 'Home') { next = 0; }
+            else if (ev.key === 'End') { next = chips.length - 1; }
+            if (next >= 0) { ev.preventDefault(); chips[next].focus(); setChip(chips[next]); }
+        });
         mias.addEventListener('click', function (ev) {
             var chip = ev.target.closest('[data-f]');
             var del = ev.target.closest('.mi-del');
+            if (ev.target.closest('[data-clear]')) { clearFilters(); return; }
             if (chip) {
-                filter = chip.getAttribute('data-f');
-                mias.querySelectorAll('[data-f]').forEach(function (c) { c.classList.toggle('on', c === chip); });
-                renderMias();
+                setChip(chip);
             } else if (del) {
                 var item = del.closest('.mias-item');
                 DB.del(item.getAttribute('data-id')).then(function () {
@@ -601,7 +725,17 @@
                 renderMias();
             });
         }
+        if (bookSel) {
+            bookSel.addEventListener('change', function () {
+                book = bookSel.value;
+                renderMias();
+            });
+        }
         var impInput = document.getElementById('miasImport');
+        var impBtn = document.getElementById('miasImportBtn');
+        if (impBtn && impInput) {
+            impBtn.addEventListener('click', function () { impInput.click(); });
+        }
         if (impInput) {
             impInput.addEventListener('change', function () {
                 var f = impInput.files[0];
@@ -775,7 +909,7 @@
     // ---- Teclado: ←/→ capítulos · j/k versículos · Enter abre sheet · / ir a ---
     var vcur = -1;
     document.addEventListener('keydown', function (ev) {
-        if (ev.target && /input|textarea|select/i.test(ev.target.tagName)) { return; }
+        if (panel || sheet || (ev.target && ev.target.closest('input, textarea, select, button, a, [role="button"]'))) { return; }
         var link = null;
         if (ev.key === 'ArrowLeft') { link = document.querySelector('a[rel="prev"]'); }
         if (ev.key === 'ArrowRight') { link = document.querySelector('a[rel="next"]'); }
@@ -796,5 +930,25 @@
             ev.preventDefault();
             openSheet(vv[vcur]);
         }
+    });
+
+    // Versículos activables con teclado (UX-04): Enter/Espacio abre el sheet.
+    // tabindex="-1" los mantiene fuera del orden de tabulación (hay ~176);
+    // j/k los navega con la clase .focused y Enter desde el documento.
+    vv.forEach(function (v) {
+        v.setAttribute('tabindex', '-1');
+        v.setAttribute('role', 'button');
+        v.setAttribute('aria-haspopup', 'dialog');
+        v.addEventListener('keydown', function (ev) {
+            if (ev.key === 'Enter' || ev.key === ' ') {
+                ev.preventDefault();
+                ev.stopPropagation();
+                openSheet(v);
+            }
+        });
+        v.addEventListener('focus', function () {
+            vv.forEach(function (o) { o.classList.remove('focused'); });
+            v.classList.add('focused');
+        });
     });
 })();
