@@ -102,9 +102,73 @@ final class Seo
             case 'search':
                 $meta['desc'] = 'Busca cualquier versículo o palabra en la Biblia.';
                 break;
+
+            case 'temas':
+                $meta['desc'] = 'Versículos de la Biblia por tema — amor, fe, ánimo, paz, familia y más, listos para leer y compartir.';
+                $meta['crumbs'] = self::pageCrumbs('Temas');
+                break;
+
+            case 'tema':
+                $t = $data['tema'] ?? [];
+                $meta['desc'] = ($t['desc'] ?? 'Versículos por tema') . ' Colección curada en Biblia Fácil.';
+                $meta['crumbs'] = self::pageCrumbs('Temas', $t['name'] ?? null, 'temas');
+                $meta['jsonld'] = [self::breadcrumbLd($meta['crumbs']), [
+                    '@context' => 'https://schema.org',
+                    '@type' => 'ItemList',
+                    'name' => 'Versículos de ' . ($t['name'] ?? ''),
+                    'numberOfItems' => count($data['verses'] ?? []),
+                ]];
+                break;
+
+            case 'versiculo':
+                $en2 = $data['entry'] ?? [];
+                $meta['desc'] = ($en2['context'] ?? '') . ' Léelo en varias versiones en Biblia Fácil.';
+                $meta['ogType'] = 'article';
+                $meta['crumbs'] = self::pageCrumbs('Versículos', $en2['title'] ?? null, 'versiculo');
+                $meta['jsonld'] = [self::breadcrumbLd($meta['crumbs']), [
+                    '@context' => 'https://schema.org',
+                    '@type' => 'Article',
+                    'headline' => ($en2['title'] ?? '') . ' — texto y significado',
+                    'inLanguage' => 'es',
+                    'isAccessibleForFree' => true,
+                ]];
+                break;
+
+            case 'votd':
+                $vt = $data['votd'] ?? null;
+                $meta['desc'] = $vt
+                    ? '"' . mb_substr(strip_tags((string) $vt['text']), 0, 120) . '…" — ' . $vt['book_name'] . ' ' . $vt['chapter'] . ':' . $vt['verse']
+                    : 'Un versículo de la Biblia cada día.';
+                $meta['crumbs'] = self::pageCrumbs('Versículo del día');
+                break;
+
+            case 'guias':
+                $meta['desc'] = 'Guías para leer y entender la Biblia — qué versión elegir, cómo empezar.';
+                $meta['crumbs'] = self::pageCrumbs('Guías');
+                break;
+
+            case 'guia':
+                $g = $data['guia'] ?? [];
+                $meta['desc'] = ($g['desc'] ?? '') . ' — guía de Biblia Fácil.';
+                $meta['crumbs'] = self::pageCrumbs('Guías', $g['title'] ?? null, 'guias');
+                $meta['jsonld'] = [self::breadcrumbLd($meta['crumbs'])];
+                break;
         }
 
         return $meta;
+    }
+
+    /** Breadcrumbs para páginas no-versionadas: Inicio › Sección › Página. */
+    private static function pageCrumbs(string $section, ?string $current = null, string $sectionUrl = ''): array
+    {
+        $c = [['label' => 'Inicio', 'url' => url('/')]];
+        if ($current === null) {
+            $c[] = ['label' => $section, 'url' => null];
+        } else {
+            $c[] = ['label' => $section, 'url' => url($sectionUrl)];
+            $c[] = ['label' => $current, 'url' => null];
+        }
+        return $c;
     }
 
     /** Descripción del capítulo: primeras ~155 letras de los primeros versículos. */

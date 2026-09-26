@@ -50,11 +50,23 @@ if (($seg[0] ?? '') === 'sitemap.xml' || (($seg[0] ?? '') === 'sitemap' && isset
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', "\n";
     if ($seg[1] === 'paginas') {
         echo '<url><loc>', $abs(''), '</loc><priority>1.0</priority></url>', "\n",
-            '<url><loc>', $abs('juegos'), '</loc><priority>0.7</priority></url>', "\n";
+            '<url><loc>', $abs('juegos'), '</loc><priority>0.7</priority></url>', "\n",
+            '<url><loc>', $abs('temas'), '</loc><priority>0.9</priority></url>', "\n",
+            '<url><loc>', $abs('versiculo-del-dia'), '</loc><priority>0.9</priority></url>', "\n",
+            '<url><loc>', $abs('guias'), '</loc><priority>0.6</priority></url>', "\n";
         foreach (config('games') as $gslug => $g) {
             if (!empty($g['ready'])) {
                 echo '<url><loc>', $abs('juegos/' . $gslug), '</loc><priority>0.5</priority></url>', "\n";
             }
+        }
+        foreach (config('temas') as $tslug => $t) {
+            echo '<url><loc>', $abs('temas/' . $tslug), '</loc><priority>0.8</priority></url>', "\n";
+        }
+        foreach (config('versiculos') as $vslug => $ve) {
+            echo '<url><loc>', $abs('versiculo/' . $vslug), '</loc><priority>0.7</priority></url>', "\n";
+        }
+        foreach (config('guias') as $gs2 => $g2) {
+            echo '<url><loc>', $abs('guias/' . $gs2), '</loc><priority>0.5</priority></url>', "\n";
         }
     } else {
         $sv = $repo->versionByCode($seg[1]);
@@ -106,6 +118,117 @@ if (($seg[0] ?? '') === 'buscar') {
         'version' => $version,
         'q' => $q,
         'results' => $results,
+    ]);
+    exit;
+}
+
+// ---- /temas — colecciones de versículos por tema (US-190) --------------------
+if (($seg[0] ?? '') === 'temas') {
+    $temas = config('temas');
+    $tv = $repo->versionByCode((string) ($_GET['v'] ?? '')) ?: $repo->versionByCode((string) config('app.default_version', 'rvr1909')) ?: ($versions[0] ?? null);
+    if (count($seg) === 1) {
+        view('temas', ['title' => 'Versículos por tema', 'versions' => $versions, 'version' => $tv, 'temas' => $temas]);
+        exit;
+    }
+    $slug = (string) $seg[1];
+    if (!isset($temas[$slug]) || !$tv) {
+        $notFound('Ese tema no existe.');
+        exit;
+    }
+    view('tema', [
+        'title' => 'Versículos de ' . $temas[$slug]['name'],
+        'versions' => $versions, 'version' => $tv,
+        'tema' => $temas[$slug], 'slug' => $slug,
+        'verses' => $repo->versesByRefs((int) $tv['id'], $temas[$slug]['refs']),
+    ]);
+    exit;
+}
+
+// ---- /versiculo/{slug} — landing de versículo famoso (US-191) ----------------
+if (($seg[0] ?? '') === 'versiculo' && isset($seg[1])) {
+    $famosos = config('versiculos');
+    $slug = (string) $seg[1];
+    if (!isset($famosos[$slug])) {
+        $notFound('Ese versículo aún no tiene página.');
+        exit;
+    }
+    $e = $famosos[$slug];
+    $texts = [];
+    foreach ($versions as $v) {
+        $row = $repo->verseByRef((int) $v['id'], $e['ref'][0], $e['ref'][1], $e['ref'][2]);
+        if ($row) {
+            $texts[] = $row + ['code' => $v['code'], 'name' => $v['name']];
+        }
+    }
+    view('versiculo', [
+        'title' => $e['title'] . ' — texto y significado',
+        'versions' => $versions,
+        'version' => $versions[0] ?? null,
+        'entry' => $e, 'texts' => $texts, 'slug' => $slug,
+    ]);
+    exit;
+}
+
+// ---- /versiculo-del-dia — URL estable + archivo + RSS (US-193) ----------------
+if (($seg[0] ?? '') === 'versiculo-del-dia') {
+    $vv = $repo->versionByCode((string) ($_GET['v'] ?? '')) ?: $repo->versionByCode((string) config('app.default_version', 'rvr1909')) ?: ($versions[0] ?? null);
+    if (($seg[1] ?? '') === 'rss') {
+        header('Content-Type: application/rss+xml; charset=utf-8');
+        echo '<?xml version="1.0" encoding="UTF-8"?>', "\n",
+            '<rss version="2.0"><channel><title>Versículo del día — Biblia Fácil</title>',
+            '<link>', \Biblia\Core\Seo::abs('versiculo-del-dia'), '</link>',
+            '<description>Un versículo de la Biblia cada día.</description><language>es</language>', "\n";
+        for ($i = 0; $i < 30; $i++) {
+            $d = date('Y-m-d', strtotime("-{$i} days"));
+            $item = $vv ? $repo->verseOfTheDay((int) $vv['id'], $d) : null;
+            if ($item) {
+                $url = \Biblia\Core\Seo::abs('versiculo-del-dia?d=' . $d);
+                echo '<item><title>', e($item['book_name'] . ' ' . $item['chapter'] . ':' . $item['verse']),
+                    '</title><link>', $url, '</link><guid isPermaLink="true">', $url, '</guid>',
+                    '<pubDate>', date(DATE_RSS, strtotime($d . ' 06:00:00')), '</pubDate>',
+                    '<description>', e(strip_tags((string) $item['text'])), '</description></item>', "\n";
+            }
+        }
+        echo '</channel></rss>';
+        exit;
+    }
+    $d = (string) ($_GET['d'] ?? '');
+    $d = preg_match('/^\d{4}-\d{2}-\d{2}$/', $d) ? $d : date('Y-m-d');
+    $archive = [];
+    for ($i = 1; $i <= 14; $i++) {
+        $ad = date('Y-m-d', strtotime("-{$i} days"));
+        if ($ad !== $d) { $archive[] = $ad; }
+    }
+    $meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    view('votd', [
+        'title' => 'Versículo del día — ' . date('d/m/Y', strtotime($d)),
+        'versions' => $versions, 'version' => $vv,
+        'votd' => $vv ? $repo->verseOfTheDay((int) $vv['id'], $d) : null,
+        'fechaTxt' => (int) date('j', strtotime($d)) . ' de ' . $meses[(int) date('n', strtotime($d)) - 1] . ' de ' . date('Y', strtotime($d)),
+        'prev' => date('Y-m-d', strtotime($d . ' -1 day')),
+        'next' => $d < date('Y-m-d') ? date('Y-m-d', strtotime($d . ' +1 day')) : null,
+        'archive' => $archive,
+        'd' => $d,
+    ]);
+    exit;
+}
+
+// ---- /guias — contenido editorial (US-194) -----------------------------------
+if (($seg[0] ?? '') === 'guias') {
+    $guias = config('guias');
+    if (count($seg) === 1) {
+        view('guias', ['title' => 'Guías', 'versions' => $versions, 'version' => $versions[0] ?? null, 'guias' => $guias]);
+        exit;
+    }
+    $gslug = (string) $seg[1];
+    if (!isset($guias[$gslug])) {
+        $notFound('Esa guía no existe.');
+        exit;
+    }
+    view('guia', [
+        'title' => $guias[$gslug]['title'],
+        'versions' => $versions, 'version' => $versions[0] ?? null,
+        'guia' => $guias[$gslug],
     ]);
     exit;
 }
@@ -208,6 +331,7 @@ if (count($seg) === 2) {
         'versions' => $versions,
         'version' => $version,
         'book' => $book,
+        'intro' => config('libros.' . $book['slug']),
     ]);
     exit;
 }

@@ -139,6 +139,48 @@ a.crumb:hover { color: var(--accent); }
 .crumb.cur { color: var(--ink); font-weight: 700; }
 .crumb-sep { opacity: .5; }
 
+/* ---- Páginas editoriales (EPIC 19) ---- */
+.page-hero { margin: .4rem 0 1.2rem; }
+.page-hero h1 { font-size: 1.55rem; margin-bottom: .35rem; }
+.page-hero p { color: var(--muted); max-width: 46rem; }
+.ver-note { font-family: var(--sans); font-size: .78rem; color: var(--muted); }
+.book-intro { font-size: .95rem; color: var(--muted); font-style: italic; max-width: 42rem; }
+
+.temas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .7rem; }
+.tema-card {
+    display: flex; flex-direction: column; align-items: center; gap: .3rem;
+    background: var(--surface); border: 2px solid var(--border); border-radius: 14px;
+    padding: 1rem .6rem; text-align: center; text-decoration: none; color: var(--ink);
+    font-family: var(--sans); transition: transform .15s, border-color .15s;
+}
+.tema-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+.tema-card strong { font-size: .95rem; }
+.tema-card small { color: var(--muted); font-size: .72rem; }
+.tema-emoji { font-size: 2rem; }
+
+.tema-verses { display: flex; flex-direction: column; gap: .8rem; }
+.tema-verse { padding: 1rem 1.1rem; }
+.tema-verse blockquote {
+    margin: 0 0 .6rem; font-size: 1.02rem; line-height: 1.75;
+    padding-left: .8rem; border-left: 3px solid var(--accent);
+}
+.tema-ref { font-family: var(--sans); font-size: .8rem; font-weight: 700; color: var(--accent); text-decoration: none; }
+.tema-ref:hover { text-decoration: underline; }
+.tema-verse .mi-ver { display: inline-block; margin-bottom: .4rem; }
+.votd-big blockquote { font-size: 1.3rem; line-height: 1.8; }
+.votd-nav { display: flex; gap: .6rem; margin-top: 1rem; }
+.chip {
+    display: inline-block; padding: .2rem .55rem; margin: .15rem;
+    border: 1px solid var(--border); border-radius: 20px; font-size: .72rem;
+    color: var(--muted); text-decoration: none; font-family: var(--sans);
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.guia-body { padding: 1.2rem 1.4rem; line-height: 1.8; }
+.guia-body h3 { margin: 1.1rem 0 .3rem; font-size: 1rem; }
+.guia-body ul { padding-left: 1.3rem; }
+.guia-body li { margin: .3rem 0; }
+.guia-body a { color: var(--accent); }
+
 .card {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 1.1rem 1.2rem;

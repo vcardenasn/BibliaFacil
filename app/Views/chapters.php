@@ -1,10 +1,8 @@
-<p class="crumbs">
-    <a href="<?= e(url($version['code'])) ?>"><?= e($version['name']) ?></a> ›
-    <?= e($book['name']) ?>
-</p>
-
 <h1><?= e($book['name']) ?></h1>
-<p class="muted">Elige un capítulo.</p>
+<?php if (!empty($intro)): ?>
+<p class="book-intro"><?= e($intro) ?></p>
+<?php endif; ?>
+<p class="muted">Elige un capítulo — <?= (int) $book['chapters'] ?> en total.</p>
 
 <ul class="chapter-grid">
     <?php for ($c = 1; $c <= (int) $book['chapters']; $c++): ?>

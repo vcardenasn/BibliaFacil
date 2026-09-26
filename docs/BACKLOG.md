@@ -163,15 +163,14 @@ vía `view()` → layout. Guardrails: `/mias`, `/buscar`, `check.php`, `track.ph
 - US-186 ✅ Breadcrumbs visibles `.crumbs` (Inicio › Versión › Libro › Capítulo)
 - US-187 ✅ hreflang es↔en (self + KJV/default) + `x-default` → versión default; `<html lang>` dinámico
 
-## EPIC 19 — Contenido indexable (captar búsquedas) ⬜
-*El lector solo captura quien ya busca "juan 3". El volumen real está en intenciones:
-"versículos de ánimo", "salmo 23 explicado", "versículo del día". Cada landing =
-contenido editorial real — usar métricas `cap`/`search` para priorizar.*
-- US-190 ⬜ `/temas/{tema}` — colecciones curadas (amor, fe, ánimo, familia, perdón, niños…): 15-25 versículos reales + contexto. Índice `/temas`. Captura "versículos de X" — volumen altísimo
-- US-191 ⬜ `/versiculo/{slug}` — landing por versículo famoso (juan-3-16, salmo-23, filipenses-4-13…): 3-4 versiones comparadas + contexto + imagen + link al capítulo
-- US-192 ⬜ Intro editorial por libro en `/{version}/{libro}`: 2-3 líneas (autor, época, tema) — quita thin content del índice de capítulos
-- US-193 ⬜ `/versiculo-del-dia` URL estable + archivo `?d=YYYY-MM-DD` + feed RSS — keyword "versículo del día" enorme
-- US-194 ⬜ Guías: "¿Qué versión elegir?" (comparativa de nuestras 6), "Cómo empezar a leer la Biblia" — contenido comunitario + FAQ schema
+## EPIC 19 — Contenido indexable (captar búsquedas) ✅
+*Colecciones curadas en `config/` + landings con SEO completo (meta/JSON-LD/breadcrumbs).
+`versesByRefs`/`verseByRef` en repo; votd acepta `?d=` para archivo.*
+- US-190 ✅ `/temas` — 14 temas curados (amor 15v, fe 14v, ánimo 15v, paz, esperanza, familia, perdón, sabiduría, oración, gratitud, protección, niños, fortaleza, trabajo) → versículos reales con link al capítulo + ItemList LD
+- US-191 ✅ `/versiculo/{slug}` — 15 landings famosos (juan-3-16, salmo-23-1, filipenses-4-13…): texto en **las 6 versiones** + contexto editorial + link al capítulo
+- US-192 ✅ Intro editorial por libro en `/{version}/{libro}` — 66 intros en `config/libros.php`
+- US-193 ✅ `/versiculo-del-dia` + archivo `?d=YYYY-MM-DD` (nav ayer/mañana + chips 14d) + RSS `/versiculo-del-dia/rss` (30 ítems)
+- US-194 ✅ `/guias` — "¿Qué versión elegir?" (comparativa de las 6) + "Cómo empezar a leer la Biblia" (plan de ruta)
 
 ## EPIC 20 — Viralidad / compartir ⬜
 *Ya existe el generador canvas — falta que el preview del link (lo que se ve en

@@ -78,7 +78,11 @@
     <?php if (!empty($version)): ?>
     <p><?= e($version['name']) ?><?= !empty($version['copyright']) ? ' · ' . e($version['copyright']) : '' ?></p>
     <?php endif; ?>
-    <p>Biblia Fácil — lee la Biblia, fácil.</p>
+    <p>Biblia Fácil — lee la Biblia, fácil. ·
+        <a href="<?= e(url('temas')) ?>">Temas</a> ·
+        <a href="<?= e(url('versiculo-del-dia')) ?>">Versículo del día</a> ·
+        <a href="<?= e(url('guias')) ?>">Guías</a> ·
+        <a href="<?= e(url('juegos')) ?>">Juegos</a></p>
     <?php if (!empty($visits) && env('FF_COUNTER', '1') === '1'): ?>
     <p class="visits"><span class="visits-ico" aria-hidden="true">✝</span><strong><?= number_format($visits[1]) ?></strong> visitas</p>
     <?php endif; ?>
