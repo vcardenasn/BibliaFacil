@@ -95,5 +95,68 @@ return function (TestCase $t): void {
         $t->assertTrue(str_contains($html, 'role="status"'));
         $t->assertTrue(str_contains($html, 'id="miasImportBtn"'));
         $t->assertFalse(str_contains($html, '<label for="miasImport"'));
+        $t->assertTrue(str_contains($html, 'id="histBox"'));
+        $t->assertTrue(str_contains($html, 'id="histList"'));
+    });
+
+    $t->run('comparar: dos columnas alineadas, canonical propio y noindex', function () use ($t) {
+        $va = ['id' => 1, 'code' => 'rvr1909', 'name' => 'Reina-Valera 1909', 'copyright' => 'Dominio público'];
+        $vb = ['id' => 2, 'code' => 'onbv', 'name' => 'ONBV', 'copyright' => null];
+        $html = (static function (array $v): string {
+            extract($v);
+            ob_start();
+            include __DIR__ . '/../../app/Views/comparar.php';
+            return ob_get_clean();
+        })([
+            'versions' => [$va, $vb],
+            'version' => $va,
+            'book' => ['slug' => 'juan', 'name' => 'Juan', 'chapters' => 21],
+            'chapter' => 3,
+            'va' => $va, 'vb' => $vb,
+            'versesA' => [16 => ['verse' => 16, 'text' => 'De tal manera amó…', 'wj' => null]],
+            'versesB' => [16 => ['verse' => 16, 'text' => 'Porque tanto amó…', 'wj' => null], 17 => ['verse' => 17, 'text' => 'x', 'wj' => null]],
+            'nav' => ['prev' => 'comparar/juan/2/rvr1909/onbv', 'next' => 'comparar/juan/4/rvr1909/onbv'],
+        ]);
+        $t->assertTrue(str_contains($html, 'class="cmp-grid"'));
+        $t->assertTrue(str_contains($html, 'id="v16"'));
+        $t->assertTrue(str_contains($html, 'comparar/juan/4/rvr1909/onbv'));
+        $t->assertTrue(str_contains($html, '/rvr1909/juan/3'));
+        $t->assertTrue(str_contains($html, 'Dominio público'));
+
+        $pick = (static function (array $v): string {
+            extract($v);
+            ob_start();
+            include __DIR__ . '/../../app/Views/comparar.php';
+            return ob_get_clean();
+        })(['versions' => [$va, $vb], 'books' => [['slug' => 'juan', 'name' => 'Juan']], 'book' => null, 'chapter' => 1, 'va' => null, 'vb' => null, 'versesA' => [], 'versesB' => [], 'nav' => null]);
+        $t->assertTrue(str_contains($pick, 'name="book"'));
+        $t->assertTrue(str_contains($pick, 'name="cap"'));
+
+        $server = $_SERVER;
+        $_SERVER['HTTP_HOST'] = 'ejemplo.org';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['REQUEST_URI'] = '/comparar/juan/3/rvr1909/onbv';
+        $meta = Seo::build('comparar', ['book' => ['slug' => 'juan', 'name' => 'Juan'], 'chapter' => 3, 'va' => $va, 'vb' => $vb]);
+        $_SERVER = $server;
+        $t->assertTrue($meta['noindex']);
+        $t->assertSame('http://ejemplo.org/comparar/juan/3/rvr1909/onbv', $meta['canonical']);
+        $t->assertTrue(str_contains($meta['desc'], 'Juan 3'));
+    });
+
+    $t->run('buscar: cada resultado ofrece botón de contexto expandible', function () use ($t) {
+        $html = (static function (array $v): string {
+            extract($v);
+            ob_start();
+            include __DIR__ . '/../../app/Views/search.php';
+            return ob_get_clean();
+        })([
+            'q' => 'amor',
+            'version' => ['id' => 1, 'code' => 'rvr1909', 'name' => 'RVR1909'],
+            'versions' => [['id' => 1, 'code' => 'rvr1909', 'name' => 'RVR1909']],
+            'results' => [['book_name' => 'Juan', 'book_slug' => 'juan', 'chapter' => 3, 'verse' => 16, 'text' => 'amor test']],
+        ]);
+        $t->assertTrue(str_contains($html, 'class="ctx-btn"'));
+        $t->assertTrue(str_contains($html, 'data-b="juan"'));
+        $t->assertTrue(str_contains($html, 'aria-expanded="false"'));
     });
 };

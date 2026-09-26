@@ -29,6 +29,9 @@
             <?= e("{$r['book_name']} {$r['chapter']}:{$r['verse']}") ?>
         </a>
         <p><?= preg_replace('/(' . preg_quote(e($q), '/') . ')/iu', '<mark>$1</mark>', e($r['text'])) ?></p>
+        <button type="button" class="ctx-btn" aria-expanded="false"
+            data-v="<?= e($version['code']) ?>" data-b="<?= e($r['book_slug']) ?>"
+            data-c="<?= (int) $r['chapter'] ?>" data-n="<?= (int) $r['verse'] ?>">⌄ Contexto ±3</button>
     </li>
     <?php endforeach; ?>
     <?php if (!$results): ?>

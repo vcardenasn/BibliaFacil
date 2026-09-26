@@ -3,6 +3,11 @@
 
 <div class="streak" id="streakBox" hidden></div>
 
+<section class="hist card" id="histBox" hidden>
+    <h2>Lectura reciente</h2>
+    <ul class="hist-list" id="histList"></ul>
+</section>
+
 <div id="miasApp">
     <div class="mias-chips" role="radiogroup" aria-label="Filtrar por tipo de anotación">
         <button type="button" data-f="all" class="on" role="radio" aria-checked="true" tabindex="0">Todas</button>

@@ -39,7 +39,7 @@ final class Seo
         $meta = [
             'desc' => 'Lee la Biblia en múltiples versiones, fácil y rápido.',
             'canonical' => self::abs((string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH)),
-            'noindex' => in_array($view, ['search', 'mias', 'notfound', 'error'], true),
+            'noindex' => in_array($view, ['search', 'mias', 'comparar', 'notfound', 'error'], true),
             'ogType' => 'website',
             'locale' => 'es_LA',
             'htmlLang' => 'es',
@@ -100,6 +100,19 @@ final class Seo
                 $meta['crumbs'] = self::crumbs($version, null, null);
                 $meta['hreflang'] = self::hreflang($version, $versions, (string) $version['code']);
                 $meta['jsonld'] = [self::breadcrumbLd($meta['crumbs']), self::websiteLd()];
+                break;
+
+            case 'comparar':
+                $cb = $data['book'] ?? null;
+                if ($cb && !empty($data['va']) && !empty($data['vb'])) {
+                    $meta['desc'] = "Compara {$cb['name']} {$data['chapter']} entre {$data['va']['name']} y {$data['vb']['name']}, versículo a versículo.";
+                    $meta['canonical'] = self::abs("comparar/{$cb['slug']}/{$data['chapter']}/{$data['va']['code']}/{$data['vb']['code']}");
+                    $meta['crumbs'] = self::pageCrumbs('Comparar', "{$cb['name']} {$data['chapter']}", 'comparar');
+                } else {
+                    $meta['desc'] = 'Compara dos versiones de la Biblia lado a lado, versículo por versículo.';
+                    $meta['canonical'] = self::abs('comparar');
+                    $meta['crumbs'] = self::pageCrumbs('Comparar');
+                }
                 break;
 
             case 'juegos':

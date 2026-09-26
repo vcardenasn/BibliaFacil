@@ -758,3 +758,50 @@ a.crumb:hover { color: var(--brand); }
     .home-topic-card { transition: none; }
     .home-topic-card:hover { transform: none; }
 }
+
+/* ============ Comparador de versiones (US-140/US-050) ============ */
+.cmp-pick { max-width: 30rem; margin: 0 auto; display: grid; grid-template-columns: auto 1fr; gap: .6rem .9rem; align-items: center; }
+.cmp-pick label { font-weight: 600; font-size: .9rem; }
+.cmp-pick select, .cmp-pick input { padding: .55rem .7rem; border: 1px solid var(--border-strong); border-radius: .55rem; background: var(--bg); color: var(--ink); font: inherit; }
+.cmp-pick button { grid-column: 1 / -1; justify-self: center; padding: .6rem 1.4rem; border: none; border-radius: .55rem; background: var(--brand); color: var(--brand-ink); font: inherit; font-weight: 700; cursor: pointer; }
+.cmp-switch { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; justify-content: center; margin: .4rem 0 1rem; }
+.cmp-switch select { padding: .45rem .6rem; border: 1px solid var(--border-strong); border-radius: .5rem; background: var(--bg); color: var(--ink); font: inherit; font-size: .9rem; max-width: 46vw; }
+.cmp-head, .cmp-row { display: grid; grid-template-columns: 2rem 1fr 1fr; gap: .8rem; }
+.cmp-head { padding-bottom: .5rem; border-bottom: 2px solid var(--border-strong); font-weight: 700; }
+.cmp-head a { color: var(--brand); text-decoration: none; }
+.cmp-row { padding: .55rem 0; border-bottom: 1px solid var(--border); }
+.cmp-row:target { background: var(--gold-soft); border-radius: .4rem; }
+.cmp-n { color: var(--gold-ink); font-weight: 700; text-align: right; font-size: .8rem; padding-top: .25em; }
+.cmp-cell { line-height: 1.65; }
+.cmp-copyright { font-size: .78rem; margin-top: 1rem; }
+.reader-tools { text-align: center; margin: 1.4rem 0 .3rem; font-size: .88rem; }
+@media (max-width: 560px) {
+    .cmp-head { display: none; }
+    .cmp-row { display: block; }
+    .cmp-row .cmp-n { display: block; text-align: left; padding: 0 0 .15rem; font-size: .75rem; }
+    .cmp-cell { display: block; }
+    .cmp-cell + .cmp-cell { margin-top: .5rem; padding-top: .5rem; border-top: 1px dashed var(--border); }
+    .cmp-cell::before { content: attr(data-v); display: inline-block; margin-right: .4rem; font-size: .68rem; font-weight: 700; color: var(--muted); vertical-align: .1em; }
+    .cmp-pick { grid-template-columns: 1fr; }
+}
+
+/* ============ Contexto en resultados de búsqueda (US-142) ============ */
+.ctx-btn { background: none; border: none; padding: .15rem 0; color: var(--brand); font: inherit; font-size: .82rem; cursor: pointer; text-decoration: underline; }
+.ctx { margin-top: .5rem; padding: .4rem .8rem; border-left: 3px solid var(--brand); background: var(--surface); border-radius: 0 .4rem .4rem 0; font-size: .92em; }
+.ctx-v { margin: .3rem 0; }
+.ctx-v sup { color: var(--gold-ink); font-weight: 700; margin-right: .3rem; }
+.ctx-hit { background: var(--gold-soft); border-radius: .25rem; padding: .1rem .25rem; }
+
+/* ============ Espaciado de letras — dislexia (US-151) ============ */
+[data-spacing="on"] main { letter-spacing: .02em; word-spacing: .15em; }
+
+/* ============ Sheet: copiar rango (US-143) ============ */
+.vs-range { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .55rem 0 .2rem; border-top: 1px solid var(--border); margin-top: .55rem; font-size: .85rem; }
+.vs-range select { padding: .3rem .5rem; border: 1px solid var(--border-strong); border-radius: .4rem; background: var(--bg); color: var(--ink); font: inherit; }
+
+/* ============ Lectura reciente en /mias (US-130) ============ */
+.hist { margin: 1rem 0 1.5rem; }
+.hist h2 { font-size: 1.05rem; margin-top: 0; }
+.hist-list { list-style: none; margin: 0; padding: 0; columns: 2; }
+.hist-list li { padding: .3rem 0; break-inside: avoid; }
+@media (max-width: 560px) { .hist-list { columns: 1; } }

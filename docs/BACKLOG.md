@@ -37,7 +37,7 @@ Leyenda: ✅ implementado en MVP · ⬜ pendiente
 - US-041 UI de plan: día actual, marcar leído, progreso + racha (localStorage)
 
 ## EPIC 06 — Multi-versión avanzada ⬜
-- US-050 Comparador lado a lado (2 versiones)
+- US-050 ✅ Comparador lado a lado (2 versiones) — `/comparar/{libro}/{cap}/{a}/{b}`, noindex (ver US-140)
 - US-051 ~~api.bible~~ → **superseded**: licencias DBL + import USX a BD propia
 
 ## EPIC 07 — Licencias (operación, no código)
@@ -68,7 +68,7 @@ Leyenda: ✅ implementado en MVP · ⬜ pendiente
 - US-112 ✅ **Favoritos** (♥) — marca rápida con indicador
 - US-113 ✅ Vista `/mias`: filtros por tipo + buscar en notas + salto al versículo + ✅ filtro por libro + radiogroup accesible (aria-checked, flechas, roving tabindex) + contador role=status + estado vacío diferenciado + botón Importar operable por teclado
 - US-114 ✅ Exportar/importar JSON de anotaciones (backup sin cuenta)
-- US-115 ✅ Sheet al tap versículo: resaltar (5 swatches) · nota · favorito · copiar · compartir. ⬜ comparar
+- US-115 ✅ Sheet al tap versículo: resaltar (5 swatches) · nota · favorito · copiar · compartir · ⇄ comparar · ⇅ rango
 
 ## EPIC 12 — Compartir como imagen ✅
 - US-120 ✅ Generador canvas en sheet: gradiente índigo, texto serif grande, ref + marca ✝
@@ -76,20 +76,20 @@ Leyenda: ✅ implementado en MVP · ⬜ pendiente
 - US-122 ⬜ Más plantillas (papel, foto de fondo) — base única índigo/dorado AA
 
 ## EPIC 13 — Hábito de lectura ✅ (base)
-- US-130 ⬜ Historial de lectura reciente ("leíste ayer…") + lista de capítulos visitados
+- US-130 ✅ Historial de lectura reciente — `bf_hist` en localStorage (30), lista "Lectura reciente" en /mias con fecha relativa
 - US-131 ✅ Racha de días consecutivos — visible en /mias. ⬜ hora preferida + push PWA
 - US-132 ✅ Scroll-restore: última posición dentro del capítulo por versículo
-- US-133 ✅ Audio-lectura Web Speech API — barra ▶/⏸/■, resalta versículo actual. ⬜ velocidad configurable
+- US-133 ✅ Audio-lectura Web Speech API — barra ▶/⏸/■, resalta versículo actual. ✅ velocidad configurable (ciclo 0.75–2×, persiste)
 
 ## EPIC 14 — Estudio y comparación ⬜
-- US-140 ⬜ Comparador lado a lado de 2 versiones (alineado por versículo, diff visual)
+- US-140 ✅ Comparador `/comparar/{libro}/{cap}/{a}/{b}` — alineado por versículo, selects con redirect canónico GET (sin JS también funciona), nav prev/next preserva el par, noindex. Enlace desde lector y sheet. ⬜ diff visual
 - US-141 ⬜ Versículos cruzados inline (fuentes con \x) cuando la fuente USFM los traiga
-- US-142 ⬜ Contexto: expandir versículo en resultados de búsqueda (±3 versículos sin salir)
-- US-143 ⬜ Copiar múltiple: selección de rango de versículos → copiar con formato (referencia + versión)
+- US-142 ✅ Contexto ±3 en resultados — `/api/contexto` JSON + botón expandible con aria-expanded
+- US-143 ✅ Copiar rango desde el sheet — selector "hasta v. N" → portapapeles "ref a:b-c + textos + URL"
 
 ## EPIC 15 — Accesibilidad e inclusión ⬜
 - US-150 ⬜ Auditoría ARIA: landmarks, anuncios live en navegación de capítulo, foco visible en todo
-- US-151 ⬜ Fuente OpenDyslexic + espaciado de letras configurable (dislexia)
+- US-151 ⬜ Fuente OpenDyslexic · ✅ espaciado de letras configurable (toggle "Espaciado de letras" en Apariencia → `data-spacing`)
 - US-152 ✅ Contraste alto (tema ◆) · ya respeta prefers-reduced-motion
 - US-153 ✅ Teclado: `/` o `i` enfoca "Ir a" · `j`/`k` navega versículos · `Enter` abre sheet · ←/→ capítulos
 

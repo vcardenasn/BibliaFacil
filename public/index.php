@@ -26,7 +26,7 @@ if (($seg[0] ?? '') === 'robots.txt') {
     header('Content-Type: text/plain; charset=utf-8');
     echo "User-agent: *\nAllow: /\n",
         "Disallow: /ir\nDisallow: /check.php\nDisallow: /track.php\n",
-        "Disallow: /juegos/api/\nDisallow: /mias\n\n",
+        "Disallow: /juegos/api/\nDisallow: /api/\nDisallow: /comparar\nDisallow: /mias\n\n",
         'Sitemap: ', \Biblia\Core\Seo::abs('sitemap.xml'), "\n";
     exit;
 }
@@ -276,6 +276,106 @@ if (($seg[0] ?? '') === 'v' && count($seg) === 4) {
     exit;
 }
 
+// ---- /api/contexto — ±3 versículos para expandir resultados (US-142) ---------
+if (($seg[0] ?? '') === 'api' && ($seg[1] ?? '') === 'contexto') {
+    header('Content-Type: application/json; charset=utf-8');
+    header('X-Robots-Tag: noindex');
+    $cv = $repo->versionByCode((string) ($_GET['v'] ?? ''));
+    $cb = $cv ? $repo->book((string) ($_GET['b'] ?? '')) : null;
+    $cc = (int) ($_GET['c'] ?? 0);
+    $cvv = (int) ($_GET['n'] ?? 0);
+    $rows = ($cb && $cc >= 1 && $cc <= (int) $cb['chapters'] && $cvv >= 1)
+        ? $repo->chapter((int) $cv['id'], (int) $cb['id'], $cc)
+        : [];
+    $ctx = [];
+    foreach ($rows as $r) {
+        if (abs((int) $r['verse'] - $cvv) <= 3) {
+            $ctx[] = ['v' => (int) $r['verse'], 't' => $r['text']];
+        }
+    }
+    echo json_encode(['ok' => $ctx !== [], 'ref' => $cb ? $cb['name'] . ' ' . $cc : '', 'verses' => $ctx], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+// ---- /comparar — dos versiones lado a lado (US-140/US-050) -------------------
+if (($seg[0] ?? '') === 'comparar') {
+    // El formulario GET normaliza a la URL canónica /comparar/{libro}/{cap}/{a}/{b}
+    if (isset($_GET['book'])) {
+        $fb = $repo->book((string) $_GET['book']);
+        $fa = $repo->versionByCode((string) ($_GET['a'] ?? ''));
+        $fbv = $repo->versionByCode((string) ($_GET['b'] ?? ''));
+        $fc = max(1, (int) ($_GET['cap'] ?? 1));
+        if (!$fb || !$fa || !$fbv || $fc > (int) $fb['chapters']) {
+            $notFound('No pude armar esa comparación.');
+            exit;
+        }
+        if ($fa['id'] === $fbv['id']) {
+            $notFound('Elige dos versiones distintas para comparar.');
+            exit;
+        }
+        header('Location: ' . url("comparar/{$fb['slug']}/{$fc}/{$fa['code']}/{$fbv['code']}"), true, 302);
+        exit;
+    }
+    $cbook = isset($seg[1]) ? $repo->book((string) $seg[1]) : null;
+    if (!$cbook) {
+        // Picker: elegir libro/capítulo/versiones sin JS (GET → redirect canónico)
+        view('comparar', [
+            'title' => 'Comparar versiones',
+            'versions' => $versions,
+            'version' => $versions[0] ?? null,
+            'books' => $repo->books(),
+            'book' => null, 'chapter' => 1,
+            'va' => null, 'vb' => null,
+            'versesA' => [], 'versesB' => [], 'nav' => null,
+        ]);
+        exit;
+    }
+    $cch = ctype_digit($seg[2] ?? '') ? (int) $seg[2] : 0;
+    if ($cch < 1 || $cch > (int) $cbook['chapters']) {
+        $notFound('Ese capítulo no existe.');
+        exit;
+    }
+    $def = (string) config('app.default_version', 'rvr1909');
+    $va = isset($seg[3]) ? $repo->versionByCode((string) $seg[3]) : ($repo->versionByCode($def) ?: ($versions[0] ?? null));
+    $vb = isset($seg[4]) ? $repo->versionByCode((string) $seg[4]) : null;
+    if (!$vb || ($va && $vb['id'] === $va['id'])) {
+        $vb = null;
+        foreach ($versions as $v2) {
+            if ($va && $v2['id'] !== $va['id'] && $v2['code'] === 'onbv') { $vb = $v2; break; }
+        }
+        if (!$vb) {
+            foreach ($versions as $v2) {
+                if ($va && $v2['id'] !== $va['id']) { $vb = $v2; break; }
+            }
+        }
+    }
+    if (!$va || !$vb) {
+        $notFound('Necesito dos versiones cargadas para comparar.');
+        exit;
+    }
+    \Biblia\Core\Metrics::bump('cmp', $va['code'] . '>' . $vb['code']);
+    $navA = $repo->chapterNav($va, $cbook, $cch);
+    $cmpNav = ['prev' => null, 'next' => null];
+    foreach (['prev', 'next'] as $dir) {
+        if ($navA[$dir]) {
+            $np = explode('/', ltrim($navA[$dir], '/'));
+            $cmpNav[$dir] = "comparar/{$np[1]}/{$np[2]}/{$va['code']}/{$vb['code']}";
+        }
+    }
+    view('comparar', [
+        'title' => "Comparar {$cbook['name']} {$cch}: " . strtoupper($va['code']) . ' vs ' . strtoupper($vb['code']),
+        'versions' => $versions,
+        'version' => $va,
+        'books' => $repo->books(),
+        'book' => $cbook, 'chapter' => $cch,
+        'va' => $va, 'vb' => $vb,
+        'versesA' => array_column($repo->chapter((int) $va['id'], (int) $cbook['id'], $cch), null, 'verse'),
+        'versesB' => array_column($repo->chapter((int) $vb['id'], (int) $cbook['id'], $cch), null, 'verse'),
+        'nav' => $cmpNav,
+    ]);
+    exit;
+}
+
 // ---- /mias — anotaciones personales (IndexedDB del navegador) ----------------
 if (($seg[0] ?? '') === 'mias') {
     view('mias', [
@@ -402,6 +502,16 @@ $chapter = ctype_digit($seg[2]) ? (int) $seg[2] : 0;
 if (count($seg) === 3 && $chapter >= 1 && $chapter <= (int) $book['chapters']) {
     $verses = $repo->chapter((int) $version['id'], (int) $book['id'], $chapter);
     $nav = $repo->chapterNav($version, $book, $chapter);
+    // US-115/US-140: propone otra versión para comparar (prefiere ONBV)
+    $otherV = null;
+    foreach ($versions as $v2) {
+        if ($v2['id'] !== $version['id'] && $v2['code'] === 'onbv') { $otherV = $v2; break; }
+    }
+    if (!$otherV) {
+        foreach ($versions as $v2) {
+            if ($v2['id'] !== $version['id']) { $otherV = $v2; break; }
+        }
+    }
     view('reader', [
         'title' => "{$book['name']} {$chapter} — {$version['name']}",
         'versions' => $versions,
@@ -410,6 +520,7 @@ if (count($seg) === 3 && $chapter >= 1 && $chapter <= (int) $book['chapters']) {
         'chapter' => $chapter,
         'verses' => $verses,
         'nav' => $nav,
+        'cmpUrl' => $otherV ? "comparar/{$book['slug']}/{$chapter}/{$version['code']}/{$otherV['code']}" : null,
     ]);
     exit;
 }

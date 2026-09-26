@@ -22,13 +22,17 @@
     <p class="muted">Si eres el administrador: <code>php scripts/import_bible.php --file=... --code=<?= e($version['code']) ?></code></p>
 </section>
 <?php else: ?>
-<article class="chapter" data-pos="<?= e("{$version['code']}/{$book['slug']}/{$chapter}") ?>">
+<article class="chapter" data-pos="<?= e("{$version['code']}/{$book['slug']}/{$chapter}") ?>" data-label="<?= e("{$book['name']} {$chapter}") ?>"<?= !empty($cmpUrl) ? ' data-cmp="' . e(url($cmpUrl)) . '"' : '' ?>>
     <?php foreach ($verses as $v): ?>
     <p class="verse<?= (int) $v['verse'] === 1 ? ' first-verse' : '' ?>" id="v<?= (int) $v['verse'] ?>" data-ref="<?= e("{$book['name']} {$chapter}:{$v['verse']}") ?>" data-text="<?= e($v['text']) ?>">
         <sup><?= (int) $v['verse'] ?></sup><?= verseHtml($v['text'], $v['wj'] ?? null, (int) $v['verse'] === 1) ?>
     </p>
     <?php endforeach; ?>
 </article>
+<?php endif; ?>
+
+<?php if (!empty($cmpUrl)): ?>
+<p class="reader-tools"><a href="<?= e(url($cmpUrl)) ?>">⇄ Comparar con otra versión</a></p>
 <?php endif; ?>
 
 <div class="reader-foot">

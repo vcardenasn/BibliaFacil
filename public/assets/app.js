@@ -47,6 +47,7 @@
     apply('family', P.get('family', 'serif'));
     apply('accent', P.get('accent', 'indigo'));
     apply('lineh', P.get('lineh', 'normal'));
+    apply('spacing', P.get('spacing', 'off')); // US-151: letra espaciada (dislexia)
     apply('zen', P.get('zen', 'off'));
     var zenBtn = null;
     syncZen();
@@ -85,6 +86,7 @@
                 '<div class="pp-row"><span>Interlineado</span><div class="seg" data-k="lineh">' + seg('compact', 'Compacto') + seg('normal', 'Normal') + seg('ample', 'Amplio') + '</div></div>' +
                 '<div class="pp-row"><span>Palabras de Jesús en rojo</span><button type="button" class="tog" data-k="wj" role="switch" aria-label="Palabras de Jesús en rojo"></button></div>' +
                 '<div class="pp-row"><span>Números de versículo</span><button type="button" class="tog" data-k="vnum" role="switch" aria-label="Números de versículo"></button></div>' +
+                '<div class="pp-row"><span>Espaciado de letras</span><button type="button" class="tog" data-k="spacing" role="switch" aria-label="Espaciado amplio de letras"></button></div>' +
                 '<div class="pp-row"><span>Párrafo fluido</span><button type="button" class="tog" data-k="flow" data-on="para" role="switch" aria-label="Párrafo fluido"></button></div>' +
                 '<div class="pp-row"><span>Modo zen (sin barras)</span><button type="button" class="tog" data-k="zen" role="switch" aria-label="Modo zen (sin barras)"></button></div>';
             document.body.appendChild(panel);
@@ -225,6 +227,13 @@
             P.set('days', JSON.stringify(days.slice(-500)));
         }
 
+        // Historial de lectura (US-130): últimas posiciones para /mias
+        var hist = [];
+        try { hist = JSON.parse(P.get('hist', '[]')); } catch (e) {}
+        hist = hist.filter(function (h) { return h && h.p !== pos; });
+        hist.unshift({ p: pos, l: chapterEl.getAttribute('data-label') || pos, t: Date.now() });
+        P.set('hist', JSON.stringify(hist.slice(0, 30)));
+
         // Scroll-restore por capítulo
         var posKey = 'bf_scr_' + pos;
         if (!window.location.hash) {
@@ -334,6 +343,7 @@
         var text = el.getAttribute('data-text') || el.textContent.trim();
         var kp = id.split('|'); // version|slug|cap|ver → URL corta /v/slug/cap/ver (US-201)
         var surl = kp.length === 4 ? location.origin + '/v/' + kp[1] + '/' + kp[2] + '/' + kp[3] + '?v=' + kp[0] : location.href;
+        var cmpUrl = chapterEl ? chapterEl.getAttribute('data-cmp') : null;
 
         sheet = document.createElement('div');
         sheet._vtext = text; sheet._vref = ref;
@@ -356,7 +366,11 @@
             '<button type="button" data-a="copy" class="va2">⧉ Copiar</button>' +
             '<button type="button" data-a="share" class="va2">↗ Compartir</button>' +
             '<button type="button" data-a="img" class="va2">🖼 Imagen</button>' +
+            '<button type="button" data-a="range" class="va2" aria-expanded="false">⇅ Rango</button>' +
+            (cmpUrl ? '<a class="va2" href="' + esc(cmpUrl) + '">⇄ Comparar</a>' : '') +
             '</div>' +
+            '<div class="vs-range" hidden><label>Hasta v. <select class="vs-range-sel"></select></label>' +
+            '<button type="button" data-a="copyrange" class="va2">⧉ Copiar rango</button></div>' +
             '<div class="vs-note" hidden><textarea rows="3" maxlength="2000" placeholder="Escribe tu nota…">' + esc(rec.note || '') + '</textarea>' +
             '<div class="vs-note-btns"><button type="button" data-a="save" class="va2 on">Guardar</button>' +
             (rec.note ? '<button type="button" data-a="delnote" class="va2">Borrar nota</button>' : '') + '</div></div>' +
@@ -422,6 +436,44 @@
                     navigator.clipboard.writeText(payload).then(function () {
                         act.textContent = '✓ Copiado';
                         setTimeout(function () { act.textContent = '⧉ Copiar'; }, 1100);
+                    });
+                }
+            } else if (a === 'range') {
+                // US-143 — copiar un rango de versículos a partir de este
+                var rz = sheet.querySelector('.vs-range');
+                var sel = rz.querySelector('select');
+                if (!sel.options.length) {
+                    var from = parseInt(sheetVerse.id.slice(1), 10);
+                    document.querySelectorAll('.chapter .verse').forEach(function (v) {
+                        var n = parseInt(v.id.slice(1), 10);
+                        if (n > from) {
+                            var o = document.createElement('option');
+                            o.value = n; o.textContent = n;
+                            sel.appendChild(o);
+                        }
+                    });
+                }
+                rz.hidden = !rz.hidden;
+                act.setAttribute('aria-expanded', String(!rz.hidden));
+            } else if (a === 'copyrange') {
+                var rsel = sheet.querySelector('.vs-range-sel');
+                var vFrom = parseInt(sheetVerse.id.slice(1), 10);
+                var vTo = rsel.value ? parseInt(rsel.value, 10) : 0;
+                var parts = [];
+                document.querySelectorAll('.chapter .verse').forEach(function (v) {
+                    var n = parseInt(v.id.slice(1), 10);
+                    if (n >= vFrom && n <= vTo) {
+                        parts.push(v.getAttribute('data-text') || v.textContent.trim());
+                    }
+                });
+                var base = ref.replace(/:\d+.*$/, '');
+                var rangeRef = vTo > vFrom ? base + ':' + vFrom + '-' + vTo : ref;
+                var rUrl = location.origin + '/' + chapterEl.getAttribute('data-pos') + '#v' + vFrom;
+                TK('share', 'range');
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText('“' + parts.join(' ') + '” — ' + rangeRef + '\n' + rUrl).then(function () {
+                        act.textContent = '✓ Copiado';
+                        setTimeout(function () { act.textContent = '⧉ Copiar rango'; }, 1100);
                     });
                 }
             } else if (a === 'share') {
@@ -599,6 +651,25 @@
             }
         }
 
+        // Historial de lectura (US-130): últimos capítulos visitados, en este dispositivo
+        var histBox = document.getElementById('histBox');
+        if (histBox) {
+            var hlist = [];
+            try { hlist = JSON.parse(P.get('hist', '[]')); } catch (e) {}
+            if (hlist.length) {
+                var DAY = 86400000;
+                var rel = function (ts) {
+                    var d = Math.floor((Date.now() - ts) / DAY);
+                    return d <= 0 ? 'hoy' : (d === 1 ? 'ayer' : 'hace ' + d + ' días');
+                };
+                histBox.hidden = false;
+                document.getElementById('histList').innerHTML = hlist.slice(0, 12).map(function (h) {
+                    return '<li><a href="/' + esc(h.p) + '">' + esc(h.l) + '</a>' +
+                        ' <span class="muted">' + rel(h.t) + '</span></li>';
+                }).join('');
+            }
+        }
+
         function renderMias() {
             DB.all().then(function (all) {
                 if (bookSel) {
@@ -759,6 +830,49 @@
         }
         renderMias();
     }
+
+    // ============================ Contexto en búsqueda (US-142) ===============
+    // Botón "± contexto" por resultado → /api/contexto devuelve ±3 versículos.
+    document.addEventListener('click', function (ev) {
+        var cb = ev.target.closest ? ev.target.closest('.ctx-btn') : null;
+        if (!cb) { return; }
+        var li = cb.closest('.result');
+        var box = li.querySelector('.ctx');
+        if (!box) {
+            box = document.createElement('div');
+            box.className = 'ctx';
+            box.id = 'ctx-' + cb.getAttribute('data-b') + '-' + cb.getAttribute('data-c') + '-' + cb.getAttribute('data-n');
+            box.hidden = true;
+            cb.setAttribute('aria-controls', box.id);
+            li.appendChild(box);
+        }
+        if (!box.hidden) { box.hidden = true; cb.setAttribute('aria-expanded', 'false'); return; }
+        if (box.dataset.loaded) { box.hidden = false; cb.setAttribute('aria-expanded', 'true'); return; }
+        cb.disabled = true;
+        var hit = parseInt(cb.getAttribute('data-n'), 10);
+        fetch('/api/contexto?v=' + encodeURIComponent(cb.getAttribute('data-v')) +
+            '&b=' + encodeURIComponent(cb.getAttribute('data-b')) +
+            '&c=' + encodeURIComponent(cb.getAttribute('data-c')) +
+            '&n=' + encodeURIComponent(cb.getAttribute('data-n')))
+            .then(function (r) { return r.json(); })
+            .then(function (j) {
+                if (!j.ok || !j.verses.length) { throw new Error('sin datos'); }
+                j.verses.forEach(function (v) {
+                    var p = document.createElement('p');
+                    p.className = 'ctx-v' + (v.v === hit ? ' ctx-hit' : '');
+                    var sup = document.createElement('sup');
+                    sup.textContent = v.v;
+                    p.appendChild(sup);
+                    p.appendChild(document.createTextNode(v.t));
+                    box.appendChild(p);
+                });
+                box.dataset.loaded = '1';
+                box.hidden = false;
+                cb.setAttribute('aria-expanded', 'true');
+            })
+            .catch(function () { box.textContent = 'No se pudo cargar el contexto.'; box.hidden = false; })
+            .finally(function () { cb.disabled = false; });
+    });
 
     // ============================ Escuchar capítulo (TTS) =====================
     var vv = [].slice.call(document.querySelectorAll('.chapter .verse'));
