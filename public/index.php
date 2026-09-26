@@ -3,6 +3,7 @@
 require __DIR__ . '/../bootstrap.php';
 
 use Biblia\Bible\BibleRepository;
+use Biblia\Bible\ReadingPlan;
 use Biblia\Bible\ReferenceParser;
 use Biblia\Core\FeatureFlags;
 use Biblia\Games\VerseQuiz;
@@ -53,7 +54,11 @@ if (($seg[0] ?? '') === 'sitemap.xml' || (($seg[0] ?? '') === 'sitemap' && isset
             '<url><loc>', $abs('juegos'), '</loc><priority>0.7</priority></url>', "\n",
             '<url><loc>', $abs('temas'), '</loc><priority>0.9</priority></url>', "\n",
             '<url><loc>', $abs('versiculo-del-dia'), '</loc><priority>0.9</priority></url>', "\n",
-            '<url><loc>', $abs('guias'), '</loc><priority>0.6</priority></url>', "\n";
+            '<url><loc>', $abs('guias'), '</loc><priority>0.6</priority></url>', "\n",
+            '<url><loc>', $abs('planes'), '</loc><priority>0.7</priority></url>', "\n";
+        foreach (config('plans') as $pslug => $p) {
+            echo '<url><loc>', $abs('planes/' . $pslug), '</loc><priority>0.6</priority></url>', "\n";
+        }
         foreach (config('games') as $gslug => $g) {
             if (!empty($g['ready'])) {
                 echo '<url><loc>', $abs('juegos/' . $gslug), '</loc><priority>0.5</priority></url>', "\n";
@@ -372,6 +377,45 @@ if (($seg[0] ?? '') === 'comparar') {
         'versesA' => array_column($repo->chapter((int) $va['id'], (int) $cbook['id'], $cch), null, 'verse'),
         'versesB' => array_column($repo->chapter((int) $vb['id'], (int) $cbook['id'], $cch), null, 'verse'),
         'nav' => $cmpNav,
+    ]);
+    exit;
+}
+
+// ---- /planes — planes de lectura (EPIC 05) -----------------------------------
+if (($seg[0] ?? '') === 'planes') {
+    $plans = config('plans');
+    $booksAll = $repo->books();
+    // Abre los capítulos en tu última versión usada (cookie), si no, la por defecto
+    $pvCode = (string) config('app.default_version', 'rvr1909');
+    if (preg_match('#^([a-z0-9-]+)/#', (string) ($_COOKIE['bf_pos'] ?? ''), $m)) { $pvCode = $m[1]; }
+    $planVersion = $repo->versionByCode($pvCode)
+        ?: $repo->versionByCode((string) config('app.default_version', 'rvr1909'))
+        ?: ($versions[0] ?? null);
+    if (count($seg) === 1) {
+        $totals = [];
+        foreach ($plans as $ps => $p) { $totals[$ps] = count(ReadingPlan::readings($p, $booksAll)); }
+        view('planes', [
+            'title' => 'Planes de lectura de la Biblia',
+            'versions' => $versions,
+            'version' => $planVersion,
+            'plans' => $plans,
+            'planTotals' => $totals,
+        ]);
+        exit;
+    }
+    $slug = (string) ($seg[1] ?? '');
+    if (!isset($plans[$slug])) {
+        $notFound('Plan no encontrado.');
+        exit;
+    }
+    view('plan', [
+        'title' => $plans[$slug]['name'] . ' — plan de lectura',
+        'versions' => $versions,
+        'version' => $planVersion,
+        'plan' => $plans[$slug],
+        'planVersion' => $planVersion,
+        'slug' => $slug,
+        'days' => ReadingPlan::days($plans[$slug], $booksAll),
     ]);
     exit;
 }

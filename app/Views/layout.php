@@ -51,7 +51,7 @@
     <nav class="primary-nav" aria-label="Navegación principal">
         <a href="<?= e(url('/')) ?>"<?= $activeSection === '' ? ' aria-current="page"' : '' ?>><span aria-hidden="true">⌂</span><span>Inicio</span></a>
         <a href="<?= e(url($readCode)) ?>"<?= in_array($activeSection, array_column($versions ?? [], 'code'), true) ? ' aria-current="true"' : '' ?>><span aria-hidden="true">▤</span><span>Leer</span></a>
-        <a href="<?= e(url('temas')) ?>"<?= in_array($activeSection, ['temas', 'guias', 'versiculo', 'versiculo-del-dia', 'v'], true) ? ' aria-current="true"' : '' ?>><span aria-hidden="true">◇</span><span>Explorar</span></a>
+        <a href="<?= e(url('temas')) ?>"<?= in_array($activeSection, ['temas', 'guias', 'versiculo', 'versiculo-del-dia', 'v', 'planes'], true) ? ' aria-current="true"' : '' ?>><span aria-hidden="true">◇</span><span>Explorar</span></a>
         <a href="<?= e(url('juegos')) ?>"<?= $activeSection === 'juegos' ? ' aria-current="true"' : '' ?>><span aria-hidden="true">✦</span><span>Juegos</span></a>
         <a href="<?= e(url('mias')) ?>"<?= $activeSection === 'mias' ? ' aria-current="page"' : '' ?>><span aria-hidden="true">♡</span><span>Mis notas</span></a>
     </nav>
@@ -98,6 +98,7 @@
     <?php endif; ?>
     <p>Biblia Fácil — lee la Biblia, fácil. ·
         <a href="<?= e(url('temas')) ?>">Temas</a> ·
+        <a href="<?= e(url('planes')) ?>">Planes de lectura</a> ·
         <a href="<?= e(url('versiculo-del-dia')) ?>">Versículo del día</a> ·
         <a href="<?= e(url('guias')) ?>">Guías</a> ·
         <a href="<?= e(url('juegos')) ?>">Juegos</a></p>

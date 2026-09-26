@@ -37,6 +37,7 @@
     </div>
     <div class="home-starters" aria-label="Ideas para empezar">
         <span>Prueba también:</span>
+        <a href="<?= e(url('planes')) ?>">Planes de lectura</a>
         <a href="<?= e(url('guias/como-leer')) ?>">No sé por dónde empezar</a>
         <a href="<?= e(url('versiculo-del-dia')) ?>">Versículo del día</a>
         <a href="<?= e(url('guias/que-version')) ?>">¿Qué versión elegir?</a>

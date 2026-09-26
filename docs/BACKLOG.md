@@ -32,9 +32,9 @@ Leyenda: ✅ implementado en MVP · ⬜ pendiente
 - US-030 ✅ FULLTEXT MySQL / LIKE SQLite, `/buscar?q=&v=`, flag `FF_SEARCH`
 - US-032 ⬜ Favoritos/resaltados → **movido a EPIC 11** (IndexedDB, no localStorage)
 
-## EPIC 05 — Planes de lectura (FF_PLANS) ⬜
-- US-040 Seeds: "Biblia en un año", "NT 90 días", "Salmos+Proverbios mensual"
-- US-041 UI de plan: día actual, marcar leído, progreso + racha (localStorage)
+## EPIC 05 — Planes de lectura ✅
+- US-040 ✅ Seeds en `config/plans.php` + `ReadingPlan`: "Biblia en un año" (365d), "NT en 90 días", "Salmos+Proverbios en un mes" (31d)
+- US-041 ✅ `/planes` + `/planes/{slug}`: día actual resaltado, marcar leído por día, barra de progreso, ritmo vs. inicio, reinicio — todo en localStorage `bf_plan_{slug}`; enlaces a la versión de tu última lectura
 
 ## EPIC 06 — Multi-versión avanzada ⬜
 - US-050 ✅ Comparador lado a lado (2 versiones) — `/comparar/{libro}/{cap}/{a}/{b}`, noindex (ver US-140)

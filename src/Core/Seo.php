@@ -115,6 +115,24 @@ final class Seo
                 }
                 break;
 
+            case 'planes':
+                $meta['desc'] = 'Planes de lectura bíblica gratis y sin cuenta: la Biblia en un año, el Nuevo Testamento en 90 días, Salmos y Proverbios en un mes.';
+                $meta['crumbs'] = self::pageCrumbs('Planes de lectura');
+                $meta['jsonld'] = [self::breadcrumbLd($meta['crumbs'])];
+                break;
+
+            case 'plan':
+                $p = $data['plan'] ?? [];
+                $meta['desc'] = ($p['desc'] ?? 'Plan de lectura bíblica.') . ' Progreso guardado en tu dispositivo.';
+                $meta['crumbs'] = self::pageCrumbs('Planes de lectura', $p['name'] ?? null, 'planes');
+                $meta['jsonld'] = [self::breadcrumbLd($meta['crumbs']), [
+                    '@context' => 'https://schema.org',
+                    '@type' => 'ItemList',
+                    'name' => $p['name'] ?? 'Plan de lectura',
+                    'numberOfItems' => count($data['days'] ?? []),
+                ]];
+                break;
+
             case 'juegos':
                 $meta['desc'] = 'Juegos bíblicos gratis para niños — trivia, memoria, ordena la historia, completa el versículo y más.';
                 break;

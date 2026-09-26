@@ -874,6 +874,88 @@
             .finally(function () { cb.disabled = false; });
     });
 
+    // ============================ Planes de lectura (EPIC 05) =================
+    // Estado local por plan: bf_plan_{slug} = {s: inicio(ms), d: [días hechos]}
+    var planApp = document.getElementById('planApp');
+    if (planApp) {
+        var pslug = planApp.getAttribute('data-slug');
+        var pkey = 'plan_' + pslug;
+        var pst = null;
+        try { pst = JSON.parse(P.get(pkey, 'null')); } catch (e) {}
+        if (!pst || typeof pst !== 'object') { pst = { s: 0, d: [] }; }
+        if (!Array.isArray(pst.d)) { pst.d = []; }
+        var dayEls = planApp.querySelectorAll('.plan-day');
+        var totalDays = dayEls.length;
+        var bar = document.getElementById('planBar');
+        var lab = document.getElementById('planLabel');
+        var pace = document.getElementById('planPace');
+        var barWrap = planApp.querySelector('.plan-bar');
+        var btnStart = document.getElementById('planStart');
+        var btnReset = document.getElementById('planReset');
+        var goBtn = document.getElementById('planGo');
+
+        function nextPlanDay() {
+            for (var i = 1; i <= totalDays; i++) { if (pst.d.indexOf(i) < 0) { return i; } }
+            return 0;
+        }
+        function paintPlan() {
+            var done = pst.d.length;
+            lab.textContent = done + ' de ' + totalDays + ' días';
+            bar.style.width = (done * 100 / totalDays).toFixed(1) + '%';
+            if (barWrap) { barWrap.setAttribute('aria-valuenow', String(done)); }
+            var nx = nextPlanDay();
+            if (goBtn) {
+                goBtn.setAttribute('href', '#d' + (nx || totalDays));
+                goBtn.textContent = nx ? 'Ir al día ' + nx + ' ↓' : 'Plan completado';
+            }
+            dayEls.forEach(function (el) {
+                var n = parseInt(el.id.slice(1), 10);
+                el.classList.toggle('done', pst.d.indexOf(n) >= 0);
+                el.classList.toggle('current', n === nx);
+                var b = el.querySelector('.pd-check');
+                if (b) { b.setAttribute('aria-pressed', String(pst.d.indexOf(n) >= 0)); }
+            });
+            btnStart.hidden = !!pst.s;
+            btnReset.hidden = !pst.s;
+            if (pace) {
+                if (!pst.s) { pace.textContent = 'Toca «Empezar» para registrar tu ritmo, o marca días directamente.'; }
+                else if (!nx) { pace.textContent = 'Completaste el plan. ¡Enhorabuena!'; }
+                else {
+                    var expected = Math.min(totalDays, Math.floor((Date.now() - pst.s) / 86400000) + 1);
+                    pace.textContent = nx === expected ? '¡Vas al día!'
+                        : (nx < expected ? 'Deberías ir por el día ' + expected + ' — te falta el día ' + nx + '.'
+                        : 'Vas adelantado: toca el día ' + expected + ' y ya vas en el ' + nx + '.');
+                }
+            }
+        }
+        btnStart.addEventListener('click', function () {
+            pst.s = Date.now(); P.set(pkey, JSON.stringify(pst)); TK('plan', 'start:' + pslug); paintPlan();
+        });
+        btnReset.addEventListener('click', function () {
+            pst = { s: 0, d: [] }; P.set(pkey, JSON.stringify(pst)); TK('plan', 'reset:' + pslug); paintPlan();
+        });
+        planApp.addEventListener('click', function (ev) {
+            var b = ev.target.closest ? ev.target.closest('.pd-check') : null;
+            if (!b) { return; }
+            var d = parseInt(b.getAttribute('data-day'), 10);
+            var i = pst.d.indexOf(d);
+            if (!pst.s) { pst.s = Date.now(); }
+            if (i < 0) { pst.d.push(d); TK('plan', 'day:' + pslug); } else { pst.d.splice(i, 1); }
+            P.set(pkey, JSON.stringify(pst));
+            paintPlan();
+        });
+        paintPlan();
+    }
+    // Índice /planes: mini-progreso por tarjeta desde localStorage
+    document.querySelectorAll('[data-planprog]').forEach(function (el) {
+        var s = null;
+        try { s = JSON.parse(P.get('plan_' + el.getAttribute('data-planprog'), 'null')); } catch (e) {}
+        if (s && Array.isArray(s.d) && s.d.length) {
+            el.hidden = false;
+            el.textContent = '✓ ' + s.d.length + (s.d.length === 1 ? ' día completado' : ' días completados');
+        }
+    });
+
     // ============================ Escuchar capítulo (TTS) =====================
     var vv = [].slice.call(document.querySelectorAll('.chapter .verse'));
     var lbar = null, li = 0, lstate = 'off', lutId = 0;
