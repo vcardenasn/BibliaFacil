@@ -1,0 +1,88 @@
+[
+    {
+        "id": "creacion", "name": "La Creación", "emoji": "🌍",
+        "scenes": [
+            {"e": "💡", "t": "Dios creó la luz"},
+            {"e": "🌊", "t": "Separó el agua de la tierra"},
+            {"e": "🌳", "t": "Creó las plantas y los árboles"},
+            {"e": "🐟", "t": "Creó todos los animales"},
+            {"e": "👫", "t": "Creó a Adán y Eva"},
+            {"e": "😌", "t": "Descansó el séptimo día"}
+        ]
+    },
+    {
+        "id": "noe", "name": "Noé y el Arca", "emoji": "🚢",
+        "scenes": [
+            {"e": "📢", "t": "Dios avisó a Noé del diluvio"},
+            {"e": "🔨", "t": "Noé construyó el arca"},
+            {"e": "🐘", "t": "Entraron los animales de dos en dos"},
+            {"e": "🌧️", "t": "Llovió 40 días y 40 noches"},
+            {"e": "🕊️", "t": "La paloma trajo una hoja de olivo"},
+            {"e": "🌈", "t": "Dios puso el arcoíris"}
+        ]
+    },
+    {
+        "id": "jose", "name": "José el Soñador", "emoji": "🧥",
+        "scenes": [
+            {"e": "🧥", "t": "Su papá le regaló la túnica de colores"},
+            {"e": "🕳️", "t": "Sus hermanos lo vendieron"},
+            {"e": "🔒", "t": "Fue encarcelado injustamente"},
+            {"e": "🌾", "t": "Interpretó los sueños del faraón"},
+            {"e": "👑", "t": "Se convirtió en gobernador de Egipto"},
+            {"e": "🤗", "t": "Perdonó a sus hermanos"}
+        ]
+    },
+    {
+        "id": "david", "name": "David y Goliat", "emoji": "🪨",
+        "scenes": [
+            {"e": "🐑", "t": "David cuidaba las ovejas"},
+            {"e": "🧀", "t": "Llevó comida a sus hermanos soldados"},
+            {"e": "😠", "t": "El gigante Goliat se burlaba"},
+            {"e": "🪨", "t": "David tomó 5 piedritas del río"},
+            {"e": "🎯", "t": "Lanzó la piedra con su honda"},
+            {"e": "🎉", "t": "Israel celebró la victoria"}
+        ]
+    },
+    {
+        "id": "jonas", "name": "Jonás y el Gran Pez", "emoji": "🐳",
+        "scenes": [
+            {"e": "🚢", "t": "Jonás huyó en un barco"},
+            {"e": "🌊", "t": "Vino una gran tormenta"},
+            {"e": "🐳", "t": "Un gran pez se lo tragó"},
+            {"e": "🙏", "t": "Oró 3 días dentro del pez"},
+            {"e": "🏖️", "t": "El pez lo escupió en la playa"},
+            {"e": "📣", "t": "Predicó en Nínive"}
+        ]
+    },
+    {
+        "id": "pascua", "name": "La Semana de Pascua", "emoji": "✝️",
+        "scenes": [
+            {"e": "🫏", "t": "Jesús entró a Jerusalén en un burrito"},
+            {"e": "🍞", "t": "La última cena con sus discípulos"},
+            {"e": "🌳", "t": "Oró en el huerto Getsemaní"},
+            {"e": "✝️", "t": "Murió en la cruz por nosotros"},
+            {"e": "🪦", "t": "Lo pusieron en la tumba"},
+            {"e": "🌅", "t": "¡Resucitó al tercer día!"}
+        ]
+    },
+    {
+        "id": "daniel", "name": "Daniel y los Leones", "emoji": "🦁",
+        "scenes": [
+            {"e": "🏛️", "t": "Daniel servía al rey en Babilonia"},
+            {"e": "🙏", "t": "Oraba a Dios 3 veces al día"},
+            {"e": "📜", "t": "Una ley prohibió orar a Dios"},
+            {"e": "🦁", "t": "Lo echaron al foso de los leones"},
+            {"e": "😇", "t": "Dios cerró la boca de los leones"},
+            {"e": "👑", "t": "El rey honró al Dios de Daniel"}
+        ]
+    },
+    {
+        "id": "sembrador", "name": "El Sembrador", "emoji": "🌱",
+        "scenes": [
+            {"e": "🐦", "t": "Semilla cayó en el camino — se la comieron las aves"},
+            {"e": "🪨", "t": "Semilla cayó en piedras — se secó"},
+            {"e": "🌵", "t": "Semilla cayó en espinos — se ahogó"},
+            {"e": "🌾", "t": "Semilla cayó en buena tierra — ¡dio mucho fruto!"}
+        ]
+    }
+]
