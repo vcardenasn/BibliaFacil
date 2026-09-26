@@ -153,6 +153,48 @@ sin archivos). Mobile-first: botones gigantes, texto mínimo.*
 - US-180 ✅ Bancos engordados: trivia 113 (niveles 1-3), V/F 80, historias 8, parejas 14, pistas 30
 - US-181 ✅ Endpoint versículo aleatorio con distractores — solo lectura, sin PII
 
+## EPIC 18 — SEO técnico base ⬜
+*Hoy solo hay `<title>` genérico + descripción estática — cero canonical, OG, sitemap,
+robots ni datos estructurados. Guardrails: `/mias`, resultados de `/buscar`, `check.php`
+y `track.php` → `noindex`; nada de cloaking ni thin content.*
+- US-182 ⬜ Meta dinámico por ruta: title/description únicos por capítulo ("Juan 3 — RVR1909 | Biblia Fácil", descripción = primeras ~150 letras del capítulo), canonical + `og:url` vía `$meta` pasado a view()
+- US-183 ⬜ Open Graph + Twitter Cards: `og:type=article`, `og:site_name`, `og:locale` (es / en_US para KJV), `twitter:card=summary_large_image`, imagen default
+- US-184 ⬜ `robots.txt` (bloquea check/track/mias, apunta a sitemap) + `sitemap.xml` dinámico: índice → sitemap por versión → ~7k URLs de capítulos con `lastmod` + `xhtml:link` hreflang
+- US-185 ⬜ JSON-LD: `WebSite`+`SearchAction` (sitelinks searchbox → `/buscar?q=`), `BreadcrumbList` por ruta, `Article`/`Chapter` en reader con `isPartOf`
+- US-186 ⬜ Breadcrumbs visibles (Versión › Libro › Capítulo) — además del JSON-LD mejora CTR en SERP y UX
+- US-187 ⬜ hreflang es ↔ en: capítulos enlazan equivalente KJV + `x-default` → versión default
+
+## EPIC 19 — Contenido indexable (captar búsquedas) ⬜
+*El lector solo captura quien ya busca "juan 3". El volumen real está en intenciones:
+"versículos de ánimo", "salmo 23 explicado", "versículo del día". Cada landing =
+contenido editorial real — usar métricas `cap`/`search` para priorizar.*
+- US-190 ⬜ `/temas/{tema}` — colecciones curadas (amor, fe, ánimo, familia, perdón, niños…): 15-25 versículos reales + contexto. Índice `/temas`. Captura "versículos de X" — volumen altísimo
+- US-191 ⬜ `/versiculo/{slug}` — landing por versículo famoso (juan-3-16, salmo-23, filipenses-4-13…): 3-4 versiones comparadas + contexto + imagen + link al capítulo
+- US-192 ⬜ Intro editorial por libro en `/{version}/{libro}`: 2-3 líneas (autor, época, tema) — quita thin content del índice de capítulos
+- US-193 ⬜ `/versiculo-del-dia` URL estable + archivo `?d=YYYY-MM-DD` + feed RSS — keyword "versículo del día" enorme
+- US-194 ⬜ Guías: "¿Qué versión elegir?" (comparativa de nuestras 6), "Cómo empezar a leer la Biblia" — contenido comunitario + FAQ schema
+
+## EPIC 20 — Viralidad / compartir ⬜
+*Ya existe el generador canvas — falta que el preview del link (lo que se ve en
+WhatsApp antes de abrir) sea una tarjeta atractiva.*
+- US-200 ⬜ `og:image` dinámico por versículo: `GET /img/{v}/{libro}/{cap}/{ver}.png` con GD (gradiente + texto + ref + marca dominio) → WhatsApp/X muestran el versículo como tarjeta
+- US-201 ⬜ Página compartible `/v/{ref}` (de US-191): URL corta con OG completo — la que circula en grupos
+- US-202 ⬜ Share buttons visibles: WhatsApp/Telegram/X/Facebook en reader y `/temas` — no escondidos en el sheet
+- US-203 ⬜ Watermark con dominio en la imagen canvas del sheet (la descarga ya existe)
+
+## EPIC 21 — Performance / Core Web Vitals ⬜
+*CWV es factor de ranking. La app ya es liviana (vanilla JS/CSS) — falta cache,
+compresión y medición continua.*
+- US-210 ⬜ Cache: `Cache-Control` largo en assets + fingerprint (`app.<hash>.css` o `?v=deploy`)
+- US-211 ⬜ Compresión gzip/brotli en `.htaccess` + minify de assets (en deploy o pre-minificado)
+- US-212 ⬜ LCP/CLS: `font-display: swap`, dimensiones reservadas, preconnect si se agregan fuentes
+- US-213 ⬜ CWV medido con métrica `perf` existente → p75 en dashboard `check.php?metrics=1`
+
+### Guardrails SEO
+- `noindex`: `/mias`, `/buscar` resultados, `check.php`, `track.php`, redirects `/ir`
+- Search Console: verificación por meta/archivo en `public/` + monitoreo de cobertura
+- Priorizar landings con datos reales: `cap`/`search`/`share` del dashboard (EPIC 16)
+
 ## Notas técnicas
 - `use` arriba en entry points + smoke test `php -S` (convención stack).
 - MySQL prod / SQLite dev+tests (DB_DRIVER).
