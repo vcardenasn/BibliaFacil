@@ -235,6 +235,23 @@
     min-height: 44px;
 }
 
+/* ---- Adivina el Personaje ---- */
+.pj-clues { display: flex; flex-direction: column; gap: .5rem; margin: .4rem 0 1rem; }
+.pj-clue {
+    background: var(--brand-soft); border-radius: 12px; padding: .6rem .9rem;
+    font-size: .95rem; line-height: 1.4; text-align: left;
+}
+.pj-clue em {
+    display: block; font-style: normal; font-family: var(--sans);
+    font-size: .65rem; font-weight: 800; color: var(--brand);
+    text-transform: uppercase; letter-spacing: .06em; margin-bottom: .15rem;
+}
+.pj-more { display: block; margin: .8rem auto 0; font-size: .85rem; }
+.pj-reveal { margin-top: 1rem; display: flex; flex-direction: column; align-items: center; gap: .15rem; }
+.pj-reveal span { font-size: 2.6rem; }
+.pj-reveal strong { font-family: var(--sans); font-size: 1.1rem; }
+.pj-reveal em { font-style: normal; font-family: var(--sans); font-weight: 800; color: var(--gold); }
+
 @media (prefers-reduced-motion: reduce) {
     .jh-card:hover .jh-emoji, .bfj-shake, .bfj-pop, .mm-face { animation: none; transition: none; }
 }
