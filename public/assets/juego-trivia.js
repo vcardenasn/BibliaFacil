@@ -73,7 +73,7 @@ BFJ.define('trivia', function (el) {
                 var emoji = ok >= 9 ? '🏆' : (ok >= 6 ? '🎉' : '💪');
                 var title = ok >= 9 ? '¡Experto bíblico!' : (ok >= 6 ? '¡Muy bien!' : '¡Sigue practicando!');
                 BFJ.celebrate({
-                    slug: 'trivia', stars: ok, emoji: emoji, title: title,
+                    slug: 'trivia', stars: ok, emoji: emoji, title: title, perfect: ok === qs.length,
                     extra: ok + ' de ' + qs.length + ' correctas · ' + CATS[cat].name,
                     onAgain: catScreen
                 });

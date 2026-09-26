@@ -97,7 +97,7 @@ BFJ.define('personaje', function (el) {
             var emoji = total >= 13 ? '🏆' : (total >= 8 ? '🎉' : '🔍');
             var title = total >= 13 ? '¡Detective bíblico!' : (total >= 8 ? '¡Muy buenas pistas!' : '¡Sigue intentando!');
             BFJ.celebrate({
-                slug: 'personaje', stars: total, emoji: emoji, title: title,
+                slug: 'personaje', stars: total, emoji: emoji, title: title, perfect: total >= 15,
                 extra: total + '⭐ de 15 posibles',
                 onAgain: function () { location.reload(); }
             });

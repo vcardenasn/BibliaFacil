@@ -45,6 +45,41 @@
         [0, '🌱 Explorador'], [15, '📗 Aprendiz'], [50, '🏅 Maestro'], [120, '👑 Leyenda']
     ];
 
+    // ============================ Stickers (US-179) ===========================
+    // check(d, ctx) → bool; ctx = {perfect, slug}
+    var STICKERS = [
+        { id: 's10',  emoji: '🥉', name: 'Primeras 10 estrellas',   check: function (d) { return starTotal(d) >= 10; } },
+        { id: 's30',  emoji: '🥈', name: '30 estrellas',            check: function (d) { return starTotal(d) >= 30; } },
+        { id: 's75',  emoji: '🥇', name: '75 estrellas',            check: function (d) { return starTotal(d) >= 75; } },
+        { id: 's200', emoji: '💎', name: '200 estrellas',           check: function (d) { return starTotal(d) >= 200; } },
+        { id: 'multi', emoji: '🧭', name: 'Jugó 4 juegos distintos', check: function (d) {
+                var n = 0; for (var k in d.stars) { if (d.stars[k] > 0) { n++; } } return n >= 4;
+            } },
+        { id: 'all7', emoji: '🎮', name: 'Probó los 7 juegos',      check: function (d) {
+                var n = 0; for (var k in d.plays) { if (d.plays[k] > 0) { n++; } } return n >= 7;
+            } },
+        { id: 'perfect', emoji: '🏆', name: 'Ronda perfecta',       check: function (d, ctx) { return !!(ctx && ctx.perfect); } },
+        { id: 'collector', emoji: '🌟', name: 'Estrellas en los 7 juegos', check: function (d) {
+                var n = 0; for (var k in d.stars) { if (d.stars[k] > 0) { n++; } } return n >= 7;
+            } }
+    ];
+    function starTotal(d) {
+        var t = 0;
+        for (var k in d.stars) { t += d.stars[k] || 0; }
+        return t;
+    }
+    function checkStickers(ctx) {
+        var news = [];
+        STICKERS.forEach(function (s) {
+            if (data.stickers.indexOf(s.id) < 0 && s.check(data, ctx)) {
+                data.stickers.push(s.id);
+                news.push(s);
+            }
+        });
+        if (news.length) { save(); }
+        return news;
+    }
+
     // ============================ Sonidos (Web Audio) =========================
     var actx = null;
     function ctx() {
@@ -152,9 +187,10 @@
     }
 
     // ============================ Celebración =================================
-    // BFJ.celebrate({slug, stars, emoji, title, extra, onAgain})
+    // BFJ.celebrate({slug, stars, emoji, title, extra, perfect, onAgain})
     function celebrate(o) {
         BFJ.stars.add(o.slug, o.stars);
+        var news = checkStickers({ slug: o.slug, perfect: o.perfect });
         var ov = document.createElement('div');
         ov.className = 'bfj-ov';
         ov.innerHTML =
@@ -165,6 +201,9 @@
                 ? '⭐'.repeat(Math.min(o.stars, 10)) : '☆') + '</div>' +
             '<p class="bfj-ovpts">+' + o.stars + ' estrella' + (o.stars === 1 ? '' : 's') + '</p>' +
             (o.extra ? '<p class="bfj-ovextra">' + esc(o.extra) + '</p>' : '') +
+            (news.length ? '<div class="bfj-ovstick bfj-pop">🎁 ¡Sticker nuevo!<br>' +
+                news.map(function (s) { return '<span>' + s.emoji + ' ' + esc(s.name) + '</span>'; }).join('') +
+                '</div>' : '') +
             '<div class="bfj-ovbtns">' +
             (o.onAgain ? '<button type="button" class="jbtn jbtn-main" data-c="again">🔄 Otra vez</button>' : '') +
             '<button type="button" class="jbtn jbtn-ghost" data-c="hub">🎮 Juegos</button>' +
@@ -219,6 +258,11 @@
             data.plays[slug] = (data.plays[slug] || 0) + 1;
             save();
         },
+        stickers: {
+            all: STICKERS,
+            mine: function () { return data.stickers; },
+            check: checkStickers
+        },
         games: {},
         define: function (slug, init) { this.games[slug] = init; },
         fetchBank: function (file) {
@@ -245,6 +289,18 @@
                     if (b) { b.textContent = '⭐ ' + n; b.classList.add('won'); }
                 }
             });
+            // Álbum de stickers: por hitos ya ganados (evalúa sobre historial)
+            checkStickers({});
+            var wall = document.getElementById('stickerWall');
+            if (wall) {
+                var mine = BFJ.stickers.mine();
+                wall.innerHTML = STICKERS.map(function (s) {
+                    var got = mine.indexOf(s.id) >= 0;
+                    return '<div class="st' + (got ? ' got' : '') + '" title="' + esc(s.name) + '">' +
+                        '<span>' + (got ? s.emoji : '❓') + '</span>' +
+                        '<small>' + (got ? esc(s.name) : '???') + '</small></div>';
+                }).join('');
+            }
         }
         // Shell de juego: estrellas del juego + montar
         var app = document.getElementById('gameApp');

@@ -27,4 +27,7 @@
     <?php endforeach; ?>
 </div>
 
+<h2 class="jh-sub">🏆 Mi álbum de stickers</h2>
+<div class="jh-stickers" id="stickerWall"></div>
+
 <p class="jh-note">Tus estrellas se guardan en este dispositivo — sin cuentas 🌟</p>

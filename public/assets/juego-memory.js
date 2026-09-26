@@ -64,7 +64,7 @@ BFJ.define('memory', function (el) {
         function end() {
             var stars = moves <= 10 ? 5 : (moves <= 14 ? 4 : (moves <= 18 ? 3 : (moves <= 24 ? 2 : 1)));
             BFJ.celebrate({
-                slug: 'memory', stars: stars,
+                slug: 'memory', stars: stars, perfect: moves <= 10,
                 emoji: moves <= 10 ? '🏆' : '🎉',
                 title: moves <= 10 ? '¡Memoria de campeón!' : '¡Completaste el memory!',
                 extra: 'Encontraste ' + pairs.length + ' parejas en ' + moves + ' movimientos',

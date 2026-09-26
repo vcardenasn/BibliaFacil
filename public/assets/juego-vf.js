@@ -57,7 +57,7 @@ BFJ.define('vf', function (el) {
             var emoji = stars >= 9 ? '🏆' : (stars >= 6 ? '🎉' : '💪');
             var title = stars >= 9 ? '¡Eres un campeón!' : (stars >= 6 ? '¡Muy bien!' : '¡Sigue practicando!');
             BFJ.celebrate({
-                slug: 'vf', stars: stars, emoji: emoji, title: title,
+                slug: 'vf', stars: stars, emoji: emoji, title: title, perfect: ok === qs.length,
                 extra: ok + ' de ' + qs.length + ' correctas',
                 onAgain: function () { location.reload(); }
             });

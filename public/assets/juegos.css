@@ -54,6 +54,26 @@
 .jh-card.locked:hover .jh-emoji { animation: none; }
 .jh-note { text-align: center; color: var(--muted); font-family: var(--sans); font-size: .8rem; margin-top: 1.4rem; }
 
+/* ---- Álbum de stickers (US-179) ---- */
+.jh-sub { font-family: var(--sans); font-size: 1.05rem; margin: 1.6rem 0 .8rem; text-align: center; }
+.jh-stickers {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: .6rem;
+}
+.st {
+    display: flex; flex-direction: column; align-items: center; gap: .25rem;
+    background: var(--surface); border: 2px solid var(--border); border-radius: 14px;
+    padding: .8rem .4rem; text-align: center; opacity: .5; filter: saturate(.3);
+}
+.st.got { opacity: 1; filter: none; border-color: var(--gold); background: color-mix(in srgb, var(--gold) 8%, var(--surface)); animation: bfj-pop .35s; }
+.st span { font-size: 1.9rem; }
+.st small { font-family: var(--sans); font-size: .62rem; line-height: 1.2; color: var(--ink); }
+.bfj-ovstick {
+    margin: .7rem auto 0; padding: .6rem .9rem; max-width: 250px;
+    background: var(--gold-soft); border-radius: 12px;
+    font-family: var(--sans); font-size: .8rem; font-weight: 700; color: var(--ink);
+}
+.bfj-ovstick span { display: inline-block; margin: .25rem .3rem 0; }
+
 /* ---- Shell del juego ---- */
 .jg-shell { max-width: 620px; margin: 0 auto; }
 .jg-head {

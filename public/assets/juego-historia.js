@@ -65,7 +65,7 @@ BFJ.define('historia', function (el) {
             function end() {
                 var stars = Math.max(1, 5 - errors);
                 BFJ.celebrate({
-                    slug: 'historia', stars: stars,
+                    slug: 'historia', stars: stars, perfect: errors === 0,
                     emoji: errors === 0 ? '🏆' : '🎬',
                     title: errors === 0 ? '¡Orden perfecto!' : '¡Historia completada!',
                     extra: story.name + ' · ' + (errors === 0 ? 'sin errores' : errors + ' error' + (errors === 1 ? '' : 'es')),

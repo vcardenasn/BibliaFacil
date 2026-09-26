@@ -56,7 +56,7 @@ BFJ.define('versiculo', function (el) {
             var emoji = ok >= 9 ? '🏆' : (ok >= 6 ? '📖' : '💪');
             var title = ok >= 9 ? '¡Memorizas la Palabra!' : (ok >= 6 ? '¡Muy bien!' : '¡Sigue leyendo!');
             BFJ.celebrate({
-                slug: 'versiculo', stars: ok, emoji: emoji, title: title,
+                slug: 'versiculo', stars: ok, emoji: emoji, title: title, perfect: ok === qs.length,
                 extra: ok + ' de ' + qs.length + ' versículos completados',
                 onAgain: function () { location.reload(); }
             });

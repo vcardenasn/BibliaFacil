@@ -65,7 +65,7 @@ BFJ.define('libros', function (el) {
             function end() {
                 var stars = Math.max(1, 5 - Math.ceil(errors / 2));
                 BFJ.celebrate({
-                    slug: 'libros', stars: stars,
+                    slug: 'libros', stars: stars, perfect: errors === 0,
                     emoji: errors === 0 ? '🏆' : '📚',
                     title: errors === 0 ? '¡Orden perfecto!' : '¡Bloque completado!',
                     extra: block.name + ' · ' + n + ' libros · ' +
