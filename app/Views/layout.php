@@ -47,7 +47,7 @@
     <?php endif; ?>
     <p>Biblia Fácil — lee la Biblia, fácil.</p>
     <?php if (!empty($visits) && env('FF_COUNTER', '1') === '1'): ?>
-    <p class="visits"><span class="visits-ico" aria-hidden="true">👁</span><strong><?= number_format($visits[1]) ?></strong> visitas</p>
+    <p class="visits"><span class="visits-ico" aria-hidden="true">✝</span><strong><?= number_format($visits[1]) ?></strong> visitas</p>
     <?php endif; ?>
 </footer>
 
