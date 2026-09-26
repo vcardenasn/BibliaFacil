@@ -190,6 +190,7 @@
     // BFJ.celebrate({slug, stars, emoji, title, extra, perfect, onAgain})
     function celebrate(o) {
         BFJ.stars.add(o.slug, o.stars);
+        if (window.BF_TRACK) { window.BF_TRACK('game_win', o.slug); }
         var news = checkStickers({ slug: o.slug, perfect: o.perfect });
         var ov = document.createElement('div');
         ov.className = 'bfj-ov';

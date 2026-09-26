@@ -93,17 +93,17 @@ Leyenda: ✅ implementado en MVP · ⬜ pendiente
 - US-152 ✅ Contraste alto (tema ◆) · ya respeta prefers-reduced-motion
 - US-153 ✅ Teclado: `/` o `i` enfoca "Ir a" · `j`/`k` navega versículos · `Enter` abre sheet · ←/→ capítulos
 
-## EPIC 16 — Métricas de uso (privacy-first) ⬜
+## EPIC 16 — Métricas de uso (privacy-first) ✅
 *Sin GA ni terceros: contadores agregados propios, anónimos, sin PII ni fingerprinting.
 Beacon `track.php` + tabla de agregados diarios. Flag `FF_METRICS`.*
-- US-160 ⬜ Infraestructura: tabla `metrics_daily` (fecha, métrica, dimensión, contador) + endpoint `track.php` (POST beacon, sin cookies nuevas, IP nunca se guarda) + batched send desde `app.js` (navigator.sendBeacon)
-- US-161 ⬜ **Adopción**: páginas vistas por ruta (lector/búsqueda/índice), sesiones únicas por día (hash diario rotativo, no persistente), DAU/MAU
-- US-162 ⬜ **Contenido**: top libros/capítulos leídos, versión más usada, versículo del día visto/compartido
-- US-163 ⬜ **Features**: uso de búsqueda (conteo, NO el texto de la query), "ir a", cambio de versión, tema oscuro/claro/sepia, tamaño de fuente, toggle wj rojo, modo párrafo
-- US-164 ⬜ **Engagement**: anotaciones creadas por tipo (resalte/nota/favorito), compartir por canal, tiempo de lectura por capítulo (aprox: visibilitychange)
-- US-165 ⬜ **Embudo de retorno**: primera visita → segunda visita → racha (localStorage cuenta visitas, beacon solo envía bucket "visita Nº")
-- US-166 ⬜ Dashboard admin: `check.php?key=…&metrics=1` → resumen 7/30 días en HTML + export CSV
-- US-167 ⬜ Performance: p95 de tiempo de carga por ruta (performance.timing del navegador, agregado)
+- US-160 ✅ Infraestructura: `metrics_daily` (metric, dim, d, n) + `metrics_dau` + `track.php` (POST beacon whitelist, sin cookies, IP nunca se guarda) + batch sendBeacon desde `app.js` — tolerante si faltan tablas
+- US-161 ✅ **Adopción**: `pv` por vista (server-side en view()), DAU con hash IP+UA+día+salt rotativo en `metrics_dau` (INSERT OR IGNORE)
+- US-162 ✅ **Contenido**: `cap` dim `ver:libro:cap` (top capítulos), `ver` dim código por página
+- US-163 ✅ **Features**: `search`/`goto` server-side (solo conteo), `pref` dim k:v (tema/fuente/acento/wj/flow/zen…), `vswitch` dim versión — todo vía beacon
+- US-164 ✅ **Engagement**: `ann` (hl/note/fav), `share` (copy/native/wa/img/imgdl), `listen`, `read_s` (segundos al pagehide)
+- US-165 ✅ **Embudo**: `visit_n` con bucket desde `bf_days` (1,2,3,4-7,8-14,15-30,30+) — una vez/día vía localStorage
+- US-166 ✅ Dashboard: `check.php?key=…&metrics=1` → KPIs DAU 7/30d + tablas por métrica + `&csv=1` export
+- US-167 ✅ Performance: `perf` (ms por tipo de ruta) + `perf_c` muestras → avg en dashboard
 
 ### KPIs por EPIC (qué medir el éxito)
 | EPIC | KPI norte | Métricas |

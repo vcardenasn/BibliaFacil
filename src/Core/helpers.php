@@ -55,6 +55,23 @@ function view(string $name, array $data = []): void
     require $viewFile;
     $content = ob_get_clean();
     $visits = \Biblia\Core\Stats::bump('pv'); // [hoy, total] o null si falta la tabla
+
+    // EPIC 16 — métricas agregadas (anónimas, tolerantes a fallos)
+    \Biblia\Core\Metrics::session();
+    \Biblia\Core\Metrics::bump('pv', $name);
+    if (!empty($data['version']['code'])) {
+        \Biblia\Core\Metrics::bump('ver', $data['version']['code']);
+    }
+    if ($name === 'reader' && !empty($data['book']['slug'])) {
+        \Biblia\Core\Metrics::bump('cap', $data['version']['code'] . ':' . $data['book']['slug'] . ':' . ($data['chapter'] ?? 0));
+    }
+    if ($name === 'search' && ($data['q'] ?? '') !== '') {
+        \Biblia\Core\Metrics::bump('search', $data['version']['code'] ?? '');
+    }
+    if ($name === 'juego' && !empty($data['slug'])) {
+        \Biblia\Core\Metrics::bump('game', $data['slug']);
+    }
+
     require BASE_PATH . '/app/Views/layout.php';
 }
 

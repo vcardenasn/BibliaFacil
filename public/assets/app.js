@@ -14,6 +14,30 @@
 
     function apply(k, v) { root.setAttribute('data-' + k, v); }
 
+    // ============================ Métricas anónimas (EPIC 16) =================
+    // Batch en memoria → sendBeacon a /track.php. Sin cookies, sin PII,
+    // nunca envía texto del usuario. Respeta DoNotTrack/GlobalPrivacyControl.
+    var TK = (function () {
+        var off = navigator.doNotTrack === '1' || navigator.doNotTrack === 'yes' || navigator.globalPrivacyControl === true;
+        var q = [];
+        function t(m, d, n) {
+            if (off) { return; }
+            q.push([m, d || '', n || 1]);
+            if (q.length >= 10) { flush(); }
+        }
+        function flush() {
+            if (off || !q.length || !navigator.sendBeacon) { q = []; return; }
+            try {
+                navigator.sendBeacon('/track.php', new Blob([JSON.stringify({ e: q.splice(0) })], { type: 'application/json' }));
+            } catch (e) { q = []; }
+        }
+        document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') { flush(); } });
+        setInterval(flush, 20000);
+        t.flushNow = flush;
+        return t;
+    })();
+    window.BF_TRACK = TK; // lo usan también los juegos (game_win)
+
     var theme = P.get('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     apply('theme', theme);
     apply('font', P.get('font', '2'));
@@ -32,6 +56,7 @@
         themeBtn.addEventListener('click', function () {
             var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
             apply('theme', next); P.set('theme', next); syncThemeBtn(); syncPanel();
+            TK('pref', 'theme:' + next);
         });
     }
     function syncThemeBtn() {
@@ -73,8 +98,10 @@
                     var cur = root.getAttribute('data-' + k);
                     var next = cur === on ? off : on;
                     apply(k, next); P.set(k, next);
+                    TK('pref', k + ':' + next);
                 } else {
                     apply(k, b.getAttribute('data-v')); P.set(k, b.getAttribute('data-v'));
+                    TK('pref', k + ':' + b.getAttribute('data-v'));
                 }
                 syncPanel(); syncThemeBtn(); syncZen();
             });
@@ -98,6 +125,7 @@
         if (r && !r._bound) {
             r._bound = true;
             r.addEventListener('input', function () { apply('font', r.value); P.set('font', r.value); });
+            r.addEventListener('change', function () { TK('pref', 'font:' + r.value); });
         }
     }
     function outsidePanel(ev) {
@@ -121,6 +149,7 @@
             zenBtn.setAttribute('aria-label', 'Salir del modo zen');
             zenBtn.addEventListener('click', function () {
                 apply('zen', 'off'); P.set('zen', 'off'); syncZen(); syncPanel();
+                TK('pref', 'zen:off');
             });
             document.body.appendChild(zenBtn);
         } else if (!on && zenBtn) {
@@ -133,6 +162,7 @@
     if (vswitch) {
         vswitch.addEventListener('change', function () {
             var cur = vswitch.getAttribute('data-version'), next = vswitch.value;
+            TK('vswitch', next);
             var path = window.location.pathname.replace(/^\/+/, '');
             path = path.indexOf(cur + '/') === 0 ? next + path.slice(cur.length) : next;
             window.location.href = '/' + path + window.location.hash;
@@ -296,6 +326,7 @@
             if (sw) {
                 var c = parseInt(sw.getAttribute('data-c'), 10);
                 rec.color = c || null;
+                if (c) { TK('ann', 'hl'); }
                 saveAnn(id, rec, ref);
                 paintVerse(sheetVerse, rec.color || rec.note || rec.fav ? rec : null);
                 sheet.querySelectorAll('.sw').forEach(function (b) { b.classList.toggle('on', parseInt(b.getAttribute('data-c'), 10) === c); });
@@ -309,6 +340,7 @@
                 if (!nz.hidden) { nz.querySelector('textarea').focus(); }
             } else if (a === 'save') {
                 rec.note = sheet.querySelector('textarea').value.trim() || null;
+                if (rec.note) { TK('ann', 'note'); }
                 saveAnn(id, rec, ref);
                 act.textContent = '✓ Guardada';
                 setTimeout(closeSheet, 700);
@@ -319,11 +351,13 @@
                 closeSheet();
             } else if (a === 'fav') {
                 rec.fav = !rec.fav;
+                if (rec.fav) { TK('ann', 'fav'); }
                 saveAnn(id, rec, ref);
                 act.classList.toggle('on', !!rec.fav);
                 paintVerse(sheetVerse, rec.color || rec.note || rec.fav ? rec : null);
             } else if (a === 'copy') {
                 var payload = '“' + text + '” — ' + ref;
+                TK('share', 'copy');
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(payload).then(function () {
                         act.textContent = '✓ Copiado';
@@ -332,6 +366,7 @@
                 }
             } else if (a === 'share') {
                 var pl = '“' + text + '” — ' + ref;
+                TK('share', navigator.share ? 'native' : 'wa');
                 if (navigator.share) { navigator.share({ title: ref, text: pl }).catch(function () {}); }
                 else { window.open('https://wa.me/?text=' + encodeURIComponent(pl), '_blank', 'noopener'); }
             } else if (a === 'img') {
@@ -341,8 +376,10 @@
             } else if (a === 'back') {
                 var el2 = sheetVerse; closeSheet(); openSheet(el2);
             } else if (a === 'dl') {
+                TK('share', 'imgdl');
                 sheet._cv.toBlob(function (b) { downloadBlob(b, ref); });
             } else if (a === 'shimg') {
+                TK('share', 'img');
                 sheet._cv.toBlob(function (b) {
                     var f = new File([b], 'versiculo.png', { type: 'image/png' });
                     if (navigator.canShare && navigator.canShare({ files: [f] })) {
@@ -610,7 +647,7 @@
             var a = b.getAttribute('data-l');
             if (a === 'play') {
                 if (lstate === 'pause') { speechSynthesis.resume(); lstate = 'play'; }
-                else { speechSynthesis.cancel(); li = 0; speakCur(); }
+                else { speechSynthesis.cancel(); li = 0; speakCur(); TK('listen'); }
             } else if (a === 'pause') {
                 speechSynthesis.pause(); lstate = 'pause';
             } else if (a === 'stop') {
@@ -631,6 +668,37 @@
         });
         window.addEventListener('beforeunload', function () { speechSynthesis.cancel(); });
     }
+
+    // ============================ Métricas de sesión/lectura ==================
+    // visit_n: bucket de "día Nº del usuario" (bf_days) — una vez por día.
+    try {
+        var dlist = JSON.parse(P.get('days', '[]'));
+        var vkey = 'vtrack:' + new Date().toISOString().slice(0, 10);
+        if (localStorage.getItem('bf_' + vkey) !== '1' && dlist.length) {
+            localStorage.setItem('bf_' + vkey, '1');
+            var nb = dlist.length <= 3 ? String(dlist.length) : (dlist.length <= 7 ? '4-7' : (dlist.length <= 14 ? '8-14' : (dlist.length <= 30 ? '15-30' : '30+')));
+            TK('visit_n', nb);
+        }
+    } catch (e) {}
+
+    // read_s: segundos en el capítulo (reader) al salir/ocultar.
+    var t0 = Date.now();
+    window.addEventListener('pagehide', function () {
+        var s = Math.round((Date.now() - t0) / 1000);
+        if (chapterEl && s >= 3 && s <= 1800) { TK('read_s', 'cap', s); TK.flushNow && TK.flushNow(); }
+    });
+
+    // perf: tiempo de carga de la página (ms), agregado con contador aparte.
+    window.addEventListener('load', function () {
+        try {
+            var pt = performance.timing;
+            var ms = pt.loadEventEnd - pt.navigationStart;
+            if (ms > 0 && ms < 60000) {
+                TK('perf', chapterEl ? 'reader' : 'other', ms);
+                TK('perf_c', '', 1);
+            }
+        } catch (e) {}
+    });
     function renderBar() {
         if (!lbar) { return; }
         var html = lstate === 'off'

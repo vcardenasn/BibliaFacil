@@ -31,6 +31,7 @@ if (($seg[0] ?? '') === 'ir') {
         $book = $repo->book($ref['osis']);
         if ($book && $ref['chapter'] >= 1 && $ref['chapter'] <= (int) $book['chapters']) {
             $anchor = $ref['verse'] ? '#v' . $ref['verse'] : '';
+            \Biblia\Core\Metrics::bump('goto', $version['code']);
             header('Location: ' . url("{$version['code']}/{$book['slug']}/{$ref['chapter']}{$anchor}"));
             exit;
         }

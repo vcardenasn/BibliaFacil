@@ -28,6 +28,93 @@ if (!$isCli) {
 }
 
 $base = dirname(__DIR__);
+
+// ---- Modo métricas: ?key=…&metrics=1 (HTML) | &csv=1 (CSV) -------------------
+if (!$isCli && ((($_GET['metrics'] ?? '') === '1') || (($_GET['csv'] ?? '') === '1'))) {
+    $env = parse_ini_file($base . '/.env', false, INI_SCANNER_RAW) ?: [];
+    try {
+        if (($env['DB_DRIVER'] ?? 'mysql') === 'sqlite') {
+            $sp = (string) ($env['DB_SQLITE_PATH'] ?? $base . '/storage/biblia.sqlite');
+            if ($sp !== '' && $sp[0] !== '/' && !preg_match('/^[A-Za-z]:[\\\\\\/]/', $sp)) {
+                $sp = $base . '/' . $sp;
+            }
+            $mpdo = new PDO('sqlite:' . $sp);
+        } else {
+            $mpdo = new PDO(
+                sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4',
+                    $env['DB_HOST'] ?? 'localhost', $env['DB_PORT'] ?? '3306', $env['DB_NAME'] ?? ''),
+                $env['DB_USER'] ?? '', $env['DB_PASS'] ?? '', [PDO::ATTR_TIMEOUT => 5]
+            );
+        }
+        $since = date('Y-m-d', strtotime('-30 days'));
+        $rows = $mpdo->query("SELECT metric, dim, d, n FROM metrics_daily WHERE d >= '{$since}' ORDER BY d DESC, metric, n DESC")->fetchAll(PDO::FETCH_ASSOC);
+        $dau = $mpdo->query("SELECT d, COUNT(*) AS n FROM metrics_dau WHERE d >= '{$since}' GROUP BY d ORDER BY d DESC")->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Throwable $e) {
+        http_response_code(500);
+        exit("Sin acceso a métricas: " . $e->getMessage() . "\n(corre database/upgrade_metrics.sql en prod)");
+    }
+
+    if (($_GET['csv'] ?? '') === '1') {
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="metricas_30d.csv"');
+        $f = fopen('php://output', 'w');
+        fputcsv($f, ['fecha', 'metrica', 'dimension', 'n'], ',', '"', '');
+        foreach ($rows as $r) {
+            fputcsv($f, [$r['d'], $r['metric'], $r['dim'], $r['n']], ',', '"', '');
+        }
+        fclose($f);
+        exit;
+    }
+
+    // Dashboard HTML — agrega últimos 7 y 30 días por métrica
+    header('Content-Type: text/html; charset=utf-8');
+    $d7 = date('Y-m-d', strtotime('-7 days'));
+    $agg = ['7' => [], '30' => []];
+    foreach ($rows as $r) {
+        foreach ([7, 30] as $w) {
+            if ($r['d'] >= date('Y-m-d', strtotime("-{$w} days"))) {
+                $agg[$w][$r['metric']][$r['dim']] = ($agg[$w][$r['metric']][$r['dim']] ?? 0) + (int) $r['n'];
+            }
+        }
+    }
+    $dau7 = array_sum(array_map(fn ($r) => (int) $r['n'], array_filter($dau, fn ($r) => $r['d'] >= $d7)));
+    $dau30 = array_sum(array_map(fn ($r) => (int) $r['n'], $dau));
+    $NAMES = [
+        'pv' => 'Páginas vistas por sección', 'ver' => 'Versión más usada', 'cap' => 'Capítulos más leídos',
+        'search' => 'Búsquedas (solo conteo)', 'goto' => '"Ir a" usado', 'game' => 'Juegos abiertos',
+        'game_win' => 'Rondas completadas', 'pref' => 'Cambios de preferencia', 'vswitch' => 'Cambios de versión',
+        'ann' => 'Anotaciones creadas', 'share' => 'Compartidos', 'listen' => 'Audio escuchado',
+        'visit_n' => 'Visita Nº del usuario', 'read_s' => 'Segundos de lectura',
+        'perf' => 'Tiempo de carga (ms total)', 'perf_c' => 'Muestras de carga',
+    ];
+    echo '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">',
+        '<title>Métricas — BibliaFacil</title><style>',
+        'body{font-family:system-ui,sans-serif;max-width:820px;margin:2rem auto;padding:0 1rem;color:#1e1b4b}',
+        'h1{font-size:1.4rem}h2{font-size:1rem;margin:1.4rem 0 .4rem;color:#4f46e5}',
+        'table{border-collapse:collapse;width:100%;font-size:.85rem}td,th{border:1px solid #ddd;padding:.3rem .5rem;text-align:left}',
+        'th{background:#eef2ff}.kpis{display:flex;gap:1rem;flex-wrap:wrap}.kpi{background:#eef2ff;border-radius:10px;padding:.7rem 1.1rem}',
+        '.kpi b{font-size:1.5rem;display:block}small{color:#666}</style></head><body>',
+        '<h1>📊 Métricas — BibliaFacil <small>(anónimas, agregadas)</small></h1>',
+        '<div class="kpis"><div class="kpi"><b>', $dau7, '</b>usuarios únicos · 7d</div>',
+        '<div class="kpi"><b>', $dau30, '</b>usuarios únicos · 30d</div></div>';
+    foreach ($NAMES as $m => $label) {
+        $d30 = $agg[30][$m] ?? [];
+        if (!$d30) {
+            continue;
+        }
+        arsort($d30);
+        echo '<h2>', htmlspecialchars($label), '</h2><table><tr><th>dimensión</th><th>7 días</th><th>30 días</th></tr>';
+        foreach (array_slice($d30, 0, 15, true) as $dim => $n30) {
+            $n7 = $agg[7][$m][$dim] ?? 0;
+            echo '<tr><td>', htmlspecialchars($dim === '' ? '(total)' : $dim), '</td><td>', $n7, '</td><td>', $n30, '</td></tr>';
+        }
+        echo '</table>';
+    }
+    echo '<p><small>CSV: <a href="?key=', htmlspecialchars((string) $_GET['key']), '&csv=1">descargar 30 días</a>',
+        ' · Sin IPs ni texto del usuario — solo contadores agregados.</small></p></body></html>';
+    exit;
+}
+
 $errors = 0;
 $warnings = 0;
 $fixed = 0;
@@ -134,7 +221,11 @@ if (!is_file($envPath)) {
     $env = parse_ini_file($envPath, false, INI_SCANNER_RAW) ?: [];
     try {
         if (($env['DB_DRIVER'] ?? 'mysql') === 'sqlite') {
-            $pdo = new PDO('sqlite:' . ($env['DB_SQLITE_PATH'] ?? $base . '/storage/biblia.sqlite'));
+            $sp = (string) ($env['DB_SQLITE_PATH'] ?? $base . '/storage/biblia.sqlite');
+            if ($sp !== '' && $sp[0] !== '/' && !preg_match('/^[A-Za-z]:[\\\\\\/]/', $sp)) {
+                $sp = $base . '/' . $sp;
+            }
+            $pdo = new PDO('sqlite:' . $sp);
         } else {
             $dsn = sprintf(
                 'mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4',
