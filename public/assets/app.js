@@ -584,12 +584,25 @@
 
     // ============================ Escuchar capítulo (TTS) =====================
     var vv = [].slice.call(document.querySelectorAll('.chapter .verse'));
-    var lbar = null, li = 0, lstate = 'off';
+    var lbar = null, li = 0, lstate = 'off', lutId = 0;
+    var lvoices = [], lvuri = P.get('voice', '');
+    var lrate = parseFloat(P.get('rate', '1')) || 1;
+    var LRATES = [0.75, 1, 1.25, 1.5, 2];
+    function lLang() {
+        return (chapterEl && (chapterEl.getAttribute('data-pos') || '').indexOf('kjv') === 0) ? 'en' : 'es';
+    }
+    function loadVoices() {
+        var all = speechSynthesis.getVoices();
+        lvoices = all.filter(function (v) { return (v.lang || '').toLowerCase().indexOf(lLang()) === 0; });
+        if (!lvoices.length) { lvoices = all; }
+        renderBar();
+    }
     if (vv.length && 'speechSynthesis' in window) {
         lbar = document.createElement('div');
         lbar.className = 'listenbar';
         document.body.appendChild(lbar);
-        renderBar();
+        speechSynthesis.onvoiceschanged = loadVoices;
+        loadVoices();
         lbar.addEventListener('click', function (ev) {
             var b = ev.target.closest('[data-l]');
             if (!b) { return; }
@@ -601,18 +614,39 @@
                 speechSynthesis.pause(); lstate = 'pause';
             } else if (a === 'stop') {
                 stopListen();
+            } else if (a === 'rate') {
+                var ix = LRATES.indexOf(lrate);
+                lrate = LRATES[(ix + 1) % LRATES.length];
+                P.set('rate', String(lrate));
+                if (lstate === 'play') { lstate = 'off'; speechSynthesis.cancel(); speakCur(); }
             }
             renderBar();
+        });
+        lbar.addEventListener('change', function (ev) {
+            if (ev.target.hasAttribute('data-lsel')) {
+                lvuri = ev.target.value;
+                P.set('voice', lvuri);
+            }
         });
         window.addEventListener('beforeunload', function () { speechSynthesis.cancel(); });
     }
     function renderBar() {
         if (!lbar) { return; }
-        lbar.innerHTML = lstate === 'off'
-            ? '<button type="button" data-l="play">▶ Escuchar capítulo</button>'
+        var html = lstate === 'off'
+            ? '<button type="button" data-l="play">▶ Escuchar</button>'
             : '<button type="button" data-l="' + (lstate === 'pause' ? 'play' : 'pause') + '">' +
-              (lstate === 'pause' ? '▶ Seguir' : '⏸ Pausar') + '</button>' +
+              (lstate === 'pause' ? '▶' : '⏸') + '</button>' +
               '<button type="button" data-l="stop" aria-label="Detener">■</button>';
+        if (lvoices.length) {
+            html += '<select data-lsel aria-label="Voz" title="Voz">';
+            lvoices.forEach(function (v) {
+                html += '<option value="' + esc(v.voiceURI) + '"' + (v.voiceURI === lvuri ? ' selected' : '') + '>' +
+                    esc(v.name.replace(/Microsoft |Google |Apple /i, '')) + '</option>';
+            });
+            html += '</select>';
+        }
+        html += '<button type="button" data-l="rate" title="Velocidad">' + lrate + '×</button>';
+        lbar.innerHTML = html;
     }
     function speakCur() {
         lstate = 'play';
@@ -621,10 +655,14 @@
         el.classList.add('speaking');
         el.scrollIntoView({ block: 'center' });
         var u = new SpeechSynthesisUtterance(el.getAttribute('data-text') || el.textContent);
-        u.lang = (chapterEl && (chapterEl.getAttribute('data-pos') || '').indexOf('kjv') === 0) ? 'en-US' : 'es-ES';
-        u.rate = 0.95;
+        var isEn = lLang() === 'en';
+        u.lang = isEn ? 'en-US' : 'es-ES';
+        var voice = lvoices.filter(function (v) { return v.voiceURI === lvuri; })[0];
+        if (voice) { u.voice = voice; u.lang = voice.lang; }
+        u.rate = lrate;
+        var id = ++lutId;
         u.onend = function () {
-            if (lstate !== 'play') { return; }
+            if (lstate !== 'play' || id !== lutId) { return; }
             li++;
             if (li < vv.length) { speakCur(); } else { stopListen(); renderBar(); }
         };
