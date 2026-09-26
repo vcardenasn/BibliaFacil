@@ -54,56 +54,79 @@
 }
 .jg-head .bfj-sound { background: var(--brand-soft); }
 
-.jh-grid {
-    display: grid; gap: .9rem;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+/* ---- Mapa de camino (US-232): nodos serpenteantes sobre línea punteada ---- */
+.jh-path {
+    position: relative; display: flex; flex-direction: column; gap: 1.15rem;
+    padding: .8rem 0 2rem;
 }
-.jh-card {
-    position: relative; display: flex; flex-direction: column; align-items: center;
-    gap: .35rem; text-align: center; text-decoration: none; color: var(--ink);
-    /* US-230 — identidad por juego: degradado con el color propio de cada card */
-    background:
-        radial-gradient(circle at 50% 18%, color-mix(in srgb, var(--gc, var(--brand)) 22%, transparent), transparent 62%),
-        linear-gradient(165deg, color-mix(in srgb, var(--gc, var(--brand)) 13%, var(--surface)), var(--surface) 75%);
-    border: 2px solid color-mix(in srgb, var(--gc, var(--border-strong)) 45%, var(--border-strong));
-    border-radius: 20px; padding: 1.3rem .8rem 1rem; box-shadow: var(--shadow);
-    transition: transform .15s, border-color .15s, box-shadow .15s;
-    overflow: hidden;
+/* camino punteado central + meta al final */
+.jh-path::before {
+    content: ''; position: absolute; top: .6rem; bottom: 1.4rem; left: 50%;
+    border-left: 5px dashed color-mix(in srgb, var(--brand) 40%, var(--border-strong));
+    transform: translateX(-50%); border-radius: 4px;
 }
-/* puntitos de fondo con el color del juego */
-.jh-card::before {
-    content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .5;
-    background-image: radial-gradient(color-mix(in srgb, var(--gc, var(--brand)) 22%, transparent) 1.2px, transparent 1.2px);
-    background-size: 16px 16px;
-    -webkit-mask-image: linear-gradient(to bottom, black, transparent 65%);
-            mask-image: linear-gradient(to bottom, black, transparent 65%);
+.jh-path::after {
+    content: '🏁'; position: absolute; left: 50%; bottom: -.4rem;
+    transform: translateX(-50%); font-size: 1.5rem;
 }
-.jh-card > * { position: relative; }
-/* Cintas de estado (US-230): primera vez / dominado */
-.jh-card.is-new::after {
-    content: '¡Nuevo!'; position: absolute; top: .65rem; right: -1.9rem; z-index: 1;
-    transform: rotate(38deg); background: var(--fun2); color: #fff;
-    font-family: var(--sans); font-size: .62rem; font-weight: 800; letter-spacing: .04em;
-    padding: .18rem 2rem; box-shadow: 0 2px 6px rgba(0,0,0,.25);
+.jh-node {
+    position: relative; display: flex; align-items: center; gap: .7rem;
+    width: calc(50% + 1.7rem); text-decoration: none; color: var(--ink);
+    transition: transform .15s;
 }
-.jh-card.is-master::after {
-    content: '🏆'; position: absolute; top: .4rem; right: .5rem; font-size: 1.15rem;
+/* nodos a un lado y otro del camino: el anillo queda centrado en la línea */
+.jh-node:nth-child(odd)  { align-self: flex-start; flex-direction: row-reverse; text-align: right; }
+.jh-node:nth-child(even) { align-self: flex-end; }
+.jh-node-ring {
+    position: relative; flex: 0 0 auto; display: grid; place-items: center;
+    width: 3.5rem; height: 3.5rem; border-radius: 50%; background: var(--surface);
+    border: 4px solid color-mix(in srgb, var(--gc, var(--brand)) 60%, var(--border-strong));
+    box-shadow: 0 3px 8px rgba(0,0,0,.22), inset 0 -3px 0 rgba(0,0,0,.08);
+    transition: border-color .2s;
+}
+.jh-node-info { display: flex; flex-direction: column; gap: .15rem; min-width: 0; }
+.jh-node-info strong { font-family: var(--sans); font-size: .92rem; line-height: 1.2; }
+.jh-node-info small { color: var(--muted); font-family: var(--sans); font-size: .72rem; line-height: 1.25; }
+.jh-emoji { font-size: 1.9rem; line-height: 1; filter: drop-shadow(0 3px 4px rgba(0,0,0,.18)); }
+.jh-node:hover { transform: scale(1.04); }
+.jh-node:hover .jh-emoji { animation: bfj-bounce .5s; }
+.jh-node:active { transform: scale(.97); }
+.jh-node:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; border-radius: 12px; }
+.jh-best {
+    align-self: flex-start; font-family: var(--sans); font-size: .72rem; font-weight: 700;
+    color: var(--muted); background: var(--brand-soft); border-radius: 999px; padding: .2rem .7rem;
+}
+.jh-node:nth-child(odd) .jh-best { align-self: flex-end; }
+.jh-best.won { color: var(--brand); background: var(--gold-soft); }
+/* Estados del nodo: por explorar / siguiente sugerido / completado / dominado */
+.jh-node.is-todo .jh-node-ring { border-style: dashed; }
+.jh-node.is-now .jh-node-ring {
+    border-color: var(--gc, var(--brand));
+    animation: bfj-ringpulse 1.7s infinite;
+}
+@keyframes bfj-ringpulse {
+    0%, 100% { box-shadow: 0 3px 8px rgba(0,0,0,.22), 0 0 0 0 color-mix(in srgb, var(--gc, var(--brand)) 50%, transparent); }
+    55%      { box-shadow: 0 3px 8px rgba(0,0,0,.22), 0 0 0 14px transparent; }
+}
+.jh-node.is-done .jh-node-ring,
+.jh-node.is-master .jh-node-ring {
+    border-style: solid; border-color: var(--gold);
+    background: color-mix(in srgb, var(--gold) 14%, var(--surface));
+}
+.jh-node.is-done .jh-node-ring::after {
+    content: '✓'; position: absolute; right: -.35rem; bottom: -.35rem;
+    display: grid; place-items: center; width: 1.35rem; height: 1.35rem;
+    border-radius: 50%; background: var(--fun3); color: #fff;
+    font-size: .8rem; font-weight: 900; font-family: var(--sans);
+    box-shadow: 0 2px 5px rgba(0,0,0,.3);
+}
+.jh-node.is-master .jh-node-ring::after {
+    content: '🏆'; position: absolute; right: -.5rem; top: -.6rem; font-size: 1.1rem;
     filter: drop-shadow(0 2px 3px rgba(0,0,0,.3));
 }
-.jh-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: var(--shadow-hover); border-color: var(--brand); }
-.jh-card:active { transform: scale(.97); }
-.jh-emoji { font-size: 2.6rem; line-height: 1.15; filter: drop-shadow(0 3px 4px rgba(0,0,0,.18)); }
-.jh-card:hover .jh-emoji { animation: bfj-bounce .5s; }
-.jh-card strong { font-family: var(--sans); font-size: .95rem; }
-.jh-card small { color: var(--muted); font-family: var(--sans); font-size: .75rem; line-height: 1.3; }
-.jh-best {
-    margin-top: .35rem; font-family: var(--sans); font-size: .75rem; font-weight: 700;
-    color: var(--muted); background: var(--brand-soft); border-radius: 999px; padding: .25rem .8rem;
-}
-.jh-best.won { color: var(--brand); background: var(--gold-soft); }
-.jh-card.locked { opacity: .55; cursor: default; filter: saturate(.6); }
-.jh-card.locked:hover { transform: none; box-shadow: var(--shadow); border-color: var(--border); }
-.jh-card.locked:hover .jh-emoji { animation: none; }
+.jh-node.locked { cursor: default; }
+.jh-node.locked .jh-node-ring { border-color: var(--border-strong); border-style: dashed; opacity: .6; filter: saturate(.4); }
+.jh-node.locked .jh-node-info { opacity: .6; }
 .jh-note { text-align: center; color: var(--muted); font-family: var(--sans); font-size: .8rem; margin-top: 1.4rem; }
 
 /* ---- Álbum de stickers (US-179) ---- */
@@ -351,11 +374,16 @@
 .vj-reveal em { font-style: normal; font-family: var(--sans); font-size: .75rem; font-weight: 800; color: var(--gold-ink); }
 
 @media (prefers-reduced-motion: reduce) {
-    .jh-card:hover .jh-emoji, .bfj-shake, .bfj-pop, .mm-face { animation: none; transition: none; }
-    .jh-rays, .bfj-gift, .bfj-ovstick .st-pop { animation: none; }
+    .jh-node:hover .jh-emoji, .bfj-shake, .bfj-pop, .mm-face { animation: none; transition: none; }
+    .jh-rays, .bfj-gift, .bfj-ovstick .st-pop, .jh-node.is-now .jh-node-ring { animation: none; }
     .jh-levelbar span { transition: none; }
 }
 @media (min-width: 640px) {
-    .jh-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
     .jh-hero h1 { font-size: 2rem; }
+}
+/* Pantallas muy angostas: el nombre ocupa casi todo el medio lateral */
+@media (max-width: 380px) {
+    .jh-node { gap: .5rem; }
+    .jh-node-info strong { font-size: .82rem; }
+    .jh-node-info small { display: none; }
 }

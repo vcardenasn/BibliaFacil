@@ -210,7 +210,7 @@ compresión y medición continua.*
 Todo CSS/JS vanilla, respeta reduced-motion y los 4 temas × 5 acentos.*
 - US-230 ✅ Identidad por juego: `--gc` por card (config/games.php) con degradado+patrón de puntos CSS, medidor "⭐ N", cintas "¡Nuevo!" (sin jugar) y "🏆" (≥15⭐)
 - US-231 ✅ Hero vivo + celebración: rayos conic-gradient (apagados en contrast/reduced-motion), estrellas que vuelan al contador con bump, unboxing 🎁→sticker, vibración háptica por resultado, barra de progreso al siguiente nivel (progressbar con aria-valuenow)
-- US-232 ⬜ Mapa de camino en el hub: nodos serpenteantes con estado (hecho/actual/bloqueado) en vez de grid plano
+- US-232 ✅ Mapa de camino en el hub: `.jh-path` con línea punteada central + 🏁, nodos `.jh-node` alternados izq/der con anillo en `--gc`, estados is-todo (punteado) / is-now (pulso) / is-done (✓ dorado) / is-master (🏆), locked con 🔒; directo navegable y usable en móvil
 - US-233 ⬜ Desafío del día: juego+semilla determinística por fecha, bonus ×2 estrellas, engancha racha
 - US-234 ⬜ Detalles en juegos: opciones que voltean, parejas que estallan, combo 🔥, silueta misteriosa
 

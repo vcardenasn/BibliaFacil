@@ -421,16 +421,20 @@
             }
             var score = document.querySelector('.jh-score');
             if (score) { soundToggle(score); }
-            document.querySelectorAll('.jh-card[data-slug]').forEach(function (card) {
-                var slug = card.getAttribute('data-slug');
+            // US-232 — estados del camino: done / now (siguiente) / todo / master
+            var nowMarked = false;
+            document.querySelectorAll('.jh-node[data-slug]').forEach(function (node) {
+                var slug = node.getAttribute('data-slug');
                 var n = BFJ.stars.of(slug);
+                var b = node.querySelector('[data-best]');
                 if (n > 0) {
-                    var b = card.querySelector('[data-best]');
                     if (b) { b.textContent = '⭐ ' + n; b.classList.add('won'); }
+                    node.classList.add(n >= 15 ? 'is-master' : 'is-done');
+                } else {
+                    if (!(data.plays[slug] || 0) && b) { b.textContent = '✨ ¡Nuevo!'; }
+                    if (!nowMarked) { node.classList.add('is-now'); nowMarked = true; }
+                    else { node.classList.add('is-todo'); }
                 }
-                // US-230 — cintas de estado por card
-                if (n >= 15) { card.classList.add('is-master'); }
-                else if (!(data.plays[slug] || 0)) { card.classList.add('is-new'); }
             });
             // Álbum de stickers: por hitos ya ganados (evalúa sobre historial)
             checkStickers({});
