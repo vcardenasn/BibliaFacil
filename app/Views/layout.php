@@ -7,9 +7,12 @@
 <meta name="description" content="Lee la Biblia en múltiples versiones, fácil y rápido.">
 <meta name="theme-color" content="#2e4a8a">
 <link rel="stylesheet" href="<?= e(asset('app.css')) ?>">
+<?php foreach (($extraCss ?? []) as $c): ?>
+<link rel="stylesheet" href="<?= e(asset($c)) ?>">
+<?php endforeach; ?>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
 </head>
-<body>
+<body<?= !empty($bodyClass) ? ' class="' . e($bodyClass) . '"' : '' ?>>
 <header class="topbar">
     <a class="brand" href="<?= e(url('/')) ?>"><span class="cross">✝</span> Biblia Fácil</a>
     <?php if (!empty($versions) && !empty($version)): ?>
@@ -31,6 +34,7 @@
             <button type="submit" title="Buscar" aria-label="Buscar">🔍</button>
         </form>
         <?php endif; ?>
+        <a class="navlink" href="<?= e(url('juegos')) ?>" title="Juegos" aria-label="Juegos">🎮</a>
         <a class="navlink" href="<?= e(url('mias')) ?>" title="Mis anotaciones" aria-label="Mis anotaciones">✎</a>
         <button type="button" id="themeBtn" title="Modo oscuro" aria-label="Modo oscuro">☾</button>
         <button type="button" id="prefBtn" title="Apariencia" aria-label="Apariencia">⚙</button>
@@ -52,5 +56,8 @@
 </footer>
 
 <script src="<?= e(asset('app.js')) ?>"></script>
+<?php foreach (($extraJs ?? []) as $j): ?>
+<script src="<?= e(asset($j)) ?>"></script>
+<?php endforeach; ?>
 </body>
 </html>

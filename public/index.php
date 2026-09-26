@@ -65,6 +65,39 @@ if (($seg[0] ?? '') === 'mias') {
     exit;
 }
 
+// ---- /juegos — hub de juegos bíblicos ---------------------------------------
+if (($seg[0] ?? '') === 'juegos') {
+    $games = config('games');
+    if (count($seg) === 1) {
+        view('juegos', [
+            'title' => 'Juegos Bíblicos',
+            'versions' => $versions,
+            'version' => $versions[0] ?? null,
+            'games' => $games,
+            'bodyClass' => 'jpage',
+            'extraCss' => ['juegos.css'],
+            'extraJs' => ['juegos.js'],
+        ]);
+        exit;
+    }
+    $slug = (string) $seg[1];
+    if (!isset($games[$slug]) || empty($games[$slug]['ready'])) {
+        $notFound('Ese juego aún no está listo.');
+        exit;
+    }
+    view('juego', [
+        'title' => $games[$slug]['name'],
+        'versions' => $versions,
+        'version' => $versions[0] ?? null,
+        'game' => $games[$slug],
+        'slug' => $slug,
+        'bodyClass' => 'jpage',
+        'extraCss' => ['juegos.css'],
+        'extraJs' => ['juegos.js', 'juego-' . $slug . '.js'],
+    ]);
+    exit;
+}
+
 // ---- / — continuar donde quedó o capítulo por defecto ------------------------
 if ($seg === []) {
     $default = config('app.default_version') . '/genesis/1';
