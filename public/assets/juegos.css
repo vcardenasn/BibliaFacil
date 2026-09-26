@@ -9,25 +9,43 @@
 
 /* ---- Hub ---- */
 .jh-hero {
+    position: relative; overflow: hidden;
     text-align: center; padding: 1.6rem 1rem 1.2rem;
     background: linear-gradient(135deg, var(--brand) 0%, var(--fun5) 100%);
     border-radius: 22px; color: var(--brand-ink); box-shadow: var(--shadow-hover);
     margin-bottom: 1.4rem;
 }
+/* Rayos de luz girando detrás del contenido (US-231) */
+.jh-rays {
+    position: absolute; inset: -60%; pointer-events: none;
+    background: repeating-conic-gradient(from 0deg,
+        rgba(255,255,255,.10) 0 8deg, transparent 8deg 24deg);
+    animation: bfj-rays 28s linear infinite;
+}
+@keyframes bfj-rays { to { transform: rotate(1turn); } }
+.jh-hero > *:not(.jh-rays) { position: relative; }
 [data-theme="contrast"] .jh-hero { background: var(--brand); }
+[data-theme="contrast"] .jh-rays { display: none; }
 .jh-hero h1 { font-family: var(--sans); font-size: 1.7rem; margin: 0; }
 .jh-hero p { margin: .3rem 0 .9rem; opacity: .92; font-family: var(--sans); }
-.jh-score { display: flex; justify-content: center; gap: .7rem; flex-wrap: wrap; }
+.jh-score { display: flex; justify-content: center; gap: .7rem; flex-wrap: wrap; align-items: center; }
 .jh-stars {
     display: inline-flex; align-items: center; gap: .4rem;
     background: color-mix(in srgb, var(--brand-ink) 18%, transparent); border-radius: 999px;
     padding: .4rem 1rem; font-family: var(--sans); font-weight: 700; color: var(--brand-ink);
 }
+.jh-stars.bfj-bump { animation: bfj-pop .35s; }
+.jh-level-wrap { display: inline-flex; flex-direction: column; gap: .25rem; align-items: center; }
 .jh-level {
     display: inline-flex; align-items: center;
     background: var(--gold-soft); color: var(--gold-ink); border-radius: 999px;
     padding: .4rem 1.1rem; font-family: var(--sans); font-weight: 800; font-size: .9rem;
 }
+.jh-levelbar {
+    display: block; width: 7rem; height: .35rem; border-radius: 1rem;
+    background: color-mix(in srgb, var(--brand-ink) 22%, transparent); overflow: hidden;
+}
+.jh-levelbar span { display: block; height: 100%; width: 0; background: var(--brand-ink); border-radius: 1rem; transition: width .5s; }
 .bfj-sound {
     display: inline-flex; align-items: center; justify-content: center;
     min-width: 44px; min-height: 44px;
@@ -43,9 +61,34 @@
 .jh-card {
     position: relative; display: flex; flex-direction: column; align-items: center;
     gap: .35rem; text-align: center; text-decoration: none; color: var(--ink);
-    background: var(--surface); border: 2px solid var(--border-strong);
+    /* US-230 — identidad por juego: degradado con el color propio de cada card */
+    background:
+        radial-gradient(circle at 50% 18%, color-mix(in srgb, var(--gc, var(--brand)) 22%, transparent), transparent 62%),
+        linear-gradient(165deg, color-mix(in srgb, var(--gc, var(--brand)) 13%, var(--surface)), var(--surface) 75%);
+    border: 2px solid color-mix(in srgb, var(--gc, var(--border-strong)) 45%, var(--border-strong));
     border-radius: 20px; padding: 1.3rem .8rem 1rem; box-shadow: var(--shadow);
     transition: transform .15s, border-color .15s, box-shadow .15s;
+    overflow: hidden;
+}
+/* puntitos de fondo con el color del juego */
+.jh-card::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+    background-image: radial-gradient(color-mix(in srgb, var(--gc, var(--brand)) 22%, transparent) 1.2px, transparent 1.2px);
+    background-size: 16px 16px;
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent 65%);
+            mask-image: linear-gradient(to bottom, black, transparent 65%);
+}
+.jh-card > * { position: relative; }
+/* Cintas de estado (US-230): primera vez / dominado */
+.jh-card.is-new::after {
+    content: '¡Nuevo!'; position: absolute; top: .65rem; right: -1.9rem; z-index: 1;
+    transform: rotate(38deg); background: var(--fun2); color: #fff;
+    font-family: var(--sans); font-size: .62rem; font-weight: 800; letter-spacing: .04em;
+    padding: .18rem 2rem; box-shadow: 0 2px 6px rgba(0,0,0,.25);
+}
+.jh-card.is-master::after {
+    content: '🏆'; position: absolute; top: .4rem; right: .5rem; font-size: 1.15rem;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,.3));
 }
 .jh-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: var(--shadow-hover); border-color: var(--brand); }
 .jh-card:active { transform: scale(.97); }
@@ -150,6 +193,21 @@
 .bfj-ovextra { font-family: var(--sans); font-size: .85rem; color: var(--muted); }
 .bfj-ovbtns { display: flex; gap: .6rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
 .bfj-confetti { position: fixed; inset: 0; z-index: 90; pointer-events: none; }
+
+/* Estrellas que vuelan al contador del header (US-231) */
+.bfj-fly {
+    position: fixed; z-index: 95; font-size: 1.4rem; pointer-events: none;
+    transform-origin: center; filter: drop-shadow(0 2px 4px rgba(0,0,0,.3));
+}
+
+/* Unboxing de stickers: el 🎁 tiembla y revela (US-231) */
+.bfj-gift { display: inline-block; font-size: 1.6rem; animation: bfj-gift .5s ease-in-out 2; }
+@keyframes bfj-gift {
+    0%, 100% { transform: rotate(0) scale(1); }
+    25% { transform: rotate(-9deg) scale(1.08); }
+    75% { transform: rotate(9deg) scale(1.08); }
+}
+.bfj-ovstick .st-pop { display: inline-block; animation: bfj-pop .4s .3s backwards; }
 
 /* ---- Animaciones ---- */
 @keyframes bfj-bounce {
@@ -294,6 +352,8 @@
 
 @media (prefers-reduced-motion: reduce) {
     .jh-card:hover .jh-emoji, .bfj-shake, .bfj-pop, .mm-face { animation: none; transition: none; }
+    .jh-rays, .bfj-gift, .bfj-ovstick .st-pop { animation: none; }
+    .jh-levelbar span { transition: none; }
 }
 @media (min-width: 640px) {
     .jh-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }

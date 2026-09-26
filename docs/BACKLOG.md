@@ -205,6 +205,15 @@ compresión y medición continua.*
 - US-227 ✅ Panel de apariencia modal nativo (`dialog`): foco inicial, Escape, retorno del foco y cierre visible; pendientes las pruebas manuales con lector de pantalla
 - US-228 ✅ Auditoría contraste AA: prueba automática sobre tokens de los 4 temas × 5 acentos (tests/Unit/ContrastTest.php); corregidos acentos en tema oscuro (rompían brand/brand-soft/gold-soft), gold→gold-ink para texto pequeño, bordes de controles ≥3:1, var(--accent) no definido, blanco sobre --brand claro en dark, wj sobre resaltados. ⬜ pendiente recorrido manual VoiceOver/NVDA
 
+## EPIC 23 — Juegos: identidad visual y deleite ⬜
+*Cards con personalidad propia, celebración memorable, sensación de aventura.
+Todo CSS/JS vanilla, respeta reduced-motion y los 4 temas × 5 acentos.*
+- US-230 ✅ Identidad por juego: `--gc` por card (config/games.php) con degradado+patrón de puntos CSS, medidor "⭐ N", cintas "¡Nuevo!" (sin jugar) y "🏆" (≥15⭐)
+- US-231 ✅ Hero vivo + celebración: rayos conic-gradient (apagados en contrast/reduced-motion), estrellas que vuelan al contador con bump, unboxing 🎁→sticker, vibración háptica por resultado, barra de progreso al siguiente nivel (progressbar con aria-valuenow)
+- US-232 ⬜ Mapa de camino en el hub: nodos serpenteantes con estado (hecho/actual/bloqueado) en vez de grid plano
+- US-233 ⬜ Desafío del día: juego+semilla determinística por fecha, bonus ×2 estrellas, engancha racha
+- US-234 ⬜ Detalles en juegos: opciones que voltean, parejas que estallan, combo 🔥, silueta misteriosa
+
 ## Notas técnicas
 - `use` arriba en entry points + smoke test `php -S` (convención stack).
 - MySQL prod / SQLite dev+tests (DB_DRIVER).

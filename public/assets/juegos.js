@@ -68,6 +68,13 @@
         for (var k in d.stars) { t += d.stars[k] || 0; }
         return t;
     }
+    // Nivel actual + progreso hacia el siguiente (US-231)
+    function levelInfo() {
+        var t = starTotal(data), i = 0;
+        while (i + 1 < LEVELS.length && t >= LEVELS[i + 1][0]) { i++; }
+        var next = LEVELS[i + 1] || null;
+        return { name: LEVELS[i][1], t: t, base: LEVELS[i][0], next: next ? next[0] : null };
+    }
     function checkStickers(ctx) {
         var news = [];
         STICKERS.forEach(function (s) {
@@ -111,6 +118,7 @@
         o.stop(c.currentTime + t0 + dur + .02);
     }
     function snd(kind) {
+        buzz(kind); // US-231 — háptica táctil gratis en móviles (no hace ruido)
         if (muted) { return; }
         try {
             if (kind === 'click') { tone(660, 0, .07, 'triangle'); }
@@ -119,6 +127,15 @@
             else if (kind === 'win') {
                 [523, 659, 784, 1047].forEach(function (f, i) { tone(f, i * .13, .25, 'triangle'); });
             } else if (kind === 'tick') { tone(880, 0, .04, 'square', .06); }
+        } catch (e) {}
+    }
+    // Vibración corta por resultado — navigator.vibrate no existe en iOS, no pasa nada
+    function buzz(kind) {
+        if (!navigator.vibrate) { return; }
+        try {
+            if (kind === 'ok') { navigator.vibrate(40); }
+            else if (kind === 'bad') { navigator.vibrate([60, 40, 60]); }
+            else if (kind === 'win') { navigator.vibrate([40, 50, 40, 50, 140]); }
         } catch (e) {}
     }
 
@@ -196,6 +213,37 @@
     }
 
     // ============================ Celebración =================================
+    // Estrellas que vuelan del overlay al contador del header (US-231)
+    function flyStars(ov, count) {
+        var chipEl = document.getElementById('gameStars') || document.getElementById('totalStars');
+        var chip = chipEl ? (chipEl.closest('.jh-stars') || chipEl.parentElement) : null;
+        var from = ov ? ov.querySelector('.bfj-ovstars') : null;
+        if (!chip || !from || !Element.prototype.animate) { return; }
+        var r1 = from.getBoundingClientRect(), r2 = chip.getBoundingClientRect();
+        var n = Math.min(count, 5);
+        for (var i = 0; i < n; i++) {
+            var s = document.createElement('span');
+            s.textContent = '⭐'; s.className = 'bfj-fly';
+            s.style.left = (r1.left + r1.width / 2 - 10) + 'px';
+            s.style.top = (r1.top + r1.height / 2 - 10) + 'px';
+            document.body.appendChild(s);
+            var anim = s.animate([
+                { transform: 'translate(0,0) scale(1.35)', opacity: 1 },
+                { transform: 'translate(' + (r2.left + r2.width / 2 - r1.left - r1.width / 2) + 'px,'
+                    + (r2.top + r2.height / 2 - r1.top - r1.height / 2) + 'px) scale(.45)', opacity: .9 }
+            ], { duration: 620, delay: 110 * i, easing: 'cubic-bezier(.3,.7,.4,1)', fill: 'forwards' });
+            (function (el, isLast) {
+                anim.onfinish = function () {
+                    el.remove();
+                    if (isLast && chip) {
+                        chip.classList.remove('bfj-bump'); void chip.offsetWidth;
+                        chip.classList.add('bfj-bump');
+                    }
+                };
+            })(s, i === n - 1);
+        }
+    }
+
     // BFJ.celebrate({slug, stars, emoji, title, extra, perfect, onAgain})
     function celebrate(o) {
         BFJ.stars.add(o.slug, o.stars);
@@ -223,13 +271,35 @@
             '<p class="bfj-ovpts">+' + o.stars + ' estrella' + (o.stars === 1 ? '' : 's') + '</p>' +
             (o.extra ? '<p class="bfj-ovextra">' + esc(o.extra) + '</p>' : '') +
             (news.length ? '<div class="bfj-ovstick bfj-pop">🎁 ¡Sticker nuevo!<br>' +
-                news.map(function (s) { return '<span>' + s.emoji + ' ' + esc(s.name) + '</span>'; }).join('') +
+                news.map(function (s) {
+                    return '<span class="bfj-stick"><i class="bfj-gift" aria-hidden="true">🎁</i> ' + esc(s.name) +
+                        '<i class="bfj-stemo" hidden>' + s.emoji + '</i></span>';
+                }).join('') +
                 '</div>' : '') +
             '<div class="bfj-ovbtns">' +
             (o.onAgain ? '<button type="button" class="jbtn jbtn-main" data-c="again">🔄 Otra vez</button>' : '') +
             '<button type="button" class="jbtn jbtn-ghost" data-c="hub">🎮 Juegos</button>' +
             '</div></div>';
         document.body.appendChild(ov);
+        // US-231 — contador de estrellas en vivo + estrellas voladoras + unboxing
+        var gsEl = document.getElementById('gameStars');
+        if (gsEl) { gsEl.textContent = BFJ.stars.of(o.slug); }
+        if (!reducedMotion()) {
+            if (o.stars > 0) { setTimeout(function () { flyStars(ov, o.stars); }, 500); }
+            ov.querySelectorAll('.bfj-stick').forEach(function (el, i) {
+                var gift = el.querySelector('.bfj-gift'), emo = el.querySelector('.bfj-stemo');
+                if (!gift || !emo) { return; }
+                setTimeout(function () {
+                    gift.textContent = emo.textContent;
+                    gift.classList.remove('bfj-gift'); gift.classList.add('st-pop');
+                }, 850 + i * 420);
+            });
+        } else {
+            ov.querySelectorAll('.bfj-stick').forEach(function (el) {
+                var gift = el.querySelector('.bfj-gift'), emo = el.querySelector('.bfj-stemo');
+                if (gift && emo) { gift.textContent = emo.textContent; }
+            });
+        }
         var firstBtn = ov.querySelector('[data-c]');
         if (firstBtn) { firstBtn.focus(); }
         function dismiss(goHub) {
@@ -334,15 +404,33 @@
         if (ts) {
             ts.textContent = BFJ.stars.total();
             var lb = document.getElementById('levelBadge');
-            if (lb) { lb.textContent = BFJ.level(); }
+            var li = levelInfo();
+            if (lb) {
+                lb.textContent = li.name;
+                lb.title = li.next
+                    ? li.t + '/' + li.next + ' ⭐ para el siguiente nivel'
+                    : li.t + ' ⭐ — ¡nivel máximo!';
+            }
+            var barFill = document.querySelector('.jh-levelbar span');
+            if (barFill) {
+                var pct = li.next
+                    ? Math.round((li.t - li.base) / (li.next - li.base) * 100)
+                    : 100;
+                barFill.style.width = pct + '%';
+                barFill.parentElement.setAttribute('aria-valuenow', String(pct));
+            }
             var score = document.querySelector('.jh-score');
             if (score) { soundToggle(score); }
             document.querySelectorAll('.jh-card[data-slug]').forEach(function (card) {
-                var n = BFJ.stars.of(card.getAttribute('data-slug'));
+                var slug = card.getAttribute('data-slug');
+                var n = BFJ.stars.of(slug);
                 if (n > 0) {
                     var b = card.querySelector('[data-best]');
                     if (b) { b.textContent = '⭐ ' + n; b.classList.add('won'); }
                 }
+                // US-230 — cintas de estado por card
+                if (n >= 15) { card.classList.add('is-master'); }
+                else if (!(data.plays[slug] || 0)) { card.classList.add('is-new'); }
             });
             // Álbum de stickers: por hitos ya ganados (evalúa sobre historial)
             checkStickers({});
