@@ -378,6 +378,9 @@ code {
     border: 1px solid var(--border); background: var(--surface); color: var(--ink);
     box-shadow: var(--shadow-hover);
 }
+/* Espacio para que la barra flotante no tape el footer/contador */
+.has-listen .footer { padding-bottom: 5.5rem; }
+.has-listen .page { padding-bottom: 5.5rem; }
 
 /* ---- Imagen de versículo ---- */
 .vs-imgwrap { margin: .4rem 0 .7rem; text-align: center; }

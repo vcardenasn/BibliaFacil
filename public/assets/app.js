@@ -601,6 +601,7 @@
         lbar = document.createElement('div');
         lbar.className = 'listenbar';
         document.body.appendChild(lbar);
+        document.body.classList.add('has-listen');
         speechSynthesis.onvoiceschanged = loadVoices;
         loadVoices();
         lbar.addEventListener('click', function (ev) {
