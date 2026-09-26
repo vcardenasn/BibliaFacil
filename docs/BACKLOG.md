@@ -150,7 +150,7 @@ sin archivos). Mobile-first: botones gigantes, texto mínimo.*
 - US-178 ✅ **Adivina el personaje**: 30 personajes × 3 pistas; pista 1 = 3⭐ … pista 3 = 1⭐
 
 ### Datos y contenido
-- US-180 ✅ Bancos en `public/assets/games/*.json` — curados a mano. ⬜ engordar (trivia →120, v/f →80)
+- US-180 ✅ Bancos engordados: trivia 113 (niveles 1-3), V/F 80, historias 8, parejas 14, pistas 30
 - US-181 ✅ Endpoint versículo aleatorio con distractores — solo lectura, sin PII
 
 ## Notas técnicas
