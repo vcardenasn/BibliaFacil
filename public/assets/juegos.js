@@ -97,7 +97,7 @@
     };
     // BASE ya apunta a /assets/ (derivado del src de juegos.js). OMV invalida
     // la caché de 1 mes del .htaccess cuando cambien las imágenes.
-    var OMV = '1';
+    var OMV = '2';
     function omoji(e) {
         var c = OMOJI[e];
         return c
