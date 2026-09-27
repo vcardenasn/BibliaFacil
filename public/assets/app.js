@@ -626,7 +626,7 @@
     // ============================ Mis anotaciones ==============================
     var mias = document.getElementById('miasApp');
     if (mias) {
-        var filter = 'all', q = '', book = '';
+        var filter = 'all', q = '', book = '', lastList = [];
         var bookSel = document.getElementById('miasBook');
         var countEl = document.getElementById('miasCount');
 
@@ -694,6 +694,7 @@
                     }
                     return true;
                 }).sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); });
+                lastList = filtered;
 
                 if (countEl) {
                     countEl.textContent = !all.length ? ''
@@ -787,6 +788,33 @@
                     a.click();
                     URL.revokeObjectURL(a.href);
                 });
+            });
+        }
+        // Enviar anotaciones por correo: mailto: con la lista filtrada como texto.
+        // Nada pasa por el servidor — se abre el cliente de correo del usuario.
+        var mailBtn = document.getElementById('miasMail');
+        if (mailBtn) {
+            mailBtn.addEventListener('click', function () {
+                if (!lastList.length) { return; }
+                TK('ann', 'mail');
+                var lines = ['Mis anotaciones — Biblia Fácil', ''];
+                lastList.forEach(function (r) {
+                    var marks = [];
+                    if (r.color) { marks.push('resaltada'); }
+                    if (r.fav) { marks.push('favorita'); }
+                    var line = '• ' + (r.ref || r.id) + ' (' + (r.version || '').toUpperCase() + ')';
+                    if (marks.length) { line += ' — ' + marks.join(', '); }
+                    if (r.note) { line += '\n  ✎ ' + r.note; }
+                    line += '\n  https://biblia.omni-hosting.com/' + r.version + '/' + r.slug + '/' + r.chapter + '#v' + r.verse;
+                    lines.push(line);
+                });
+                var body = lines.join('\n');
+                var MAX = 6000; // los clientes de correo truncan mailto: muy largos
+                if (body.length > MAX) {
+                    body = body.slice(0, MAX) + '\n\n…(lista recortada — usa "Exportar" para el archivo completo)';
+                }
+                location.href = 'mailto:?subject=' + encodeURIComponent('Mis anotaciones — Biblia Fácil') +
+                    '&body=' + encodeURIComponent(body);
             });
         }
         var qInput = document.getElementById('miasQ');

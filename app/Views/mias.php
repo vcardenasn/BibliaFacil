@@ -21,6 +21,7 @@
         <select id="miasBook" aria-label="Filtrar por libro" hidden>
             <option value="">Todos los libros</option>
         </select>
+        <button type="button" id="miasMail">✉️ Enviar por correo</button>
         <button type="button" id="miasExport">⬇ Exportar</button>
         <button type="button" id="miasImportBtn">⬆ Importar</button>
         <input type="file" id="miasImport" accept=".json,application/json" hidden>
