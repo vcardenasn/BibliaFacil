@@ -27,6 +27,20 @@
 [data-theme="contrast"] .jh-hero { background: var(--brand); }
 [data-theme="contrast"] .jh-rays { display: none; }
 .jh-hero h1 { font-family: var(--sans); font-size: 1.7rem; margin: 0; }
+.jh-hero h1 .omoji { width: 1.8rem; height: 1.8rem; vertical-align: -.3em; }
+/* base defensivo: sin regla de contexto, un .omoji nunca rompe el layout */
+.omoji { max-width: 100%; }
+/* Imágenes OpenMoji (CC BY-SA) a color — tamaños por contexto */
+.jh-node-ring .jh-emoji, .jh-daily-emoji { display: grid; place-items: center; }
+.jh-daily-emoji { flex: 0 0 auto; }
+.jh-node-ring .omoji { width: 2.5rem; height: 2.5rem; }
+.jh-node-ring .bimg {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+    display: block;
+}
+.jh-node.locked .omoji { filter: saturate(.35) opacity(.8); }
+.jh-daily-emoji .omoji { width: 2.7rem; height: 2.7rem; }
+.jg-head h1 .omoji { width: 1.5rem; height: 1.5rem; vertical-align: -.3em; }
 .jh-hero p { margin: .3rem 0 .9rem; opacity: .92; font-family: var(--sans); }
 .jh-score { display: flex; justify-content: center; gap: .7rem; flex-wrap: wrap; align-items: center; }
 .jh-stars {
@@ -111,8 +125,9 @@
     transform: translateX(-50%); border-radius: 4px;
 }
 .jh-path::after {
-    content: '🏁'; position: absolute; left: 50%; bottom: -.4rem;
-    transform: translateX(-50%); font-size: 1.5rem;
+    content: ''; position: absolute; left: 50%; bottom: -.55rem;
+    transform: translateX(-50%); width: 1.9rem; height: 1.9rem;
+    background: url('omoji/1F3C1.svg') center/contain no-repeat;
 }
 .jh-node {
     position: relative; display: flex; align-items: center; gap: .7rem;
@@ -270,9 +285,14 @@
 
 /* Estrellas que vuelan al contador del header (US-231) */
 .bfj-fly {
-    position: fixed; z-index: 95; font-size: 1.4rem; pointer-events: none;
+    position: fixed; z-index: 95; width: 1.4rem; height: 1.4rem; pointer-events: none;
     transform-origin: center; filter: drop-shadow(0 2px 4px rgba(0,0,0,.3));
 }
+.bfj-fly .omoji { width: 100%; height: 100%; display: block; }
+.bfj-fly-sm { width: .95rem; height: .95rem; }
+.bfj-ovemoji .omoji { width: 3.4rem; height: 3.4rem; }
+.bfj-gift .omoji, .st-pop .omoji { width: 1.6rem; height: 1.6rem; vertical-align: -.3em; }
+.st span .omoji { width: 1.9rem; height: 1.9rem; }
 
 /* Unboxing de stickers: el 🎁 tiembla y revela (US-231) */
 .bfj-gift { display: inline-block; font-size: 1.6rem; animation: bfj-gift .5s ease-in-out 2; }
@@ -311,6 +331,35 @@
     transition: transform .15s, border-color .15s;
 }
 .tr-cat span { font-size: 2.2rem; }
+/* Imágenes OpenMoji dentro de los juegos (portadas, escenas, cartas) */
+.tr-cat .omoji, .hs-cover .omoji { height: 2.6rem; width: auto; }
+.hs-card .omoji, .hs-scene .omoji { height: 2.1rem; width: auto; }
+.mm-face .omoji { width: 74%; height: auto; }
+.mm-face .bimg {
+    width: 92%; height: 74%; object-fit: cover;
+    border-radius: .45rem; box-shadow: 0 1px 3px rgba(0,0,0,.25);
+}
+.mm-face .bimg-png {
+    object-fit: contain; height: 82%;
+    border-radius: 0; box-shadow: none;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,.25));
+}
+.pj-sil .bimg-png, .pj-reveal .bimg-png {
+    object-fit: contain; width: auto;
+    border-radius: 0; box-shadow: none;
+}
+.pj-sil .bimg-png { height: 4.6rem; }
+.pj-reveal .bimg-png { height: 3.4rem; }
+.pj-sil .omoji { height: 3.6rem; width: auto; }
+.pj-sil .bimg {
+    height: 4.6rem; width: 6.4rem; object-fit: cover;
+    border-radius: .7rem; box-shadow: 0 2px 8px rgba(0,0,0,.3);
+}
+.pj-reveal .omoji { height: 3rem; width: auto; }
+.pj-reveal .bimg {
+    height: 3.4rem; width: 4.8rem; object-fit: cover;
+    border-radius: .5rem;
+}
 .tr-cat strong { font-size: .9rem; color: var(--ink); }
 .tr-cat:hover { transform: translateY(-3px); border-color: var(--brand); }
 .tr-cat:active { transform: scale(.96); }
@@ -419,9 +468,11 @@
 .pj-mystery { display: flex; justify-content: center; margin: .2rem 0 .4rem; }
 .pj-sil {
     font-size: 3rem; line-height: 1; display: inline-block;
-    filter: brightness(0) opacity(.5);
+    filter: brightness(0) blur(1.5px) opacity(.55);
     transition: filter .55s ease, transform .35s;
 }
+[data-theme="dark"] .pj-sil { filter: brightness(0) blur(1.5px) invert(.8) opacity(.6); }
+[data-theme="dark"] .pj-sil.show { filter: none; }
 .pj-sil.show { filter: none; transform: scale(1.18); }
 .pj-clues { display: flex; flex-direction: column; gap: .5rem; margin: .4rem 0 1rem; }
 .pj-clue {
@@ -462,6 +513,7 @@
 }
 @media (min-width: 640px) {
     .jh-hero h1 { font-size: 2rem; }
+    .jh-hero h1 .omoji { width: 2.1rem; height: 2.1rem; }
 }
 /* Pantallas muy angostas: el nombre ocupa casi todo el medio lateral */
 @media (max-width: 380px) {

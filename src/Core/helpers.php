@@ -49,6 +49,39 @@ function asset(string $path): string
     return url('assets/' . $path) . $v;
 }
 
+/**
+ * Imagen OpenMoji (CC BY-SA) desde public/assets/omoji/{code}.svg.
+ * Devuelve <img> fingerprinted por asset(); decorativa (alt vacío).
+ */
+function omoji(string $code, string $class = '', string $loading = 'lazy'): string
+{
+    $file = preg_replace('/[^0-9A-Fa-f-]/', '', $code);
+    if ($file === '' || !is_file(BASE_PATH . '/public/assets/omoji/' . strtoupper($file) . '.svg')) {
+        return '';
+    }
+    return '<img class="omoji' . ($class !== '' ? ' ' . e($class) : '') . '" src="'
+        . e(asset('omoji/' . strtoupper($file) . '.svg')) . '" alt="" loading="' . $loading . '" decoding="async">';
+}
+
+/**
+ * Ilustración descargada en public/assets/bibleimg/{slug}.jpg
+ * (Sweet Media / FreeBibleImages, CC BY-SA 3.0) o public/assets/arkset/{slug}.png.
+ * Devuelve '' si el archivo no existe.
+ */
+function bimg(string $file, string $class = '', string $dir = 'bibleimg'): string
+{
+    $file = preg_replace('/[^0-9A-Za-z_-]/', '', $file);
+    if ($file === '') {
+        return '';
+    }
+    $ext = $dir === 'arkset' ? 'png' : 'jpg';
+    if (!is_file(BASE_PATH . "/public/assets/{$dir}/{$file}.{$ext}")) {
+        return '';
+    }
+    return '<img class="bimg' . ($class !== '' ? ' ' . e($class) : '') . '" src="'
+        . e(asset("{$dir}/{$file}.{$ext}")) . '" alt="" loading="lazy" decoding="async">';
+}
+
 function view(string $name, array $data = []): void
 {
     $viewFile = BASE_PATH . '/app/Views/' . $name . '.php';

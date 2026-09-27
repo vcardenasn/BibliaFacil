@@ -29,7 +29,7 @@ BFJ.define('personaje', function (el) {
                 '<div class="vf-prog"><span>🔍 Personaje ' + (i + 1) + ' / ' + round.length + '</span>' +
                 '<span class="vf-streak">⭐ ' + total + '</span></div>' +
                 // US-234 — silueta misteriosa que se ilumina al acertar
-                '<div class="pj-mystery" aria-hidden="true"><span class="pj-sil">' + p.emoji + '</span></div>' +
+                '<div class="pj-mystery" aria-hidden="true"><span class="pj-sil">' + BFJ.bimg(p.img, p.emoji) + '</span></div>' +
                 '<div class="pj-clues">' +
                 p.clues.slice(0, clue + 1).map(function (c, ci) {
                     return '<div class="pj-clue bfj-pop"><em>Pista ' + (ci + 1) + '</em>' + BFJ.esc(c) + '</div>';
@@ -73,7 +73,7 @@ BFJ.define('personaje', function (el) {
                 if (sil) { sil.classList.add('show'); }
                 var pbox = document.getElementById('pbox');
                 pbox.insertAdjacentHTML('beforeend',
-                    '<div class="pj-reveal bfj-pop"><span>' + p.emoji + '</span><strong>¡Es ' + BFJ.esc(p.name) + '!</strong>' +
+                    '<div class="pj-reveal bfj-pop"><span>' + BFJ.bimg(p.img, p.emoji) + '</span><strong>¡Es ' + BFJ.esc(p.name) + '!</strong>' +
                     '<em>+' + stars + '⭐</em></div>');
                 i++;
                 setTimeout(render, 1500);
@@ -93,7 +93,7 @@ BFJ.define('personaje', function (el) {
                     if (sil2) { sil2.classList.add('show'); }
                     var pbox2 = document.getElementById('pbox');
                     pbox2.insertAdjacentHTML('beforeend',
-                        '<div class="pj-reveal bfj-pop"><span>' + p.emoji + '</span><strong>Era ' + BFJ.esc(p.name) + '</strong><em>+0⭐</em></div>');
+                        '<div class="pj-reveal bfj-pop"><span>' + BFJ.bimg(p.img, p.emoji) + '</span><strong>Era ' + BFJ.esc(p.name) + '</strong><em>+0⭐</em></div>');
                     i++;
                     setTimeout(render, 1800);
                 }

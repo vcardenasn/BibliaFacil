@@ -5,8 +5,8 @@ BFJ.define('memory', function (el) {
         var pairs = BFJ.pick(bank, 8);
         var cards = [];
         pairs.forEach(function (p, pi) {
-            cards.push({ pid: pi, emoji: p.a });
-            cards.push({ pid: pi, emoji: p.b });
+            cards.push({ pid: pi, emoji: p.a, img: p.ia || '' });
+            cards.push({ pid: pi, emoji: p.b, img: p.ib || '' });
         });
         BFJ.shuffle(cards);
 
@@ -17,11 +17,12 @@ BFJ.define('memory', function (el) {
             '<div class="vf-prog"><span>Parejas: <strong id="mmOk">0</strong> / ' + pairs.length + '</span>' +
             '<span>Movimientos: <strong id="mmMv">0</strong></span></div>' +
             '<div class="mm-grid">' + cards.map(function (c, i) {
-                return '<button type="button" class="mm-card" data-i="' + i + '" aria-label="Carta">' +
+                return '<button type="button" class="mm-card" data-i="' + i +
+                    '" aria-label="Carta ' + (i + 1) + ' de ' + cards.length + '">' +
                     '<span class="mm-face mm-back">✝</span>' +
-                    '<span class="mm-face mm-front">' + c.emoji + '</span></button>';
+                    '<span class="mm-face mm-front">' + BFJ.bimg(c.img, c.emoji) + '</span></button>';
             }).join('') + '</div>' +
-            '<div class="mm-found" id="mmFound"></div>';
+            '<div class="mm-found" id="mmFound" aria-live="polite"></div>';
 
         el.querySelectorAll('.mm-card').forEach(function (b) {
             b.addEventListener('click', function () { flip(parseInt(b.getAttribute('data-i'), 10), b); });
@@ -31,6 +32,7 @@ BFJ.define('memory', function (el) {
             if (lock || btn.classList.contains('open') || btn.classList.contains('done')) { return; }
             BFJ.snd('click');
             btn.classList.add('open');
+            btn.setAttribute('aria-label', 'Carta ' + (i + 1) + ': ' + pairs[cards[i].pid].name);
             open.push({ i: i, btn: btn });
             if (open.length < 2) { return; }
 
@@ -57,6 +59,8 @@ BFJ.define('memory', function (el) {
                 BFJ.snd('bad');
                 setTimeout(function () {
                     a.btn.classList.remove('open'); b.btn.classList.remove('open');
+                    a.btn.setAttribute('aria-label', 'Carta ' + (a.i + 1) + ' de ' + cards.length);
+                    b.btn.setAttribute('aria-label', 'Carta ' + (b.i + 1) + ' de ' + cards.length);
                     open = []; lock = false;
                 }, 750);
             }

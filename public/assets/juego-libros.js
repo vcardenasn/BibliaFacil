@@ -9,7 +9,7 @@ BFJ.define('libros', function (el) {
                 '<div class="tr-cats">' +
                 blocks.map(function (b) {
                     return '<button type="button" class="tr-cat" data-b="' + b.id + '">' +
-                        '<span>' + b.emoji + '</span><strong>' + BFJ.esc(b.name) + '</strong>' +
+                        '<span class="hs-cover">' + BFJ.omoji(b.emoji) + '</span><strong>' + BFJ.esc(b.name) + '</strong>' +
                         '<small class="lb-diff">' + b.books.length + ' libros · ' + b.diff + '</small></button>';
                 }).join('') +
                 '</div><p class="jh-note">Aprende el orden de la Biblia bloque por bloque 📚</p>';

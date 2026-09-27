@@ -9,7 +9,7 @@ BFJ.define('historia', function (el) {
                 '<div class="tr-cats">' +
                 bank.map(function (s) {
                     return '<button type="button" class="tr-cat" data-s="' + s.id + '">' +
-                        '<span>' + s.emoji + '</span><strong>' + BFJ.esc(s.name) + '</strong></button>';
+                        '<span class="hs-cover">' + BFJ.omoji(s.emoji) + '</span><strong>' + BFJ.esc(s.name) + '</strong></button>';
                 }).join('') +
                 '</div><p class="jh-note">Elige una historia y pon sus escenas en orden 🎬</p>';
             el.querySelectorAll('[data-s]').forEach(function (b) {
@@ -36,7 +36,7 @@ BFJ.define('historia', function (el) {
                 order.map(function (si) {
                     var s = story.scenes[si];
                     return '<button type="button" class="hs-card" data-si="' + si + '">' +
-                        '<span>' + s.e + '</span><small>' + BFJ.esc(s.t) + '</small></button>';
+                        '<span class="hs-scene">' + BFJ.omoji(s.e) + '</span><small>' + BFJ.esc(s.t) + '</small></button>';
                 }).join('') +
                 '</div>';
 
@@ -48,7 +48,7 @@ BFJ.define('historia', function (el) {
                         BFJ.snd('ok');
                         var slot = el.querySelector('.hs-slot[data-i="' + si + '"] .hs-into');
                         var s = story.scenes[si];
-                        slot.innerHTML = '<div class="hs-placed bfj-pop"><span>' + s.e + '</span><small>' + BFJ.esc(s.t) + '</small></div>';
+                        slot.innerHTML = '<div class="hs-placed bfj-pop"><span class="hs-scene">' + BFJ.omoji(s.e) + '</span><small>' + BFJ.esc(s.t) + '</small></div>';
                         el.querySelector('.hs-slot[data-i="' + si + '"]').classList.add('filled');
                         BFJ.burst(slot); // US-234
                         card.remove();

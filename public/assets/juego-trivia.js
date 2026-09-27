@@ -15,7 +15,7 @@ BFJ.define('trivia', function (el) {
             var html = '<div class="tr-cats">';
             for (var k in CATS) {
                 html += '<button type="button" class="tr-cat" data-cat="' + k + '">' +
-                    '<span>' + CATS[k].emoji + '</span><strong>' + CATS[k].name + '</strong></button>';
+                    '<span class="hs-cover">' + BFJ.omoji(CATS[k].emoji) + '</span><strong>' + CATS[k].name + '</strong></button>';
             }
             el.innerHTML = html + '</div><p class="jh-note">Elige una categoría — ¡10 preguntas contra el reloj!</p>';
             el.querySelectorAll('[data-cat]').forEach(function (b) {

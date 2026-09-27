@@ -25,6 +25,20 @@ return function (TestCase $t): void {
         }
     });
 
+    $t->run('hub: nodos usan imágenes ilustradas decorativas', function () use ($t, $games, $render) {
+        $html = $render();
+        $ready = count(array_filter($games, function ($g) { return !empty($g['ready']); }));
+        // hero + daily + uno por nodo listo
+        $t->assertTrue(substr_count($html, 'assets/omoji/') >= $ready + 2);
+        $t->assertTrue(str_contains($html, 'aria-hidden="true"'));
+        foreach ($games as $g) {
+            if (!empty($g['ready'])) {
+                $f = BASE_PATH . '/public/assets/omoji/' . $g['img'] . '.svg';
+                $t->assertTrue(is_file($f), 'falta omoji ' . $g['img']);
+            }
+        }
+    });
+
     $t->run('hub: cada nodo lleva el color propio del juego (--gc)', function () use ($t, $games, $render) {
         $html = $render();
         foreach ($games as $g) {
@@ -42,7 +56,7 @@ return function (TestCase $t): void {
         $t->assertTrue(str_contains($html, '/juegos/' . $expected . '?desafio=' . date('Ymd')));
         $t->assertTrue(str_contains($html, 'Desafío de hoy'));
         // sin JS sigue siendo un enlace válido
-        $t->assertTrue(str_contains($html, '▶ Jugar'));
+        $t->assertTrue(str_contains($html, 'Jugar</span>'));
     });
 
     $t->run('shell de juego: expone la fecha del servidor para el desafío', function () use ($t, $games) {

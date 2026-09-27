@@ -76,6 +76,47 @@
         return { name: LEVELS[i][1], t: t, base: LEVELS[i][0], next: next ? next[0] : null };
     }
 
+    // Imágenes prediseñadas OpenMoji (CC BY-SA) — mapa emoji → archivo SVG a color.
+    // Los juegos las usan como contenido visual (cartas, siluetas, portadas).
+    var OMOJI = {
+        '🧔':'1F9D4','🐳':'1F433','🚢':'1F6A2','🌈':'1F308','🦁':'1F981','🙏':'1F64F',
+        '🪨':'1FAA8','👦':'1F466','🔥':'1F525','🌳':'1F333','👶':'1F476','⭐':'2B50',
+        '🍞':'1F35E','🐟':'1F41F','🐑':'1F411','🧑‍🌾':'1F9D1-200D-1F33E','🌊':'1F30A',
+        '🚶':'1F6B6','🏰':'1F3F0','🎺':'1F3BA','🍎':'1F34E','🐍':'1F40D','😴':'1F634',
+        '🪜':'1FA9C','💇':'1F487','💪':'1F4AA','👑':'1F451','💃':'1F483','🧥':'1F9E5',
+        '✉️':'2709','🌾':'1F33E','🌟':'1F31F','👩':'1F469','🏺':'1F3FA','👂':'1F442',
+        '🐴':'1F434','🧱':'1F9F1','🌅':'1F305','🖐️':'1F590','🍯':'1F36F','🌑':'1F311',
+        '📜':'1F4DC','📖':'1F4D6','🌍':'1F30D','💡':'1F4A1','👫':'1F46B','😌':'1F60C',
+        '📢':'1F4E2','🔨':'1F528','🐘':'1F418','🌧️':'1F327','🕊️':'1F54A','🕳️':'1F573',
+        '🤗':'1F917','🧀':'1F9C0','😠':'1F620','🎯':'1F3AF','🎉':'1F389','🏖️':'1F3D6',
+        '📣':'1F4E3','✝️':'271D','🫏':'1FACF','🪦':'1FAA6','🏛️':'1F3DB','😇':'1F607',
+        '🌱':'1F331','🐦':'1F426','🌵':'1F335','⚔️':'2694','🎵':'1F3B5','🗣️':'1F5E3',
+        '🎲':'1F3B2','✨':'2728','🔒':'1F512','🥇':'1F947','🥈':'1F948','🥉':'1F949',
+        '💎':'1F48E','🧭':'1F9ED','🎮':'1F3AE','🏆':'1F3C6','📗':'1F4D7','🏅':'1F3C5',
+        '🔍':'1F50D','🎬':'1F3AC','🎁':'1F381','🏁':'1F3C1','📚':'1F4DA'
+    };
+    // BASE ya apunta a /assets/ (derivado del src de juegos.js). OMV invalida
+    // la caché de 1 mes del .htaccess cuando cambien las imágenes.
+    var OMV = '1';
+    function omoji(e) {
+        var c = OMOJI[e];
+        return c
+            ? '<img class="omoji" src="' + BASE + 'omoji/' + c + '.svg?v=' + OMV +
+              '" alt="" loading="lazy" onerror="this.outerHTML=this.dataset.f" data-f="' + e + '">'
+            : e;
+    }
+    // Ilustración descargada: ref "bibleimg:jonas-a" (.jpg) o "arkset:noe" (.png).
+    // Si falta la imagen, cae al emoji OpenMoji.
+    function bimg(ref, emoji) {
+        var m = /^(bibleimg|arkset):([0-9a-z_-]+)$/i.exec(ref || '');
+        if (!m) { return omoji(emoji || ''); }
+        var ext = m[1] === 'arkset' ? 'png' : 'jpg';
+        // bimg-png = figura con fondo transparente → contain; jpg = escena → cover
+        return '<img class="bimg' + (ext === 'png' ? ' bimg-png' : '') +
+            '" src="' + BASE + m[1] + '/' + m[2] + '.' + ext + '?v=' + OMV +
+            '" alt="" loading="lazy" onerror="this.outerHTML=this.dataset.f" data-f="' + esc(emoji || '') + '">';
+    }
+
     // Desafío del día (US-233) — bf_daily = "Ymd:slug" del reto ya completado.
     // `daily` se activa solo si ?desafio= coincide con la fecha del servidor
     // (data-daily del shell), así no se puede inventar una fecha para el bonus.
@@ -231,7 +272,7 @@
         var n = Math.min(count, 5);
         for (var i = 0; i < n; i++) {
             var s = document.createElement('span');
-            s.textContent = '⭐'; s.className = 'bfj-fly';
+            s.innerHTML = omoji('⭐'); s.className = 'bfj-fly';
             s.style.left = (r1.left + r1.width / 2 - 10) + 'px';
             s.style.top = (r1.top + r1.height / 2 - 10) + 'px';
             document.body.appendChild(s);
@@ -259,9 +300,8 @@
         var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
         for (var i = 0; i < 5; i++) {
             var s = document.createElement('span');
-            s.textContent = '⭐'; s.className = 'bfj-fly';
+            s.innerHTML = omoji('⭐'); s.className = 'bfj-fly bfj-fly-sm';
             s.style.left = (cx - 8) + 'px'; s.style.top = (cy - 8) + 'px';
-            s.style.fontSize = '.95rem';
             document.body.appendChild(s);
             var ang = (Math.PI * 2 * i) / 5 + Math.random() * .5;
             var dist = 46 + Math.random() * 32;
@@ -302,7 +342,7 @@
         ov.setAttribute('aria-label', o.title || '¡Bien hecho!');
         ov.innerHTML =
             '<div class="bfj-ovcard bfj-pop">' +
-            '<div class="bfj-ovemoji">' + (o.emoji || '🎉') + '</div>' +
+            '<div class="bfj-ovemoji">' + omoji(o.emoji || '🎉') + '</div>' +
             '<h2>' + esc(o.title || '¡Bien hecho!') + '</h2>' +
             '<div class="bfj-ovstars">' + (o.stars > 0
                 ? '⭐'.repeat(Math.min(o.stars, 10)) : '☆') + '</div>' +
@@ -311,8 +351,8 @@
             (o.extra ? '<p class="bfj-ovextra">' + esc(o.extra) + '</p>' : '') +
             (news.length ? '<div class="bfj-ovstick bfj-pop">🎁 ¡Sticker nuevo!<br>' +
                 news.map(function (s) {
-                    return '<span class="bfj-stick"><i class="bfj-gift" aria-hidden="true">🎁</i> ' + esc(s.name) +
-                        '<i class="bfj-stemo" hidden>' + s.emoji + '</i></span>';
+                    return '<span class="bfj-stick"><i class="bfj-gift" aria-hidden="true">' + omoji('🎁') + '</i> ' + esc(s.name) +
+                        '<i class="bfj-stemo" hidden>' + omoji(s.emoji) + '</i></span>';
                 }).join('') +
                 '</div>' : '') +
             '<div class="bfj-ovbtns">' +
@@ -329,14 +369,14 @@
                 var gift = el.querySelector('.bfj-gift'), emo = el.querySelector('.bfj-stemo');
                 if (!gift || !emo) { return; }
                 setTimeout(function () {
-                    gift.textContent = emo.textContent;
+                    gift.innerHTML = emo.innerHTML;
                     gift.classList.remove('bfj-gift'); gift.classList.add('st-pop');
                 }, 850 + i * 420);
             });
         } else {
             ov.querySelectorAll('.bfj-stick').forEach(function (el) {
                 var gift = el.querySelector('.bfj-gift'), emo = el.querySelector('.bfj-stemo');
-                if (gift && emo) { gift.textContent = emo.textContent; }
+                if (gift && emo) { gift.innerHTML = emo.innerHTML; }
             });
         }
         var firstBtn = ov.querySelector('[data-c]');
@@ -380,6 +420,7 @@
         },
         confetti: confetti,
         burst: burst,
+        omoji: omoji, bimg: bimg,
         shake: shake,
         pop: pop,
         timer: timer,
@@ -493,7 +534,7 @@
                 wall.innerHTML = STICKERS.map(function (s) {
                     var got = mine.indexOf(s.id) >= 0;
                     return '<div class="st' + (got ? ' got' : '') + '" title="' + esc(s.name) + '">' +
-                        '<span>' + (got ? s.emoji : '❓') + '</span>' +
+                        '<span>' + (got ? omoji(s.emoji) : '❓') + '</span>' +
                         '<small>' + (got ? esc(s.name) : '???') + '</small></div>';
                 }).join('');
             }
