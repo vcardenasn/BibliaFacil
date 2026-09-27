@@ -19,7 +19,7 @@ BFJ.define('memory', function (el) {
             '<div class="mm-grid">' + cards.map(function (c, i) {
                 return '<button type="button" class="mm-card" data-i="' + i +
                     '" aria-label="Carta ' + (i + 1) + ' de ' + cards.length + '">' +
-                    '<span class="mm-face mm-back">✝</span>' +
+                    '<span class="mm-face mm-back" aria-hidden="true">' + BFJ.bimg('arkset:paloma') + '</span>' +
                     '<span class="mm-face mm-front">' + BFJ.bimg(c.img, c.emoji) + '</span></button>';
             }).join('') + '</div>' +
             '<div class="mm-found" id="mmFound" aria-live="polite"></div>';
