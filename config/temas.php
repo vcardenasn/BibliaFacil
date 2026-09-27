@@ -39,6 +39,18 @@ return [
         'intro' => 'La familia es el primer lugar donde aprendemos de Dios. Estos pasajes guían el hogar.',
         'refs' => [['PRO',22,6],['JOS',24,15],['EPH',6,1],['EPH',6,4],['COL',3,20],['PSA',127,3],['PRO',17,6],['1TI',5,8],['EXO',20,12],['PRO',31,28],['GEN',2,24],['MRK',10,9],['PSA',133,1]],
     ],
+    'matrimonio' => [
+        'name' => 'Matrimonio', 'emoji' => '💍',
+        'desc' => 'Versículos para esposos y esposas que quieren un hogar en Dios.',
+        'intro' => 'El matrimonio es un pacto delante de Dios: dejar, unirse y ser una sola carne. Estos versículos enseñan a amarse, respetarse y sostenerse en pareja.',
+        'refs' => [['GEN',2,18],['GEN',2,24],['MRK',10,9],['MAT',19,6],['EPH',5,25],['EPH',5,28],['EPH',5,33],['COL',3,18],['COL',3,19],['1PE',3,7],['PRO',18,22],['PRO',31,10],['ECC',4,12],['1CO',7,3],['HEB',13,4]],
+    ],
+    'hijos' => [
+        'name' => 'Hijos', 'emoji' => '👶',
+        'desc' => 'Versículos para criar, guiar y amar a los hijos.',
+        'intro' => 'Los hijos son herencia del Señor. Estos pasajes guían a padres e hijos: cómo enseñarlos sin exasperarlos, y cómo ellos pueden honrar a sus padres.',
+        'refs' => [['PSA',127,3],['PRO',22,6],['EPH',6,1],['EPH',6,4],['COL',3,20],['COL',3,21],['EXO',20,12],['DEU',6,7],['PRO',29,17],['ISA',54,13],['MRK',10,14],['2TI',3,15],['PRO',1,8]],
+    ],
     'perdon' => [
         'name' => 'Perdón', 'emoji' => '🤝',
         'desc' => 'Versículos sobre el perdón de Dios y perdonar a otros.',
