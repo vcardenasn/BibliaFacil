@@ -69,4 +69,29 @@ return function (TestCase $t): void {
         $t->assertTrue(str_contains($html, 'data-daily="' . date('Ymd') . '"'));
         $t->assertTrue(str_contains($html, 'id="gameStars"'));
     });
+
+    $t->run('versículo por niveles: sets del API mapean a libros reales', function () use ($t) {
+        $index = file_get_contents(BASE_PATH . '/public/index.php');
+        // Extrae y evalúa el mapa $vsets = ['slug' => [ords…]] del endpoint del juego
+        $t->assertTrue((bool) preg_match('/\$vsets\s*=\s*(\[.*?\]);/s', $index, $m));
+        $vsets = eval('return ' . $m[1] . ';');
+        $t->assertSame(7, count($vsets), 'deben existir 7 bloques de nivel (6 sets + biblia)');
+        $books = require CONFIG_PATH . '/books.php';
+        $ords = array_map(static function ($b) { return (int) $b['ord']; }, $books);
+        foreach ($vsets as $set => $list) {
+            if ($set !== 'biblia') {
+                $t->assertTrue(count($list) > 0, "set $set vacío");
+            }
+            foreach ($list as $o) {
+                $t->assertTrue(in_array((int) $o, $ords, true), "ord inválido en $set: $o");
+            }
+        }
+        // El juego pide ?set= y los sets JS coinciden con los del API
+        $js = file_get_contents(BASE_PATH . '/public/assets/juego-versiculo.js');
+        foreach (array_keys($vsets) as $set) {
+            $t->assertTrue(str_contains($js, "'" . $set . "'"), "falta set $set en el JS");
+        }
+        $t->assertTrue(str_contains($js, 'api/versiculo?n='));
+        $t->assertTrue(str_contains($js, 'BFJ.levels.pass'));
+    });
 };

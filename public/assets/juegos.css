@@ -508,11 +508,38 @@
     border-radius: .3rem; padding: 0 .25rem; font-weight: 800;
 }
 
+/* Niveles de "Completa el Versículo" */
+.vj-ltitle { font-family: var(--sans); font-size: 1.05rem; margin: 0 0 .15rem; }
+.vj-lsub { font-family: var(--sans); font-size: .8rem; color: var(--muted); margin: 0 0 .9rem; }
+.vj-lgrid { display: grid; gap: .55rem; }
+.vj-lv {
+    display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto auto;
+    width: 100%; height: 100%;
+    column-gap: .7rem; align-items: center; text-align: left;
+    background: var(--card); border: 2px solid var(--border); border-radius: .9rem;
+    padding: .6rem .8rem; cursor: pointer; font: inherit; color: var(--ink);
+}
+.vj-lv i { grid-row: 1 / 4; width: 2.4rem; height: 2.4rem; display: inline-block; }
+.vj-lv i .omoji { width: 2.4rem; height: 2.4rem; }
+.vj-lv b { font-family: var(--sans); font-size: .9rem; }
+.vj-lv small { font-family: var(--sans); font-size: .72rem; color: var(--muted); }
+.vj-lvs { font-family: var(--sans); font-size: .72rem; font-weight: 800; color: var(--gc, var(--brand)); }
+.vj-lv.tr-in { animation: bfj-flipin .38s var(--d, 0s) backwards; }
+.vj-lv:not(.lock):hover { border-color: var(--gc, var(--brand)); transform: translateY(-1px); }
+.vj-lv:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+.vj-lv.next { border-color: var(--gc, var(--brand)); }
+.vj-lv.done { border-color: color-mix(in srgb, var(--gc, var(--brand)) 55%, var(--border)); }
+.vj-lv.done .vj-lvs { color: var(--gold-ink); }
+.vj-lv.lock { cursor: not-allowed; }
+.vj-lv.lock i, .vj-lv.lock b, .vj-lv.lock small { opacity: .55; }
+.vj-lv.lock .vj-lvs { color: var(--muted); }
+@media (min-width: 560px) { .vj-lgrid { grid-template-columns: 1fr 1fr; } }
+
 @media (prefers-reduced-motion: reduce) {
     .jh-node:hover .jh-emoji, .bfj-shake, .bfj-pop, .mm-face { animation: none; transition: none; }
     .jh-rays, .bfj-gift, .bfj-ovstick .st-pop, .jh-node.is-now .jh-node-ring { animation: none; }
     .jh-levelbar span { transition: none; }
-    .tr-opt.tr-in, .tr-opt.ok, .vf-streak.hot, .jh-daily-emoji { animation: none; }
+    .tr-opt.tr-in, .tr-opt.ok, .vf-streak.hot, .jh-daily-emoji, .vj-lv.tr-in, .vj-lv:hover { animation: none; transform: none; }
     .pj-sil { transition: none; }
 }
 @media (min-width: 640px) {

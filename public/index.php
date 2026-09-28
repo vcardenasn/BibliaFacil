@@ -437,8 +437,25 @@ if (($seg[0] ?? '') === 'juegos') {
         header('Content-Type: application/json; charset=utf-8');
         $n = min(15, max(1, (int) ($_GET['n'] ?? 10)));
         $gv = $repo->versionByCode((string) ($_GET['v'] ?? '')) ?: ($versions[0] ?? null);
+        // Niveles de "Completa el Versículo": mazo limitado a un bloque bíblico
+        $vsets = [
+            'salmos'     => [19],
+            'sabiduria'  => [18, 20, 21, 22],
+            'evangelios' => range(40, 43),
+            'cartas'     => range(44, 65),
+            'historia'   => range(1, 17),
+            'profetas'   => array_merge(range(23, 39), [66]),
+            'biblia'     => [], // mazo completo (nivel final)
+        ];
+        $set = (string) ($_GET['set'] ?? '');
+        if ($set !== '' && !array_key_exists($set, $vsets)) {
+            http_response_code(400);
+            echo json_encode(['ok' => false]);
+            exit;
+        }
+        $ords = $vsets[$set] ?? [];
         try {
-            $qs = $gv ? (new VerseQuiz())->round($repo, (int) $gv['id'], $n) : [];
+            $qs = $gv ? (new VerseQuiz())->round($repo, (int) $gv['id'], $n, $ords) : [];
             echo json_encode(['ok' => true, 'qs' => $qs], JSON_UNESCAPED_UNICODE);
         } catch (Throwable $e) {
             http_response_code(500);

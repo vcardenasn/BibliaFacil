@@ -12,11 +12,20 @@ use Biblia\Bible\BibleRepository;
 final class VerseQuiz
 {
     /**
+     * @param int[] $ords si viene, limita el mazo a esos libros (ord canónico 1-66)
      * @return array<int,array{q:string,ref:string,full:string,options:string[],a:int}>
      */
-    public function round(BibleRepository $repo, int $versionId, int $n): array
+    public function round(BibleRepository $repo, int $versionId, int $n, array $ords = []): array
     {
         $books = $repo->books();
+        if ($ords) {
+            $books = array_values(array_filter($books, function ($b) use ($ords) {
+                return in_array((int) $b['ord'], $ords, true);
+            }));
+            if (!$books) {
+                return [];
+            }
+        }
         $out = [];
         $seen = [];
         $tries = 0;

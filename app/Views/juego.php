@@ -1,4 +1,4 @@
-<div class="jg-shell">
+<div class="jg-shell" style="--gc:<?= e($game['color'] ?? '#2e4a8a') ?>">
     <div class="jg-head">
         <a class="nav-btn" href="<?= e(url('juegos')) ?>">← Juegos</a>
         <h1><?= omoji($game['img'] ?? '') ?> <?= e($game['name']) ?></h1>

@@ -29,13 +29,15 @@
     function pick(a, n) { return shuffle(a.slice()).slice(0, n); }
 
     // ============================ Estrellas / progreso ========================
-    var data = { stars: {}, plays: {}, stickers: [] };
+    var data = { stars: {}, plays: {}, stickers: [], vl: {}, vlb: {} };
     try {
         var raw = JSON.parse(localStorage.getItem('bf_games') || 'null');
         if (raw && typeof raw === 'object') {
             data.stars = raw.stars || {};
             data.plays = raw.plays || {};
             data.stickers = raw.stickers || [];
+            data.vl = raw.vl || {};
+            data.vlb = raw.vlb || {};
         }
     } catch (e) {}
     function save() {
@@ -61,6 +63,16 @@
         { id: 'perfect', emoji: '🏆', name: 'Ronda perfecta',       check: function (d, ctx) { return !!(ctx && ctx.perfect); } },
         { id: 'collector', emoji: '🌟', name: 'Estrellas en los 7 juegos', check: function (d) {
                 var n = 0; for (var k in d.stars) { if (d.stars[k] > 0) { n++; } } return n >= 7;
+            } },
+        // Progreso por niveles de "Completa el Versículo"
+        { id: 'vj3', emoji: '🌱', name: 'Semillas de la Palabra', check: function (d) {
+                return ((d.vl || {}).versiculo || 0) >= 3;
+            } },
+        { id: 'vj5', emoji: '📖', name: 'Estudiante de la Palabra', check: function (d) {
+                return ((d.vl || {}).versiculo || 0) >= 5;
+            } },
+        { id: 'vj7', emoji: '👑', name: 'Maestro del Versículo', check: function (d) {
+                return ((d.vl || {}).versiculo || 0) >= 7;
             } }
     ];
     function starTotal(d) {
@@ -356,7 +368,8 @@
                 }).join('') +
                 '</div>' : '') +
             '<div class="bfj-ovbtns">' +
-            (o.onAgain ? '<button type="button" class="jbtn jbtn-main" data-c="again">🔄 Otra vez</button>' : '') +
+            (o.onAgain ? '<button type="button" class="jbtn jbtn-main" data-c="again">' +
+                esc(o.againLabel || '🔄 Otra vez') + '</button>' : '') +
             '<button type="button" class="jbtn jbtn-ghost" data-c="hub">🎮 Juegos</button>' +
             '</div></div>';
         document.body.appendChild(ov);
@@ -452,6 +465,18 @@
             all: STICKERS,
             mine: function () { return data.stickers; },
             check: checkStickers
+        },
+        // Niveles por juego (versiculo): vl[slug] = niveles superados,
+        // vlb[slug][nivel] = mejor puntaje del nivel
+        levels: {
+            passed: function (slug) { return (data.vl[slug] || 0); },
+            best: function (slug, idx) { return ((data.vlb[slug] || {})[idx]) || 0; },
+            pass: function (slug, idx, ok) {
+                if (!data.vlb[slug]) { data.vlb[slug] = {}; }
+                if (ok > (data.vlb[slug][idx] || 0)) { data.vlb[slug][idx] = ok; }
+                if (idx + 1 > (data.vl[slug] || 0)) { data.vl[slug] = idx + 1; }
+                save();
+            }
         },
         games: {},
         define: function (slug, init) { this.games[slug] = init; },
