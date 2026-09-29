@@ -312,13 +312,14 @@
     }
     function paintVerse(el, rec) {
         for (var i = 1; i <= 5; i++) { el.classList.remove('hl' + i); }
-        el.classList.remove('has-note', 'has-fav');
+        el.classList.remove('has-note', 'has-fav', 'has-devotional');
         var marks = el.querySelector('.vmarks');
         if (marks) { marks.remove(); }
         if (!rec) { return; }
         if (rec.color) { el.classList.add('hl' + rec.color); }
         var html = '';
         if (rec.note) { el.classList.add('has-note'); html += '<i title="Tiene nota">✎</i>'; }
+        if (rec.devotional) { el.classList.add('has-devotional'); html += '<i title="Tiene devocional">◇</i>'; }
         if (rec.fav) { el.classList.add('has-fav'); html += '<i title="Favorito">♥</i>'; }
         if (html) {
             var s = document.createElement('span');
@@ -361,6 +362,7 @@
             }).join('') +
             '<button type="button" class="sw sw0" data-c="0" title="Quitar resaltado">✕</button></div>' +
             '<div class="vs-row vs-acts">' +
+            '<button type="button" data-a="devotional" class="va2 va-dev' + (rec.devotional ? ' on' : '') + '">Hacer devocional</button>' +
             '<button type="button" data-a="note" class="va2' + (rec.note ? ' on' : '') + '">✎ Nota</button>' +
             '<button type="button" data-a="fav" class="va2' + (rec.fav ? ' on' : '') + '">♥ Favorito</button>' +
             '<button type="button" data-a="copy" class="va2">⧉ Copiar</button>' +
@@ -402,13 +404,46 @@
                 rec.color = c || null;
                 if (c) { TK('ann', 'hl'); }
                 saveAnn(id, rec, ref);
-                paintVerse(sheetVerse, rec.color || rec.note || rec.fav ? rec : null);
+                paintVerse(sheetVerse, rec.color || rec.note || rec.fav || rec.devotional ? rec : null);
                 sheet.querySelectorAll('.sw').forEach(function (b) { b.classList.toggle('on', parseInt(b.getAttribute('data-c'), 10) === c); });
                 return;
             }
             if (!act) { return; }
             var a = act.getAttribute('data-a');
-            if (a === 'note') {
+            if (a === 'close') {
+                closeSheet();
+            } else if (a === 'devotional') {
+                var rangeSelect = sheet.querySelector('.vs-range-sel');
+                var selectedTo = rangeSelect && rangeSelect.value ? parseInt(rangeSelect.value, 10) : null;
+                devotionalMode(sheet, rec, ref, selectedTo);
+            } else if (a === 'savedevotional') {
+                var answers = [].map.call(sheet.querySelectorAll('.vs-devotional textarea'), function (field) {
+                    return field.value.trim();
+                });
+                var status = sheet.querySelector('.vs-dev-status');
+                if (!answers.some(Boolean)) {
+                    status.textContent = 'Escribe al menos una reflexión antes de guardar.';
+                    sheet.querySelector('.vs-devotional textarea').focus();
+                    return;
+                }
+                rec.devotional = {
+                    to: sheet._devPortion.to,
+                    ref: sheet._devPortion.ref,
+                    text: sheet._devPortion.text,
+                    answers: answers
+                };
+                TK('ann', 'devotional');
+                saveAnn(id, rec, ref);
+                paintVerse(sheetVerse, rec);
+                act.textContent = 'Guardado';
+                status.textContent = 'Tu devocional se guardó en este dispositivo.';
+                setTimeout(closeSheet, 700);
+            } else if (a === 'deldevotional') {
+                delete rec.devotional;
+                saveAnn(id, rec, ref);
+                paintVerse(sheetVerse, rec.color || rec.note || rec.fav || rec.devotional ? rec : null);
+                closeSheet();
+            } else if (a === 'note') {
                 var nz = sheet.querySelector('.vs-note');
                 nz.hidden = !nz.hidden;
                 if (!nz.hidden) { nz.querySelector('textarea').focus(); }
@@ -428,7 +463,7 @@
                 if (rec.fav) { TK('ann', 'fav'); }
                 saveAnn(id, rec, ref);
                 act.classList.toggle('on', !!rec.fav);
-                paintVerse(sheetVerse, rec.color || rec.note || rec.fav ? rec : null);
+                paintVerse(sheetVerse, rec.color || rec.note || rec.fav || rec.devotional ? rec : null);
             } else if (a === 'copy') {
                 var payload = '“' + text + '” — ' + ref + '\n' + surl;
                 TK('share', 'copy');
@@ -510,7 +545,7 @@
         rec.chapter = parseInt(parts[2], 10); rec.verse = parseInt(parts[3], 10);
         rec.ref = ref;
         rec.ts = Date.now();
-        if (!rec.color && !rec.note && !rec.fav) {
+        if (!rec.color && !rec.note && !rec.fav && !rec.devotional) {
             delete annMap[id];
             DB.del(id);
         } else {
@@ -518,6 +553,67 @@
             DB.put(rec);
         }
     }
+    var DEVOTIONAL_QUESTIONS = [
+        '¿Qué me enseña hoy la Palabra de Dios acerca de Él, de mí o de cómo debo vivir?',
+        '¿Qué está mostrando la Palabra de Dios que necesito reconocer, cambiar o dejar en mi vida?',
+        '¿Qué pensamiento, actitud, decisión o conducta necesito corregir a la luz de lo que Dios me enseña?',
+        '¿Qué debo hacer hoy para poner en práctica lo que Dios me ha enseñado?'
+    ];
+
+    function devotionalPortion(from, to, ref) {
+        var texts = [];
+        document.querySelectorAll('.chapter .verse').forEach(function (verse) {
+            var number = parseInt(verse.id.slice(1), 10);
+            if (number >= from && number <= to) {
+                texts.push(verse.getAttribute('data-text') || verse.textContent.trim());
+            }
+        });
+        var base = ref.replace(/:\d+.*$/, '');
+        return {
+            to: to,
+            ref: to > from ? base + ':' + from + '-' + to : ref,
+            text: texts.join(' ')
+        };
+    }
+
+    function devotionalMode(sh, rec, ref, selectedTo) {
+        var from = parseInt(sheetVerse.id.slice(1), 10);
+        var saved = rec.devotional || {};
+        var to = selectedTo || saved.to || from;
+        var options = [];
+        document.querySelectorAll('.chapter .verse').forEach(function (verse) {
+            var number = parseInt(verse.id.slice(1), 10);
+            if (number >= from) {
+                options.push('<option value="' + number + '"' + (number === to ? ' selected' : '') + '>v. ' + number + '</option>');
+            }
+        });
+        var answers = Array.isArray(saved.answers) ? saved.answers : [];
+        var card = sh.querySelector('.vs-card');
+        card.innerHTML =
+            '<div class="vs-head"><button type="button" class="vs-x" data-a="back">← Volver</button>' +
+            '<strong>Devocional</strong><button type="button" class="vs-x" data-a="close" aria-label="Cerrar">✕</button></div>' +
+            '<div class="vs-devotional">' +
+            '<label class="vs-dev-range">Porción desde v. ' + from + ' hasta <select>' + options.join('') + '</select></label>' +
+            '<blockquote class="vs-dev-passage"></blockquote>' +
+            '<div class="vs-dev-fields">' + DEVOTIONAL_QUESTIONS.map(function (question, i) {
+                return '<label><span>' + esc(question) + '</span><textarea rows="3" maxlength="4000">' + esc(answers[i] || '') + '</textarea></label>';
+            }).join('') + '</div>' +
+            '<p class="vs-dev-status" role="status"></p>' +
+            '<div class="vs-note-btns"><button type="button" data-a="savedevotional" class="va2 on">Guardar devocional</button>' +
+            (rec.devotional ? '<button type="button" data-a="deldevotional" class="va2">Eliminar</button>' : '') + '</div></div>';
+
+        var select = card.querySelector('.vs-dev-range select');
+        var passage = card.querySelector('.vs-dev-passage');
+        var updatePortion = function () {
+            sh._devPortion = devotionalPortion(from, parseInt(select.value, 10), ref);
+            passage.innerHTML = '<strong>' + esc(sh._devPortion.ref) + '</strong><span>' + esc(sh._devPortion.text) + '</span>';
+        };
+        select.addEventListener('change', updatePortion);
+        updatePortion();
+        var firstEmpty = [].find.call(card.querySelectorAll('textarea'), function (field) { return !field.value.trim(); });
+        (firstEmpty || card.querySelector('textarea')).focus();
+    }
+
     function closeSheet() {
         if (sheet) { sheet.remove(); sheet = null; }
         if (sheetVerse) { sheetVerse.classList.remove('open'); sheetVerse = null; }
@@ -687,9 +783,11 @@
                     if (book && r.slug !== book) { return false; }
                     if (filter === 'hl' && !r.color) { return false; }
                     if (filter === 'note' && !r.note) { return false; }
+                    if (filter === 'devotional' && !r.devotional) { return false; }
                     if (filter === 'fav' && !r.fav) { return false; }
                     if (q) {
-                        var hay = ((r.ref || '') + ' ' + (r.note || '')).toLowerCase();
+                        var devotionalText = r.devotional && Array.isArray(r.devotional.answers) ? r.devotional.answers.join(' ') : '';
+                        var hay = ((r.ref || '') + ' ' + (r.note || '') + ' ' + devotionalText).toLowerCase();
                         if (hay.indexOf(q) < 0) { return false; }
                     }
                     return true;
@@ -716,11 +814,19 @@
                     var tags = '';
                     if (r.color) { tags += '<span class="tag hl' + r.color + '"></span>'; }
                     if (r.note) { tags += '<span class="tag">✎</span>'; }
+                    if (r.devotional) { tags += '<span class="tag mi-dev-tag">◇</span>'; }
                     if (r.fav) { tags += '<span class="tag">♥</span>'; }
+                    var devotional = '';
+                    if (r.devotional) {
+                        devotional = '<div class="mi-dev"><strong>Devocional · ' + esc(r.devotional.ref || r.ref) + '</strong>' +
+                            (r.devotional.answers || []).map(function (answer, i) {
+                                return answer ? '<p><b>' + (i + 1) + '.</b> ' + esc(answer) + '</p>' : '';
+                            }).join('') + '</div>';
+                    }
                     return '<div class="mias-item" data-id="' + esc(r.id) + '">' +
                         '<div class="mi-head"><a href="' + url + '"><strong>' + esc(r.ref || r.id) + '</strong></a>' +
                         '<span class="mi-ver">' + esc((r.version || '').toUpperCase()) + '</span>' + tags + '</div>' +
-                        (r.note ? '<p class="mi-note">' + esc(r.note) + '</p>' : '') +
+                        (r.note ? '<p class="mi-note">' + esc(r.note) + '</p>' : '') + devotional +
                         '<button type="button" class="mi-del" title="Borrar">Borrar</button></div>';
                 }).join('');
             });
@@ -805,6 +911,12 @@
                     var line = '• ' + (r.ref || r.id) + ' (' + (r.version || '').toUpperCase() + ')';
                     if (marks.length) { line += ' — ' + marks.join(', '); }
                     if (r.note) { line += '\n  ✎ ' + r.note; }
+                    if (r.devotional) {
+                        line += '\n  Devocional · ' + (r.devotional.ref || r.ref);
+                        (r.devotional.answers || []).forEach(function (answer, i) {
+                            if (answer) { line += '\n  ' + (i + 1) + '. ' + answer; }
+                        });
+                    }
                     line += '\n  https://biblia.omni-hosting.com/' + r.version + '/' + r.slug + '/' + r.chapter + '#v' + r.verse;
                     lines.push(line);
                 });

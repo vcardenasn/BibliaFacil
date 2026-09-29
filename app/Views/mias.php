@@ -1,5 +1,5 @@
 <h1>Mis anotaciones</h1>
-<p class="muted">Resaltados, notas y favoritos — se guardan en este dispositivo.</p>
+<p class="muted">Resaltados, notas, devocionales y favoritos — se guardan en este dispositivo.</p>
 
 <div class="streak" id="streakBox" hidden></div>
 
@@ -13,6 +13,7 @@
         <button type="button" data-f="all" class="on" role="radio" aria-checked="true" tabindex="0">Todas</button>
         <button type="button" data-f="hl" role="radio" aria-checked="false" tabindex="-1">Resaltadas</button>
         <button type="button" data-f="note" role="radio" aria-checked="false" tabindex="-1">Con nota</button>
+        <button type="button" data-f="devotional" role="radio" aria-checked="false" tabindex="-1">Devocionales</button>
         <button type="button" data-f="fav" role="radio" aria-checked="false" tabindex="-1">Favoritas</button>
     </div>
 
