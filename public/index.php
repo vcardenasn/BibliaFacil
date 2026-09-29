@@ -27,8 +27,14 @@ if (($seg[0] ?? '') === 'robots.txt') {
     header('Content-Type: text/plain; charset=utf-8');
     echo "User-agent: *\nAllow: /\n",
         "Disallow: /ir\nDisallow: /check.php\nDisallow: /track.php\n",
-        "Disallow: /juegos/api/\nDisallow: /api/\nDisallow: /comparar\nDisallow: /mias\n\n",
-        'Sitemap: ', \Biblia\Core\Seo::abs('sitemap.xml'), "\n";
+        "Disallow: /juegos/api/\nDisallow: /api/\nDisallow: /comparar\nDisallow: /mias\n";
+    // Versiones vía API.Bible: fuera del rastreo para proteger la cuota mensual.
+    foreach ($versions as $v) {
+        if (!empty($v['api_bible_id'])) {
+            echo 'Disallow: /' . $v['code'] . "\n";
+        }
+    }
+    echo "\n", 'Sitemap: ', \Biblia\Core\Seo::abs('sitemap.xml'), "\n";
     exit;
 }
 if (($seg[0] ?? '') === 'sitemap.xml' || (($seg[0] ?? '') === 'sitemap' && isset($seg[1]))) {
@@ -39,7 +45,8 @@ if (($seg[0] ?? '') === 'sitemap.xml' || (($seg[0] ?? '') === 'sitemap' && isset
             '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', "\n",
             '<sitemap><loc>', $abs('sitemap/paginas'), '</loc></sitemap>', "\n";
         foreach ($versions as $v) {
-            if (!empty($v['active'])) {
+            // Versiones API.Bible: no indexables — cada hit de crawler consume cuota.
+            if (!empty($v['active']) && empty($v['api_bible_id'])) {
                 echo '<sitemap><loc>', $abs('sitemap/' . $v['code']), '</loc></sitemap>', "\n";
             }
         }

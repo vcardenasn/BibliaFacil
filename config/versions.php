@@ -68,14 +68,20 @@ return [
         'source_url' => 'https://ebible.org/spabll/',
         'active' => 1,
     ],
-    // En trámite/licenciadas vía API.Bible: cuando el plan las habilite, poner
-    // 'api_bible_id' => '<id de api.scripture.api.bible>' (ver scripts/apibible_list.php),
-    // license_status='approved' y active=1. NO se descargan a la BD — el lector las
-    // sirve por API con caché temporal + reporte FUMS (ToS §10/§11/§14).
+    // Licenciadas vía API.Bible (plan del usuario: NTV, NBLA).
+    // Cuando el plan las habilite: poner 'api_bible_id' => '<id>' (ver
+    // scripts/apibible_list.php), license_status='approved' y active=1.
+    // NO se descargan a la BD — el lector las sirve por API con caché
+    // temporal + reporte FUMS (ToS §10/§11/§14). Se excluyen de robots/sitemap
+    // para proteger la cuota mensual (5,000 llamadas Starter).
     ['code' => 'rvr1960', 'name' => 'Reina-Valera 1960',            'language' => 'es', 'copyright' => '© 1960 Sociedades Bíblicas en América Latina; © renovado 1988 Sociedades Bíblicas Unidas', 'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'active' => 0],
     ['code' => 'nvi',     'name' => 'Nueva Versión Internacional',  'language' => 'es', 'copyright' => '© Biblica, Inc.',          'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'active' => 0],
-    ['code' => 'ntv',     'name' => 'Nueva Traducción Viviente',    'language' => 'es', 'copyright' => '© Tyndale House Foundation', 'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'active' => 0],
-    ['code' => 'nbla',    'name' => 'Nueva Biblia de las Américas', 'language' => 'es', 'copyright' => '© The Lockman Foundation',   'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'active' => 0],
+    ['code' => 'ntv',     'name' => 'Nueva Traducción Viviente',    'language' => 'es', 'copyright' => '© Tyndale House Foundation', 'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'api_bible_id' => null, 'active' => 0],
+    ['code' => 'nbla',    'name' => 'Nueva Biblia de las Américas', 'language' => 'es', 'copyright' => '© The Lockman Foundation',   'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'api_bible_id' => null, 'active' => 0],
+    // KJV 400th Anniv. — disponible en el plan, pero §9.8 ToS la restringe en
+    // UK/territorios británicos y no hay geo-bloqueo en hosting compartido.
+    // Además ya hay KJV local (eBible.org). Dejar inactiva.
+    ['code' => 'kjv400',  'name' => 'KJV 400th Anniversary Study Edition', 'language' => 'en', 'copyright' => 'Public Domain (texto) / edición de estudio', 'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'api_bible_id' => null, 'active' => 0],
     ['code' => 'lbla',    'name' => 'La Biblia de las Américas',    'language' => 'es', 'copyright' => '© The Lockman Foundation',   'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'active' => 0],
     ['code' => 'dhh',     'name' => 'Dios Habla Hoy',               'language' => 'es', 'copyright' => '© Sociedades Bíblicas Unidas', 'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'active' => 0],
     ['code' => 'tla',     'name' => 'Traducción en Lenguaje Actual','language' => 'es', 'copyright' => '© United Bible Societies',   'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'active' => 0],
