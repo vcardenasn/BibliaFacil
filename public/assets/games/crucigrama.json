@@ -1,0 +1,226 @@
+[
+    {
+        "name": "Personajes bíblicos",
+        "icon": "🧔",
+        "rows": 9,
+        "cols": 9,
+        "words": [
+            {
+                "n": 1,
+                "w": "EVA",
+                "clue": "La primera mujer",
+                "r": 0,
+                "c": 2,
+                "dir": "v"
+            },
+            {
+                "n": 2,
+                "w": "JONAS",
+                "clue": "Estuvo dentro del gran pez",
+                "r": 0,
+                "c": 7,
+                "dir": "v"
+            },
+            {
+                "n": 3,
+                "w": "DAVID",
+                "clue": "Venció al gigante con una honda",
+                "r": 1,
+                "c": 0,
+                "dir": "h"
+            },
+            {
+                "n": 4,
+                "w": "DANIEL",
+                "clue": "Oró en el foso de los leones",
+                "r": 1,
+                "c": 4,
+                "dir": "v"
+            },
+            {
+                "n": 5,
+                "w": "NOE",
+                "clue": "Construyó un gran arca",
+                "r": 1,
+                "c": 6,
+                "dir": "h"
+            },
+            {
+                "n": 6,
+                "w": "MOISES",
+                "clue": "Guio al pueblo y partió el mar",
+                "r": 4,
+                "c": 2,
+                "dir": "h"
+            },
+            {
+                "n": 7,
+                "w": "ESTER",
+                "clue": "La reina que salvó a su pueblo",
+                "r": 4,
+                "c": 6,
+                "dir": "v"
+            },
+            {
+                "n": 8,
+                "w": "RUT",
+                "clue": "No abandonó a su suegra Noemí",
+                "r": 8,
+                "c": 6,
+                "dir": "h"
+            }
+        ]
+    },
+    {
+        "name": "Amigos de Jesús",
+        "icon": "✝️",
+        "rows": 9,
+        "cols": 9,
+        "words": [
+            {
+                "n": 1,
+                "w": "LAZARO",
+                "clue": "Amigo a quien Jesús resucitó",
+                "r": 0,
+                "c": 1,
+                "dir": "v"
+            },
+            {
+                "n": 2,
+                "w": "MATEO",
+                "clue": "Recaudador que siguió a Jesús",
+                "r": 0,
+                "c": 4,
+                "dir": "h"
+            },
+            {
+                "n": 2,
+                "w": "MARIA",
+                "clue": "La madre de Jesús",
+                "r": 0,
+                "c": 4,
+                "dir": "v"
+            },
+            {
+                "n": 3,
+                "w": "MARTA",
+                "clue": "Hermana de María, muy servicial",
+                "r": 1,
+                "c": 0,
+                "dir": "h"
+            },
+            {
+                "n": 4,
+                "w": "TOMAS",
+                "clue": "Dudó hasta ver a Jesús resucitado",
+                "r": 3,
+                "c": 7,
+                "dir": "v"
+            },
+            {
+                "n": 5,
+                "w": "PABLO",
+                "clue": "Escribió muchas cartas del NT",
+                "r": 4,
+                "c": 3,
+                "dir": "h"
+            },
+            {
+                "n": 5,
+                "w": "PEDRO",
+                "clue": "Pescador que caminó sobre el agua",
+                "r": 4,
+                "c": 3,
+                "dir": "v"
+            },
+            {
+                "n": 6,
+                "w": "JUAN",
+                "clue": "El discípulo amado",
+                "r": 6,
+                "c": 5,
+                "dir": "h"
+            }
+        ]
+    },
+    {
+        "name": "Palabras de la fe",
+        "icon": "📖",
+        "rows": 7,
+        "cols": 7,
+        "words": [
+            {
+                "n": 1,
+                "w": "ARCA",
+                "clue": "El barco que salvó a Noé y los animales",
+                "r": 0,
+                "c": 0,
+                "dir": "v"
+            },
+            {
+                "n": 2,
+                "w": "OVEJA",
+                "clue": "El animalito que el pastor fue a buscar",
+                "r": 0,
+                "c": 2,
+                "dir": "v"
+            },
+            {
+                "n": 3,
+                "w": "CRUZ",
+                "clue": "Donde Jesús murió por nosotros",
+                "r": 0,
+                "c": 6,
+                "dir": "v"
+            },
+            {
+                "n": 4,
+                "w": "SOL",
+                "clue": "El astro que alumbra el día",
+                "r": 1,
+                "c": 4,
+                "dir": "v"
+            },
+            {
+                "n": 5,
+                "w": "CIELO",
+                "clue": "Arriba, donde Dios puso las estrellas",
+                "r": 2,
+                "c": 0,
+                "dir": "h"
+            },
+            {
+                "n": 6,
+                "w": "LUZ",
+                "clue": "\"Haya ___\", dijo Dios el primer día",
+                "r": 3,
+                "c": 4,
+                "dir": "h"
+            },
+            {
+                "n": 7,
+                "w": "MAR",
+                "clue": "Lo que Moisés partió en dos",
+                "r": 4,
+                "c": 1,
+                "dir": "h"
+            },
+            {
+                "n": 8,
+                "w": "REY",
+                "clue": "David llegó a ser ___ de Israel",
+                "r": 4,
+                "c": 3,
+                "dir": "v"
+            },
+            {
+                "n": 9,
+                "w": "EDEN",
+                "clue": "El primer jardín",
+                "r": 5,
+                "c": 3,
+                "dir": "h"
+            }
+        ]
+    }
+]

@@ -1,0 +1,22 @@
+{
+    "arca": {
+        "name": "Animales del arca", "icon": "🐘", "size": 10,
+        "words": ["OVEJA", "LEON", "PALOMA", "ELEFANTE", "JIRAFA", "MONO", "CABALLO", "PERRO"]
+    },
+    "frutos": {
+        "name": "Frutos del Espíritu", "icon": "🍇", "size": 12,
+        "words": ["AMOR", "GOZO", "PAZ", "PACIENCIA", "BENIGNIDAD", "BONDAD", "FE", "MANSEDUMBRE", "TEMPLANZA"]
+    },
+    "personajes": {
+        "name": "Personajes", "icon": "🧔", "size": 10,
+        "words": ["NOE", "MOISES", "DAVID", "JONAS", "PEDRO", "MARIA", "JOSE", "DANIEL", "ESTER", "RUT"]
+    },
+    "creacion": {
+        "name": "La Creación", "icon": "🌍", "size": 10,
+        "words": ["LUZ", "CIELO", "MAR", "TIERRA", "SOL", "LUNA", "ESTRELLA", "ARBOL", "AVE", "PEZ"]
+    },
+    "milagros": {
+        "name": "Milagros de Jesús", "icon": "✨", "size": 10,
+        "words": ["PAN", "PESCADO", "AGUA", "VINO", "CIEGO", "LEPROSO", "LAZARO", "TEMPESTAD", "CAMINO", "SORDO"]
+    }
+}

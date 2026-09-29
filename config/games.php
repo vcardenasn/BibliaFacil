@@ -15,4 +15,6 @@ return [
     'memory'    => ['name' => 'Memory Bíblico',         'img' => '1F0CF', 'desc' => 'Encuentra todas las parejas.', 'ready' => true, 'color' => '#d6336c'],
     'libros'    => ['name' => 'Ordena los Libros',      'img' => '1F4DA', 'desc' => '¿Sabes el orden de la Biblia?', 'ready' => true, 'color' => '#0ca678'],
     'personaje' => ['name' => 'Adivina el Personaje',   'img' => '1F3AD', 'desc' => 'Descubre quién es con pistas.', 'ready' => true, 'color' => '#e8890c'],
+    'sopa'      => ['name' => 'Sopa de Letras',          'img' => '1F50D', 'desc' => 'Encuentra las palabras escondidas.', 'ready' => true, 'color' => '#ae3ec9'],
+    'crucigrama'=> ['name' => 'Crucigrama Bíblico',      'img' => '1F9E9', 'desc' => 'Une las palabras con sus pistas.', 'ready' => true, 'color' => '#4263eb'],
 ];

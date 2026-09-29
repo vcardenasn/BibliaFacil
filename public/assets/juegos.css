@@ -552,3 +552,75 @@
     .jh-node-info strong { font-size: .82rem; }
     .jh-node-info small { display: none; }
 }
+
+/* ---- Sopa de Letras ---- */
+.vf-qbox:has(.sp-grid), .vf-qbox:has(.cg-grid) { padding: .8rem; }
+.sp-hint { font-family: var(--sans); font-size: .8rem; color: var(--muted); margin: 0 0 .3rem; }
+.sp-grid {
+    display: grid; grid-template-columns: repeat(var(--n, 10), 1fr);
+    gap: 1px; margin: .3rem 0 .9rem; user-select: none;
+}
+.sp-cell {
+    touch-action: manipulation;
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    font-family: var(--sans); font-weight: 800; font-size: clamp(.7rem, 2.6vw, 1rem);
+    background: var(--card); color: var(--ink); border: 1px solid var(--border);
+    border-radius: .3rem; padding: 0; cursor: pointer; min-width: 0;
+}
+.sp-cell:focus-visible { outline: 3px solid var(--brand); z-index: 2; }
+.sp-anchor { background: var(--gc, var(--brand)); color: #fff; border-color: var(--gc, var(--brand)); }
+.sp-found { background: color-mix(in srgb, var(--gc, var(--brand)) 35%, var(--card)); border-color: var(--gc, var(--brand)); color: var(--ink); }
+.sp-miss { animation: bfj-shake .3s; background: color-mix(in srgb, #e03131 30%, var(--card)); }
+.sp-words { display: flex; flex-wrap: wrap; gap: .35rem; }
+.sp-word, .cg-clue i {
+    font-family: var(--sans); font-size: .78rem; font-weight: 700;
+}
+.sp-word {
+    background: var(--card); border: 1px solid var(--border); border-radius: 2rem;
+    padding: .2rem .65rem; color: var(--ink);
+}
+.sp-word.sp-done { background: color-mix(in srgb, var(--gc, var(--brand)) 30%, var(--card)); text-decoration: line-through; opacity: .8; }
+.sp-prog { font-family: var(--sans); font-size: .8rem; font-weight: 800; color: var(--gc, var(--brand)); }
+
+/* ---- Crucigrama ---- */
+.cg-grid {
+    display: grid; grid-template-columns: repeat(var(--c, 9), 1fr);
+    gap: 1px; margin: .3rem 0 .9rem; user-select: none;
+}
+.cg-block { aspect-ratio: 1; background: var(--ink); opacity: .85; border-radius: .25rem; }
+.cg-box {
+    touch-action: manipulation;
+    aspect-ratio: 1; position: relative; display: flex; align-items: center; justify-content: center;
+    background: var(--card); border: 1px solid var(--border); border-radius: .25rem;
+}
+.cg-box i {
+    position: absolute; top: 0; left: 2px; font-style: normal; line-height: 1;
+    font-size: .6rem; font-weight: 800; color: var(--muted); pointer-events: none;
+}
+.cg-cell {
+    width: 100%; height: 100%; border: 0; background: transparent; padding: 0;
+    text-align: center; font-family: var(--sans); font-weight: 800;
+    font-size: clamp(.8rem, 3vw, 1.1rem); color: var(--ink); text-transform: uppercase;
+}
+.cg-cell:focus { outline: none; }
+.cg-box:has(.cg-cell:focus) { outline: 3px solid var(--brand); z-index: 2; }
+.cg-box.cg-sel { background: color-mix(in srgb, var(--gc, var(--brand)) 22%, var(--card)); border-color: var(--gc, var(--brand)); }
+.cg-box.cg-ok { background: color-mix(in srgb, var(--gc, var(--brand)) 35%, var(--card)); }
+.cg-box.cg-bad { animation: bfj-shake .3s; background: color-mix(in srgb, #e03131 30%, var(--card)); }
+.cg-clues { display: grid; gap: .8rem; }
+@media (min-width: 560px) { .cg-clues { grid-template-columns: 1fr 1fr; } }
+.cg-col h4 { font-family: var(--sans); font-size: .8rem; margin: 0 0 .4rem; color: var(--muted); }
+.cg-clue {
+    display: block; width: 100%; min-height: 44px; text-align: left; font: inherit; font-size: .8rem;
+    background: none; border: 0; padding: .35rem .3rem; cursor: pointer;
+    color: var(--ink); border-radius: .4rem;
+}
+.cg-clue i { color: var(--muted); font-style: normal; }
+.cg-clue:hover, .cg-clue.cg-on { background: color-mix(in srgb, var(--gc, var(--brand)) 15%, transparent); }
+.cg-clue.sp-done { text-decoration: line-through; opacity: .6; }
+.cg-clue:focus-visible { outline: 3px solid var(--brand); }
+.cg-prog { font-family: var(--sans); font-size: .8rem; font-weight: 800; color: var(--gc, var(--brand)); }
+
+@media (prefers-reduced-motion: reduce) {
+    .sp-miss, .cg-bad { animation: none; }
+}

@@ -57,11 +57,11 @@
         { id: 'multi', emoji: '🧭', name: 'Jugó 4 juegos distintos', check: function (d) {
                 var n = 0; for (var k in d.stars) { if (d.stars[k] > 0) { n++; } } return n >= 4;
             } },
-        { id: 'all7', emoji: '🎮', name: 'Probó los 7 juegos',      check: function (d) {
+        { id: 'all7', emoji: '🎮', name: 'Probó 7 juegos distintos', check: function (d) {
                 var n = 0; for (var k in d.plays) { if (d.plays[k] > 0) { n++; } } return n >= 7;
             } },
         { id: 'perfect', emoji: '🏆', name: 'Ronda perfecta',       check: function (d, ctx) { return !!(ctx && ctx.perfect); } },
-        { id: 'collector', emoji: '🌟', name: 'Estrellas en los 7 juegos', check: function (d) {
+        { id: 'collector', emoji: '🌟', name: 'Estrellas en 7 juegos distintos', check: function (d) {
                 var n = 0; for (var k in d.stars) { if (d.stars[k] > 0) { n++; } } return n >= 7;
             } },
         // Progreso por niveles de "Completa el Versículo"
@@ -105,7 +105,8 @@
         '🌱':'1F331','🐦':'1F426','🌵':'1F335','⚔️':'2694','🎵':'1F3B5','🗣️':'1F5E3',
         '🎲':'1F3B2','✨':'2728','🔒':'1F512','🥇':'1F947','🥈':'1F948','🥉':'1F949',
         '💎':'1F48E','🧭':'1F9ED','🎮':'1F3AE','🏆':'1F3C6','📗':'1F4D7','🏅':'1F3C5',
-        '🔍':'1F50D','🎬':'1F3AC','🎁':'1F381','🏁':'1F3C1','📚':'1F4DA','❓':'2753'
+        '🔍':'1F50D','🎬':'1F3AC','🎁':'1F381','🏁':'1F3C1','📚':'1F4DA','❓':'2753',
+        '🧩':'1F9E9','🍇':'1F347'
     };
     // BASE ya apunta a /assets/ (derivado del src de juegos.js). OMV invalida
     // la caché de 1 mes del .htaccess cuando cambien las imágenes.
