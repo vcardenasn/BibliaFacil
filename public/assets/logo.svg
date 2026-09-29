@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a56a0"/>
+      <stop offset="1" stop-color="#24407e"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eec25c"/>
+      <stop offset="1" stop-color="#c8962a"/>
+    </linearGradient>
+    <linearGradient id="page" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fdfaf3"/>
+      <stop offset="1" stop-color="#f0e6cf"/>
+    </linearGradient>
+  </defs>
+
+  <!-- squircle -->
+  <rect width="512" height="512" rx="104" fill="url(#bg)"/>
+
+  <!-- cruz -->
+  <path d="M234 92 h44 v56 h64 v44 h-64 v84 h-44 v-84 h-64 v-44 h64 z" fill="url(#gold)"/>
+
+  <!-- libro abierto -->
+  <path d="M88 264
+           C150 244 210 250 256 274
+           C302 250 362 244 424 264
+           V364
+           C362 344 302 350 256 374
+           C210 350 150 344 88 364
+           Z" fill="url(#page)"/>
+  <path d="M256 274 V374" stroke="#c9b98f" stroke-width="7" stroke-linecap="round"/>
+  <!-- líneas de texto sugeridas -->
+  <path d="M112 285 C150 272 190 276 226 292" stroke="#d8cba6" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M112 312 C150 299 190 303 226 319" stroke="#d8cba6" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M286 292 C322 276 362 272 400 285" stroke="#d8cba6" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M286 319 C322 303 362 299 400 312" stroke="#d8cba6" stroke-width="8" fill="none" stroke-linecap="round"/>
+</svg>

@@ -42,7 +42,7 @@
 <?php foreach (($extraCss ?? []) as $c): ?>
 <link rel="stylesheet" href="<?= e(asset($c)) ?>">
 <?php endforeach; ?>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+<link rel="icon" type="image/svg+xml" href="<?= e(asset('logo.svg')) ?>">
 <?php foreach (($meta['jsonld'] ?? []) as $block): ?>
 <script type="application/ld+json"><?= json_encode($block, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
 <?php endforeach; ?>
@@ -103,14 +103,16 @@
 
 <footer class="footer">
     <?php if (!empty($version)): ?>
-    <p><?= e($version['name']) ?><?= !empty($version['copyright']) ? ' · ' . e($version['copyright']) : '' ?></p>
+    <p><?= e($version['name']) ?><?= !empty($version['copyright']) ? ' · ' . e($version['copyright']) : '' ?>
+        <?php if (!empty($version['api_bible_id'])): ?>· provista por <a href="https://api.bible" rel="noopener">API.Bible</a><?php endif; ?></p>
     <?php endif; ?>
     <p>Biblia Fácil — lee la Biblia, fácil. ·
         <a href="<?= e(url('temas')) ?>">Temas</a> ·
         <a href="<?= e(url('planes')) ?>">Planes de lectura</a> ·
         <a href="<?= e(url('versiculo-del-dia')) ?>">Versículo del día</a> ·
         <a href="<?= e(url('guias')) ?>">Guías</a> ·
-        <a href="<?= e(url('juegos')) ?>">Juegos</a></p>
+        <a href="<?= e(url('juegos')) ?>">Juegos</a> ·
+        <a href="<?= e(url('licencias')) ?>">Licencias</a></p>
     <?php if (!empty($visits) && env('FF_COUNTER', '1') === '1'): ?>
     <p class="visits"><span class="visits-ico" aria-hidden="true">✝</span><strong><?= number_format($visits[1]) ?></strong> visitas</p>
     <?php endif; ?>

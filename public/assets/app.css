@@ -854,3 +854,12 @@ a.crumb:hover { color: var(--brand); }
 .pd-links { display: inline-flex; flex-wrap: wrap; gap: .25rem .6rem; }
 .pd-links a { font-size: .88rem; }
 @media (prefers-reduced-motion: reduce) { .plan-bar span { transition: none; } }
+
+/* Citación bajo el capítulo (ToS API.Bible §7.2) y ficha de licencia */
+.verse-src { text-align: center; font-size: .78rem; margin-top: 1rem; }
+.verse-src a { color: var(--muted); text-decoration: underline; }
+.license-list { list-style: none; padding: 0; margin: 0; }
+.license-item { padding: .55rem 0; border-bottom: 1px solid var(--border); }
+.license-item:last-child { border-bottom: 0; }
+.license-item p { margin: .15rem 0; font-size: .92rem; }
+.license-item a { overflow-wrap: anywhere; }

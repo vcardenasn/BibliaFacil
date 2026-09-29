@@ -19,16 +19,26 @@
 <?php if (!$verses): ?>
 <section class="card notice">
     <p>Esta versión aún no tiene contenido cargado.</p>
+    <?php if (!empty($version['api_bible_id'])): ?>
+    <p class="muted">Se sirve vía API.Bible — revisa <code>API_BIBLE_KEY</code> en .env y la conectividad.</p>
+    <?php else: ?>
     <p class="muted">Si eres el administrador: <code>php scripts/import_bible.php --file=... --code=<?= e($version['code']) ?></code></p>
+    <?php endif; ?>
 </section>
 <?php else: ?>
-<article class="chapter" data-pos="<?= e("{$version['code']}/{$book['slug']}/{$chapter}") ?>" data-label="<?= e("{$book['name']} {$chapter}") ?>"<?= !empty($cmpUrl) ? ' data-cmp="' . e(url($cmpUrl)) . '"' : '' ?>>
+<article class="chapter" data-pos="<?= e("{$version['code']}/{$book['slug']}/{$chapter}") ?>" data-label="<?= e("{$book['name']} {$chapter}") ?>" data-tts="<?= \Biblia\Bible\VersionLicense::ttsOk($version) ? '1' : '0' ?>"<?= !empty($cmpUrl) ? ' data-cmp="' . e(url($cmpUrl)) . '"' : '' ?>>
     <?php foreach ($verses as $v): ?>
     <p class="verse<?= (int) $v['verse'] === 1 ? ' first-verse' : '' ?>" id="v<?= (int) $v['verse'] ?>" data-ref="<?= e("{$book['name']} {$chapter}:{$v['verse']}") ?>" data-text="<?= e($v['text']) ?>">
         <sup><?= (int) $v['verse'] ?></sup><?= verseHtml($v['text'], $v['wj'] ?? null, (int) $v['verse'] === 1) ?>
     </p>
     <?php endforeach; ?>
 </article>
+<?php endif; ?>
+
+<?php if ($verses): ?>
+<p class="verse-src muted"><?= e(strtoupper($version['code'])) ?> ·
+    <a href="<?= e(url('licencias')) ?>#<?= e($version['code']) ?>">Copyright y atribución</a>
+    <?php if (!\Biblia\Bible\VersionLicense::ttsOk($version)): ?>· Audio no disponible por licencia<?php endif; ?></p>
 <?php endif; ?>
 
 <?php if (!empty($cmpUrl)): ?>

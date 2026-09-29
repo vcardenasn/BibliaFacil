@@ -68,7 +68,10 @@ return [
         'source_url' => 'https://ebible.org/spabll/',
         'active' => 1,
     ],
-    // En trámite (DBL): se muestran cuando license_status=approved + active=1.
+    // En trámite/licenciadas vía API.Bible: cuando el plan las habilite, poner
+    // 'api_bible_id' => '<id de api.scripture.api.bible>' (ver scripts/apibible_list.php),
+    // license_status='approved' y active=1. NO se descargan a la BD — el lector las
+    // sirve por API con caché temporal + reporte FUMS (ToS §10/§11/§14).
     ['code' => 'rvr1960', 'name' => 'Reina-Valera 1960',            'language' => 'es', 'copyright' => '© 1960 Sociedades Bíblicas en América Latina; © renovado 1988 Sociedades Bíblicas Unidas', 'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'active' => 0],
     ['code' => 'nvi',     'name' => 'Nueva Versión Internacional',  'language' => 'es', 'copyright' => '© Biblica, Inc.',          'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'active' => 0],
     ['code' => 'ntv',     'name' => 'Nueva Traducción Viviente',    'language' => 'es', 'copyright' => '© Tyndale House Foundation', 'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'active' => 0],

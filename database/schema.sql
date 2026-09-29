@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS versions (
     license VARCHAR(60) NOT NULL DEFAULT 'unknown',
     license_status VARCHAR(20) NOT NULL DEFAULT 'open',
     source_url VARCHAR(500) NULL,
+    api_bible_id VARCHAR(40) NULL,
     active TINYINT(1) NOT NULL DEFAULT 1,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UNIQUE KEY uq_versions_code (code)

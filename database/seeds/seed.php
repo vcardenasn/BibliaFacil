@@ -13,26 +13,35 @@ $versions = require CONFIG_PATH . '/versions.php';
 
 // --- versions ---------------------------------------------------------------
 $checkV = $pdo->prepare('SELECT id FROM versions WHERE code = :code');
+$hasApiBible = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'sqlite'
+    ? (bool) $pdo->query("SELECT 1 FROM pragma_table_info('versions') WHERE name = 'api_bible_id'")->fetch()
+    : (bool) $pdo->query("SHOW COLUMNS FROM versions LIKE 'api_bible_id'")->fetch();
+$apiCols = $hasApiBible ? ', api_bible_id' : '';
+$apiVals = $hasApiBible ? ', :api_bible_id' : '';
+$apiSet = $hasApiBible ? ', api_bible_id = :api_bible_id' : '';
+
 $insV = $pdo->prepare(
-    'INSERT INTO versions (code, name, language, copyright, license, license_status, source_url, active)
-     VALUES (:code, :name, :language, :copyright, :license, :license_status, :source_url, :active)'
+    "INSERT INTO versions (code, name, language, copyright, license, license_status, source_url{$apiCols}, active)
+     VALUES (:code, :name, :language, :copyright, :license, :license_status, :source_url{$apiVals}, :active)"
 );
 $updV = $pdo->prepare(
-    'UPDATE versions SET name = :name, language = :language, copyright = :copyright,
-        license = :license, license_status = :license_status, source_url = :source_url
-     WHERE code = :code'
+    "UPDATE versions SET name = :name, language = :language, copyright = :copyright,
+        license = :license, license_status = :license_status, source_url = :source_url{$apiSet}
+     WHERE code = :code"
 );
 $vCount = 0;
 foreach ($versions as $v) {
     $checkV->execute(['code' => $v['code']]);
     if ($checkV->fetch()) {
         // active no se sobreescribe: es decisión operativa del admin.
-        $updV->execute(array_intersect_key($v, array_flip(
-            ['name', 'language', 'copyright', 'license', 'license_status', 'source_url', 'code']
-        )));
+        $keys = ['name', 'language', 'copyright', 'license', 'license_status', 'source_url', 'code'];
+        if ($hasApiBible) {
+            $keys[] = 'api_bible_id';
+        }
+        $updV->execute(array_intersect_key($v + ['api_bible_id' => null], array_flip($keys)));
         continue;
     }
-    $insV->execute($v);
+    $insV->execute($v + ['api_bible_id' => null]);
     $vCount++;
 }
 echo "Versions: {$vCount} nuevas (" . count($versions) . " total en catálogo)\n";

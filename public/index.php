@@ -421,6 +421,15 @@ if (($seg[0] ?? '') === 'planes') {
 }
 
 // ---- /mias — anotaciones personales (IndexedDB del navegador) ----------------
+// ---- /licencias — copyright y atribución (requerido por API.Bible §7) -------
+if (($seg[0] ?? '') === 'licencias') {
+    view('licencias', [
+        'title' => 'Licencias y copyright',
+        'versions' => $versions,
+    ]);
+    exit;
+}
+
 if (($seg[0] ?? '') === 'mias') {
     view('mias', [
         'title' => 'Mis anotaciones',

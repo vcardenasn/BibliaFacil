@@ -1111,7 +1111,10 @@
         if (!lvoices.length) { lvoices = all; }
         renderBar();
     }
-    if (vv.length && 'speechSynthesis' in window) {
+    // §9.1 ToS API.Bible: TTS efímero solo para PD/CC — versiones con copyright
+    // lo desactivan. Fail-closed: sin data-tts="1" explícito no hay barra.
+    var ttsOk = !!chapterEl && chapterEl.getAttribute('data-tts') === '1';
+    if (vv.length && ttsOk && 'speechSynthesis' in window) {
         lbar = document.createElement('div');
         lbar.className = 'listenbar';
         document.body.appendChild(lbar);

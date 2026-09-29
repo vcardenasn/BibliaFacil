@@ -4,6 +4,7 @@ namespace Biblia\Bible;
 
 use Biblia\Core\Database;
 use PDO;
+use Throwable;
 
 final class BibleRepository
 {
@@ -57,6 +58,10 @@ final class BibleRepository
     }
 
     private static ?bool $hasWj = null;
+    private static ?bool $hasApiBible = null;
+    /** @var array<int,?string> version_id → api_bible_id */
+    private array $apiIds = [];
+    private ApiBibleService|false|null $api = false;
 
     /** La columna verses.wj es opcional (upgrade_verses_wj.sql en prod). */
     private function hasWj(): bool
@@ -70,9 +75,66 @@ final class BibleRepository
         return self::$hasWj;
     }
 
+    /** La columna versions.api_bible_id es opcional (upgrade_versions_api_bible.sql). */
+    private function hasApiBible(): bool
+    {
+        if (self::$hasApiBible === null) {
+            $driver = $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
+            self::$hasApiBible = $driver === 'sqlite'
+                ? (bool) $this->pdo->query("SELECT 1 FROM pragma_table_info('versions') WHERE name = 'api_bible_id'")->fetch()
+                : (bool) $this->pdo->query("SHOW COLUMNS FROM versions LIKE 'api_bible_id'")->fetch();
+        }
+        return self::$hasApiBible;
+    }
+
+    private function apiService(): ?ApiBibleService
+    {
+        if ($this->api === false) {
+            $this->api = ApiBibleService::make();
+        }
+        return $this->api;
+    }
+
+    /** api_bible_id de la versión, o null si es versión local. */
+    private function apiBibleId(int $versionId): ?string
+    {
+        if (!$this->hasApiBible()) {
+            return null;
+        }
+        if (!array_key_exists($versionId, $this->apiIds)) {
+            $stmt = $this->pdo->prepare('SELECT api_bible_id FROM versions WHERE id = :i');
+            $stmt->execute(['i' => $versionId]);
+            $id = $stmt->fetchColumn();
+            $this->apiIds[$versionId] = $id === false || $id === null || $id === '' ? null : (string) $id;
+        }
+        return $this->apiIds[$versionId];
+    }
+
+    private function bookById(int $bookId): ?array
+    {
+        $stmt = $this->pdo->prepare('SELECT * FROM books WHERE id = :i');
+        $stmt->execute(['i' => $bookId]);
+        $row = $stmt->fetch();
+        return $row ?: null;
+    }
+
     /** @return array<int,array> versículos de un capítulo */
     public function chapter(int $versionId, int $bookId, int $chapter): array
     {
+        // Versión licenciada vía API.Bible: se sirve por API (sin copia en BD).
+        $bibleId = $this->apiBibleId($versionId);
+        if ($bibleId !== null && ($api = $this->apiService()) !== null) {
+            $book = $this->bookById($bookId);
+            if ($book) {
+                try {
+                    return $api->chapterVerses($bibleId, (string) $book['osis'], $chapter);
+                } catch (Throwable $e) {
+                    error_log('API.Bible chapter: ' . $e->getMessage());
+                    return [];
+                }
+            }
+        }
+
         $stmt = $this->pdo->prepare(
             'SELECT verse, text' . ($this->hasWj() ? ', wj' : '') . ' FROM verses
              WHERE version_id = :v AND book_id = :b AND chapter = :c
@@ -107,10 +169,39 @@ final class BibleRepository
         return ['prev' => $prev, 'next' => $next];
     }
 
-    /** Búsqueda: MATCH AGAINST en MySQL, LIKE en SQLite. */
+    /** Búsqueda: MATCH AGAINST en MySQL, LIKE en SQLite; endpoint /search para API.Bible. */
     public function search(int $versionId, string $query, int $limit = 50): array
     {
         $query = trim($query);
+        $bibleId = $this->apiBibleId($versionId);
+        if ($bibleId !== null && ($api = $this->apiService()) !== null && mb_strlen($query) >= 3) {
+            try {
+                $booksByOsis = array_column(
+                    $this->pdo->query('SELECT * FROM books')->fetchAll(),
+                    null,
+                    'osis'
+                );
+                $out = [];
+                foreach ($api->search($bibleId, $query, $limit) as $r) {
+                    $b = $booksByOsis[$r['osis']] ?? null;
+                    if (!$b) {
+                        continue;
+                    }
+                    $out[] = [
+                        'book_id' => $b['id'],
+                        'chapter' => $r['chapter'],
+                        'verse' => $r['verse'],
+                        'text' => $r['text'],
+                        'book_name' => $b['name'],
+                        'book_slug' => $b['slug'],
+                    ];
+                }
+                return $out;
+            } catch (Throwable $e) {
+                error_log('API.Bible search: ' . $e->getMessage());
+                return [];
+            }
+        }
         if ($query === '' || mb_strlen($query) < 3) {
             return [];
         }
@@ -152,6 +243,30 @@ final class BibleRepository
     /** Versículo puntual por referencia (osis, capítulo, versículo). */
     public function verseByRef(int $versionId, string $osis, int $chapter, int $verse): ?array
     {
+        $bibleId = $this->apiBibleId($versionId);
+        if ($bibleId !== null && ($api = $this->apiService()) !== null) {
+            try {
+                $v = $api->verse($bibleId, $osis, $chapter, $verse);
+            } catch (Throwable $e) {
+                error_log('API.Bible verse: ' . $e->getMessage());
+                $v = null;
+            }
+            if (!$v) {
+                return null;
+            }
+            $b = $this->book($osis);
+            if (!$b) {
+                return null;
+            }
+            return [
+                'text' => $v['text'],
+                'wj' => $v['wj'] ?? null,
+                'book_name' => $b['name'],
+                'book_slug' => $b['slug'],
+                'chapter' => $chapter,
+                'verse' => $verse,
+            ];
+        }
         $stmt = $this->pdo->prepare(
             'SELECT v.text, v.wj, b.name AS book_name, b.slug AS book_slug, v.chapter, v.verse
              FROM verses v JOIN books b ON b.id = v.book_id
