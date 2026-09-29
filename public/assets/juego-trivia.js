@@ -78,6 +78,7 @@ BFJ.define('trivia', function (el) {
                 BFJ.celebrate({
                     slug: 'trivia', stars: ok, emoji: emoji, title: title, perfect: ok === qs.length,
                     extra: ok + ' de ' + qs.length + ' correctas · ' + CATS[cat].name,
+                    againLabel: '🔁 Otra categoría',
                     onAgain: catScreen
                 });
             }

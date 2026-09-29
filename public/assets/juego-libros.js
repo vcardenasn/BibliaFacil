@@ -71,6 +71,7 @@ BFJ.define('libros', function (el) {
                     title: errors === 0 ? '¡Orden perfecto!' : '¡Bloque completado!',
                     extra: block.name + ' · ' + n + ' libros · ' +
                         (errors === 0 ? 'sin errores' : errors + ' error' + (errors === 1 ? '' : 'es')),
+                    againLabel: '📚 Otro bloque',
                     onAgain: picker
                 });
             }

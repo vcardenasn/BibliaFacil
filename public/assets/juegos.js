@@ -369,7 +369,7 @@
                 '</div>' : '') +
             '<div class="bfj-ovbtns">' +
             (o.onAgain ? '<button type="button" class="jbtn jbtn-main" data-c="again">' +
-                esc(o.againLabel || '🔄 Otra vez') + '</button>' : '') +
+                esc(o.againLabel || '🔁 Otra ronda') + '</button>' : '') +
             '<button type="button" class="jbtn jbtn-ghost" data-c="hub">🎮 Juegos</button>' +
             '</div></div>';
         document.body.appendChild(ov);
