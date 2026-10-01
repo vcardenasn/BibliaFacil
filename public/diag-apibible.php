@@ -69,7 +69,14 @@ if ($errno) {
         $data = json_decode((string) $body, true);
         $verses = \Biblia\Bible\ApiBibleService::parseChapter($data['data']['content'] ?? []);
         echo "Versículos parseados: " . count($verses) . "\n";
+        echo "meta keys: " . implode(',', array_keys($data['meta'] ?? [])) . "\n";
         echo "fumsId: " . (($data['meta']['fumsId'] ?? null) ?: '(sin fumsId)') . "\n";
+        $content = $data['data']['content'] ?? [];
+        echo "data keys: " . implode(',', array_keys($data['data'] ?? [])) . "\n";
+        echo "content type: " . gettype($content) . " (" . (is_array($content) ? count($content) . ' items' : substr((string) $content, 0, 100)) . ")\n";
+        if (is_array($content) && isset($content[0])) {
+            echo "content[0]: " . substr(json_encode($content[0], JSON_UNESCAPED_UNICODE), 0, 400) . "\n";
+        }
     } else {
         echo "Respuesta: " . substr((string) $body, 0, 300) . "\n";
     }
