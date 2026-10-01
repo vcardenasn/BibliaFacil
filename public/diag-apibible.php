@@ -47,7 +47,15 @@ try {
 
 // 3. Llamada real a API.Bible (capítulo JHN.3 en NTV)
 $bibleId = '826f63861180e056-01';
-$url = "https://api.scripture.api.bible/v1/bibles/{$bibleId}/chapters/JHN.3?content-type=json&include-notes=false";
+// Misma query exacta que usa ApiBibleService::chapterData
+$url = "https://api.scripture.api.bible/v1/bibles/{$bibleId}/chapters/JHN.3?" . http_build_query([
+    'content-type' => 'json',
+    'include-notes' => 'false',
+    'include-titles' => 'false',
+    'include-chapter-numbers' => 'false',
+    'include-verse-numbers' => 'false',
+    'include-verse-spans' => 'false',
+]);
 $ch = curl_init($url);
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
