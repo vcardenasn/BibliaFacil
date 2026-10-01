@@ -336,11 +336,11 @@
 .hs-card .omoji, .hs-scene .omoji { height: 2.1rem; width: auto; }
 .mm-face .omoji { width: 74%; height: auto; }
 .mm-face .bimg {
-    width: 92%; height: 74%; object-fit: cover;
+    width: 92%; height: 74%; max-width: 92%; max-height: 74%; object-fit: cover;
     border-radius: .45rem; box-shadow: 0 1px 3px rgba(0,0,0,.25);
 }
 .mm-face .bimg-png {
-    object-fit: contain; height: 82%;
+    object-fit: contain; height: 82%; max-height: 82%;
     border-radius: 0; box-shadow: none;
     filter: drop-shadow(0 1px 2px rgba(0,0,0,.25));
 }
@@ -394,9 +394,12 @@
     position: relative; aspect-ratio: 3/4; border: none; background: none;
     cursor: pointer; perspective: 500px; padding: 0;
 }
+@supports not (aspect-ratio: 3/4) {
+    .mm-card { height: 0; padding-bottom: 133.33%; }
+}
 .mm-face {
     position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    border-radius: 14px; backface-visibility: hidden;
+    border-radius: 14px; backface-visibility: hidden; overflow: hidden;
     transition: transform .35s ease; font-size: 2rem;
 }
 .mm-back {
@@ -563,11 +566,15 @@
 .sp-cell {
     touch-action: manipulation;
     aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    line-height: 1;
     font-family: var(--sans); font-weight: 800; font-size: clamp(.7rem, 2.6vw, 1rem);
     background: var(--card); color: var(--ink); border: 1px solid var(--border);
     border-radius: .3rem; padding: 0; cursor: pointer; min-width: 0;
 }
 .sp-cell:focus-visible { outline: 3px solid var(--brand); z-index: 2; }
+@supports not (aspect-ratio: 1/1) {
+    .sp-cell { height: 0; padding: 50% 0; line-height: 0; }
+}
 .sp-anchor { background: var(--gc, var(--brand)); color: #fff; border-color: var(--gc, var(--brand)); }
 .sp-found { background: color-mix(in srgb, var(--gc, var(--brand)) 35%, var(--card)); border-color: var(--gc, var(--brand)); color: var(--ink); }
 .sp-miss { animation: bfj-shake .3s; background: color-mix(in srgb, #e03131 30%, var(--card)); }
@@ -589,6 +596,11 @@
     gap: 1px; margin: .3rem 0 .9rem; user-select: none; max-width: 100%;
 }
 .cg-block { aspect-ratio: 1; background: var(--ink); opacity: .85; border-radius: .25rem; }
+@supports not (aspect-ratio: 1/1) {
+    .cg-block { height: 0; padding-bottom: 100%; }
+    .cg-box { height: 0; padding-bottom: 100%; }
+    .cg-box .cg-cell { position: absolute; inset: 0; }
+}
 .cg-box {
     touch-action: manipulation;
     aspect-ratio: 1; position: relative; display: flex; align-items: center; justify-content: center;
