@@ -1,122 +1,3638 @@
 [
-    {"cat": "personajes", "lvl": 1, "q": "¿Quién construyó el arca?", "o": ["Moisés", "Noé", "Abraham", "David"], "a": 1},
-    {"cat": "personajes", "lvl": 1, "q": "¿Quién venció al gigante Goliat?", "o": ["Saúl", "Sansón", "David", "Josué"], "a": 2},
-    {"cat": "personajes", "lvl": 1, "q": "¿Quién fue tragado por un gran pez?", "o": ["Jonás", "Pedro", "Pablo", "Elías"], "a": 0},
-    {"cat": "personajes", "lvl": 1, "q": "¿Quién recibió los 10 mandamientos?", "o": ["Aarón", "Abraham", "Josué", "Moisés"], "a": 3},
-    {"cat": "personajes", "lvl": 1, "q": "¿Quién era la mamá de Jesús?", "o": ["Marta", "María", "Rebeca", "Ester"], "a": 1},
-    {"cat": "personajes", "lvl": 1, "q": "¿Quién bautizó a Jesús?", "o": ["Pedro", "Pablo", "Juan el Bautista", "Juan"], "a": 2},
-    {"cat": "personajes", "lvl": 1, "q": "¿Quién negó a Jesús tres veces?", "o": ["Judas", "Pedro", "Tomás", "Juan"], "a": 1},
-    {"cat": "personajes", "lvl": 1, "q": "¿Quién traicionó a Jesús por monedas de plata?", "o": ["Pedro", "Tomás", "Judas", "Mateo"], "a": 2},
-    {"cat": "personajes", "lvl": 2, "q": "¿Quién fue el primer rey de Israel?", "o": ["David", "Saúl", "Salomón", "Samuel"], "a": 1},
-    {"cat": "personajes", "lvl": 2, "q": "¿Qué discípulo dudó de la resurrección?", "o": ["Pedro", "Juan", "Tomás", "Mateo"], "a": 2},
-    {"cat": "personajes", "lvl": 2, "q": "¿Quién era el mejor amigo de David?", "o": ["Saúl", "Jonatán", "Abner", "Joab"], "a": 1},
-    {"cat": "personajes", "lvl": 2, "q": "¿Quién interpretaba los sueños en Egipto?", "o": ["Moisés", "Daniel", "José", "Jacob"], "a": 2},
-    {"cat": "personajes", "lvl": 2, "q": "¿Quién subió a un árbol para ver a Jesús?", "o": ["Nicodemo", "Zaqueo", "Bartimeo", "Lázaro"], "a": 1},
-    {"cat": "personajes", "lvl": 2, "q": "¿Quién era la suegra de Rut?", "o": ["Noemí", "Orfa", "Raquel", "Sara"], "a": 0},
-
-    {"cat": "historias", "lvl": 1, "q": "¿En cuántos días creó Dios el mundo?", "o": ["3", "5", "6", "7"], "a": 2},
-    {"cat": "historias", "lvl": 1, "q": "¿Qué mar cruzó el pueblo de Israel en seco?", "o": ["Mar Muerto", "Mar Rojo", "Mar de Galilea", "Mediterráneo"], "a": 1},
-    {"cat": "historias", "lvl": 1, "q": "¿En qué ciudad nació Jesús?", "o": ["Jerusalén", "Nazaret", "Belén", "Canaán"], "a": 2},
-    {"cat": "historias", "lvl": 1, "q": "¿Cuántos días estuvo Jonás dentro del pez?", "o": ["1", "3", "7", "40"], "a": 1},
-    {"cat": "historias", "lvl": 1, "q": "¿Qué ciudad se cayó al sonar las trompetas?", "o": ["Babel", "Jericó", "Nínive", "Sodoma"], "a": 1},
-    {"cat": "historias", "lvl": 1, "q": "¿Qué construyó el pueblo para llegar al cielo?", "o": ["Un arca", "Un altar", "Una pirámide", "La torre de Babel"], "a": 3},
-    {"cat": "historias", "lvl": 2, "q": "¿Qué cayó del cielo para alimentar al pueblo en el desierto?", "o": ["Pan ácimo", "Codornices", "El maná", "Rocío"], "a": 2},
-    {"cat": "historias", "lvl": 2, "q": "¿Qué subía y bajaba en el sueño de Jacob?", "o": ["Ángeles por una escalera", "Un arcoíris", "Una nube de fuego", "Un águila"], "a": 0},
-    {"cat": "historias", "lvl": 2, "q": "¿Qué lanzó David con su honda?", "o": ["Una flecha", "Una piedra", "Una lanza", "Un dardo"], "a": 1},
-    {"cat": "historias", "lvl": 2, "q": "¿Qué vio Saulo camino a Damasco?", "o": ["Un ángel", "Una luz del cielo", "Un terremoto", "Un sueño"], "a": 1},
-    {"cat": "historias", "lvl": 2, "q": "¿Qué echó Elías sobre el altar antes de que cayera fuego?", "o": ["Aceite", "Sal", "Agua", "Arena"], "a": 2},
-    {"cat": "historias", "lvl": 2, "q": "¿A qué ciudad fue llevado José como esclavo?", "o": ["Babilonia", "Nínive", "Egipto", "Asiria"], "a": 2},
-    {"cat": "historias", "lvl": 1, "q": "¿En qué entró Jesús a Jerusalén la última semana?", "o": ["Caballo blanco", "Carro real", "Un burrito", "Caminando solo"], "a": 2},
-    {"cat": "historias", "lvl": 1, "q": "¿Qué anunció el ángel a los pastores?", "o": ["Un terremoto", "El nacimiento de Jesús", "La cosecha", "La guerra"], "a": 1},
-
-    {"cat": "milagros", "lvl": 1, "q": "¿Qué convirtió Jesús en vino?", "o": ["Leche", "Agua", "Jugo", "Aceite"], "a": 1},
-    {"cat": "milagros", "lvl": 1, "q": "¿Con cuántos panes y peces alimentó Jesús a la multitud?", "o": ["7 y 3", "5 y 2", "10 y 5", "2 y 5"], "a": 1},
-    {"cat": "milagros", "lvl": 1, "q": "¿Sobre qué caminó Jesús?", "o": ["La arena", "El fuego", "El agua", "Las nubes"], "a": 2},
-    {"cat": "milagros", "lvl": 1, "q": "¿A quién resucitó Jesús en Betania?", "o": ["Juan", "Lázaro", "Marta", "Pedro"], "a": 1},
-    {"cat": "milagros", "lvl": 1, "q": "¿Qué hizo Jesús con la tormenta en el mar?", "o": ["La esquivó", "La calmó", "La nadó", "La voló"], "a": 1},
-    {"cat": "milagros", "lvl": 1, "q": "¿Quién cerró la boca de los leones con Daniel?", "o": ["Un ángel", "Moisés", "El rey", "Daniel mismo"], "a": 0},
-    {"cat": "milagros", "lvl": 2, "q": "¿Cuántos leprosos sanó Jesús de una vez?", "o": ["3", "7", "10", "12"], "a": 2},
-    {"cat": "milagros", "lvl": 2, "q": "¿Qué se curó Naamán al bañarse 7 veces en el Jordán?", "o": ["Ceguera", "La lepra", "Cojera", "Fiebre"], "a": 1},
-    {"cat": "milagros", "lvl": 2, "q": "¿Qué hizo flotar Eliseo en el río?", "o": ["Una lanza", "Un hacha", "Un pan", "Una copa"], "a": 1},
-    {"cat": "milagros", "lvl": 2, "q": "¿Qué tocó la mujer enferma para sanarse?", "o": ["La mano de Jesús", "El manto de Jesús", "Un ángel", "La cruz"], "a": 1},
-    {"cat": "milagros", "lvl": 2, "q": "¿Qué cayó del cielo y quemó el altar de Elías?", "o": ["Lluvia", "Fuego", "Granizo", "Arena"], "a": 1},
-    {"cat": "milagros", "lvl": 2, "q": "¿Qué creció donde Jesús puso lodo en los ojos del ciego?", "o": ["Su fe", "Su vista", "Su familia", "Su pan"], "a": 1},
-
-    {"cat": "animales", "lvl": 1, "q": "¿Qué animal gigante se tragó a Jonás?", "o": ["Un tiburón", "Un gran pez", "Una ballena azul", "Un cocodrilo"], "a": 1},
-    {"cat": "animales", "lvl": 1, "q": "¿Qué pájaro volvió al arca con una hoja de olivo?", "o": ["El águila", "La paloma", "El cuervo", "El gorrión"], "a": 1},
-    {"cat": "animales", "lvl": 1, "q": "¿Qué animal habló con Eva en el jardín?", "o": ["El león", "La serpiente", "El dragón", "El lobo"], "a": 1},
-    {"cat": "animales", "lvl": 1, "q": "¿Qué animales no lastimaron a Daniel?", "o": ["Osos", "Leones", "Lobos", "Serpientes"], "a": 1},
-    {"cat": "animales", "lvl": 1, "q": "¿Qué animal le habló al profeta Balaam?", "o": ["Su caballo", "Su burra", "Su perro", "Su camello"], "a": 1},
-    {"cat": "animales", "lvl": 2, "q": "¿Qué aves llevaron comida a Elías junto al arroyo?", "o": ["Palomas", "Águilas", "Cuervos", "Búhos"], "a": 2},
-    {"cat": "animales", "lvl": 2, "q": "¿Qué insectos comía Juan el Bautista en el desierto?", "o": ["Hormigas", "Langostas", "Grillos", "Moscas"], "a": 1},
-    {"cat": "animales", "lvl": 2, "q": "¿En qué animal encontró Pedro una moneda?", "o": ["En un cordero", "En un pez", "En una paloma", "En un burro"], "a": 1},
-    {"cat": "animales", "lvl": 2, "q": "¿Qué plaga cubrió la tierra de Egipto saltando?", "o": ["Hormigas", "Abejas", "Ranas", "Escorpiones"], "a": 2},
-    {"cat": "animales", "lvl": 2, "q": "¿Qué animal perdido busca el pastor en la parábola?", "o": ["La vaca", "La oveja", "La cabra", "El pollito"], "a": 1},
-
-    {"cat": "personajes", "lvl": 1, "q": "¿Quién era el papá de Jesús en la tierra?", "o": ["José", "Juan", "Pedro", "Zacarías"], "a": 0},
-    {"cat": "personajes", "lvl": 1, "q": "¿Quién fue la primera mujer?", "o": ["Sara", "Rebeca", "Eva", "Rut"], "a": 2},
-    {"cat": "personajes", "lvl": 1, "q": "¿Qué rey escribió muchos Salmos?", "o": ["Saúl", "Salomón", "David", "Ezequías"], "a": 2},
-    {"cat": "personajes", "lvl": 1, "q": "¿Quién fue el rey más sabio?", "o": ["David", "Saúl", "Salomón", "Josué"], "a": 2},
-    {"cat": "personajes", "lvl": 1, "q": "¿Quién fue el niño pastor que llegó a ser rey?", "o": ["Samuel", "David", "José", "Salomón"], "a": 1},
-    {"cat": "personajes", "lvl": 2, "q": "¿Quién vendió su primogenitura por comida?", "o": ["Jacob", "Esaú", "Ismael", "Rubén"], "a": 1},
-    {"cat": "personajes", "lvl": 2, "q": "¿Quién fue el primer asesino de la Biblia?", "o": ["Abel", "Caín", "Set", "Lamec"], "a": 1},
-    {"cat": "personajes", "lvl": 2, "q": "¿Quién visitó a Jesús de noche?", "o": ["Zaqueo", "Nicodemo", "Lázaro", "Simón"], "a": 1},
-    {"cat": "personajes", "lvl": 2, "q": "¿Quién escondió a los espías en Jericó?", "o": ["Rahab", "Rut", "Ester", "Miriam"], "a": 0},
-    {"cat": "personajes", "lvl": 2, "q": "¿Qué discípulo era recaudador de impuestos?", "o": ["Pedro", "Juan", "Mateo", "Santiago"], "a": 2},
-    {"cat": "personajes", "lvl": 2, "q": "¿Quién vio primero a Jesús resucitado?", "o": ["Pedro", "Juan", "María Magdalena", "Tomás"], "a": 2},
-    {"cat": "personajes", "lvl": 2, "q": "¿Quién cantó con tamborines tras cruzar el Mar Rojo?", "o": ["Débora", "Miriam", "Ana", "Sara"], "a": 1},
-    {"cat": "personajes", "lvl": 2, "q": "¿Quién era el hermano de Moisés?", "o": ["Josué", "Aarón", "Caleb", "Gedeón"], "a": 1},
-    {"cat": "personajes", "lvl": 2, "q": "¿Qué profeta sucedió a Elías?", "o": ["Eliseo", "Isaías", "Jonás", "Samuel"], "a": 0},
-    {"cat": "personajes", "lvl": 2, "q": "¿Quién juzgó a Israel sentada bajo una palmera?", "o": ["Jael", "Débora", "Abigail", "Raquel"], "a": 1},
-    {"cat": "personajes", "lvl": 2, "q": "¿Quién era el tío de Lot?", "o": ["Isaac", "Jacob", "Abraham", "Noé"], "a": 2},
-    {"cat": "personajes", "lvl": 3, "q": "¿Quién fue el sumo sacerdote que juzgó a Jesús?", "o": ["Anás", "Caifás", "Pilato", "Herodes"], "a": 1},
-    {"cat": "personajes", "lvl": 3, "q": "¿Quién reemplazó a Judas como apóstol?", "o": ["Bernabé", "Matías", "Silas", "Timoteo"], "a": 1},
-
-    {"cat": "historias", "lvl": 1, "q": "¿En qué río bautizó Juan a Jesús?", "o": ["Nilo", "Éufrates", "Jordán", "Tigris"], "a": 2},
-    {"cat": "historias", "lvl": 1, "q": "¿Cuántos años caminó Israel en el desierto?", "o": ["7", "12", "40", "70"], "a": 2},
-    {"cat": "historias", "lvl": 1, "q": "¿Quién ayudó al hombre herido en el camino?", "o": ["El sacerdote", "El levita", "El buen samaritano", "El posadero"], "a": 2},
-    {"cat": "historias", "lvl": 1, "q": "¿Qué hijo volvió arrepentido a casa de su papá?", "o": ["El hijo mayor", "El hijo pródigo", "El hijo de la viuda", "El hijo del rey"], "a": 1},
-    {"cat": "historias", "lvl": 2, "q": "¿Cuántos días y noches llovió en el diluvio?", "o": ["7", "12", "40", "150"], "a": 2},
-    {"cat": "historias", "lvl": 2, "q": "¿En qué monte recibió Moisés los mandamientos?", "o": ["Monte Sinaí", "Monte Carmelo", "Monte de los Olivos", "Monte Ararat"], "a": 0},
-    {"cat": "historias", "lvl": 2, "q": "¿Cuántos espías envió Moisés a explorar Canaán?", "o": ["2", "7", "10", "12"], "a": 3},
-    {"cat": "historias", "lvl": 2, "q": "¿Cuántos hermanos tenía José?", "o": ["7", "10", "11", "12"], "a": 2},
-    {"cat": "historias", "lvl": 2, "q": "¿Cuántos días ayunó Jesús en el desierto?", "o": ["7", "12", "40", "3"], "a": 2},
-    {"cat": "historias", "lvl": 2, "q": "¿Qué semilla pequeña crece como árbol en la parábola?", "o": ["El trigo", "La mostaza", "La higuera", "La vid"], "a": 1},
-    {"cat": "historias", "lvl": 2, "q": "¿Qué regaló la viuda pobre en el templo?", "o": ["Un cordero", "Una bolsa de oro", "Dos moneditas", "Un pan"], "a": 2},
-    {"cat": "historias", "lvl": 2, "q": "¿Qué levantó Moisés en el desierto para sanar al pueblo?", "o": ["Un arca", "Una cruz", "Una serpiente de bronce", "Un altar"], "a": 2},
-    {"cat": "historias", "lvl": 2, "q": "¿Dónde hizo Jesús su primer milagro?", "o": ["En Jerusalén", "En Caná", "En Nazaret", "En Betania"], "a": 1},
-    {"cat": "historias", "lvl": 2, "q": "¿A qué capítulo de la Biblia llaman 'los héroes de la fe'?", "o": ["Salmos 23", "Hebreos 11", "Génesis 1", "1 Corintios 13"], "a": 1},
-    {"cat": "historias", "lvl": 3, "q": "¿En qué isla recibió Juan la revelación de Apocalipsis?", "o": ["Chipre", "Creta", "Patmos", "Malta"], "a": 2},
-    {"cat": "historias", "lvl": 3, "q": "¿A quién casi sacrificó Abraham en el monte?", "o": ["A Ismael", "A Isaac", "A Lot", "A Jacob"], "a": 1},
-    {"cat": "historias", "lvl": 3, "q": "¿Qué reino llevó cautiva a Daniel?", "o": ["Egipto", "Asiria", "Babilonia", "Persia"], "a": 2},
-
-    {"cat": "milagros", "lvl": 1, "q": "¿A cuánta gente alimentó Jesús con 5 panes y 2 peces?", "o": ["500", "1,000", "5,000", "50,000"], "a": 2},
-    {"cat": "milagros", "lvl": 1, "q": "¿Qué discípulo también caminó sobre el agua?", "o": ["Juan", "Pedro", "Santiago", "Andrés"], "a": 1},
-    {"cat": "milagros", "lvl": 1, "q": "¿Qué le devolvió Jesús al siervo en Getsemaní?", "o": ["Su mano", "Su oreja", "Su vista", "Su voz"], "a": 1},
-    {"cat": "milagros", "lvl": 2, "q": "¿Qué cayó sobre los discípulos en Pentecostés?", "o": ["Lluvia", "Palomas", "Lenguas de fuego", "Estrellas"], "a": 2},
-    {"cat": "milagros", "lvl": 2, "q": "¿Quién sacó a Pedro de la cárcel?", "o": ["Un ángel", "Pablo", "El carcelero", "Un terremoto solo"], "a": 0},
-    {"cat": "milagros", "lvl": 2, "q": "¿Qué pasó con el velo del templo cuando murió Jesús?", "o": ["Se quemó", "Se rasgó en dos", "Cambió de color", "Desapareció"], "a": 1},
-    {"cat": "milagros", "lvl": 2, "q": "¿Qué multiplicó Eliseo para la viuda pobre?", "o": ["El pan", "El aceite", "El agua", "Las monedas"], "a": 1},
-    {"cat": "milagros", "lvl": 2, "q": "¿Qué guió a Israel de noche en el desierto?", "o": ["Una estrella", "Una columna de fuego", "Un ángel", "La luna"], "a": 1},
-    {"cat": "milagros", "lvl": 2, "q": "¿Cuántos días estuvo Saulo ciego?", "o": ["1", "3", "7", "40"], "a": 1},
-    {"cat": "milagros", "lvl": 2, "q": "¿Qué rio abrió Dios al final del desierto, como el Mar Rojo?", "o": ["El Nilo", "El Jordán", "El Éufrates", "El Arroyo Querit"], "a": 1},
-    {"cat": "milagros", "lvl": 2, "q": "¿A quién resucitó Jesús en la ciudad de Naín?", "o": ["A Lázaro", "Al hijo de la viuda", "A la hija de Jairo", "A Tabita"], "a": 1},
-    {"cat": "milagros", "lvl": 2, "q": "¿Qué árbol se secó cuando Jesús lo maldijo?", "o": ["La vid", "El olivo", "La higuera", "El sicomoro"], "a": 2},
-    {"cat": "milagros", "lvl": 2, "q": "¿A quién sanó Jesús sin ir a su casa?", "o": ["Al ciego Bartimeo", "Al siervo del centurión", "A la suegra de Pedro", "Al leproso"], "a": 1},
-    {"cat": "milagros", "lvl": 3, "q": "¿Quién resucitó Pedro en Jope?", "o": ["A Tabita", "A Eutico", "Al hijo de la viuda", "A Lidia"], "a": 0},
-    {"cat": "milagros", "lvl": 3, "q": "¿Qué lanzó Moisés al agua de Mara para endulzarla?", "o": ["Sal", "Un árbol", "Aceite", "Harina"], "a": 1},
-
-    {"cat": "animales", "lvl": 1, "q": "¿Qué ave cantó cuando Pedro negó a Jesús?", "o": ["La paloma", "El cuervo", "El gallo", "El águila"], "a": 2},
-    {"cat": "animales", "lvl": 1, "q": "¿Qué animal ofreció Dios en lugar de Isaac?", "o": ["Un cordero", "Un carnero", "Un becerro", "Una paloma"], "a": 1},
-    {"cat": "animales", "lvl": 1, "q": "¿Qué animales cuidaba el hijo pródigo?", "o": ["Ovejas", "Cabras", "Cerdos", "Vacas"], "a": 2},
-    {"cat": "animales", "lvl": 1, "q": "¿En qué se convirtió la vara de Moisés ante Faraón?", "o": ["En una espada", "En una serpiente", "En un árbol", "En fuego"], "a": 1},
-    {"cat": "animales", "lvl": 1, "q": "¿Qué animal de oro adoró el pueblo en el desierto?", "o": ["Un cordero", "Un águila", "Un becerro", "Un león"], "a": 2},
-    {"cat": "animales", "lvl": 2, "q": "¿Qué ave envió Noé primero desde el arca?", "o": ["La paloma", "El cuervo", "El gavilán", "La gaviota"], "a": 1},
-    {"cat": "animales", "lvl": 2, "q": "¿En qué animal tenía miel Sansón dentro?", "o": ["Un oso", "Un león", "Un lobo", "Un toro"], "a": 1},
-    {"cat": "animales", "lvl": 2, "q": "¿Qué animalito dice Jesús que Dios no olvida?", "o": ["Los gorriones", "Las palomas", "Las águilas", "Los pollitos"], "a": 0},
-    {"cat": "animales", "lvl": 2, "q": "¿Qué animales de fuego llevaron a Elías al cielo?", "o": ["Águilas", "Dragones", "Caballos", "Leones"], "a": 2},
-    {"cat": "animales", "lvl": 2, "q": "¿Qué animal se ofrecía en la fiesta de la Pascua?", "o": ["Un toro", "Un cordero", "Una cabra", "Una paloma"], "a": 1},
-    {"cat": "animales", "lvl": 2, "q": "¿Qué gigante del mar describe el libro de Job?", "o": ["El dragón", "El leviatán", "El kraken", "La serpiente"], "a": 1},
-    {"cat": "animales", "lvl": 3, "q": "¿Cuántos peces pescó Pedro en la pesca milagrosa?", "o": ["77", "99", "144", "153"], "a": 3},
-    {"cat": "animales", "lvl": 3, "q": "¿Qué bajó del cielo lleno de animales en la visión de Pedro?", "o": ["Un arca", "Una sábana grande", "Una nube", "Una red"], "a": 1}
+  {
+    "cat": "personajes",
+    "lvl": 1,
+    "q": "¿Quién construyó el arca?",
+    "o": [
+      "Moisés",
+      "Noé",
+      "Abraham",
+      "David"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "personajes",
+    "lvl": 1,
+    "q": "¿Quién venció al gigante Goliat?",
+    "o": [
+      "Saúl",
+      "Sansón",
+      "David",
+      "Josué"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "personajes",
+    "lvl": 1,
+    "q": "¿Quién fue tragado por un gran pez?",
+    "o": [
+      "Jonás",
+      "Pedro",
+      "Pablo",
+      "Elías"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "personajes",
+    "lvl": 1,
+    "q": "¿Quién recibió los 10 mandamientos?",
+    "o": [
+      "Aarón",
+      "Abraham",
+      "Josué",
+      "Moisés"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "personajes",
+    "lvl": 1,
+    "q": "¿Quién era la mamá de Jesús?",
+    "o": [
+      "Marta",
+      "María",
+      "Rebeca",
+      "Ester"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "personajes",
+    "lvl": 1,
+    "q": "¿Quién bautizó a Jesús?",
+    "o": [
+      "Pedro",
+      "Pablo",
+      "Juan el Bautista",
+      "Juan"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "personajes",
+    "lvl": 1,
+    "q": "¿Quién negó a Jesús tres veces?",
+    "o": [
+      "Judas",
+      "Pedro",
+      "Tomás",
+      "Juan"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "personajes",
+    "lvl": 1,
+    "q": "¿Quién traicionó a Jesús por monedas de plata?",
+    "o": [
+      "Pedro",
+      "Tomás",
+      "Judas",
+      "Mateo"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Quién fue el primer rey de Israel?",
+    "o": [
+      "David",
+      "Saúl",
+      "Salomón",
+      "Samuel"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Qué discípulo dudó de la resurrección?",
+    "o": [
+      "Pedro",
+      "Juan",
+      "Tomás",
+      "Mateo"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Quién era el mejor amigo de David?",
+    "o": [
+      "Saúl",
+      "Jonatán",
+      "Abner",
+      "Joab"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Quién interpretaba los sueños en Egipto?",
+    "o": [
+      "Moisés",
+      "Daniel",
+      "José",
+      "Jacob"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Quién subió a un árbol para ver a Jesús?",
+    "o": [
+      "Nicodemo",
+      "Zaqueo",
+      "Bartimeo",
+      "Lázaro"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Quién era la suegra de Rut?",
+    "o": [
+      "Noemí",
+      "Orfa",
+      "Raquel",
+      "Sara"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "historias",
+    "lvl": 1,
+    "q": "¿En cuántos días creó Dios el mundo?",
+    "o": [
+      "3",
+      "5",
+      "6",
+      "7"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "historias",
+    "lvl": 1,
+    "q": "¿Qué mar cruzó el pueblo de Israel en seco?",
+    "o": [
+      "Mar Muerto",
+      "Mar Rojo",
+      "Mar de Galilea",
+      "Mediterráneo"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "historias",
+    "lvl": 1,
+    "q": "¿En qué ciudad nació Jesús?",
+    "o": [
+      "Jerusalén",
+      "Nazaret",
+      "Belén",
+      "Canaán"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "historias",
+    "lvl": 1,
+    "q": "¿Cuántos días estuvo Jonás dentro del pez?",
+    "o": [
+      "1",
+      "3",
+      "7",
+      "40"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "historias",
+    "lvl": 1,
+    "q": "¿Qué ciudad se cayó al sonar las trompetas?",
+    "o": [
+      "Babel",
+      "Jericó",
+      "Nínive",
+      "Sodoma"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "historias",
+    "lvl": 1,
+    "q": "¿Qué construyó el pueblo para llegar al cielo?",
+    "o": [
+      "Un arca",
+      "Un altar",
+      "Una pirámide",
+      "La torre de Babel"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "historias",
+    "lvl": 2,
+    "q": "¿Qué cayó del cielo para alimentar al pueblo en el desierto?",
+    "o": [
+      "Pan ácimo",
+      "Codornices",
+      "El maná",
+      "Rocío"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "historias",
+    "lvl": 2,
+    "q": "¿Qué subía y bajaba en el sueño de Jacob?",
+    "o": [
+      "Ángeles por una escalera",
+      "Un arcoíris",
+      "Una nube de fuego",
+      "Un águila"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "historias",
+    "lvl": 2,
+    "q": "¿Qué lanzó David con su honda?",
+    "o": [
+      "Una flecha",
+      "Una piedra",
+      "Una lanza",
+      "Un dardo"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "historias",
+    "lvl": 2,
+    "q": "¿Qué vio Saulo camino a Damasco?",
+    "o": [
+      "Un ángel",
+      "Una luz del cielo",
+      "Un terremoto",
+      "Un sueño"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "historias",
+    "lvl": 2,
+    "q": "¿Qué echó Elías sobre el altar antes de que cayera fuego?",
+    "o": [
+      "Aceite",
+      "Sal",
+      "Agua",
+      "Arena"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "historias",
+    "lvl": 2,
+    "q": "¿A qué ciudad fue llevado José como esclavo?",
+    "o": [
+      "Babilonia",
+      "Nínive",
+      "Egipto",
+      "Asiria"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "historias",
+    "lvl": 1,
+    "q": "¿En qué entró Jesús a Jerusalén la última semana?",
+    "o": [
+      "Caballo blanco",
+      "Carro real",
+      "Un burrito",
+      "Caminando solo"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "historias",
+    "lvl": 1,
+    "q": "¿Qué anunció el ángel a los pastores?",
+    "o": [
+      "Un terremoto",
+      "El nacimiento de Jesús",
+      "La cosecha",
+      "La guerra"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 1,
+    "q": "¿Qué convirtió Jesús en vino?",
+    "o": [
+      "Leche",
+      "Agua",
+      "Jugo",
+      "Aceite"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 1,
+    "q": "¿Con cuántos panes y peces alimentó Jesús a la multitud?",
+    "o": [
+      "7 y 3",
+      "5 y 2",
+      "10 y 5",
+      "2 y 5"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 1,
+    "q": "¿Sobre qué caminó Jesús?",
+    "o": [
+      "La arena",
+      "El fuego",
+      "El agua",
+      "Las nubes"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "milagros",
+    "lvl": 1,
+    "q": "¿A quién resucitó Jesús en Betania?",
+    "o": [
+      "Juan",
+      "Lázaro",
+      "Marta",
+      "Pedro"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 1,
+    "q": "¿Qué hizo Jesús con la tormenta en el mar?",
+    "o": [
+      "La esquivó",
+      "La calmó",
+      "La nadó",
+      "La voló"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 1,
+    "q": "¿Quién cerró la boca de los leones con Daniel?",
+    "o": [
+      "Un ángel",
+      "Moisés",
+      "El rey",
+      "Daniel mismo"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "milagros",
+    "lvl": 2,
+    "q": "¿Cuántos leprosos sanó Jesús de una vez?",
+    "o": [
+      "3",
+      "7",
+      "10",
+      "12"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "milagros",
+    "lvl": 2,
+    "q": "¿Qué se curó Naamán al bañarse 7 veces en el Jordán?",
+    "o": [
+      "Ceguera",
+      "La lepra",
+      "Cojera",
+      "Fiebre"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 2,
+    "q": "¿Qué hizo flotar Eliseo en el río?",
+    "o": [
+      "Una lanza",
+      "Un hacha",
+      "Un pan",
+      "Una copa"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 2,
+    "q": "¿Qué tocó la mujer enferma para sanarse?",
+    "o": [
+      "La mano de Jesús",
+      "El manto de Jesús",
+      "Un ángel",
+      "La cruz"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 2,
+    "q": "¿Qué cayó del cielo y quemó el altar de Elías?",
+    "o": [
+      "Lluvia",
+      "Fuego",
+      "Granizo",
+      "Arena"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 2,
+    "q": "¿Qué creció donde Jesús puso lodo en los ojos del ciego?",
+    "o": [
+      "Su fe",
+      "Su vista",
+      "Su familia",
+      "Su pan"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "animales",
+    "lvl": 1,
+    "q": "¿Qué animal gigante se tragó a Jonás?",
+    "o": [
+      "Un tiburón",
+      "Un gran pez",
+      "Una ballena azul",
+      "Un cocodrilo"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "animales",
+    "lvl": 1,
+    "q": "¿Qué pájaro volvió al arca con una hoja de olivo?",
+    "o": [
+      "El águila",
+      "La paloma",
+      "El cuervo",
+      "El gorrión"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "animales",
+    "lvl": 1,
+    "q": "¿Qué animal habló con Eva en el jardín?",
+    "o": [
+      "El león",
+      "La serpiente",
+      "El dragón",
+      "El lobo"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "animales",
+    "lvl": 1,
+    "q": "¿Qué animales no lastimaron a Daniel?",
+    "o": [
+      "Osos",
+      "Leones",
+      "Lobos",
+      "Serpientes"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "animales",
+    "lvl": 1,
+    "q": "¿Qué animal le habló al profeta Balaam?",
+    "o": [
+      "Su caballo",
+      "Su burra",
+      "Su perro",
+      "Su camello"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "animales",
+    "lvl": 2,
+    "q": "¿Qué aves llevaron comida a Elías junto al arroyo?",
+    "o": [
+      "Palomas",
+      "Águilas",
+      "Cuervos",
+      "Búhos"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "animales",
+    "lvl": 2,
+    "q": "¿Qué insectos comía Juan el Bautista en el desierto?",
+    "o": [
+      "Hormigas",
+      "Langostas",
+      "Grillos",
+      "Moscas"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "animales",
+    "lvl": 2,
+    "q": "¿En qué animal encontró Pedro una moneda?",
+    "o": [
+      "En un cordero",
+      "En un pez",
+      "En una paloma",
+      "En un burro"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "animales",
+    "lvl": 2,
+    "q": "¿Qué plaga cubrió la tierra de Egipto saltando?",
+    "o": [
+      "Hormigas",
+      "Abejas",
+      "Ranas",
+      "Escorpiones"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "animales",
+    "lvl": 2,
+    "q": "¿Qué animal perdido busca el pastor en la parábola?",
+    "o": [
+      "La vaca",
+      "La oveja",
+      "La cabra",
+      "El pollito"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "personajes",
+    "lvl": 1,
+    "q": "¿Quién era el papá de Jesús en la tierra?",
+    "o": [
+      "José",
+      "Juan",
+      "Pedro",
+      "Zacarías"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "personajes",
+    "lvl": 1,
+    "q": "¿Quién fue la primera mujer?",
+    "o": [
+      "Sara",
+      "Rebeca",
+      "Eva",
+      "Rut"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "personajes",
+    "lvl": 1,
+    "q": "¿Qué rey escribió muchos Salmos?",
+    "o": [
+      "Saúl",
+      "Salomón",
+      "David",
+      "Ezequías"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "personajes",
+    "lvl": 1,
+    "q": "¿Quién fue el rey más sabio?",
+    "o": [
+      "David",
+      "Saúl",
+      "Salomón",
+      "Josué"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "personajes",
+    "lvl": 1,
+    "q": "¿Quién fue el niño pastor que llegó a ser rey?",
+    "o": [
+      "Samuel",
+      "David",
+      "José",
+      "Salomón"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Quién vendió su primogenitura por comida?",
+    "o": [
+      "Jacob",
+      "Esaú",
+      "Ismael",
+      "Rubén"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Quién fue el primer asesino de la Biblia?",
+    "o": [
+      "Abel",
+      "Caín",
+      "Set",
+      "Lamec"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Quién visitó a Jesús de noche?",
+    "o": [
+      "Zaqueo",
+      "Nicodemo",
+      "Lázaro",
+      "Simón"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Quién escondió a los espías en Jericó?",
+    "o": [
+      "Rahab",
+      "Rut",
+      "Ester",
+      "Miriam"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Qué discípulo era recaudador de impuestos?",
+    "o": [
+      "Pedro",
+      "Juan",
+      "Mateo",
+      "Santiago"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Quién vio primero a Jesús resucitado?",
+    "o": [
+      "Pedro",
+      "Juan",
+      "María Magdalena",
+      "Tomás"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Quién cantó con tamborines tras cruzar el Mar Rojo?",
+    "o": [
+      "Débora",
+      "Miriam",
+      "Ana",
+      "Sara"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Quién era el hermano de Moisés?",
+    "o": [
+      "Josué",
+      "Aarón",
+      "Caleb",
+      "Gedeón"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Qué profeta sucedió a Elías?",
+    "o": [
+      "Eliseo",
+      "Isaías",
+      "Jonás",
+      "Samuel"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Quién juzgó a Israel sentada bajo una palmera?",
+    "o": [
+      "Jael",
+      "Débora",
+      "Abigail",
+      "Raquel"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "personajes",
+    "lvl": 2,
+    "q": "¿Quién era el tío de Lot?",
+    "o": [
+      "Isaac",
+      "Jacob",
+      "Abraham",
+      "Noé"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "personajes",
+    "lvl": 3,
+    "q": "¿Quién fue el sumo sacerdote que juzgó a Jesús?",
+    "o": [
+      "Anás",
+      "Caifás",
+      "Pilato",
+      "Herodes"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "personajes",
+    "lvl": 3,
+    "q": "¿Quién reemplazó a Judas como apóstol?",
+    "o": [
+      "Bernabé",
+      "Matías",
+      "Silas",
+      "Timoteo"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "historias",
+    "lvl": 1,
+    "q": "¿En qué río bautizó Juan a Jesús?",
+    "o": [
+      "Nilo",
+      "Éufrates",
+      "Jordán",
+      "Tigris"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "historias",
+    "lvl": 1,
+    "q": "¿Cuántos años caminó Israel en el desierto?",
+    "o": [
+      "7",
+      "12",
+      "40",
+      "70"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "historias",
+    "lvl": 1,
+    "q": "¿Quién ayudó al hombre herido en el camino?",
+    "o": [
+      "El sacerdote",
+      "El levita",
+      "El buen samaritano",
+      "El posadero"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "historias",
+    "lvl": 1,
+    "q": "¿Qué hijo volvió arrepentido a casa de su papá?",
+    "o": [
+      "El hijo mayor",
+      "El hijo pródigo",
+      "El hijo de la viuda",
+      "El hijo del rey"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "historias",
+    "lvl": 2,
+    "q": "¿Cuántos días y noches llovió en el diluvio?",
+    "o": [
+      "7",
+      "12",
+      "40",
+      "150"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "historias",
+    "lvl": 2,
+    "q": "¿En qué monte recibió Moisés los mandamientos?",
+    "o": [
+      "Monte Sinaí",
+      "Monte Carmelo",
+      "Monte de los Olivos",
+      "Monte Ararat"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "historias",
+    "lvl": 2,
+    "q": "¿Cuántos espías envió Moisés a explorar Canaán?",
+    "o": [
+      "2",
+      "7",
+      "10",
+      "12"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "historias",
+    "lvl": 2,
+    "q": "¿Cuántos hermanos tenía José?",
+    "o": [
+      "7",
+      "10",
+      "11",
+      "12"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "historias",
+    "lvl": 2,
+    "q": "¿Cuántos días ayunó Jesús en el desierto?",
+    "o": [
+      "7",
+      "12",
+      "40",
+      "3"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "historias",
+    "lvl": 2,
+    "q": "¿Qué semilla pequeña crece como árbol en la parábola?",
+    "o": [
+      "El trigo",
+      "La mostaza",
+      "La higuera",
+      "La vid"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "historias",
+    "lvl": 2,
+    "q": "¿Qué regaló la viuda pobre en el templo?",
+    "o": [
+      "Un cordero",
+      "Una bolsa de oro",
+      "Dos moneditas",
+      "Un pan"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "historias",
+    "lvl": 2,
+    "q": "¿Qué levantó Moisés en el desierto para sanar al pueblo?",
+    "o": [
+      "Un arca",
+      "Una cruz",
+      "Una serpiente de bronce",
+      "Un altar"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "historias",
+    "lvl": 2,
+    "q": "¿Dónde hizo Jesús su primer milagro?",
+    "o": [
+      "En Jerusalén",
+      "En Caná",
+      "En Nazaret",
+      "En Betania"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "historias",
+    "lvl": 2,
+    "q": "¿A qué capítulo de la Biblia llaman 'los héroes de la fe'?",
+    "o": [
+      "Salmos 23",
+      "Hebreos 11",
+      "Génesis 1",
+      "1 Corintios 13"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "historias",
+    "lvl": 3,
+    "q": "¿En qué isla recibió Juan la revelación de Apocalipsis?",
+    "o": [
+      "Chipre",
+      "Creta",
+      "Patmos",
+      "Malta"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "historias",
+    "lvl": 3,
+    "q": "¿A quién casi sacrificó Abraham en el monte?",
+    "o": [
+      "A Ismael",
+      "A Isaac",
+      "A Lot",
+      "A Jacob"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "historias",
+    "lvl": 3,
+    "q": "¿Qué reino llevó cautiva a Daniel?",
+    "o": [
+      "Egipto",
+      "Asiria",
+      "Babilonia",
+      "Persia"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "milagros",
+    "lvl": 1,
+    "q": "¿A cuánta gente alimentó Jesús con 5 panes y 2 peces?",
+    "o": [
+      "500",
+      "1,000",
+      "5,000",
+      "50,000"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "milagros",
+    "lvl": 1,
+    "q": "¿Qué discípulo también caminó sobre el agua?",
+    "o": [
+      "Juan",
+      "Pedro",
+      "Santiago",
+      "Andrés"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 1,
+    "q": "¿Qué le devolvió Jesús al siervo en Getsemaní?",
+    "o": [
+      "Su mano",
+      "Su oreja",
+      "Su vista",
+      "Su voz"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 2,
+    "q": "¿Qué cayó sobre los discípulos en Pentecostés?",
+    "o": [
+      "Lluvia",
+      "Palomas",
+      "Lenguas de fuego",
+      "Estrellas"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "milagros",
+    "lvl": 2,
+    "q": "¿Quién sacó a Pedro de la cárcel?",
+    "o": [
+      "Un ángel",
+      "Pablo",
+      "El carcelero",
+      "Un terremoto solo"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "milagros",
+    "lvl": 2,
+    "q": "¿Qué pasó con el velo del templo cuando murió Jesús?",
+    "o": [
+      "Se quemó",
+      "Se rasgó en dos",
+      "Cambió de color",
+      "Desapareció"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 2,
+    "q": "¿Qué multiplicó Eliseo para la viuda pobre?",
+    "o": [
+      "El pan",
+      "El aceite",
+      "El agua",
+      "Las monedas"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 2,
+    "q": "¿Qué guió a Israel de noche en el desierto?",
+    "o": [
+      "Una estrella",
+      "Una columna de fuego",
+      "Un ángel",
+      "La luna"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 2,
+    "q": "¿Cuántos días estuvo Saulo ciego?",
+    "o": [
+      "1",
+      "3",
+      "7",
+      "40"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 2,
+    "q": "¿Qué rio abrió Dios al final del desierto, como el Mar Rojo?",
+    "o": [
+      "El Nilo",
+      "El Jordán",
+      "El Éufrates",
+      "El Arroyo Querit"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 2,
+    "q": "¿A quién resucitó Jesús en la ciudad de Naín?",
+    "o": [
+      "A Lázaro",
+      "Al hijo de la viuda",
+      "A la hija de Jairo",
+      "A Tabita"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 2,
+    "q": "¿Qué árbol se secó cuando Jesús lo maldijo?",
+    "o": [
+      "La vid",
+      "El olivo",
+      "La higuera",
+      "El sicomoro"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "milagros",
+    "lvl": 2,
+    "q": "¿A quién sanó Jesús sin ir a su casa?",
+    "o": [
+      "Al ciego Bartimeo",
+      "Al siervo del centurión",
+      "A la suegra de Pedro",
+      "Al leproso"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagros",
+    "lvl": 3,
+    "q": "¿Quién resucitó Pedro en Jope?",
+    "o": [
+      "A Tabita",
+      "A Eutico",
+      "Al hijo de la viuda",
+      "A Lidia"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "milagros",
+    "lvl": 3,
+    "q": "¿Qué lanzó Moisés al agua de Mara para endulzarla?",
+    "o": [
+      "Sal",
+      "Un árbol",
+      "Aceite",
+      "Harina"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "animales",
+    "lvl": 1,
+    "q": "¿Qué ave cantó cuando Pedro negó a Jesús?",
+    "o": [
+      "La paloma",
+      "El cuervo",
+      "El gallo",
+      "El águila"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "animales",
+    "lvl": 1,
+    "q": "¿Qué animal ofreció Dios en lugar de Isaac?",
+    "o": [
+      "Un cordero",
+      "Un carnero",
+      "Un becerro",
+      "Una paloma"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "animales",
+    "lvl": 1,
+    "q": "¿Qué animales cuidaba el hijo pródigo?",
+    "o": [
+      "Ovejas",
+      "Cabras",
+      "Cerdos",
+      "Vacas"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "animales",
+    "lvl": 1,
+    "q": "¿En qué se convirtió la vara de Moisés ante Faraón?",
+    "o": [
+      "En una espada",
+      "En una serpiente",
+      "En un árbol",
+      "En fuego"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "animales",
+    "lvl": 1,
+    "q": "¿Qué animal de oro adoró el pueblo en el desierto?",
+    "o": [
+      "Un cordero",
+      "Un águila",
+      "Un becerro",
+      "Un león"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "animales",
+    "lvl": 2,
+    "q": "¿Qué ave envió Noé primero desde el arca?",
+    "o": [
+      "La paloma",
+      "El cuervo",
+      "El gavilán",
+      "La gaviota"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "animales",
+    "lvl": 2,
+    "q": "¿En qué animal tenía miel Sansón dentro?",
+    "o": [
+      "Un oso",
+      "Un león",
+      "Un lobo",
+      "Un toro"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "animales",
+    "lvl": 2,
+    "q": "¿Qué animalito dice Jesús que Dios no olvida?",
+    "o": [
+      "Los gorriones",
+      "Las palomas",
+      "Las águilas",
+      "Los pollitos"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "animales",
+    "lvl": 2,
+    "q": "¿Qué animales de fuego llevaron a Elías al cielo?",
+    "o": [
+      "Águilas",
+      "Dragones",
+      "Caballos",
+      "Leones"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "animales",
+    "lvl": 2,
+    "q": "¿Qué animal se ofrecía en la fiesta de la Pascua?",
+    "o": [
+      "Un toro",
+      "Un cordero",
+      "Una cabra",
+      "Una paloma"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "animales",
+    "lvl": 2,
+    "q": "¿Qué gigante del mar describe el libro de Job?",
+    "o": [
+      "El dragón",
+      "El leviatán",
+      "El kraken",
+      "La serpiente"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "animales",
+    "lvl": 3,
+    "q": "¿Cuántos peces pescó Pedro en la pesca milagrosa?",
+    "o": [
+      "77",
+      "99",
+      "144",
+      "153"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "animales",
+    "lvl": 3,
+    "q": "¿Qué bajó del cielo lleno de animales en la visión de Pedro?",
+    "o": [
+      "Un arca",
+      "Una sábana grande",
+      "Una nube",
+      "Una red"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "genesis",
+    "lvl": 1,
+    "q": "¿Qué creó Dios el primer día?",
+    "o": [
+      "El mar",
+      "Los animales",
+      "La luz",
+      "Las plantas"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "genesis",
+    "lvl": 1,
+    "q": "¿De dónde creó Dios a Eva?",
+    "o": [
+      "Del barro",
+      "Del agua",
+      "De una roca",
+      "De una costilla de Adán"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "genesis",
+    "lvl": 1,
+    "q": "¿Quién mató a su hermano Abel?",
+    "o": [
+      "Set",
+      "Caín",
+      "Ismael",
+      "Esaú"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "genesis",
+    "lvl": 1,
+    "q": "¿Cuántos días llovió en el diluvio?",
+    "o": [
+      "100",
+      "12",
+      "40",
+      "7"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "genesis",
+    "lvl": 1,
+    "q": "¿Qué puso Dios como señal de su pacto con Noé?",
+    "o": [
+      "Una luna nueva",
+      "El arcoíris",
+      "Una estrella",
+      "Una nube blanca"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "genesis",
+    "lvl": 1,
+    "q": "¿Cómo se llamaba la esposa de Abraham?",
+    "o": [
+      "Raquel",
+      "Lea",
+      "Sara",
+      "Rebeca"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "genesis",
+    "lvl": 1,
+    "q": "¿Qué vendió Esaú a Jacob?",
+    "o": [
+      "Su oveja",
+      "Su túnica",
+      "Su tienda",
+      "Su primogenitura"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "genesis",
+    "lvl": 1,
+    "q": "¿Cuántos hijos tuvo Jacob?",
+    "o": [
+      "3",
+      "12",
+      "10",
+      "7"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "genesis",
+    "lvl": 1,
+    "q": "¿A qué país bajó José vendido por sus hermanos?",
+    "o": [
+      "Babilonia",
+      "Canaán",
+      "Egipto",
+      "Asiria"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "genesis",
+    "lvl": 1,
+    "q": "¿Qué soñó Jacob en Betel?",
+    "o": [
+      "Un arcoíris",
+      "Un mar de cristal",
+      "Un ejército",
+      "Una escalera al cielo"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "exodo",
+    "lvl": 1,
+    "q": "¿Dónde habló Dios a Moisés por primera vez?",
+    "o": [
+      "En una cueva",
+      "En la zarza ardiente",
+      "En el templo",
+      "En un palacio"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "exodo",
+    "lvl": 1,
+    "q": "¿Cuál fue la primera plaga de Egipto?",
+    "o": [
+      "Las tinieblas",
+      "Las langostas",
+      "Las ranas",
+      "El agua en sangre"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "exodo",
+    "lvl": 1,
+    "q": "¿Qué mar cruzó Israel en seco?",
+    "o": [
+      "El de Galilea",
+      "El Mediterráneo",
+      "El Mar Rojo",
+      "El Mar Muerto"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "exodo",
+    "lvl": 1,
+    "q": "¿Qué alimento cayó del cielo cada mañana?",
+    "o": [
+      "Miel",
+      "Higos",
+      "El maná",
+      "Uvas"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "exodo",
+    "lvl": 1,
+    "q": "¿Cuántos mandamientos recibió Moisés?",
+    "o": [
+      "7",
+      "40",
+      "12",
+      "10"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "exodo",
+    "lvl": 1,
+    "q": "¿Qué monte subió Moisés por las tablas?",
+    "o": [
+      "Sinaí",
+      "Ararat",
+      "Carmelo",
+      "Sión"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "exodo",
+    "lvl": 1,
+    "q": "¿Qué ídolo construyó el pueblo impaciente?",
+    "o": [
+      "Un becerro de oro",
+      "Un toro de plata",
+      "Una serpiente de bronce",
+      "Una estatua de reyes"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "exodo",
+    "lvl": 1,
+    "q": "¿Cuántos años anduvo Israel en el desierto?",
+    "o": [
+      "70",
+      "40",
+      "10",
+      "20"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "exodo",
+    "lvl": 1,
+    "q": "¿Quién guió al pueblo después de Moisés?",
+    "o": [
+      "Finees",
+      "Josué",
+      "Aarón",
+      "Caleb"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "exodo",
+    "lvl": 1,
+    "q": "¿Qué acompañaba a Israel de noche?",
+    "o": [
+      "Un relámpago",
+      "Una estrella gigante",
+      "Una nube roja",
+      "Una columna de fuego"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "jesus",
+    "lvl": 1,
+    "q": "¿Dónde nació Jesús?",
+    "o": [
+      "Belén",
+      "Jerusalén",
+      "Nazaret",
+      "Capernaúm"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "jesus",
+    "lvl": 1,
+    "q": "¿Quién bautizó a Jesús?",
+    "o": [
+      "Pedro",
+      "Juan el Bautista",
+      "Andrés",
+      "Juan el apóstol"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "jesus",
+    "lvl": 1,
+    "q": "¿Cuántos días ayunó Jesús en el desierto?",
+    "o": [
+      "30",
+      "7",
+      "12",
+      "40"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "jesus",
+    "lvl": 1,
+    "q": "¿Cuál fue el primer milagro de Jesús?",
+    "o": [
+      "Calmar la tormenta",
+      "Convertir agua en vino",
+      "Multiplicar panes",
+      "Sanar a un ciego"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "jesus",
+    "lvl": 1,
+    "q": "¿Cuántos apóstoles eligió Jesús?",
+    "o": [
+      "10",
+      "12",
+      "7",
+      "70"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "jesus",
+    "lvl": 1,
+    "q": "¿Sobre qué caminó Jesús?",
+    "o": [
+      "El Jordán",
+      "La arena",
+      "Un puente",
+      "El mar"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "jesus",
+    "lvl": 1,
+    "q": "¿Quién traicionó a Jesús?",
+    "o": [
+      "Judas Iscariote",
+      "Pedro",
+      "Mateo",
+      "Tomás"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "jesus",
+    "lvl": 1,
+    "q": "¿Quién negó a Jesús tres veces?",
+    "o": [
+      "Pedro",
+      "Juan",
+      "Santiago",
+      "Felipe"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "jesus",
+    "lvl": 1,
+    "q": "¿Qué hizo Jesús con 5 panes y 2 peces?",
+    "o": [
+      "Vendió en el mercado",
+      "Hizo una fiesta",
+      "Dio de comer a aves",
+      "Alimentó a más de 5,000"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "jesus",
+    "lvl": 1,
+    "q": "¿En qué ciudad creció Jesús?",
+    "o": [
+      "Belén",
+      "Nazaret",
+      "Jerusalén",
+      "Jericó"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "parabolas",
+    "lvl": 1,
+    "q": "¿Qué perdió el pastor y salió a buscar?",
+    "o": [
+      "Un cordero de oro",
+      "Una moneda",
+      "Un anillo",
+      "Una oveja"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "parabolas",
+    "lvl": 1,
+    "q": "¿Cuántos hijos tenía el padre del hijo pródigo?",
+    "o": [
+      "Dos",
+      "Tres",
+      "Uno",
+      "Cinco"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "parabolas",
+    "lvl": 1,
+    "q": "¿Dónde creció bien la semilla del sembrador?",
+    "o": [
+      "En el camino",
+      "Entre espinos",
+      "En buena tierra",
+      "En las rocas"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "parabolas",
+    "lvl": 1,
+    "q": "¿Quién ayudó al hombre herido del camino?",
+    "o": [
+      "El sacerdote",
+      "El rey",
+      "El buen samaritano",
+      "El levita"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "parabolas",
+    "lvl": 1,
+    "q": "¿Sobre qué construyó su casa el hombre prudente?",
+    "o": [
+      "Sobre la arena",
+      "Sobre el agua",
+      "Sobre la roca",
+      "Sobre un árbol"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "parabolas",
+    "lvl": 1,
+    "q": "¿Qué semilla pequeña se vuelve árbol grande?",
+    "o": [
+      "El trigo",
+      "La vid",
+      "La mostaza",
+      "El higo"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "parabolas",
+    "lvl": 1,
+    "q": "¿Qué celebró el padre al volver el hijo pródigo?",
+    "o": [
+      "Una gran fiesta",
+      "Un bautismo",
+      "Una boda",
+      "Una cosecha"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "parabolas",
+    "lvl": 1,
+    "q": "¿Qué encontró la mujer que barrió su casa?",
+    "o": [
+      "Su llave",
+      "Su anillo",
+      "Su lámpara",
+      "Su moneda perdida"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "parabolas",
+    "lvl": 1,
+    "q": "¿Qué vendió el hombre por el tesoro del campo?",
+    "o": [
+      "Todo lo que tenía",
+      "Solo su casa",
+      "Sus ovejas",
+      "La mitad"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "parabolas",
+    "lvl": 1,
+    "q": "¿Qué trabajadores recibieron la misma paga?",
+    "o": [
+      "Los de la viña",
+      "Los del mar",
+      "Los del molino",
+      "Los del trigo"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "profetas",
+    "lvl": 1,
+    "q": "¿A quién se tragó el gran pez?",
+    "o": [
+      "Jonás",
+      "Joel",
+      "Jonatán",
+      "Josué"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "profetas",
+    "lvl": 1,
+    "q": "¿Qué profeta vio el valle de huesos secos?",
+    "o": [
+      "Habacuc",
+      "Amós",
+      "Ezequiel",
+      "Isaías"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "profetas",
+    "lvl": 1,
+    "q": "¿Quién fue lanzado al foso de los leones?",
+    "o": [
+      "Jeremías",
+      "Ezequiel",
+      "Daniel",
+      "David"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "profetas",
+    "lvl": 1,
+    "q": "¿Qué profeta ungió rey a David?",
+    "o": [
+      "Elías",
+      "Isaías",
+      "Samuel",
+      "Natan"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "profetas",
+    "lvl": 1,
+    "q": "¿Quién desafió a los profetas de Baal en el Carmelo?",
+    "o": [
+      "Elías",
+      "Isaías",
+      "Micaías",
+      "Eliseo"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "profetas",
+    "lvl": 1,
+    "q": "¿Quién sucedió a Elías como profeta?",
+    "o": [
+      "Jonás",
+      "Samuel",
+      "Amós",
+      "Eliseo"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "profetas",
+    "lvl": 1,
+    "q": "¿Qué profeta lloraba por Jerusalén?",
+    "o": [
+      "Jeremías",
+      "Joel",
+      "Jonás",
+      "Oseas"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "profetas",
+    "lvl": 1,
+    "q": "¿Quién profetizó que Dios derramaría su Espíritu?",
+    "o": [
+      "Abdías",
+      "Joel",
+      "Sofonías",
+      "Malaquías"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "profetas",
+    "lvl": 1,
+    "q": "¿Qué profeta dijo 'Heme aquí, envíame a mí'?",
+    "o": [
+      "Isaías",
+      "Jeremías",
+      "Daniel",
+      "Ezequiel"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "profetas",
+    "lvl": 1,
+    "q": "¿Qué profeta era pastor y recogía higos?",
+    "o": [
+      "Amós",
+      "Miqueas",
+      "Oseas",
+      "Nahúm"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "reyes",
+    "lvl": 1,
+    "q": "¿Qué joven pastor venció al gigante Goliat?",
+    "o": [
+      "Abner",
+      "Jonatán",
+      "Saúl",
+      "David"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "reyes",
+    "lvl": 1,
+    "q": "¿Qué pidió el rey Salomón a Dios?",
+    "o": [
+      "Riquezas",
+      "Victoria",
+      "Larga vida",
+      "Sabiduría"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "reyes",
+    "lvl": 1,
+    "q": "¿Quién fue el primer rey de Israel?",
+    "o": [
+      "Salomón",
+      "Saúl",
+      "Saúl hijo",
+      "David"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "reyes",
+    "lvl": 1,
+    "q": "¿Qué rey construyó el primer templo?",
+    "o": [
+      "Ezequías",
+      "Josías",
+      "David",
+      "Salomón"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "reyes",
+    "lvl": 1,
+    "q": "¿Qué rey malo tenía una esposa llamada Jezabel?",
+    "o": [
+      "Saúl",
+      "Roboam",
+      "Acaz",
+      "Acab"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "reyes",
+    "lvl": 1,
+    "q": "¿Qué niño se hizo rey a los 8 años?",
+    "o": [
+      "David",
+      "Salomón",
+      "Joás",
+      "Josías"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "reyes",
+    "lvl": 1,
+    "q": "¿Con qué instrumento calmaba David al rey Saúl?",
+    "o": [
+      "El tambor",
+      "La trompeta",
+      "La flauta",
+      "El arpa"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "reyes",
+    "lvl": 1,
+    "q": "¿Qué rey vio la escritura misteriosa en la pared?",
+    "o": [
+      "Belsasar",
+      "Darío",
+      "Ciro",
+      "Nabucodonosor"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "reyes",
+    "lvl": 1,
+    "q": "¿Qué hijo de David se rebeló contra él?",
+    "o": [
+      "Absalón",
+      "Salomón",
+      "Amnón",
+      "Adonías"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "reyes",
+    "lvl": 1,
+    "q": "¿Qué rey persiguió a David por celos?",
+    "o": [
+      "Acab",
+      "Jeroboam",
+      "Saúl",
+      "Ocozías"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "mujeres",
+    "lvl": 1,
+    "q": "¿Quién fue la primera mujer?",
+    "o": [
+      "Eva",
+      "María",
+      "Sara",
+      "Rebeca"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "mujeres",
+    "lvl": 1,
+    "q": "¿Qué mujer escondió a los espías en Jericó?",
+    "o": [
+      "Débora",
+      "Rahab",
+      "Rut",
+      "Jael"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "mujeres",
+    "lvl": 1,
+    "q": "¿Quién dijo 'tu pueblo será mi pueblo'?",
+    "o": [
+      "Orfa",
+      "Ester",
+      "Rut",
+      "Noemí"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "mujeres",
+    "lvl": 1,
+    "q": "¿Qué reina arriesgó su vida por su pueblo?",
+    "o": [
+      "Atalía",
+      "Ester",
+      "Betsabé",
+      "Jezabel"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "mujeres",
+    "lvl": 1,
+    "q": "¿Qué mujer guió a Israel como jueza?",
+    "o": [
+      "Hulda",
+      "Míriam",
+      "Sara",
+      "Débora"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "mujeres",
+    "lvl": 1,
+    "q": "¿Quién oró por un hijo y tuvo a Samuel?",
+    "o": [
+      "Abigail",
+      "Ana",
+      "Elcana",
+      "Penina"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "mujeres",
+    "lvl": 1,
+    "q": "¿Quién era la madre de Juan el Bautista?",
+    "o": [
+      "María",
+      "Elisabet",
+      "Rebeca",
+      "Sara"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "mujeres",
+    "lvl": 1,
+    "q": "¿Qué mujer dio a luz a Isaac siendo anciana?",
+    "o": [
+      "Sara",
+      "Raquel",
+      "Rebeca",
+      "Lea"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "mujeres",
+    "lvl": 1,
+    "q": "¿Qué hermana de Moisés cuidó el cesto en el río?",
+    "o": [
+      "Jochebed",
+      "Míriam",
+      "Dalila",
+      "Séfora"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "mujeres",
+    "lvl": 1,
+    "q": "¿Qué mujer ungió los pies de Jesús?",
+    "o": [
+      "Marta",
+      "María",
+      "Susana",
+      "Salomé"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "apostoles",
+    "lvl": 1,
+    "q": "¿Qué pescador caminó sobre el agua con Jesús?",
+    "o": [
+      "Andrés",
+      "Felipe",
+      "Pedro",
+      "Juan"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "apostoles",
+    "lvl": 1,
+    "q": "¿Qué apóstol dudó hasta tocar las heridas?",
+    "o": [
+      "Tadeo",
+      "Simón",
+      "Tomás",
+      "Mateo"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "apostoles",
+    "lvl": 1,
+    "q": "¿Quiénes eran los 'hijos del trueno'?",
+    "o": [
+      "Pedro y Andrés",
+      "Juan y Jacobo",
+      "Mateo y Judas",
+      "Felipe y Tomás"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "apostoles",
+    "lvl": 1,
+    "q": "¿Qué apóstol era recaudador de impuestos?",
+    "o": [
+      "Natanael",
+      "Tomás",
+      "Pedro",
+      "Mateo"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "apostoles",
+    "lvl": 1,
+    "q": "¿Quién llevó a su hermano Pedro a conocer a Jesús?",
+    "o": [
+      "Felipe",
+      "Juan",
+      "Andrés",
+      "Jacobo"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "apostoles",
+    "lvl": 1,
+    "q": "¿Qué apóstol escribió uno de los evangelios?",
+    "o": [
+      "Juan",
+      "Pedro",
+      "Bartolomé",
+      "Tadeo"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "apostoles",
+    "lvl": 1,
+    "q": "¿Quién reemplazó a Judas Iscariote?",
+    "o": [
+      "Bernabé",
+      "Marcos",
+      "Matías",
+      "Silas"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "apostoles",
+    "lvl": 1,
+    "q": "¿A quién llamó Jesús 'israelita sin engaño'?",
+    "o": [
+      "Felipe",
+      "Tomás",
+      "Simón",
+      "Natanael"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "apostoles",
+    "lvl": 1,
+    "q": "¿Qué apóstol llevaba la bolsa del dinero?",
+    "o": [
+      "Pedro",
+      "Judas Iscariote",
+      "Juan",
+      "Mateo"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "apostoles",
+    "lvl": 1,
+    "q": "¿Qué apóstol pidió a Jesús 'muéstranos al Padre'?",
+    "o": [
+      "Tomás",
+      "Felipe",
+      "Andrés",
+      "Jacobo"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "salmos",
+    "lvl": 1,
+    "q": "¿Quién escribió muchos de los salmos?",
+    "o": [
+      "David",
+      "Salomón",
+      "Moisés",
+      "Samuel"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "salmos",
+    "lvl": 1,
+    "q": "'El Señor es mi ___, nada me faltará'",
+    "o": [
+      "rey",
+      "amigo",
+      "sol",
+      "pastor"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "salmos",
+    "lvl": 1,
+    "q": "¿Cuál es el salmo más largo?",
+    "o": [
+      "Salmo 150",
+      "Salmo 119",
+      "Salmo 23",
+      "Salmo 1"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "salmos",
+    "lvl": 1,
+    "q": "¿Cuál es el capítulo más corto de la Biblia?",
+    "o": [
+      "Salmo 150",
+      "Salmo 1",
+      "Salmo 117",
+      "Salmo 15"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "salmos",
+    "lvl": 1,
+    "q": "'Aunque ande en valle de sombra, no temeré ___'",
+    "o": [
+      "al enemigo",
+      "la noche",
+      "ningún mal",
+      "el hambre"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "salmos",
+    "lvl": 1,
+    "q": "¿Qué salmo dice 'Jehová es mi pastor'?",
+    "o": [
+      "Salmo 100",
+      "Salmo 23",
+      "Salmo 91",
+      "Salmo 121"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "salmos",
+    "lvl": 1,
+    "q": "¿Cuántos salmos hay en el libro de Salmos?",
+    "o": [
+      "120",
+      "66",
+      "150",
+      "100"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "salmos",
+    "lvl": 1,
+    "q": "'Lámpara es a mis pies tu ___'",
+    "o": [
+      "luz",
+      "promesa",
+      "estrella",
+      "palabra"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "salmos",
+    "lvl": 1,
+    "q": "¿Quién escribió la mayoría de los proverbios?",
+    "o": [
+      "Salomón",
+      "Esdras",
+      "Ezequías",
+      "David"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "salmos",
+    "lvl": 1,
+    "q": "'Todo lo que respira ___ al Señor'",
+    "o": [
+      "adore",
+      "bendiga",
+      "alabe",
+      "glorifique"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "lugares",
+    "lvl": 1,
+    "q": "¿En qué jardín puso Dios a Adán y Eva?",
+    "o": [
+      "Getsemaní",
+      "Cedrón",
+      "Babylon",
+      "Edén"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "lugares",
+    "lvl": 1,
+    "q": "¿Qué murallas cayeron con trompetas?",
+    "o": [
+      "Nínive",
+      "Jericó",
+      "Samaria",
+      "Jerusalén"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "lugares",
+    "lvl": 1,
+    "q": "¿En qué monte se posó el arca?",
+    "o": [
+      "Carmelo",
+      "Moria",
+      "Ararat",
+      "Sinaí"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "lugares",
+    "lvl": 1,
+    "q": "¿Qué río cruzó Israel hacia la tierra prometida?",
+    "o": [
+      "Éufrates",
+      "Jordán",
+      "Tigris",
+      "Nilo"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "lugares",
+    "lvl": 1,
+    "q": "¿En qué ciudad estaba el templo?",
+    "o": [
+      "Jerusalén",
+      "Belén",
+      "Betel",
+      "Hebrón"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "lugares",
+    "lvl": 1,
+    "q": "¿En qué mar pescaban los discípulos?",
+    "o": [
+      "Mar Muerto",
+      "Mediterráneo",
+      "Mar de Galilea",
+      "Mar Rojo"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "lugares",
+    "lvl": 1,
+    "q": "¿A qué ciudad huía Jonás?",
+    "o": [
+      "Tarsis",
+      "Nínive",
+      "Sidón",
+      "Tiro"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "lugares",
+    "lvl": 1,
+    "q": "¿En qué isla escribió Juan Apocalipsis?",
+    "o": [
+      "Chipre",
+      "Patmos",
+      "Creta",
+      "Malta"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "lugares",
+    "lvl": 1,
+    "q": "¿En qué pozo habló Jesús con una samaritana?",
+    "o": [
+      "En Caná",
+      "En Siloé",
+      "En Betel",
+      "En Sicar"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "lugares",
+    "lvl": 1,
+    "q": "¿Qué ciudad significa 'casa de pan'?",
+    "o": [
+      "Betsaida",
+      "Betania",
+      "Nazaret",
+      "Belén"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "navidad",
+    "lvl": 1,
+    "q": "¿Qué ángel anunció a María?",
+    "o": [
+      "Rafael",
+      "Gabriel",
+      "Uriel",
+      "Miguel"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "navidad",
+    "lvl": 1,
+    "q": "¿Dónde acostaron al niño Jesús?",
+    "o": [
+      "En el templo",
+      "En una cama",
+      "En una cuna",
+      "En un pesebre"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "navidad",
+    "lvl": 1,
+    "q": "¿Quiénes siguieron la estrella?",
+    "o": [
+      "Los pastores",
+      "Los soldados",
+      "Los sacerdotes",
+      "Los sabios de oriente"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "navidad",
+    "lvl": 1,
+    "q": "¿Qué regalos trajeron los magos?",
+    "o": [
+      "Pan y vino",
+      "Telas y joyas",
+      "Oro, incienso y mirra",
+      "Plata y perlas"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "navidad",
+    "lvl": 1,
+    "q": "¿Qué rey quiso matar al niño Jesús?",
+    "o": [
+      "César",
+      "Pilato",
+      "Acab",
+      "Herodes"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "navidad",
+    "lvl": 1,
+    "q": "¿A qué país huyó la familia?",
+    "o": [
+      "Roma",
+      "Siria",
+      "Arabia",
+      "Egipto"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "navidad",
+    "lvl": 1,
+    "q": "¿Quiénes visitaron primero al niño?",
+    "o": [
+      "Los magos",
+      "Los pastores",
+      "Los ancianos",
+      "Los ángeles"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "navidad",
+    "lvl": 1,
+    "q": "¿Quién era el esposo de María?",
+    "o": [
+      "José",
+      "Nicodemo",
+      "Zacarías",
+      "Simeón"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "navidad",
+    "lvl": 1,
+    "q": "¿Qué cantaron los ángeles esa noche?",
+    "o": [
+      "Gloria a Dios en las alturas",
+      "Hosanna",
+      "Santo es el Señor",
+      "Aleluya al Cordero"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "navidad",
+    "lvl": 1,
+    "q": "¿Cómo llamaron al niño?",
+    "o": [
+      "Juan",
+      "Jesús",
+      "Cristo Rey",
+      "Emmanuel hijo"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "pascua",
+    "lvl": 1,
+    "q": "¿En qué huerto oró Jesús antes de la cruz?",
+    "o": [
+      "Cedrón",
+      "Edén",
+      "Getsemaní",
+      "Olivos"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "pascua",
+    "lvl": 1,
+    "q": "¿Quién juzgó a Jesús y se lavó las manos?",
+    "o": [
+      "Caifás",
+      "Pilato",
+      "Herodes",
+      "Anás"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "pascua",
+    "lvl": 1,
+    "q": "¿Quién ayudó a Jesús a llevar la cruz?",
+    "o": [
+      "Juan",
+      "Simón de Cirene",
+      "José de Arimatea",
+      "Pedro"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "pascua",
+    "lvl": 1,
+    "q": "¿Por cuántas monedas traicionó Judas a Jesús?",
+    "o": [
+      "30",
+      "100",
+      "40",
+      "20"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "pascua",
+    "lvl": 1,
+    "q": "¿Al cabo de cuántos días resucitó Jesús?",
+    "o": [
+      "2",
+      "7",
+      "12",
+      "3"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "pascua",
+    "lvl": 1,
+    "q": "¿Quién llegó primero al sepulcro vacío?",
+    "o": [
+      "Juan",
+      "María Magdalena",
+      "Marta",
+      "Pedro"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "pascua",
+    "lvl": 1,
+    "q": "¿Qué encontraron en la entrada de la tumba?",
+    "o": [
+      "La tumba sellada",
+      "Soldados durmiendo",
+      "La piedra corrida",
+      "Un cordero"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "pascua",
+    "lvl": 1,
+    "q": "¿Qué camino anduvieron dos discípulos con Jesús?",
+    "o": [
+      "Samaria",
+      "Emaús",
+      "Damasco",
+      "Jericó"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "pascua",
+    "lvl": 1,
+    "q": "¿Qué cenó Jesús con sus discípulos antes de morir?",
+    "o": [
+      "Las bodas",
+      "La cosecha",
+      "La última cena",
+      "La Pascua nueva"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "pascua",
+    "lvl": 1,
+    "q": "¿Qué dijo Jesús en la cruz por sus enemigos?",
+    "o": [
+      "Padre, perdónalos",
+      "Tengo sed",
+      "Consumado es",
+      "¿Por qué me has dejado?"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "oracion",
+    "lvl": 1,
+    "q": "¿Cómo empieza el Padre Nuestro?",
+    "o": [
+      "Padre nuestro que estás en los cielos",
+      "Dios todopoderoso",
+      "Oh Jehová de los ejércitos",
+      "Señor misericordioso"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "oracion",
+    "lvl": 1,
+    "q": "¿Cuántas veces oraba Daniel al día?",
+    "o": [
+      "7",
+      "1",
+      "5",
+      "3"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "oracion",
+    "lvl": 1,
+    "q": "¿Cuántas veces oró Jesús en Getsemaní?",
+    "o": [
+      "12",
+      "7",
+      "1",
+      "3"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "oracion",
+    "lvl": 1,
+    "q": "¿Qué debemos hacer por nuestros enemigos, según Jesús?",
+    "o": [
+      "Evitarlos",
+      "Orar por ellos",
+      "Vencerlos",
+      "Olvidarlos"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "oracion",
+    "lvl": 1,
+    "q": "¿Quién oró y volvió la lluvia tras 3 años de sequía?",
+    "o": [
+      "Elías",
+      "Samuel",
+      "Eliseo",
+      "Moisés"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "oracion",
+    "lvl": 1,
+    "q": "¿Qué pedía Ana en su oración?",
+    "o": [
+      "Salud",
+      "Pan",
+      "Protección",
+      "Un hijo"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "oracion",
+    "lvl": 1,
+    "q": "¿Desde dónde oró Jonás?",
+    "o": [
+      "Desde la orilla",
+      "Desde el barco",
+      "Desde la cueva",
+      "Desde el vientre del pez"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "oracion",
+    "lvl": 1,
+    "q": "¿Qué hizo Jesús toda la noche antes de elegir a los doce?",
+    "o": [
+      "Ayunó",
+      "Sanó",
+      "Orar",
+      "Predicó"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "oracion",
+    "lvl": 1,
+    "q": "¿Qué significa 'amén'?",
+    "o": [
+      "Santo",
+      "Aleluya",
+      "Así sea",
+      "Gloria"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "oracion",
+    "lvl": 1,
+    "q": "¿Dónde dijo Jesús que es mejor orar?",
+    "o": [
+      "De pie siempre",
+      "En secreto, en tu cuarto",
+      "En la calle",
+      "Solo en el templo"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "numeros",
+    "lvl": 1,
+    "q": "¿En cuántos días creó Dios todo?",
+    "o": [
+      "6",
+      "7",
+      "5",
+      "10"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "numeros",
+    "lvl": 1,
+    "q": "¿Cuántas plagas cayeron sobre Egipto?",
+    "o": [
+      "12",
+      "40",
+      "7",
+      "10"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "numeros",
+    "lvl": 1,
+    "q": "¿Cuántos años vivió Matusalén?",
+    "o": [
+      "120",
+      "969",
+      "500",
+      "777"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "numeros",
+    "lvl": 1,
+    "q": "¿Cuántos panes llevaba el niño de los 5,000?",
+    "o": [
+      "7",
+      "12",
+      "5",
+      "3"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "numeros",
+    "lvl": 1,
+    "q": "¿Cuántos libros tiene la Biblia?",
+    "o": [
+      "39",
+      "100",
+      "66",
+      "27"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "numeros",
+    "lvl": 1,
+    "q": "¿Cuántos días estuvo Jonás en el pez?",
+    "o": [
+      "7",
+      "40",
+      "1",
+      "3"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "numeros",
+    "lvl": 1,
+    "q": "¿Cuántas personas se salvaron en el arca?",
+    "o": [
+      "12",
+      "4",
+      "8",
+      "70"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "numeros",
+    "lvl": 1,
+    "q": "¿Cuántos discípulos envió Jesús de dos en dos?",
+    "o": [
+      "40",
+      "70",
+      "12",
+      "100"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "numeros",
+    "lvl": 1,
+    "q": "¿Cuántos peces pescaron en la red milagrosa?",
+    "o": [
+      "500",
+      "77",
+      "120",
+      "153"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "numeros",
+    "lvl": 1,
+    "q": "¿Cuántas tribus formaron el pueblo de Israel?",
+    "o": [
+      "12",
+      "7",
+      "10",
+      "40"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "alimentos",
+    "lvl": 1,
+    "q": "¿Qué cayó del cielo para Israel en el desierto?",
+    "o": [
+      "Pan",
+      "Miel",
+      "Agua",
+      "Maná"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "alimentos",
+    "lvl": 1,
+    "q": "¿Qué guiso vendió Jacob por la primogenitura?",
+    "o": [
+      "Lentejas",
+      "Garbanzos",
+      "Habas",
+      "Trigo"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "alimentos",
+    "lvl": 1,
+    "q": "¿Qué bebida hizo Jesús en la boda de Caná?",
+    "o": [
+      "Vino",
+      "Jugo",
+      "Miel",
+      "Leche"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "alimentos",
+    "lvl": 1,
+    "q": "¿Qué comía Juan el Bautista en el desierto?",
+    "o": [
+      "Langostas y miel",
+      "Higos y uvas",
+      "Peces y pan",
+      "Maná y pan"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "alimentos",
+    "lvl": 1,
+    "q": "¿Qué llevó la paloma en el pico al arca?",
+    "o": [
+      "Una uva",
+      "Una espiga",
+      "Un higo",
+      "Una rama de olivo"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "alimentos",
+    "lvl": 1,
+    "q": "¿Qué comió Israel la noche de la Pascua?",
+    "o": [
+      "Pescado",
+      "Cabrito",
+      "Ternera",
+      "Cordero"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "alimentos",
+    "lvl": 1,
+    "q": "¿Qué quiso comer el hijo pródigo en su hambre?",
+    "o": [
+      "Los higos",
+      "Las migajas",
+      "La comida de los cerdos",
+      "La hierba"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "alimentos",
+    "lvl": 1,
+    "q": "¿Qué no se acabó en la casa de la viuda por Elías?",
+    "o": [
+      "La sal",
+      "El vino y el pan",
+      "La miel",
+      "La harina y el aceite"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "alimentos",
+    "lvl": 1,
+    "q": "¿Qué pidió Daniel en vez de los manjares del rey?",
+    "o": [
+      "Legumbres y agua",
+      "Pan y queso",
+      "Frutas",
+      "Pan y leche"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "alimentos",
+    "lvl": 1,
+    "q": "¿Con qué alimentó Jesús a la multitud?",
+    "o": [
+      "Dulces",
+      "Panes y peces",
+      "Queso y leche",
+      "Frutas secas"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "libros",
+    "lvl": 1,
+    "q": "¿Cuál es el primer libro de la Biblia?",
+    "o": [
+      "Salmos",
+      "Génesis",
+      "Mateo",
+      "Éxodo"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "libros",
+    "lvl": 1,
+    "q": "¿Cuál es el último libro de la Biblia?",
+    "o": [
+      "Apocalipsis",
+      "Judas",
+      "Revelación final",
+      "Malaquías"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "libros",
+    "lvl": 1,
+    "q": "¿Cuántos evangelios hay?",
+    "o": [
+      "3",
+      "5",
+      "12",
+      "4"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "libros",
+    "lvl": 1,
+    "q": "¿Qué libro sigue al evangelio de Juan?",
+    "o": [
+      "Lucas",
+      "Romanos",
+      "Apocalipsis",
+      "Hechos"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "libros",
+    "lvl": 1,
+    "q": "¿Qué libro tiene 150 capítulos?",
+    "o": [
+      "Proverbios",
+      "Isaías",
+      "Salmos",
+      "Génesis"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "libros",
+    "lvl": 1,
+    "q": "¿Qué libro cuenta la creación?",
+    "o": [
+      "Salmos",
+      "Éxodo",
+      "Job",
+      "Génesis"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "libros",
+    "lvl": 1,
+    "q": "¿Qué evangelio es el más corto?",
+    "o": [
+      "Mateo",
+      "Marcos",
+      "Juan",
+      "Lucas"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "libros",
+    "lvl": 1,
+    "q": "¿Quién escribió el libro de Hechos?",
+    "o": [
+      "Marcos",
+      "Pablo",
+      "Lucas",
+      "Pedro"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "libros",
+    "lvl": 1,
+    "q": "¿Qué libro sigue a Salmos?",
+    "o": [
+      "Job",
+      "Cantares",
+      "Proverbios",
+      "Eclesiastés"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "libros",
+    "lvl": 1,
+    "q": "¿Cuántos libros tiene el Nuevo Testamento?",
+    "o": [
+      "66",
+      "39",
+      "27",
+      "12"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "pablo",
+    "lvl": 1,
+    "q": "¿Qué le pasó a Pablo camino a Damasco?",
+    "o": [
+      "Vio una luz y se convirtió",
+      "Ganó una carrera",
+      "Se perdió en el desierto",
+      "Fue arrestado"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "pablo",
+    "lvl": 1,
+    "q": "¿Cómo se llamaba Pablo antes de creer en Jesús?",
+    "o": [
+      "Simón",
+      "Bernabé",
+      "Saulo",
+      "Silas"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "pablo",
+    "lvl": 1,
+    "q": "¿En qué isla naufragó Pablo?",
+    "o": [
+      "Creta",
+      "Malta",
+      "Chipre",
+      "Patmos"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "pablo",
+    "lvl": 1,
+    "q": "¿Qué mordió a Pablo en la isla de Malta?",
+    "o": [
+      "Un león",
+      "Un perro",
+      "Un escorpión",
+      "Una víbora"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "pablo",
+    "lvl": 1,
+    "q": "¿En qué fiesta vino el Espíritu Santo?",
+    "o": [
+      "Dedicación",
+      "Tabernáculos",
+      "Pascua",
+      "Pentecostés"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "pablo",
+    "lvl": 1,
+    "q": "¿Cuántas personas creyeron en el primer sermón de Pedro?",
+    "o": [
+      "5000",
+      "120",
+      "3000",
+      "500"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "pablo",
+    "lvl": 1,
+    "q": "¿A quién sanó Pedro en la puerta del templo?",
+    "o": [
+      "A un sordo",
+      "A un leproso",
+      "A un ciego",
+      "A un cojo de nacimiento"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "pablo",
+    "lvl": 1,
+    "q": "¿Quién bautizó al etíope en el camino?",
+    "o": [
+      "Pedro",
+      "Felipe",
+      "Bernabé",
+      "Pablo"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "pablo",
+    "lvl": 1,
+    "q": "¿Quién viajaba con Pablo en su primer viaje?",
+    "o": [
+      "Pedro",
+      "Lucas",
+      "Bernabé",
+      "Timoteo solo"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "pablo",
+    "lvl": 1,
+    "q": "¿Hasta qué ciudad llegó el evangelio con Pablo al final?",
+    "o": [
+      "Atenas",
+      "Roma",
+      "Éfeso",
+      "Antioquía"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagrosat",
+    "lvl": 1,
+    "q": "¿Qué hizo caer Elías sobre la ofrenda mojada?",
+    "o": [
+      "Lluvia",
+      "Estrellas",
+      "Truenos",
+      "Fuego del cielo"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "milagrosat",
+    "lvl": 1,
+    "q": "¿Qué detuvo Josué para terminar la batalla?",
+    "o": [
+      "El sol y la luna",
+      "La lluvia",
+      "El viento",
+      "El mar"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "milagrosat",
+    "lvl": 1,
+    "q": "¿Cómo sanó Naamán de la lepra?",
+    "o": [
+      "Usó ungüento",
+      "Se bañó 7 veces en el Jordán",
+      "Tocó la vara",
+      "Oró en el templo"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagrosat",
+    "lvl": 1,
+    "q": "¿Qué hizo Eliseo con el hacha caída al agua?",
+    "o": [
+      "La multiplicó",
+      "La convirtió en oro",
+      "La recuperó nadando",
+      "La hizo flotar"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "milagrosat",
+    "lvl": 1,
+    "q": "¿Qué no se gastó de Israel en el desierto?",
+    "o": [
+      "Sus cántaros",
+      "Su ropa y su calzado",
+      "Su maná",
+      "Sus tiendas"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "milagrosat",
+    "lvl": 1,
+    "q": "¿Qué abrió el manto de Elías al golpearlo?",
+    "o": [
+      "La roca",
+      "El cielo",
+      "El río Jordán",
+      "El Mar Rojo"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "milagrosat",
+    "lvl": 1,
+    "q": "¿Qué cerraron los ángeles en el foso?",
+    "o": [
+      "Los pozos",
+      "Las puertas",
+      "Las ventanas",
+      "Las bocas de los leones"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "milagrosat",
+    "lvl": 1,
+    "q": "¿Qué jóvenes no se quemaron en el horno?",
+    "o": [
+      "Ananías y Misael",
+      "Shofar y Natán",
+      "Daniel y sus hermanos",
+      "Sadrac, Mesac y Abed-nego"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "milagrosat",
+    "lvl": 1,
+    "q": "¿Qué sombra retrocedió como señal a Ezequías?",
+    "o": [
+      "La del árbol",
+      "La del monte",
+      "La de la muralla",
+      "La del reloj de sol"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "milagrosat",
+    "lvl": 1,
+    "q": "¿Qué subió a Elías en un torbellino?",
+    "o": [
+      "Carros de fuego",
+      "Una nube blanca",
+      "Un ángel",
+      "Un arcoíris"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "versiculos",
+    "lvl": 1,
+    "q": "'Porque de tal manera amó Dios al mundo...' ¿qué versículo es?",
+    "o": [
+      "Génesis 1:1",
+      "Romanos 8:28",
+      "Salmo 23:1",
+      "Juan 3:16"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "versiculos",
+    "lvl": 1,
+    "q": "'El Señor es mi pastor' está en…",
+    "o": [
+      "Salmo 91",
+      "Isaías 40",
+      "Proverbios 3",
+      "Salmo 23"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "versiculos",
+    "lvl": 1,
+    "q": "'Todo lo puedo en Cristo que me fortalece' es…",
+    "o": [
+      "Juan 14:6",
+      "Filipenses 4:13",
+      "Filipenses 4:19",
+      "Salmo 27:1"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "versiculos",
+    "lvl": 1,
+    "q": "'En el principio creó Dios los cielos y la tierra' es…",
+    "o": [
+      "Juan 1:1",
+      "Éxodo 20:1",
+      "Génesis 1:1",
+      "Salmo 1:1"
+    ],
+    "a": 2
+  },
+  {
+    "cat": "versiculos",
+    "lvl": 1,
+    "q": "'Lámpara es a mis pies tu palabra' es…",
+    "o": [
+      "Salmo 119:105",
+      "Isaías 41:10",
+      "Proverbios 3:5",
+      "Salmo 23:4"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "versiculos",
+    "lvl": 1,
+    "q": "'Yo soy el pan de vida' lo dijo…",
+    "o": [
+      "Pablo en Romanos 8",
+      "Jesús en Juan 6:35",
+      "Pedro en Hechos 2",
+      "Moisés en Éxodo 3"
+    ],
+    "a": 1
+  },
+  {
+    "cat": "versiculos",
+    "lvl": 1,
+    "q": "'Bienaventurados los de limpio corazón' es…",
+    "o": [
+      "Mateo 5:8",
+      "Lucas 6:20",
+      "Juan 13:34",
+      "Marcos 12:30"
+    ],
+    "a": 0
+  },
+  {
+    "cat": "versiculos",
+    "lvl": 1,
+    "q": "'Porque nada hay imposible para Dios' es…",
+    "o": [
+      "Marcos 10:27",
+      "Juan 3:16",
+      "Mateo 19:26",
+      "Lucas 1:37"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "versiculos",
+    "lvl": 1,
+    "q": "'El gozo del Señor es tu fuerza' es…",
+    "o": [
+      "Salmo 28:7",
+      "Salmos 46:1",
+      "Isaías 41:10",
+      "Nehemías 8:10"
+    ],
+    "a": 3
+  },
+  {
+    "cat": "versiculos",
+    "lvl": 1,
+    "q": "'Ama a tu prójimo como a ti mismo' lo enseñó…",
+    "o": [
+      "Jesús",
+      "David",
+      "Moisés",
+      "Pablo"
+    ],
+    "a": 0
+  }
 ]

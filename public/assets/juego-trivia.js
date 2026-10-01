@@ -4,8 +4,27 @@ BFJ.define('trivia', function (el) {
         mezcla: { name: '¡Mezcla!', emoji: '🎲' },
         personajes: { name: 'Personajes', emoji: '🧔' },
         historias: { name: 'Historias', emoji: '📖' },
-        milagros: { name: 'Milagros', emoji: '✨' },
-        animales: { name: 'Animales', emoji: '🦁' }
+        milagros: { name: 'Milagros de Jesús', emoji: '✨' },
+        animales: { name: 'Animales', emoji: '🦁' },
+        genesis: { name: 'Génesis', emoji: '🌍' },
+        exodo: { name: 'El Éxodo', emoji: '🌊' },
+        jesus: { name: 'Vida de Jesús', emoji: '🕊️' },
+        parabolas: { name: 'Parábolas', emoji: '🌱' },
+        profetas: { name: 'Profetas', emoji: '📣' },
+        reyes: { name: 'Reyes', emoji: '👑' },
+        mujeres: { name: 'Mujeres', emoji: '👩' },
+        apostoles: { name: 'Apóstoles', emoji: '✝️' },
+        salmos: { name: 'Salmos', emoji: '🎵' },
+        lugares: { name: 'Lugares', emoji: '🏖️' },
+        navidad: { name: 'Navidad', emoji: '🌟' },
+        pascua: { name: 'La Resurrección', emoji: '🌅' },
+        oracion: { name: 'La Oración', emoji: '🙏' },
+        numeros: { name: 'Números', emoji: '🔢' },
+        alimentos: { name: 'Alimentos', emoji: '🍞' },
+        libros: { name: 'Los Libros', emoji: '📚' },
+        pablo: { name: 'Hechos y Pablo', emoji: '🚢' },
+        milagrosat: { name: 'Milagros del AT', emoji: '🔥' },
+        versiculos: { name: 'Versículos famosos', emoji: '📜' }
     };
     el.innerHTML = '<section class="card notice"><p>Cargando… ⏳</p></section>';
     BFJ.fetchBank('trivia.json').then(function (bank) {
