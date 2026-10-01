@@ -20,7 +20,7 @@ final class Metrics
         'pref', 'vswitch', 'ann', 'share', 'listen',
         'visit_n', 'read_s', 'perf', 'perf_c', 'perf_b',
         'game_win', 'game_stars', 'game_perfect', 'game_s',
-        'sheet', 'img', 'votd', 'nav',
+        'sheet', 'img', 'votd', 'nav', 'geo', 'lang',
     ];
 
     public static function enabled(): bool

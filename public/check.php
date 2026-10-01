@@ -91,6 +91,7 @@ if (!$isCli && ((($_GET['metrics'] ?? '') === '1') || (($_GET['csv'] ?? '') === 
         'ann' => 'Anotaciones/export', 'share' => 'Compartidos', 'listen' => 'Audio escuchado',
         'visit_n' => 'Visita Nº del usuario', 'read_s' => 'Segundos de lectura',
         'perf' => 'Tiempo de carga (ms total)', 'perf_c' => 'Muestras de carga',
+        'geo' => 'Zona horaria del visitante', 'lang' => 'Idioma del navegador',
     ];
     // p75 aproximado desde el histograma perf_b (US-213)
     $BLAB = ['a:u05' => '<0.5s', 'b:u1' => '0.5–1s', 'c:u2' => '1–2s', 'd:u4' => '2–4s', 'e:g4' => '>4s'];

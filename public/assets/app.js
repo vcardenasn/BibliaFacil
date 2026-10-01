@@ -38,6 +38,19 @@
     })();
     window.BF_TRACK = TK; // lo usan también los juegos (game_win)
 
+    // Zona geográfica aproximada, una vez por sesión: zona horaria IANA +
+    // idioma del navegador. Agregado anónimo — sin IP, sin GPS, sin PII.
+    try {
+        if (!sessionStorage.getItem('bf_geo')) {
+            sessionStorage.setItem('bf_geo', '1');
+            var tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '')
+                .toLowerCase().replace(/[^a-z0-9_:.+-]/g, '-');
+            if (tz) { TK('geo', tz.slice(0, 80)); }
+            var lg = (navigator.language || '').toLowerCase();
+            if (lg) { TK('lang', lg.slice(0, 80)); }
+        }
+    } catch (e) { /* sessionStorage bloqueado → sin métrica, nunca rompe */ }
+
     var theme = P.get('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     apply('theme', theme);
     apply('font', P.get('font', '2'));
