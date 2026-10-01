@@ -91,10 +91,12 @@ final class ApiBibleService
         $file = $this->cacheFile($bibleId, $chapterId);
         if (is_file($file) && (time() - (int) filemtime($file)) < self::CACHE_TTL) {
             $cached = json_decode((string) file_get_contents($file), true);
-            if (is_array($cached) && isset($cached['verses'])) {
+            if (is_array($cached) && !empty($cached['verses'])) {
                 $this->recordFums($cached['fums'] ?? null);
                 return $cached;
             }
+            // Archivo con versículos vacíos (parse bug, respuesta rara):
+            // se ignora y re-consulta la API en vez de servir vacío 7 días.
         }
 
         $res = $this->client->getFull("/bibles/{$bibleId}/chapters/{$chapterId}", [
@@ -115,10 +117,12 @@ final class ApiBibleService
         }
 
         $payload = ['verses' => $rows, 'fums' => $fums];
-        if (!is_dir(dirname($file))) {
-            mkdir(dirname($file), 0755, true);
+        if ($rows !== []) {
+            if (!is_dir(dirname($file))) {
+                mkdir(dirname($file), 0755, true);
+            }
+            file_put_contents($file, json_encode($payload));
         }
-        file_put_contents($file, json_encode($payload));
         $this->recordFums($fums);
         return $payload;
     }
