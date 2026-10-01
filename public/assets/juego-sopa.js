@@ -29,7 +29,7 @@ BFJ.define('sopa', function (el) {
             var placed = buildAll(S, t.words);
             var words = placed.words;
             var grid = placed.grid;
-            var left = words.slice(), found = 0, anchor = null;
+            var left = words.slice(), found = 0, anchor = null, misses = 0;
 
             el.innerHTML =
                 '<div class="vf-qbox">' +
@@ -89,6 +89,7 @@ BFJ.define('sopa', function (el) {
                     BFJ.burst(cells[cells.length - 1]);
                     if (!left.length) { setTimeout(end, 500); }
                 } else {
+                    misses++;
                     BFJ.snd('bad');
                     cells.forEach(function (cc) {
                         cc.classList.remove('sp-miss');
@@ -121,10 +122,14 @@ BFJ.define('sopa', function (el) {
             }
 
             function end() {
+                var flawless = misses === 0;
                 BFJ.celebrate({
-                    slug: 'sopa', stars: words.length, emoji: '🔍',
-                    title: '¡Todas encontradas!', perfect: true,
-                    extra: words.length + ' palabras de "' + t.name + '"',
+                    slug: 'sopa', stars: words.length + (flawless ? 2 : 0),
+                    emoji: flawless ? '🏆' : '🔍',
+                    title: flawless ? '¡Vista de águila!' : '¡Todas encontradas!',
+                    perfect: flawless,
+                    extra: words.length + ' palabras de "' + t.name + '"' +
+                        (flawless ? ' · ¡sin fallos! +2⭐' : ' · ' + misses + ' intento' + (misses === 1 ? '' : 's') + ' fallido' + (misses === 1 ? '' : 's')),
                     againLabel: '🔁 Otro tema',
                     onAgain: picker
                 });

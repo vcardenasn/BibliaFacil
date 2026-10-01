@@ -2,8 +2,11 @@
 BFJ.define('vf', function (el) {
     el.innerHTML = '<section class="card notice"><p>Cargando… ⏳</p></section>';
     BFJ.fetchBank('vf.json').then(function (bank) {
+        round();
+
+        function round() {
         var qs = BFJ.pick(bank, 10);
-        var i = 0, ok = 0, streak = 0, t = null, locked = false;
+        var i = 0, ok = 0, streak = 0, bestStreak = 0, t = null, locked = false;
 
         function render() {
             if (i >= qs.length) { return end(); }
@@ -34,6 +37,7 @@ BFJ.define('vf', function (el) {
             var hit = guess === q.a;
             if (hit) {
                 ok++; streak++;
+                if (streak > bestStreak) { bestStreak = streak; }
                 BFJ.snd('ok');
                 box.classList.add('vf-ok');
                 BFJ.pop(box);
@@ -54,17 +58,22 @@ BFJ.define('vf', function (el) {
         }
 
         function end() {
-            var stars = ok; // 1⭐ por acierto (máx 10)
-            var emoji = stars >= 9 ? '🏆' : (stars >= 6 ? '🎉' : '💪');
-            var title = stars >= 9 ? '¡Eres un campeón!' : (stars >= 6 ? '¡Muy bien!' : '¡Sigue practicando!');
+            // Racha premiada: cada 5 seguidas suma ⭐ extra (incentivo real)
+            var bonus = Math.floor(bestStreak / 5);
+            var stars = ok + bonus;
+            var emoji = ok >= 9 ? '🏆' : (ok >= 6 ? '🎉' : '💪');
+            var title = ok >= 9 ? '¡Eres un campeón!' : (ok >= 6 ? '¡Muy bien!' : '¡Sigue practicando!');
             BFJ.celebrate({
                 slug: 'vf', stars: stars, emoji: emoji, title: title, perfect: ok === qs.length,
-                extra: ok + ' de ' + qs.length + ' correctas',
-                onAgain: function () { location.reload(); }
+                extra: ok + ' de ' + qs.length + ' correctas' +
+                    (bestStreak >= 3 ? ' · racha máx 🔥x' + bestStreak : '') +
+                    (bonus ? ' · +' + bonus + '⭐ por racha' : ''),
+                onAgain: round // reinicio sin recargar la página
             });
         }
 
         render();
+        }
     }).catch(function () {
         el.innerHTML = '<section class="card notice"><p>No pude cargar el juego 😢 Intenta de nuevo.</p></section>';
     });

@@ -69,7 +69,8 @@ BFJ.define('historia', function (el) {
                     slug: 'historia', stars: stars, perfect: errors === 0,
                     emoji: errors === 0 ? '🏆' : '🎬',
                     title: errors === 0 ? '¡Orden perfecto!' : '¡Historia completada!',
-                    extra: story.name + ' · ' + (errors === 0 ? 'sin errores' : errors + ' error' + (errors === 1 ? '' : 'es')),
+                    extra: story.name + ' · ' + (errors === 0 ? 'sin errores' : errors + ' error' + (errors === 1 ? '' : 'es')) +
+                        (story.ref ? ' — léela en 📖 ' + story.ref : ''),
                     againLabel: '📖 Otra historia',
                     onAgain: picker
                 });

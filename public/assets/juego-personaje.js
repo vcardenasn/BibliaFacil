@@ -3,16 +3,19 @@
 BFJ.define('personaje', function (el) {
     el.innerHTML = '<section class="card notice"><p>Cargando… ⏳</p></section>';
     BFJ.fetchBank('personajes.json').then(function (bank) {
-        var round = BFJ.pick(bank, 5);
+        round();
+
+        function round() {
+        var deck = BFJ.pick(bank, 5);
         var i = 0, total = 0, clue = 0, locked = false, gone = [];
 
         var opts = [];
         function render() {
-            if (i >= round.length) { return end(); }
+            if (i >= deck.length) { return end(); }
             locked = false;
             clue = 0;
             gone = [];
-            var p0 = round[i];
+            var p0 = deck[i];
             opts = BFJ.pick(
                 bank.filter(function (x) { return x.name !== p0.name; }), 3
             ).map(function (x) { return x.name; });
@@ -22,11 +25,11 @@ BFJ.define('personaje', function (el) {
         }
 
         function draw() {
-            var p = round[i];
+            var p = deck[i];
 
             el.innerHTML =
                 '<div class="vf-qbox" id="pbox">' +
-                '<div class="vf-prog"><span>🔍 Personaje ' + (i + 1) + ' / ' + round.length + '</span>' +
+                '<div class="vf-prog"><span>🔍 Personaje ' + (i + 1) + ' / ' + deck.length + '</span>' +
                 '<span class="vf-streak">⭐ ' + total + '</span></div>' +
                 // US-234 — silueta misteriosa que se ilumina al acertar
                 '<div class="pj-mystery" aria-hidden="true"><span class="pj-sil">' + BFJ.bimg(p.img, p.emoji) + '</span></div>' +
@@ -61,7 +64,7 @@ BFJ.define('personaje', function (el) {
 
         function guess(name, btn) {
             if (locked) { return; }
-            var p = round[i];
+            var p = deck[i];
             if (name === p.name) {
                 locked = true;
                 var stars = 3 - clue;
@@ -106,11 +109,12 @@ BFJ.define('personaje', function (el) {
             BFJ.celebrate({
                 slug: 'personaje', stars: total, emoji: emoji, title: title, perfect: total >= 15,
                 extra: total + '⭐ de 15 posibles',
-                onAgain: function () { location.reload(); }
+                onAgain: round // reinicio sin recargar la página
             });
         }
 
         render();
+        }
     }).catch(function () {
         el.innerHTML = '<section class="card notice"><p>No pude cargar el juego 😢 Intenta de nuevo.</p></section>';
     });

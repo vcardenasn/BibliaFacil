@@ -63,7 +63,7 @@ BFJ.define('crucigrama', function (el) {
             el.innerHTML = html;
 
             var active = null; // palabra activa
-            var done = 0;
+            var done = 0, errs = 0;
 
             function clueList(title, dir) {
                 var list = p.words.filter(function (w) { return w.dir === dir; });
@@ -107,6 +107,7 @@ BFJ.define('crucigrama', function (el) {
                     return inp ? inp.value.toUpperCase() : '';
                 }).join('');
                 if (txt !== w.w) {
+                    errs++;
                     w.cells.forEach(function (key) {
                         var box = inputOf(key).closest('.cg-box');
                         box.classList.remove('cg-bad');
@@ -211,10 +212,14 @@ BFJ.define('crucigrama', function (el) {
             });
 
             function end() {
+                var flawless = errs === 0;
                 BFJ.celebrate({
-                    slug: 'crucigrama', stars: p.words.length, emoji: '🧩',
-                    title: '¡Crucigrama resuelto!', perfect: true,
-                    extra: p.words.length + ' palabras de "' + p.name + '"',
+                    slug: 'crucigrama', stars: p.words.length + (flawless ? 2 : 0),
+                    emoji: flawless ? '🏆' : '🧩',
+                    title: flawless ? '¡Sin una sola falla!' : '¡Crucigrama resuelto!',
+                    perfect: flawless,
+                    extra: p.words.length + ' palabras de "' + p.name + '"' +
+                        (flawless ? ' · ¡perfecto! +2⭐' : ' · ' + errs + ' fallo' + (errs === 1 ? '' : 's')),
                     againLabel: '🔁 Otro crucigrama',
                     onAgain: picker
                 });

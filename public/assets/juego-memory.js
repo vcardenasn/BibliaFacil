@@ -2,6 +2,9 @@
 BFJ.define('memory', function (el) {
     el.innerHTML = '<section class="card notice"><p>Cargando… ⏳</p></section>';
     BFJ.fetchBank('memory.json').then(function (bank) {
+        round();
+
+        function round() {
         var pairs = BFJ.pick(bank, 8);
         var cards = [];
         pairs.forEach(function (p, pi) {
@@ -27,6 +30,17 @@ BFJ.define('memory', function (el) {
         el.querySelectorAll('.mm-card').forEach(function (b) {
             b.addEventListener('click', function () { flip(parseInt(b.getAttribute('data-i'), 10), b); });
         });
+
+        // Vistazo inicial: las cartas se muestran 1.4s — ayuda de memoria
+        // para los más pequeños antes de empezar la ronda
+        lock = true;
+        el.querySelectorAll('.mm-card').forEach(function (b) { b.classList.add('open'); });
+        setTimeout(function () {
+            el.querySelectorAll('.mm-card.open').forEach(function (b) {
+                b.classList.remove('open');
+            });
+            lock = false;
+        }, 1400);
 
         function flip(i, btn) {
             if (lock || btn.classList.contains('open') || btn.classList.contains('done')) { return; }
@@ -73,8 +87,9 @@ BFJ.define('memory', function (el) {
                 emoji: moves <= 10 ? '🏆' : '🎉',
                 title: moves <= 10 ? '¡Memoria de campeón!' : '¡Completaste el memory!',
                 extra: 'Encontraste ' + pairs.length + ' parejas en ' + moves + ' movimientos',
-                onAgain: function () { location.reload(); }
+                onAgain: round // reinicio sin recargar la página
             });
+        }
         }
     }).catch(function () {
         el.innerHTML = '<section class="card notice"><p>No pude cargar el juego 😢 Intenta de nuevo.</p></section>';

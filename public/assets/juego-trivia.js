@@ -29,7 +29,7 @@ BFJ.define('trivia', function (el) {
         function start(cat) {
             var pool = cat === 'mezcla' ? bank : bank.filter(function (q) { return q.cat === cat; });
             var qs = BFJ.pick(pool, 10);
-            var i = 0, ok = 0, streak = 0, t = null, locked = false;
+            var i = 0, ok = 0, streak = 0, bestStreak = 0, t = null, locked = false;
 
             function render() {
                 if (i >= qs.length) { return end(); }
@@ -66,18 +66,26 @@ BFJ.define('trivia', function (el) {
                     else if (bi === ix) { b.classList.add('bad'); }
                     b.disabled = true;
                 });
-                if (hit) { ok++; streak++; BFJ.snd('ok'); BFJ.burst(el.querySelector('.tr-opt.ok')); }
+                if (hit) {
+                    ok++; streak++;
+                    if (streak > bestStreak) { bestStreak = streak; }
+                    BFJ.snd('ok');
+                    BFJ.burst(el.querySelector('.tr-opt.ok'));
+                }
                 else { streak = 0; BFJ.snd('bad'); BFJ.shake(el.firstElementChild); }
                 i++;
                 setTimeout(render, hit ? 750 : 1600);
             }
 
             function end() {
+                var bonus = Math.floor(bestStreak / 5); // racha de 5+ suma ⭐
                 var emoji = ok >= 9 ? '🏆' : (ok >= 6 ? '🎉' : '💪');
                 var title = ok >= 9 ? '¡Experto bíblico!' : (ok >= 6 ? '¡Muy bien!' : '¡Sigue practicando!');
                 BFJ.celebrate({
-                    slug: 'trivia', stars: ok, emoji: emoji, title: title, perfect: ok === qs.length,
-                    extra: ok + ' de ' + qs.length + ' correctas · ' + CATS[cat].name,
+                    slug: 'trivia', stars: ok + bonus, emoji: emoji, title: title, perfect: ok === qs.length,
+                    extra: ok + ' de ' + qs.length + ' correctas · ' + CATS[cat].name +
+                        (bestStreak >= 3 ? ' · racha máx 🔥x' + bestStreak : '') +
+                        (bonus ? ' · +' + bonus + '⭐ por racha' : ''),
                     againLabel: '🔁 Otra categoría',
                     onAgain: catScreen
                 });
