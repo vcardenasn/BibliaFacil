@@ -100,6 +100,21 @@ try {
     echo "repo: " . $e->getMessage() . "\n";
 }
 
+// 3c. Llamar al servicio directamente para capturar la excepción real
+echo "\n== ApiBibleService directo ==\n";
+$svc = \Biblia\Bible\ApiBibleService::make();
+echo "make(): " . ($svc ? 'servicio creado' : 'null — sin clave') . "\n";
+if ($svc) {
+    try {
+        $rows = $svc->chapterVerses('826f63861180e056-01', 'JHN', 3);
+        echo "chapterVerses → " . count($rows) . " filas";
+        if ($rows) { echo " — v1: " . substr((string) $rows[0]['text'], 0, 60); }
+        echo "\n";
+    } catch (Throwable $e) {
+        echo "EXCEPCIÓN: " . get_class($e) . ": " . $e->getMessage() . "\n";
+    }
+}
+
 // 4. Permisos de escritura de la caché
 $dir = STORAGE_PATH . '/apibible';
 echo "\nCache dir writable: " . (is_writable(STORAGE_PATH) ? 'sí' : 'NO — revisa permisos de storage/') . "\n";
