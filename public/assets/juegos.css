@@ -639,6 +639,11 @@
 .cg-clue.sp-done { text-decoration: line-through; opacity: .6; }
 .cg-clue:focus-visible { outline: 3px solid var(--brand); }
 .cg-prog { font-family: var(--sans); font-size: .8rem; font-weight: 800; color: var(--gc, var(--brand)); }
+.cg-actions { text-align: center; margin: .6rem 0 0; }
+.cg-actions .jbtn { font-size: .85rem; padding: .55rem .9rem; }
+.cg-actions .jbtn small { font-size: .72rem; opacity: .75; }
+.cg-box.cg-hint .cg-cell { color: var(--gc, var(--brand)); font-style: italic; }
+.cg-box.cg-hint { border-style: dashed; }
 
 @media (prefers-reduced-motion: reduce) {
     .sp-miss, .cg-bad { animation: none; }

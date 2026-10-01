@@ -57,13 +57,16 @@ BFJ.define('crucigrama', function (el) {
                         ' aria-label="Fila ' + (r + 1) + ', columna ' + (c + 1) + '"></label>';
                 }
             }
-            html += '</div><div class="cg-clues">' +
+            html += '</div>' +
+                '<p class="cg-actions"><button type="button" class="jbtn jbtn-ghost" id="cgHint">' +
+                '💡 Revelar letra <small>(−1⭐)</small></button></p>' +
+                '<div class="cg-clues">' +
                 clueList('Horizontales →', 'h') + clueList('Verticales ↓', 'v') +
                 '</div></div>';
             el.innerHTML = html;
 
             var active = null; // palabra activa
-            var done = 0, errs = 0;
+            var done = 0, errs = 0, hints = 0;
 
             function clueList(title, dir) {
                 var list = p.words.filter(function (w) { return w.dir === dir; });
@@ -199,6 +202,29 @@ BFJ.define('crucigrama', function (el) {
                 });
             });
 
+            // 💡 Revelar letra: rellena la primera celda vacía de la palabra
+            // activa (cuesta ⭐ al final). La letra revelada queda fija.
+            document.getElementById('cgHint').addEventListener('click', function () {
+                var w = (active && !active.done) ? active
+                    : p.words.filter(function (x) { return !x.done; })[0];
+                if (!w) { return; }
+                select(w);
+                var empty = w.cells.filter(function (k) {
+                    var inp = inputOf(k);
+                    return !inp.readOnly && !inp.value;
+                })[0];
+                if (!empty) { return; }
+                var inp = inputOf(empty);
+                inp.value = cells[empty].ch;
+                inp.readOnly = true;
+                inp.closest('.cg-box').classList.add('cg-hint');
+                hints++;
+                BFJ.snd('click');
+                var filled = w.cells.every(function (k) { return inputOf(k).value; });
+                if (filled) { checkWord(w); }
+                else { focusEditable(w); }
+            });
+
             el.querySelectorAll('.cg-clue').forEach(function (b) {
                 b.addEventListener('click', function () {
                     var w = p.words.filter(function (x) {
@@ -212,14 +238,17 @@ BFJ.define('crucigrama', function (el) {
             });
 
             function end() {
-                var flawless = errs === 0;
+                var flawless = errs === 0 && hints === 0;
+                var stars = Math.max(1, p.words.length + (flawless ? 2 : 0) - hints);
                 BFJ.celebrate({
-                    slug: 'crucigrama', stars: p.words.length + (flawless ? 2 : 0),
+                    slug: 'crucigrama', stars: stars,
                     emoji: flawless ? '🏆' : '🧩',
                     title: flawless ? '¡Sin una sola falla!' : '¡Crucigrama resuelto!',
                     perfect: flawless,
                     extra: p.words.length + ' palabras de "' + p.name + '"' +
-                        (flawless ? ' · ¡perfecto! +2⭐' : ' · ' + errs + ' fallo' + (errs === 1 ? '' : 's')),
+                        (flawless ? ' · ¡perfecto! +2⭐'
+                            : (errs ? ' · ' + errs + ' fallo' + (errs === 1 ? '' : 's') : '') +
+                              (hints ? ' · ' + hints + ' pista' + (hints === 1 ? '' : 's') + ' 💡' : '')),
                     againLabel: '🔁 Otro crucigrama',
                     onAgain: picker
                 });
