@@ -638,3 +638,30 @@
 @media (prefers-reduced-motion: reduce) {
     .sp-miss, .cg-bad { animation: none; }
 }
+
+/* ---- La Paloma de Noé (runner canvas) ---- */
+.pn-stage { position: relative; max-width: 640px; margin: 0 auto; }
+.pn-cv {
+    display: block; width: 100%; height: auto; border-radius: 18px;
+    box-shadow: var(--shadow); touch-action: manipulation; cursor: pointer;
+}
+.pn-hud {
+    position: absolute; top: .55rem; left: .8rem; right: .8rem;
+    display: flex; justify-content: space-between; pointer-events: none;
+    font-family: var(--sans); font-weight: 800; font-size: .95rem;
+    color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.4);
+}
+.pn-menu {
+    position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 1rem; border-radius: 18px;
+    background: rgba(15, 18, 30, .45); color: #fff;
+}
+.pn-emo { font-size: 2.8rem; margin: 0; }
+.pn-t { font-family: var(--sans); font-weight: 800; font-size: 1.3rem; margin: .1rem 0 .4rem; }
+.pn-s { font-size: .85rem; max-width: 30ch; margin: 0 auto .5rem; opacity: .95; }
+.pn-k { font-size: .75rem; margin: 0 auto .9rem; opacity: .85; }
+.pn-k kbd {
+    font-family: inherit; background: rgba(255,255,255,.2); border-radius: 4px;
+    padding: .05em .4em; border: 1px solid rgba(255,255,255,.35);
+}

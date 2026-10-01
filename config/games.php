@@ -17,4 +17,5 @@ return [
     'personaje' => ['name' => 'Adivina el Personaje',   'img' => '1F3AD', 'desc' => 'Descubre quién es con pistas.', 'ready' => true, 'color' => '#e8890c'],
     'sopa'      => ['name' => 'Sopa de Letras',          'img' => '1F50D', 'desc' => 'Encuentra las palabras escondidas.', 'ready' => true, 'color' => '#ae3ec9'],
     'crucigrama'=> ['name' => 'Crucigrama Bíblico',      'img' => '1F9E9', 'desc' => 'Une las palabras con sus pistas.', 'ready' => true, 'color' => '#4263eb'],
+    'paloma'    => ['name' => 'La Paloma de Noé',         'img' => '1F54A', 'desc' => 'Vuela entre la tormenta y halla la rama de olivo.', 'ready' => true, 'color' => '#1c7ed6'],
 ];
