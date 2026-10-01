@@ -82,6 +82,24 @@ if ($errno) {
     }
 }
 
+// 3b. Ruta completa de la app: repo → version → book → chapter
+echo "\n== Ruta BibleRepository ==\n";
+try {
+    $repo = new \Biblia\Bible\BibleRepository($pdo);
+    $v = $repo->versionByCode('ntv');
+    echo "versionByCode(ntv): " . ($v ? "id={$v['id']} api=" . ($v['api_bible_id'] ?? 'NULL') : 'null') . "\n";
+    $b = $v ? $repo->book('juan') : null;
+    echo "book(juan): " . ($b ? "id={$b['id']} osis={$b['osis']}" : 'null') . "\n";
+    if ($v && $b) {
+        $rows = $repo->chapter((int) $v['id'], (int) $b['id'], 3);
+        echo "chapter() → " . count($rows) . " filas";
+        if ($rows) { echo " — v1: " . substr((string) ($rows[0]['text'] ?? ''), 0, 60); }
+        echo "\n";
+    }
+} catch (Throwable $e) {
+    echo "repo: " . $e->getMessage() . "\n";
+}
+
 // 4. Permisos de escritura de la caché
 $dir = STORAGE_PATH . '/apibible';
 echo "\nCache dir writable: " . (is_writable(STORAGE_PATH) ? 'sí' : 'NO — revisa permisos de storage/') . "\n";
