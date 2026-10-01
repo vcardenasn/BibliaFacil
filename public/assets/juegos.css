@@ -392,15 +392,16 @@
 }
 .mm-card {
     position: relative; aspect-ratio: 3/4; border: none; background: none;
-    cursor: pointer; perspective: 500px; padding: 0;
+    cursor: pointer; -webkit-perspective: 500px; perspective: 500px; padding: 0;
+    -webkit-transform-style: preserve-3d; transform-style: preserve-3d;
 }
 @supports not (aspect-ratio: 3/4) {
     .mm-card { height: 0; padding-bottom: 133.33%; }
 }
 .mm-face {
     position: absolute; top:0;right:0;bottom:0;left:0; display: flex; align-items: center; justify-content: center;
-    border-radius: 14px; backface-visibility: hidden; overflow: hidden;
-    transition: transform .35s ease; font-size: 2rem;
+    border-radius: 14px; -webkit-backface-visibility: hidden; backface-visibility: hidden; overflow: hidden;
+    -webkit-transition: -webkit-transform .35s ease; transition: transform .35s ease; font-size: 2rem;
 }
 .mm-back {
     background: linear-gradient(135deg, var(--brand), var(--fun5));
@@ -413,10 +414,10 @@
 [data-theme="contrast"] .mm-back { background: var(--brand); }
 .mm-front {
     background: var(--surface); border: 2px solid var(--border-strong);
-    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg); transform: rotateY(180deg);
 }
-.mm-card.open .mm-back { transform: rotateY(180deg); }
-.mm-card.open .mm-front { transform: rotateY(0); }
+.mm-card.open .mm-back { -webkit-transform: rotateY(180deg); transform: rotateY(180deg); }
+.mm-card.open .mm-front { -webkit-transform: rotateY(0); transform: rotateY(0); }
 .mm-card.done .mm-front { border-color: var(--gold); background: var(--gold-soft); animation: bfj-pop .35s; }
 .mm-found { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: center; margin-top: .9rem; min-height: 1.6rem; }
 .mm-tag {
