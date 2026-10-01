@@ -202,10 +202,10 @@ final class ApiBibleService
 
     /**
      * Aplana el JSON de capítulo a [versículo => texto con sentinels [wj]].
-     * Formato real API.Bible: nodos type="tag" con name="verse" (número en
-     * attrs.number), textos type="text", y char con attrs.style="wj" para
-     * palabras de Jesús. Los items dentro del tag verse solo repintan el
-     * número impreso — se ignoran.
+     * Formato real API.Bible: pedimos include-verse-numbers=false, así que no
+     * hay nodos name="verse" — cada nodo text lleva attrs.verseId="JHN.3.1"
+     * que da el número de versículo. char con attrs.style="wj" marca las
+     * palabras de Jesús.
      */
     public static function parseChapter(array $nodes): array
     {
@@ -224,8 +224,15 @@ final class ApiBibleService
                     }
                     continue; // los items internos solo repintan el número
                 }
-                if ($type === 'text' && $current !== null) {
-                    $out[$current] .= ($wj ? '[wj]' : '') . ($node['text'] ?? '') . ($wj ? '[/wj]' : '');
+                if ($type === 'text') {
+                    $vid = (string) ($attrs['verseId'] ?? '');
+                    if (preg_match('/\.(\d+)$/', $vid, $m)) {
+                        $current = (int) $m[1];
+                        $out[$current] = $out[$current] ?? '';
+                    }
+                    if ($current !== null) {
+                        $out[$current] .= ($wj ? '[wj]' : '') . ($node['text'] ?? '') . ($wj ? '[/wj]' : '');
+                    }
                 }
                 if (!empty($node['items']) && is_array($node['items'])) {
                     $walk($node['items'], $wj || ($name === 'char' && ($attrs['style'] ?? $node['style'] ?? '') === 'wj'));
