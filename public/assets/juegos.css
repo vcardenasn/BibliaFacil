@@ -615,6 +615,25 @@
 .sp-anchor { background: var(--gc, var(--brand)); color: #fff; border-color: var(--gc, var(--brand)); }
 .sp-found { background: color-mix(in srgb, var(--gc, var(--brand)) 35%, var(--card)); border-color: var(--gc, var(--brand)); color: var(--ink); }
 .sp-miss { animation: bfj-shake .3s; background: color-mix(in srgb, #e03131 30%, var(--card)); }
+/* Marcador personalizable (el usuario elige su color) */
+.sp-pal {
+    display: flex; align-items: center; gap: .4rem; justify-content: center;
+    margin: .1rem 0 .7rem; flex-wrap: wrap;
+}
+.sp-pal-l { font-family: var(--sans); font-size: .75rem; color: var(--muted); font-weight: 700; }
+.sp-sw {
+    width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+    border: 3px solid var(--border-strong); background: var(--sw, var(--surface));
+    font-family: var(--sans); font-weight: 800; font-size: .7rem; color: var(--muted);
+    padding: 0; transition: transform .12s;
+}
+.sp-sw:hover { transform: scale(1.12); }
+.sp-sw.on { border-color: var(--ink); box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--ink); }
+.sp-auto { background: var(--surface); }
+/* El color elegido pinta encontradas, ancla y chips tachados */
+.sp-custom .sp-found { background: var(--sp-soft); border-color: var(--sp-hl); }
+.sp-custom .sp-anchor { background: var(--sp-hl); border-color: var(--sp-hl); color: #fff; }
+.sp-custom .sp-word.sp-done { background: var(--sp-soft); }
 .sp-words { display: flex; flex-wrap: wrap; gap: .35rem; }
 .sp-word, .cg-clue i {
     font-family: var(--sans); font-size: .78rem; font-weight: 700;

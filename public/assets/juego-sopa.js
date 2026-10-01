@@ -33,6 +33,25 @@ BFJ.define('sopa', function (el) {
             });
         }
 
+        // Colores de marcador elegibles por el usuario (sólido + versión suave)
+        var HLS = [
+            { c: '#2f9e44', s: 'rgba(47,158,68,.30)' },
+            { c: '#e8890c', s: 'rgba(232,137,12,.30)' },
+            { c: '#d6336c', s: 'rgba(214,51,108,.22)' },
+            { c: '#1971c2', s: 'rgba(25,113,194,.25)' },
+            { c: '#9c36b5', s: 'rgba(156,54,181,.25)' }
+        ];
+        function hlGet() {
+            try { var i = parseInt(localStorage.getItem('bf_sopa_hl') || '-1', 10);
+                  return (i >= 0 && i < HLS.length) ? i : -1; } catch (e) { return -1; }
+        }
+        function hlSet(i) {
+            try {
+                if (i < 0) { localStorage.removeItem('bf_sopa_hl'); }
+                else { localStorage.setItem('bf_sopa_hl', String(i)); }
+            } catch (e) {}
+        }
+
         function start(key) {
             var t = bank[key], S = t.size;
             try {
@@ -41,6 +60,7 @@ BFJ.define('sopa', function (el) {
             var grid = placed.grid;
             var left = words.slice(), found = 0, anchor = null, misses = 0, ended = false;
             var tmr = null;
+            var hl = hlGet();
 
             el.innerHTML =
                 '<div class="vf-qbox">' +
@@ -48,6 +68,15 @@ BFJ.define('sopa', function (el) {
                 '<span class="sp-prog" aria-live="polite">0 / ' + words.length + '</span></div>' +
                 (timed ? '<div class="jtimer" id="spt" aria-hidden="true"></div>' : '') +
                 '<p class="sp-hint" id="spHint">🔍 Toca la <b>primera</b> letra de una palabra.</p>' +
+                '<div class="sp-pal" role="group" aria-label="Color del marcador">' +
+                '<span class="sp-pal-l">🎨 Marcador:</span>' +
+                '<button type="button" class="sp-sw sp-auto' + (hl < 0 ? ' on' : '') +
+                    '" data-hl="-1" aria-label="Color del tema" title="Color del tema">A</button>' +
+                HLS.map(function (h, hi) {
+                    return '<button type="button" class="sp-sw' + (hi === hl ? ' on' : '') +
+                        '" data-hl="' + hi + '" style="--sw:' + h.c +
+                        '" aria-label="Marcador ' + (hi + 1) + '"></button>';
+                }).join('') + '</div>' +
                 '<div class="sp-grid" aria-label="Sopa de letras: ' + BFJ.esc(t.name) + '"' +
                 ' style="--n:' + S + '">' +
                 grid.map(function (row, r) {
@@ -76,6 +105,31 @@ BFJ.define('sopa', function (el) {
             el.querySelectorAll('.sp-cell').forEach(function (cell) {
                 cell.addEventListener('click', function () { tap(cell); });
             });
+
+            // 🎨 Marcador personalizado: pinta encontradas, ancla y chips
+            var qbox = el.querySelector('.vf-qbox');
+            function applyHl(i) {
+                hl = i;
+                hlSet(i);
+                if (i < 0) {
+                    qbox.classList.remove('sp-custom');
+                } else {
+                    qbox.classList.add('sp-custom');
+                    qbox.style.setProperty('--sp-hl', HLS[i].c);
+                    qbox.style.setProperty('--sp-soft', HLS[i].s);
+                }
+                el.querySelectorAll('.sp-sw').forEach(function (b) {
+                    var on = parseInt(b.getAttribute('data-hl'), 10) === i;
+                    if (on) { b.classList.add('on'); } else { b.classList.remove('on'); }
+                });
+            }
+            el.querySelectorAll('.sp-sw').forEach(function (b) {
+                b.addEventListener('click', function () {
+                    BFJ.snd('click');
+                    applyHl(parseInt(b.getAttribute('data-hl'), 10));
+                });
+            });
+            if (hl >= 0) { applyHl(hl); }
 
             function tap(cell) {
                 if (ended) { return; }
