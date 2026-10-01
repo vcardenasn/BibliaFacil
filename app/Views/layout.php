@@ -47,7 +47,7 @@
 <script type="application/ld+json"><?= json_encode($block, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
 <?php endforeach; ?>
 </head>
-<body<?= !empty($bodyClass) ? ' class="' . e($bodyClass) . '"' : '' ?>>
+<body<?= !empty($bodyClass) ? ' class="' . e($bodyClass) . '"' : '' ?><?= \Biblia\Core\FeatureFlags::enabled('FF_PWA') ? ' data-sw="' . e(url('sw.js')) . '"' : '' ?>>
 <a class="skip-link" href="#main-content">Saltar al contenido</a>
 <header class="topbar">
     <a class="brand" href="<?= e(url('/')) ?>"><span class="cross" aria-hidden="true">✝</span> Biblia Fácil</a>
@@ -123,12 +123,7 @@
 <script src="<?= e(asset($j)) ?>"></script>
 <?php endforeach; ?>
 <?php if (\Biblia\Core\FeatureFlags::enabled('FF_PWA')): ?>
-<script>
-// EPIC 08 / US-080 — registra el service worker tras cargar la página
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () { navigator.serviceWorker.register(<?= json_encode(url('sw.js')) ?>); });
-}
-</script>
+<script src="<?= e(asset('sw-register.js')) ?>"></script>
 <?php endif; ?>
 </body>
 </html>

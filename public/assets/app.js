@@ -172,6 +172,13 @@
         }
     }
 
+    // ---- Autosubmit de selects (la CSP prohíbe onchange inline) --------------
+    document.querySelectorAll('select[data-autosubmit]').forEach(function (sel) {
+        sel.addEventListener('change', function () {
+            if (sel.form) { sel.form.submit(); }
+        });
+    });
+
     // ---- Switcher de versión --------------------------------------------------
     var vswitch = document.getElementById('versionSwitch');
     if (vswitch) {

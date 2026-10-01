@@ -46,13 +46,13 @@
 <form class="cmp-switch" method="get" action="<?= e(url('comparar')) ?>" aria-label="Cambiar versiones a comparar">
     <input type="hidden" name="book" value="<?= e($book['slug']) ?>">
     <input type="hidden" name="cap" value="<?= (int) $chapter ?>">
-    <select name="a" aria-label="Versión A" onchange="this.form.submit()">
+    <select name="a" aria-label="Versión A" data-autosubmit>
         <?php foreach ($versions as $v): ?>
         <option value="<?= e($v['code']) ?>"<?= $v['id'] === $va['id'] ? ' selected' : '' ?>><?= e($v['name']) ?></option>
         <?php endforeach; ?>
     </select>
     <span aria-hidden="true">⇄</span>
-    <select name="b" aria-label="Versión B" onchange="this.form.submit()">
+    <select name="b" aria-label="Versión B" data-autosubmit>
         <?php foreach ($versions as $v): ?>
         <option value="<?= e($v['code']) ?>"<?= $v['id'] === $vb['id'] ? ' selected' : '' ?>><?= e($v['name']) ?></option>
         <?php endforeach; ?>
