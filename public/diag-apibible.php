@@ -5,14 +5,12 @@
 header('Content-Type: text/plain; charset=utf-8');
 require dirname(__DIR__) . '/bootstrap.php';
 
-// Candado: solo corre con ?k=<primeros 8 del md5 de DB_PASS> — no queda
-// abierto al público mientras esté subido.
-$token = substr(md5((string) env('DB_PASS', 'x')), 0, 8);
-if (($_GET['k'] ?? '') !== $token) {
+// Candado: token aleatorio por archivo — no queda abierto al público
+// mientras esté subido. Borrar tras diagnosticar.
+if (($_GET['k'] ?? '') !== 'bf9d2c7a4e1f') {
     http_response_code(404);
     exit('Not found');
 }
-echo "Token: {$token} (úsalo como ?k={$token})\n\n";
 
 echo "== Diagnóstico API.Bible ==\n\n";
 
