@@ -557,8 +557,8 @@
 .vf-qbox:has(.sp-grid), .vf-qbox:has(.cg-grid) { padding: .8rem; }
 .sp-hint { font-family: var(--sans); font-size: .8rem; color: var(--muted); margin: 0 0 .3rem; }
 .sp-grid {
-    display: grid; grid-template-columns: repeat(var(--n, 10), 1fr);
-    gap: 1px; margin: .3rem 0 .9rem; user-select: none;
+    display: grid; grid-template-columns: repeat(var(--n, 10), minmax(0, 1fr));
+    gap: 1px; margin: .3rem 0 .9rem; user-select: none; max-width: 100%;
 }
 .sp-cell {
     touch-action: manipulation;
@@ -578,14 +578,15 @@
 .sp-word {
     background: var(--card); border: 1px solid var(--border); border-radius: 2rem;
     padding: .2rem .65rem; color: var(--ink);
+    white-space: nowrap; /* la palabra nunca se parte en dos líneas */
 }
 .sp-word.sp-done { background: color-mix(in srgb, var(--gc, var(--brand)) 30%, var(--card)); text-decoration: line-through; opacity: .8; }
 .sp-prog { font-family: var(--sans); font-size: .8rem; font-weight: 800; color: var(--gc, var(--brand)); }
 
 /* ---- Crucigrama ---- */
 .cg-grid {
-    display: grid; grid-template-columns: repeat(var(--c, 9), 1fr);
-    gap: 1px; margin: .3rem 0 .9rem; user-select: none;
+    display: grid; grid-template-columns: repeat(var(--c, 9), minmax(0, 1fr));
+    gap: 1px; margin: .3rem 0 .9rem; user-select: none; max-width: 100%;
 }
 .cg-block { aspect-ratio: 1; background: var(--ink); opacity: .85; border-radius: .25rem; }
 .cg-box {
