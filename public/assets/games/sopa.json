@@ -352,5 +352,56 @@
       "RAHAB",
       "GEDEON"
     ]
+  },
+  "genesis": {
+    "name": "Génesis",
+    "icon": "🌍",
+    "size": 10,
+    "words": [
+      "ADAN",
+      "EVA",
+      "CAIN",
+      "ABEL",
+      "SERPIENTE",
+      "EDEN",
+      "ARCOIRIS",
+      "TORRE",
+      "BABEL",
+      "DILUVIO"
+    ]
+  },
+  "alabanza": {
+    "name": "Salmos y Alabanza",
+    "icon": "🎵",
+    "size": 10,
+    "words": [
+      "SALMO",
+      "ARPA",
+      "CANTO",
+      "ALABANZA",
+      "LIRA",
+      "PASTOR",
+      "ROCA",
+      "REFUGIO",
+      "LUZ",
+      "SENDA"
+    ]
+  },
+  "pablo": {
+    "name": "Los Viajes de Pablo",
+    "icon": "🚢",
+    "size": 10,
+    "words": [
+      "PABLO",
+      "TARSO",
+      "ANTIOQUIA",
+      "EFESO",
+      "CORINTO",
+      "FILIPOS",
+      "ROMA",
+      "BARCO",
+      "CARCEL",
+      "CARTAS"
+    ]
   }
 }
