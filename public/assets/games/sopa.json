@@ -1,22 +1,356 @@
 {
-    "arca": {
-        "name": "Animales del arca", "icon": "🐘", "size": 10,
-        "words": ["OVEJA", "LEON", "PALOMA", "ELEFANTE", "JIRAFA", "MONO", "CABALLO", "PERRO"]
-    },
-    "frutos": {
-        "name": "Frutos del Espíritu", "icon": "🍇", "size": 12,
-        "words": ["AMOR", "GOZO", "PAZ", "PACIENCIA", "BENIGNIDAD", "BONDAD", "FE", "MANSEDUMBRE", "TEMPLANZA"]
-    },
-    "personajes": {
-        "name": "Personajes", "icon": "🧔", "size": 10,
-        "words": ["NOE", "MOISES", "DAVID", "JONAS", "PEDRO", "MARIA", "JOSE", "DANIEL", "ESTER", "RUT"]
-    },
-    "creacion": {
-        "name": "La Creación", "icon": "🌍", "size": 10,
-        "words": ["LUZ", "CIELO", "MAR", "TIERRA", "SOL", "LUNA", "ESTRELLA", "ARBOL", "AVE", "PEZ"]
-    },
-    "milagros": {
-        "name": "Milagros de Jesús", "icon": "✨", "size": 10,
-        "words": ["PAN", "PESCADO", "AGUA", "VINO", "CIEGO", "LEPROSO", "LAZARO", "TEMPESTAD", "CAMINO", "SORDO"]
-    }
+  "arca": {
+    "name": "Animales del arca",
+    "icon": "🐘",
+    "size": 10,
+    "words": [
+      "OVEJA",
+      "LEON",
+      "PALOMA",
+      "ELEFANTE",
+      "JIRAFA",
+      "MONO",
+      "CABALLO",
+      "PERRO"
+    ]
+  },
+  "frutos": {
+    "name": "Frutos del Espíritu",
+    "icon": "🍇",
+    "size": 12,
+    "words": [
+      "AMOR",
+      "GOZO",
+      "PAZ",
+      "PACIENCIA",
+      "BENIGNIDAD",
+      "BONDAD",
+      "FE",
+      "MANSEDUMBRE",
+      "TEMPLANZA"
+    ]
+  },
+  "personajes": {
+    "name": "Personajes",
+    "icon": "🧔",
+    "size": 10,
+    "words": [
+      "NOE",
+      "MOISES",
+      "DAVID",
+      "JONAS",
+      "PEDRO",
+      "MARIA",
+      "JOSE",
+      "DANIEL",
+      "ESTER",
+      "RUT"
+    ]
+  },
+  "creacion": {
+    "name": "La Creación",
+    "icon": "🌍",
+    "size": 10,
+    "words": [
+      "LUZ",
+      "CIELO",
+      "MAR",
+      "TIERRA",
+      "SOL",
+      "LUNA",
+      "ESTRELLA",
+      "ARBOL",
+      "AVE",
+      "PEZ"
+    ]
+  },
+  "milagros": {
+    "name": "Milagros de Jesús",
+    "icon": "✨",
+    "size": 10,
+    "words": [
+      "PAN",
+      "PESCADO",
+      "AGUA",
+      "VINO",
+      "CIEGO",
+      "LEPROSO",
+      "LAZARO",
+      "TEMPESTAD",
+      "CAMINO",
+      "SORDO"
+    ]
+  },
+  "libros": {
+    "name": "Libros del AT",
+    "icon": "📚",
+    "size": 12,
+    "words": [
+      "GENESIS",
+      "EXODO",
+      "LEVITICO",
+      "NUMEROS",
+      "DEUTERONOMIO",
+      "JOSUE",
+      "JUECES",
+      "RUT",
+      "SAMUEL",
+      "SALMOS",
+      "ESTER"
+    ]
+  },
+  "apostoles": {
+    "name": "Los Doce Apóstoles",
+    "icon": "✝️",
+    "size": 10,
+    "words": [
+      "PEDRO",
+      "JUAN",
+      "JACOBO",
+      "ANDRES",
+      "FELIPE",
+      "TOMAS",
+      "MATEO",
+      "BARTOLOME",
+      "TADEO",
+      "SIMON"
+    ]
+  },
+  "mujeres": {
+    "name": "Mujeres de la Biblia",
+    "icon": "👩",
+    "size": 10,
+    "words": [
+      "MARIA",
+      "SARA",
+      "REBECA",
+      "RAQUEL",
+      "ESTER",
+      "RUT",
+      "DEBORA",
+      "ANA",
+      "ELISABET",
+      "MIRIAM"
+    ]
+  },
+  "reyes": {
+    "name": "Reyes de Israel",
+    "icon": "👑",
+    "size": 10,
+    "words": [
+      "DAVID",
+      "SALOMON",
+      "SAUL",
+      "EZEQUIAS",
+      "JOSIAS",
+      "ASA",
+      "JOSAFAT",
+      "ACAB",
+      "ROBOAM"
+    ]
+  },
+  "profetas": {
+    "name": "Profetas",
+    "icon": "📣",
+    "size": 10,
+    "words": [
+      "ISAIAS",
+      "JEREMIAS",
+      "EZEQUIEL",
+      "DANIEL",
+      "OSEAS",
+      "JOEL",
+      "AMOS",
+      "JONAS",
+      "MALAQUIAS",
+      "MIQUEAS"
+    ]
+  },
+  "parabolas": {
+    "name": "Parábolas de Jesús",
+    "icon": "🌱",
+    "size": 12,
+    "words": [
+      "SEMBRADOR",
+      "SEMILLA",
+      "TESORO",
+      "PERLA",
+      "SAMARITANO",
+      "PRODIGO",
+      "OVEJA",
+      "MONEDA",
+      "LEVADURA",
+      "VIÑA"
+    ]
+  },
+  "armadura": {
+    "name": "La Armadura de Dios",
+    "icon": "⚔️",
+    "size": 10,
+    "words": [
+      "CINTURON",
+      "VERDAD",
+      "CORAZA",
+      "JUSTICIA",
+      "ESCUDO",
+      "FE",
+      "CASCO",
+      "SALVACION",
+      "ESPADA",
+      "ORACION"
+    ]
+  },
+  "navidad": {
+    "name": "Navidad",
+    "icon": "🌟",
+    "size": 10,
+    "words": [
+      "JESUS",
+      "MARIA",
+      "JOSE",
+      "BELEN",
+      "ANGEL",
+      "PASTOR",
+      "MAGOS",
+      "ESTRELLA",
+      "PESEBRE",
+      "NOCHE"
+    ]
+  },
+  "pascua": {
+    "name": "La Resurrección",
+    "icon": "🌅",
+    "size": 10,
+    "words": [
+      "CRUZ",
+      "SEPULCRO",
+      "RESUCITO",
+      "ANGEL",
+      "PIEDRA",
+      "DOMINGO",
+      "VIDA",
+      "TOMAS",
+      "GLORIA",
+      "TUMBA"
+    ]
+  },
+  "exodo": {
+    "name": "El Éxodo",
+    "icon": "🌊",
+    "size": 10,
+    "words": [
+      "MOISES",
+      "EGIPTO",
+      "FARAON",
+      "PLAGAS",
+      "MARROJO",
+      "MANA",
+      "DESIERTO",
+      "TABLAS",
+      "ZARZA",
+      "CORDERO"
+    ]
+  },
+  "daniel": {
+    "name": "Daniel en Babilonia",
+    "icon": "🦁",
+    "size": 10,
+    "words": [
+      "DANIEL",
+      "FOSA",
+      "LEON",
+      "BABILONIA",
+      "ANGEL",
+      "SUENO",
+      "FUEGO",
+      "HORNO",
+      "SADRAC",
+      "ABEDENGO"
+    ]
+  },
+  "elias": {
+    "name": "Elías y Eliseo",
+    "icon": "🔥",
+    "size": 10,
+    "words": [
+      "ELIAS",
+      "ELISEO",
+      "CARMELO",
+      "FUEGO",
+      "LLUVIA",
+      "CUERVO",
+      "MANTO",
+      "PROFETA",
+      "VIUDA",
+      "ACEITE"
+    ]
+  },
+  "lugares": {
+    "name": "Lugares Bíblicos",
+    "icon": "🏖️",
+    "size": 10,
+    "words": [
+      "EDEN",
+      "BELEN",
+      "EGIPTO",
+      "JERICO",
+      "SAMARIA",
+      "GALILEA",
+      "JORDAN",
+      "SINAI",
+      "CANAAN",
+      "ARARAT"
+    ]
+  },
+  "alimentos": {
+    "name": "Alimentos Bíblicos",
+    "icon": "🍞",
+    "size": 10,
+    "words": [
+      "PAN",
+      "VINO",
+      "MIEL",
+      "HIGO",
+      "PESCADO",
+      "MANA",
+      "ACEITE",
+      "LECHE",
+      "UVA",
+      "TRIGO"
+    ]
+  },
+  "vida-jesus": {
+    "name": "La Vida de Jesús",
+    "icon": "🕊️",
+    "size": 10,
+    "words": [
+      "BELEN",
+      "JORDAN",
+      "BAUTISMO",
+      "DESIERTO",
+      "GALILEA",
+      "TEMPLO",
+      "CRUZ",
+      "TUMBA",
+      "PESCADOR",
+      "CAMINO"
+    ]
+  },
+  "heroes": {
+    "name": "Héroes de la Fe",
+    "icon": "🏆",
+    "size": 10,
+    "words": [
+      "ABEL",
+      "ENOC",
+      "NOE",
+      "ABRAHAM",
+      "SARA",
+      "MOISES",
+      "DAVID",
+      "SAMUEL",
+      "RAHAB",
+      "GEDEON"
+    ]
+  }
 }
