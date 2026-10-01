@@ -1,60 +1,119 @@
-// La Paloma de Noé — runner estilo dino/flappy.
-// La paloma aletea con toque/clic/espacio, esquiva las nubes de la tormenta
-// y recoge ramas de olivo. Canvas 2D con render a devicePixelRatio (nítido en
-// retina) y controles con fallback touchstart/keyCode para Safari viejo.
+// La Paloma de Noé — runner estilo dino/flappy con progresión narrativa.
+// Tres vuelos basados en Génesis 8:8-12: la paloma sale del arca, vuelve con
+// la rama de olivo y por fin encuentra tierra en el monte Ararat (arcoíris).
+// Tras el 3er vuelo queda el modo libre sin fin. Canvas 2D a devicePixelRatio
+// (nítido en retina) y controles con fallback touchstart/keyCode (iOS <13).
 BFJ.define('paloma', function (el) {
+    // Vuelos = niveles de la historia (Gén 8:8-12)
+    var FLIGHTS = [
+        {
+            name: 'Vuelo 1 · La primera salida',
+            ref: 'Génesis 8:8-9',
+            desc: 'Noé soltó a la paloma para ver si había bajado el agua.',
+            goal: 250, gapAdd: 26, olivesNeeded: 0
+        },
+        {
+            name: 'Vuelo 2 · La rama de olivo',
+            ref: 'Génesis 8:10-11',
+            desc: 'La paloma volvió al atardecer con una rama de olivo en el pico.',
+            goal: 380, gapAdd: 10, olivesNeeded: 2
+        },
+        {
+            name: 'Vuelo 3 · El Monte Ararat',
+            ref: 'Génesis 8:12 · 9:13',
+            desc: 'Esta vez la paloma no regresó: ¡encontró tierra firme!',
+            goal: 520, gapAdd: 0, olivesNeeded: 3, ararat: true
+        },
+        {
+            name: 'Vuelo libre · Hasta el horizonte',
+            ref: 'Génesis 9:13',
+            desc: 'La tierra floreció de nuevo. ¿Hasta dónde llegas?',
+            goal: 0, gapAdd: 0, olivesNeeded: 0, endless: true
+        }
+    ];
+
+    var passed = BFJ.levels.passed('paloma'); // 0-3
+    var fi = Math.min(passed, 3);
+    var best = 0;
+    try { best = parseInt(localStorage.getItem('bf_pal_best') || '0', 10) || 0; } catch (e) {}
+
+    function menuHTML() {
+        var f = FLIGHTS[fi];
+        return (
+            '<p class="pn-emo" aria-hidden="true">🕊️</p>' +
+            '<p class="pn-t">' + BFJ.esc(f.name) + '</p>' +
+            '<p class="pn-s">' + BFJ.esc(f.desc) + '</p>' +
+            '<p class="pn-ref">📖 ' + f.ref + '</p>' +
+            (f.endless
+                ? '<p class="pn-goal">🏁 Sin meta — ¡solo vuela!</p>'
+                : '<p class="pn-goal">🏁 Meta: ' + f.goal + ' m' +
+                  (f.olivesNeeded ? ' + ' + f.olivesNeeded + ' ramas 🌿' : '') + '</p>') +
+            (best ? '<p class="pn-best">✨ Tu récord: ' + best + ' m</p>' : '') +
+            '<button type="button" class="jbtn jbtn-main" id="pnGo">▶ ¡A volar!</button>' +
+            '<p class="pn-k">👆 Toca la pantalla o presiona <kbd>espacio</kbd> para volar</p>'
+        );
+    }
+
     el.innerHTML =
         '<div class="pn-stage" id="pnStage">' +
         '<canvas class="pn-cv" id="pnCv" width="480" height="320" ' +
         'aria-label="La Paloma de Noé: esquiva las nubes y recoge ramas de olivo"></canvas>' +
+        '<div class="pn-prog" id="pnProg"><i id="pnFill"></i><b id="pnIco">🕊️</b></div>' +
         '<div class="pn-hud" aria-hidden="true">' +
         '<span id="pnOl">🌿 0</span><span id="pnM">0 m</span>' +
         '</div>' +
-        '<div class="pn-menu" id="pnMenu">' +
-        '<p class="pn-emo" aria-hidden="true">🕊️</p>' +
-        '<p class="pn-t">La Paloma de Noé</p>' +
-        '<p class="pn-s">El diluvio cubrió la tierra. Ayuda a la paloma a volar entre ' +
-        'las nubes de la tormenta y encontrar la rama de olivo.</p>' +
-        '<p class="pn-k">👆 Toca la pantalla o presiona <kbd>espacio</kbd> para volar</p>' +
-        '<button type="button" class="jbtn jbtn-main" id="pnGo">▶ ¡A volar!</button>' +
-        '</div></div>';
+        '<div class="pn-hint" id="pnHint" hidden>👆 ¡Toca para volar!</div>' +
+        '<div class="pn-menu" id="pnMenu"></div>' +
+        '</div>';
 
     var cv = document.getElementById('pnCv');
     var ctx = cv.getContext('2d');
     var stage = document.getElementById('pnStage');
     var menu = document.getElementById('pnMenu');
+    var hint = document.getElementById('pnHint');
+    var prog = document.getElementById('pnProg');
+    var pFill = document.getElementById('pnFill');
+    var pIco = document.getElementById('pnIco');
     var hudOl = document.getElementById('pnOl');
     var hudM = document.getElementById('pnM');
     var W = 480, H = 320;
     var SEA = 34, SKY = 8;
 
-    // Render retina: backing store ×dpr, lógica siempre 480×320
     var DPR = Math.min(2, window.devicePixelRatio || 1);
     cv.width = W * DPR; cv.height = H * DPR;
     ctx.scale(DPR, DPR);
 
-    var raf = null, alive = false, over = false;
-    var dove, clouds, olives, parts, rain, bgs, t, dist, got, speed, spawnIn, seaX, flapT;
+    var raf = null, flying = false, over = false, won = false;
+    var dove, clouds, olives, parts, rain, bgs, popups;
+    var t, dist, got, speed, spawnIn, seaX, flapT, ararat, rainbow;
+
+    function flight() { return FLIGHTS[fi]; }
 
     function reset() {
         dove = { x: 90, y: H * .45, vy: 0, r: 13 };
-        clouds = []; olives = []; parts = []; rain = [];
+        clouds = []; olives = []; parts = []; rain = []; popups = [];
         bgs = [
             { x: 60, y: 46, s: 1.0 }, { x: 230, y: 30, s: .7 },
             { x: 390, y: 60, s: 1.2 }, { x: 520, y: 38, s: .8 }
         ];
         t = 0; dist = 0; got = 0; speed = 120; spawnIn = 480; seaX = 0; flapT = 0;
+        ararat = 0; rainbow = 0;
     }
 
     function flap() {
-        if (!alive || over) { return; }
+        if (over || won) { return; }
+        if (!flying) {
+            flying = true;
+            hint.hidden = true;
+        }
         dove.vy = -190;
-        flapT = .55; // aleteo fuerte tras el impulso
+        flapT = .55;
         BFJ.snd('click');
     }
 
     function spawnCloud() {
-        var gap = Math.max(78, H * .34 - t * .6);
+        var f = flight();
+        var gap = Math.max(84, H * .34 - t * .5 + f.gapAdd);
         var cy = 40 + Math.random() * (H - SEA - 80 - gap);
         clouds.push({ x: W + 40, gy: cy, gh: gap, w: 56, bolt: Math.random() < .5 });
         if (Math.random() < .75) {
@@ -78,8 +137,22 @@ BFJ.define('paloma', function (el) {
         return false;
     }
 
+    function popup(x, y, txt) {
+        popups.push({ x: x, y: y, txt: txt, life: 1 });
+    }
+
+    function saveBest() {
+        var m = Math.floor(dist);
+        if (m > best) {
+            best = m;
+            try { localStorage.setItem('bf_pal_best', String(m)); } catch (e) {}
+            return true;
+        }
+        return false;
+    }
+
     function die() {
-        if (over) { return; }
+        if (over || won) { return; }
         over = true;
         BFJ.snd('bad');
         BFJ.shake(stage);
@@ -90,26 +163,70 @@ BFJ.define('paloma', function (el) {
                 s: 2 + Math.random() * 3.4, life: 1
             });
         }
-        setTimeout(end, 900);
+        setTimeout(function () { finish(false); }, 900);
     }
 
-    function end() {
+    function win() {
+        if (won || over) { return; }
+        won = true;
+        BFJ.snd('ok');
+        setTimeout(function () { finish(true); }, flight().ararat ? 1600 : 700);
+    }
+
+    function finish(success) {
         cancelAnimationFrame(raf);
+        flying = false;
         var m = Math.floor(dist);
-        var stars = Math.min(10, got + Math.floor(m / 120));
+        var isRecord = saveBest();
+        var f = flight();
+        var stars = Math.min(10, got + Math.floor(m / 120) + (success ? 2 : 0));
+
+        if (success && !f.endless) {
+            BFJ.levels.pass('paloma', fi, m); // desbloquea el siguiente vuelo
+        }
+
+        var emoji, title;
+        if (success && f.ararat) {
+            emoji = '🌈'; title = '¡Encontró tierra firme!';
+        } else if (success) {
+            emoji = '🕊️'; title = '¡Vuelo completado!';
+        } else {
+            emoji = '⛈️'; title = m >= 150 ? '¡Buen intento!' : '¡Sigue intentando!';
+        }
+        var extra = 'Volaste ' + m + ' m' +
+            (got ? ' · ' + got + ' rama' + (got === 1 ? '' : 's') + ' de olivo 🌿' : '') +
+            (isRecord ? ' · ¡Nuevo récord! ✨' : '');
+
         BFJ.celebrate({
-            slug: 'paloma', stars: stars,
-            emoji: got >= 3 ? '🕊️' : (m >= 200 ? '🌈' : '⛈️'),
-            title: got >= 3 ? '¡Encontró la rama de olivo!' : (m >= 200 ? '¡Buen vuelo!' : '¡Sigue intentando!'),
-            extra: 'Volaste ' + m + ' m' + (got ? ' · ' + got + ' rama' + (got === 1 ? '' : 's') + ' de olivo 🌿' : ''),
-            onAgain: function () { start(); }
+            slug: 'paloma', stars: stars, emoji: emoji, title: title, extra: extra,
+            againLabel: success && fi < 3 ? '🕊️ Siguiente vuelo' : '🔁 Otra vez',
+            onAgain: function () {
+                if (success && fi < 3) { fi++; }
+                showMenu();
+            }
         });
     }
 
     function step(dt) {
         t += dt * 1000;
         flapT = Math.max(0, flapT - dt);
+        var f = flight();
+
+        // Antes del primer toque: la paloma se mantiene en el aire, mundo quieto
+        if (!flying) {
+            dove.y = H * .45 + Math.sin(t * .004) * 8;
+            return;
+        }
+
+        // Fase final del vuelo 3: el Ararat sale del agua y aparece el arcoíris
+        var nearingEnd = !f.endless && dist > f.goal - 140;
+        if (f.ararat && nearingEnd) {
+            ararat = Math.min(1, ararat + dt * .8);
+            if (dist >= f.goal) { rainbow = Math.min(1, rainbow + dt * .6); }
+        }
+
         speed = Math.min(300, 120 + t * .014);
+        if (won) { speed = Math.max(40, speed - dt * 300); } // aterriza suave
         dist += speed * dt * .12;
         seaX -= speed * dt;
 
@@ -119,13 +236,26 @@ BFJ.define('paloma', function (el) {
         if (dove.y - dove.r < SKY) { dove.y = SKY + dove.r; dove.vy = 0; }
         if (dove.y + dove.r > H - SEA) { dove.y = H - SEA - dove.r; die(); }
 
-        // nubes obstáculo
-        spawnIn -= speed * dt;
-        if (spawnIn <= 0) { spawnCloud(); spawnIn = 260 + Math.random() * 120; }
+        // nubes (dejan de salir al cumplir la meta)
+        if (!won && !nearingEnd) {
+            spawnIn -= speed * dt;
+            if (spawnIn <= 0) { spawnCloud(); spawnIn = 260 + Math.random() * 120; }
+        }
         for (var i = clouds.length - 1; i >= 0; i--) {
             clouds[i].x -= speed * dt;
-            if (!over && cloudHits(clouds[i].x, clouds[i].gy, clouds[i].gh, clouds[i].w)) { die(); }
+            if (!over && !won && cloudHits(clouds[i].x, clouds[i].gy, clouds[i].gh, clouds[i].w)) { die(); }
             if (clouds[i].x < -80) { clouds.splice(i, 1); }
+        }
+
+        // Si la meta exige ramas y faltan, siguen apareciendo aunque ya no
+        // salgan nubes — el jugador nunca queda atrapado sin poder ganar.
+        if (!f.endless && dist >= f.goal - 140 && got < f.olivesNeeded && olives.length < 3) {
+            if (Math.random() < .012) {
+                olives.push({
+                    x: W + 30, y: 60 + Math.random() * (H - SEA - 120),
+                    taken: false, ph: Math.random() * 6.28
+                });
+            }
         }
 
         // ramas de olivo
@@ -134,14 +264,20 @@ BFJ.define('paloma', function (el) {
             o.x -= speed * dt;
             if (!o.taken && !over && hit(dove, { x: o.x, y: o.y, r: 11 })) {
                 o.taken = true; got++;
-                hudOl.textContent = '🌿 ' + got;
+                hudOl.textContent = '🌿 ' + got + (f.olivesNeeded ? '/' + f.olivesNeeded : '');
+                popup(o.x, o.y - 12, '+1 🌿');
                 BFJ.snd('ok');
+                // meta de ramas cumplida + distancia cumplida → victoria
+                if (!f.endless && got >= f.olivesNeeded && dist >= f.goal) { win(); }
             }
             if (o.x < -30) { olives.splice(j, 1); }
         }
 
-        // lluvia de la tormenta
-        if (rain.length < 40 && Math.random() < .5) {
+        // victoria por distancia cuando no piden ramas, o meta ya conseguida
+        if (!f.endless && !won && dist >= f.goal && got >= f.olivesNeeded) { win(); }
+
+        // lluvia (más intensa en los últimos vuelos)
+        if (rain.length < 30 + fi * 8 && Math.random() < .5) {
             rain.push({ x: Math.random() * (W + 40), y: -10 });
         }
         for (var r = rain.length - 1; r >= 0; r--) {
@@ -149,20 +285,29 @@ BFJ.define('paloma', function (el) {
             if (rain[r].y > H - SEA) { rain.splice(r, 1); }
         }
 
-        // nubes de fondo (parallax)
+        // nubes lejanas (parallax)
         bgs.forEach(function (b) {
             b.x -= speed * dt * .18;
             if (b.x < -60) { b.x = W + 60; b.y = 24 + Math.random() * 50; }
         });
 
-        // plumas del choque
+        // plumas y textos flotantes
         for (var k = parts.length - 1; k >= 0; k--) {
             var p = parts[k];
             p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 300 * dt; p.life -= dt * 1.4;
             if (p.life <= 0) { parts.splice(k, 1); }
         }
+        for (var u = popups.length - 1; u >= 0; u--) {
+            popups[u].y -= 30 * dt; popups[u].life -= dt * 1.1;
+            if (popups[u].life <= 0) { popups.splice(u, 1); }
+        }
 
         hudM.textContent = Math.floor(dist) + ' m';
+        if (!f.endless) {
+            var pct = Math.min(100, dist / f.goal * 100);
+            pFill.style.width = pct + '%';
+            pIco.style.left = 'calc(' + pct + '% - 8px)';
+        }
     }
 
     // ---------- Dibujo ----------
@@ -172,7 +317,6 @@ BFJ.define('paloma', function (el) {
     }
 
     function drawCloudCol(x, y, w, h, top, bolt) {
-        var g = ctx.createLinearGradient(0, y, 0, y + (top ? h : -h) * (top ? 1 : -1));
         ctx.fillStyle = '#e9eff6';
         ctx.strokeStyle = 'rgba(110,130,160,.55)';
         ctx.lineWidth = 2;
@@ -184,7 +328,6 @@ BFJ.define('paloma', function (el) {
             puff(x + w * .90, cy, 13);
             ctx.stroke();
         }
-        // rayo bajo la nube superior
         if (top && bolt && h > 60) {
             ctx.fillStyle = '#f7c948';
             ctx.strokeStyle = 'rgba(160,110,0,.4)';
@@ -201,10 +344,8 @@ BFJ.define('paloma', function (el) {
         ctx.save();
         ctx.translate(x, y);
         ctx.rotate(Math.sin(t * .005 + ph) * .25 - .4);
-        // tallo
         ctx.strokeStyle = '#5b8c3e'; ctx.lineWidth = 2; ctx.lineCap = 'round';
         ctx.beginPath(); ctx.moveTo(-9, 6); ctx.quadraticCurveTo(0, -2, 9, -7); ctx.stroke();
-        // hojas
         ctx.fillStyle = '#6aa84f';
         [[-4, 1], [1, -3], [6, -6]].forEach(function (l, i) {
             ctx.save();
@@ -216,10 +357,45 @@ BFJ.define('paloma', function (el) {
         ctx.restore();
     }
 
+    function drawArarat() {
+        // el monte emerge del agua por la derecha
+        var mh = 90 * ararat, mx = W - 90;
+        if (mh <= 0) { return; }
+        ctx.fillStyle = '#8a9bb0';
+        ctx.beginPath();
+        ctx.moveTo(mx - 30, H - SEA); ctx.lineTo(mx + 20, H - SEA - mh);
+        ctx.lineTo(mx + 55, H - SEA - mh * .72); ctx.lineTo(mx + 100, H - SEA);
+        ctx.closePath(); ctx.fill();
+        // nieve
+        ctx.fillStyle = '#f4f8fb';
+        ctx.beginPath();
+        ctx.moveTo(mx + 8, H - SEA - mh * .82); ctx.lineTo(mx + 20, H - SEA - mh);
+        ctx.lineTo(mx + 36, H - SEA - mh * .8); ctx.closePath(); ctx.fill();
+        // vegetación baja
+        ctx.fillStyle = '#5d8a4a';
+        ctx.beginPath();
+        ctx.moveTo(mx - 20, H - SEA); ctx.lineTo(mx + 15, H - SEA - mh * .35);
+        ctx.lineTo(mx + 70, H - SEA); ctx.closePath(); ctx.fill();
+    }
+
+    function drawRainbow() {
+        if (rainbow <= 0) { return; }
+        var cx = W * .62, cy = H - SEA;
+        var cols = ['#e8574d', '#f2a03d', '#f7d154', '#5cb85c', '#4d9de0', '#7b6fd0'];
+        ctx.lineWidth = 5;
+        ctx.globalAlpha = rainbow * .85;
+        cols.forEach(function (c, i) {
+            ctx.strokeStyle = c;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 78 - i * 5.2, Math.PI, 2 * Math.PI);
+            ctx.stroke();
+        });
+        ctx.globalAlpha = 1;
+    }
+
     function drawDove() {
         var bob = Math.sin(t * .006) * 2;
         var rot = Math.max(-.5, Math.min(.7, dove.vy / 320));
-        // el ala aletea fuerte tras cada impulso, suave en planeo
         var wSpd = flapT > 0 ? .09 : .02;
         var wing = Math.sin(t * wSpd) * (flapT > 0 ? .95 : .3) - .25;
 
@@ -227,14 +403,26 @@ BFJ.define('paloma', function (el) {
         ctx.translate(dove.x, dove.y + bob * .3);
         ctx.rotate(rot);
 
-        // cola (abanico)
+        // estela: la paloma deja aire al moverse rápido
+        if (speed > 200) {
+            ctx.strokeStyle = 'rgba(255,255,255,.35)';
+            ctx.lineWidth = 1.5;
+            for (var s = 0; s < 3; s++) {
+                ctx.beginPath();
+                ctx.moveTo(-20 - s * 8, -4 + s * 5);
+                ctx.lineTo(-34 - s * 10, -4 + s * 5);
+                ctx.stroke();
+            }
+        }
+
+        // cola
         ctx.fillStyle = '#dde5ec';
         ctx.beginPath();
         ctx.moveTo(-10, -1); ctx.lineTo(-23, -7); ctx.lineTo(-21, -1);
         ctx.lineTo(-23, 5); ctx.lineTo(-10, 3);
         ctx.closePath(); ctx.fill();
 
-        // ala trasera (aleteo)
+        // ala trasera
         ctx.save();
         ctx.translate(-2, -3);
         ctx.rotate(-wing * .8 - .2);
@@ -252,7 +440,7 @@ BFJ.define('paloma', function (el) {
         ctx.beginPath(); ctx.arc(0, 0, 11, 0, 7); ctx.fill();
         ctx.restore();
 
-        // ala delantera (aleteo, encima del cuerpo)
+        // ala delantera
         ctx.save();
         ctx.translate(-1, -4);
         ctx.rotate(-wing);
@@ -282,23 +470,28 @@ BFJ.define('paloma', function (el) {
     }
 
     function draw() {
-        // cielo
+        // cielo (se aclara al final del vuelo 3)
+        var dawn = rainbow > 0 ? rainbow : ararat * .4;
         var sky = ctx.createLinearGradient(0, 0, 0, H);
-        sky.addColorStop(0, '#7fb2e0'); sky.addColorStop(.65, '#b9d6f0'); sky.addColorStop(1, '#dcecf9');
+        sky.addColorStop(0, dawn ? '#8fbfe8' : '#7fb2e0');
+        sky.addColorStop(.65, '#b9d6f0');
+        sky.addColorStop(1, dawn ? '#f3e8c8' : '#dcecf9');
         ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
-        // sol con halo
         ctx.fillStyle = 'rgba(247,201,72,.28)';
         ctx.beginPath(); ctx.arc(W - 58, 42, 36, 0, 7); ctx.fill();
         ctx.fillStyle = '#f7c948';
         ctx.beginPath(); ctx.arc(W - 58, 42, 22, 0, 7); ctx.fill();
 
-        // nubes lejanas (parallax)
+        // nubes lejanas
         ctx.fillStyle = 'rgba(255,255,255,.5)';
         bgs.forEach(function (b) {
             ctx.save(); ctx.translate(b.x, b.y); ctx.scale(b.s, b.s * .8);
             puff(0, 0, 14); puff(16, 2, 11); puff(-15, 3, 10);
             ctx.restore();
         });
+
+        drawRainbow();
+        drawArarat();
 
         // nubes obstáculo
         clouds.forEach(function (c) {
@@ -320,7 +513,7 @@ BFJ.define('paloma', function (el) {
         });
         ctx.stroke();
 
-        // mar — dos capas + espuma
+        // mar
         var seaY = H - SEA;
         ctx.fillStyle = '#3a7ca5'; ctx.fillRect(0, seaY, W, SEA);
         ctx.fillStyle = '#55a0cc';
@@ -331,22 +524,29 @@ BFJ.define('paloma', function (el) {
         for (var x2 = ((seaX * 1.4) % 44) - 22; x2 < W + 44; x2 += 44) {
             ctx.beginPath(); ctx.arc(x2, seaY + 2, 4, Math.PI, 0); ctx.fill();
         }
-        // el arca a lo lejos
         ctx.font = '22px serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
-        ctx.fillText('�', 12, seaY - 2);
+        ctx.fillText('🚢', 12, seaY - 2);
 
         drawDove();
 
-        // plumas del choque
+        // plumas + popups
         parts.forEach(function (p) {
             ctx.fillStyle = 'rgba(255,255,255,' + Math.max(0, p.life) + ')';
             ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 7); ctx.fill();
+        });
+        popups.forEach(function (p) {
+            ctx.globalAlpha = Math.max(0, p.life);
+            ctx.font = '700 14px sans-serif'; ctx.textAlign = 'center';
+            ctx.fillStyle = '#2f6b2f';
+            ctx.strokeStyle = 'rgba(255,255,255,.8)'; ctx.lineWidth = 3;
+            ctx.strokeText(p.txt, p.x, p.y);
+            ctx.fillText(p.txt, p.x, p.y);
+            ctx.globalAlpha = 1;
         });
     }
 
     var last = 0;
     function loop(ts) {
-        if (!alive) { return; }
         var dt = Math.min(.05, (ts - last) / 1000) || .016;
         last = ts;
         step(dt);
@@ -354,19 +554,41 @@ BFJ.define('paloma', function (el) {
         raf = requestAnimationFrame(loop);
     }
 
-    function start() {
+    function showMenu() {
+        alive_stop();
+        menu.innerHTML = menuHTML();
+        menu.style.display = 'flex';
+        document.getElementById('pnGo').addEventListener('click', function (ev) {
+            ev.stopPropagation();
+            BFJ.snd('ok');
+            beginFlight();
+        });
         reset();
-        over = false; alive = true;
+        draw();
+    }
+
+    function alive_stop() {
+        cancelAnimationFrame(raf);
+        flying = false;
+    }
+
+    function beginFlight() {
+        reset();
+        over = false; won = false; flying = false;
+        var f = flight();
         menu.style.display = 'none';
-        hudOl.textContent = '🌿 0'; hudM.textContent = '0 m';
+        hudOl.textContent = '🌿 0' + (f.olivesNeeded ? '/' + f.olivesNeeded : '');
+        hudM.textContent = '0 m';
+        prog.style.display = f.endless ? 'none' : 'block';
+        pFill.style.width = '0%'; pIco.style.left = '-8px';
+        hint.hidden = false;
         last = performance.now();
         raf = requestAnimationFrame(loop);
     }
 
     // Controles: toque, clic, espacio/flecha — con fallback para Safari viejo
-    // (Pointer Events y ev.key no existen en iOS <13)
     function onTap(ev) {
-        if (!alive) { return; }
+        if (menu.style.display !== 'none') { return; }
         ev.preventDefault();
         flap();
     }
@@ -377,20 +599,13 @@ BFJ.define('paloma', function (el) {
         stage.addEventListener('mousedown', onTap);
     }
     document.addEventListener('keydown', function (ev) {
-        if (!alive || ev.repeat) { return; }
+        if (menu.style.display !== 'none' || ev.repeat) { return; }
         var k = ev.key || (ev.keyCode === 32 ? ' ' : (ev.keyCode === 38 ? 'ArrowUp' : ''));
         if (k === ' ' || k === 'ArrowUp' || k === 'ArrowDown') {
             ev.preventDefault();
             flap();
         }
     });
-    document.getElementById('pnGo').addEventListener('click', function (ev) {
-        ev.stopPropagation();
-        BFJ.snd('ok');
-        start();
-    });
 
-    // Escena quieta detrás del menú de inicio
-    reset();
-    draw();
+    showMenu();
 });
