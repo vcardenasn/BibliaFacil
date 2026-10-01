@@ -5,6 +5,8 @@ BFJ.define('sopa', function (el) {
     BFJ.fetchBank('sopa.json').then(function (bank) {
         picker();
 
+        var timed = false; // modo contrarreloj opcional
+
         function picker() {
             var html = '<div class="tr-cats">';
             for (var k in bank) {
@@ -14,7 +16,15 @@ BFJ.define('sopa', function (el) {
                     '<small>' + t.words.length + ' palabras</small></button>';
             }
             el.innerHTML = html + '</div>' +
-                '<p class="jh-note">Elige un tema y toca la <b>primera</b> y la <b>última</b> letra de cada palabra.</p>';
+                '<p class="sp-mode"><button type="button" class="jbtn jbtn-ghost" id="spMode" aria-pressed="' + timed + '">' +
+                (timed ? '⏱ Contrarreloj: <b>ON</b>' : '🐢 Tranquilo · activar ⏱') + '</button></p>' +
+                '<p class="jh-note">Elige un tema y toca la <b>primera</b> y la <b>última</b> letra de cada palabra.' +
+                (timed ? ' ¡Contra el reloj: 15 s por palabra, +2⭐ si terminas!' : '') + '</p>';
+            document.getElementById('spMode').addEventListener('click', function () {
+                timed = !timed;
+                BFJ.snd('click');
+                picker();
+            });
             el.querySelectorAll('[data-cat]').forEach(function (b) {
                 b.addEventListener('click', function () {
                     BFJ.snd('click');
@@ -29,12 +39,14 @@ BFJ.define('sopa', function (el) {
             var placed = buildAll(S, t.words);
             var words = placed.words;
             var grid = placed.grid;
-            var left = words.slice(), found = 0, anchor = null, misses = 0;
+            var left = words.slice(), found = 0, anchor = null, misses = 0, ended = false;
+            var tmr = null;
 
             el.innerHTML =
                 '<div class="vf-qbox">' +
                 '<div class="vf-prog"><span>' + BFJ.omoji(t.icon) + ' ' + BFJ.esc(t.name) + '</span>' +
                 '<span class="sp-prog" aria-live="polite">0 / ' + words.length + '</span></div>' +
+                (timed ? '<div class="jtimer" id="spt" aria-hidden="true"></div>' : '') +
                 '<p class="sp-hint" id="spHint">🔍 Toca la <b>primera</b> letra de una palabra.</p>' +
                 '<div class="sp-grid" aria-label="Sopa de letras: ' + BFJ.esc(t.name) + '"' +
                 ' style="--n:' + S + '">' +
@@ -53,11 +65,20 @@ BFJ.define('sopa', function (el) {
                 '</div></div>';
             var hint = document.getElementById('spHint');
 
+            if (timed) {
+                // 15 s por palabra; al agotarse, la ronda termina
+                tmr = BFJ.timer(document.getElementById('spt'), words.length * 15, function () {
+                    ended = true;
+                    end(true);
+                });
+            }
+
             el.querySelectorAll('.sp-cell').forEach(function (cell) {
                 cell.addEventListener('click', function () { tap(cell); });
             });
 
             function tap(cell) {
+                if (ended) { return; }
                 if (!anchor) {
                     anchor = cell;
                     cell.classList.add('sp-anchor');
@@ -87,7 +108,7 @@ BFJ.define('sopa', function (el) {
                     hint.textContent = '✅ ¡' + hit + '! Quedan ' + left.length + ' palabras.';
                     BFJ.snd('ok');
                     BFJ.burst(cells[cells.length - 1]);
-                    if (!left.length) { setTimeout(end, 500); }
+                    if (!left.length) { ended = true; setTimeout(function () { end(false); }, 500); }
                 } else {
                     misses++;
                     BFJ.snd('bad');
@@ -121,15 +142,26 @@ BFJ.define('sopa', function (el) {
                 return cells;
             }
 
-            function end() {
+            var closed = false;
+            function end(timedOut) {
+                if (closed) { return; }
+                closed = true;
+                if (tmr) { tmr.stop(); }
                 var flawless = misses === 0;
+                var tBonus = timed && !timedOut ? 2 : 0; // venció el reloj
+                var stars = Math.max(1,
+                    (timedOut ? found : words.length) + (flawless && !timedOut ? 2 : 0) + tBonus);
                 BFJ.celebrate({
-                    slug: 'sopa', stars: words.length + (flawless ? 2 : 0),
-                    emoji: flawless ? '🏆' : '🔍',
-                    title: flawless ? '¡Vista de águila!' : '¡Todas encontradas!',
-                    perfect: flawless,
-                    extra: words.length + ' palabras de "' + t.name + '"' +
-                        (flawless ? ' · ¡sin fallos! +2⭐' : ' · ' + misses + ' intento' + (misses === 1 ? '' : 's') + ' fallido' + (misses === 1 ? '' : 's')),
+                    slug: 'sopa', stars: stars,
+                    emoji: timedOut ? '⏱' : (flawless ? '🏆' : '🔍'),
+                    title: timedOut ? '¡Se acabó el tiempo!'
+                        : (flawless ? '¡Vista de águila!' : '¡Todas encontradas!'),
+                    perfect: !timedOut && flawless,
+                    extra: found + ' de ' + words.length + ' palabras de "' + t.name + '"' +
+                        (timedOut ? ' · ⏱ el reloj ganó esta vez'
+                            : (flawless ? ' · ¡sin fallos! +2⭐'
+                                : ' · ' + misses + ' fallo' + (misses === 1 ? '' : 's')) +
+                              (tBonus ? ' · ⏱ ¡contrarreloj vencido! +2⭐' : '')),
                     againLabel: '🔁 Otro tema',
                     onAgain: picker
                 });

@@ -710,6 +710,8 @@
 .pn-goal { font-family: var(--sans); font-weight: 800; font-size: .9rem; margin: .2rem 0 .3rem; color: #ffe9a8; }
 .pn-best { font-size: .78rem; margin: 0 0 .9rem; opacity: .9; }
 .pn-menu .jbtn { margin-bottom: .7rem; }
+.sp-mode { text-align: center; margin: .2rem 0 .4rem; }
+.sp-mode .jbtn { font-size: .85rem; padding: .5rem .9rem; }
 /* Barra de progreso del vuelo con la paloma deslizándose */
 .pn-prog {
     position: absolute; top: -.55rem; left: 8%; right: 8%; height: 10px;
