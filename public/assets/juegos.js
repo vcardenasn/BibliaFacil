@@ -362,6 +362,7 @@
             '<p class="bfj-ovpts">+' + o.stars + ' estrella' + (o.stars === 1 ? '' : 's') + '</p>' +
             (dBonus ? '<div class="bfj-ovdaily">🗓 ¡Desafío del día! ⭐×2</div>' : '') +
             (o.extra ? '<p class="bfj-ovextra">' + esc(o.extra) + '</p>' : '') +
+            (o.html ? '<div class="bfj-ovhtml">' + o.html + '</div>' : '') +
             (news.length ? '<div class="bfj-ovstick bfj-pop">🎁 ¡Sticker nuevo!<br>' +
                 news.map(function (s) {
                     return '<span class="bfj-stick"><i class="bfj-gift" aria-hidden="true">' + omoji('🎁') + '</i> ' + esc(s.name) +

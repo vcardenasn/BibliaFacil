@@ -64,11 +64,33 @@ BFJ.define('historia', function (el) {
             });
 
             function end() {
+                // Mini-historieta: la historia ordenada queda como lectura
+                // final — paneles numerados + enlace al pasaje real.
+                // Va dentro del overlay (donde está la atención) y también
+                // queda en la página si el niño cierra el overlay con Esc.
+                var comic =
+                    '<div class="hs-comic">' +
+                    story.scenes.map(function (s, i) {
+                        return '<figure class="hs-panel">' +
+                            '<i>' + (i + 1) + '</i>' +
+                            '<span class="hs-scene">' + BFJ.omoji(s.e) + '</span>' +
+                            '<figcaption>' + BFJ.esc(s.t) + '</figcaption></figure>';
+                    }).join('') +
+                    '</div>' +
+                    (story.ref
+                        ? '<p class="hs-ref">📖 Léela completa en <strong>' + BFJ.esc(story.ref) + '</strong></p>'
+                        : '');
+                var recap = document.createElement('div');
+                recap.className = 'hs-recap bfj-pop';
+                recap.innerHTML = '<h3 class="hs-rt">📖 ¡Así va la historia!</h3>' + comic;
+                el.appendChild(recap);
+
                 var stars = Math.max(1, 5 - errors);
                 BFJ.celebrate({
                     slug: 'historia', stars: stars, perfect: errors === 0,
                     emoji: errors === 0 ? '🏆' : '🎬',
                     title: errors === 0 ? '¡Orden perfecto!' : '¡Historia completada!',
+                    html: comic,
                     extra: story.name + ' · ' + (errors === 0 ? 'sin errores' : errors + ' error' + (errors === 1 ? '' : 'es')) +
                         (story.ref ? ' — léela en 📖 ' + story.ref : ''),
                     againLabel: '📖 Otra historia',

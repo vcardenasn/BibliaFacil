@@ -284,6 +284,9 @@
 .bfj-ovcard h2 { font-family: var(--sans); margin: .4rem 0; }
 .bfj-ovstars { font-size: 1.5rem; letter-spacing: .1em; }
 .bfj-ovpts { font-family: var(--sans); font-weight: 800; color: var(--gold-ink); font-size: 1.15rem; margin: .3rem 0 .6rem; }
+.bfj-ovhtml { margin: .5rem 0; max-width: 100%; }
+.bfj-ovhtml .hs-panel { background: var(--card); min-width: 84px; flex: 0 0 84px; }
+.bfj-ovhtml .hs-ref { margin-top: .2rem; }
 .bfj-ovextra { font-family: var(--sans); font-size: .85rem; color: var(--muted); }
 .bfj-ovbtns { display: flex; gap: .6rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
 .bfj-confetti { position: fixed; top:0;right:0;bottom:0;left:0; z-index: 90; pointer-events: none; }
@@ -465,6 +468,34 @@
 .hs-card small { font-size: .68rem; line-height: 1.25; text-align: center; }
 .hs-card:hover { transform: translateY(-3px); border-color: var(--brand); }
 .hs-card:active { transform: scale(.95); }
+/* Mini-historieta al completar (US-3) */
+.hs-recap { margin-top: 1rem; }
+.hs-rt { font-family: var(--sans); font-size: 1rem; margin: 0 0 .5rem; color: var(--ink); }
+.hs-comic {
+    display: flex; gap: .5rem; overflow-x: auto; padding: .2rem .1rem .6rem;
+    scrollbar-width: thin;
+}
+.hs-panel {
+    min-width: 96px; flex: 0 0 96px; margin: 0; position: relative;
+    background: var(--surface); border: 2px solid var(--border-strong);
+    border-radius: 14px; padding: 1.3rem .4rem .5rem; text-align: center;
+    box-shadow: var(--shadow);
+}
+.hs-panel i {
+    position: absolute; top: 4px; left: 6px; font-style: normal;
+    font-family: var(--sans); font-weight: 800; font-size: .62rem;
+    color: var(--gold-ink); background: var(--gold-soft);
+    border-radius: 8px; padding: .05em .45em;
+}
+.hs-panel .hs-scene { font-size: 1.7rem; display: block; margin-bottom: .25rem; }
+.hs-panel figcaption {
+    font-family: var(--sans); font-size: .6rem; line-height: 1.25; color: var(--ink);
+}
+.hs-ref {
+    font-family: var(--sans); font-size: .8rem; color: var(--muted);
+    margin: .3rem 0 0; text-align: center;
+}
+.hs-ref strong { color: var(--brand); }
 
 /* ---- Ordena los Libros ---- */
 .lb-diff { font-size: .65rem; color: var(--muted); font-weight: 600; }
