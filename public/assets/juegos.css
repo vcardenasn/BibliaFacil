@@ -17,7 +17,7 @@
 }
 /* Rayos de luz girando detrás del contenido (US-231) */
 .jh-rays {
-    position: absolute; inset: -60%; pointer-events: none;
+    position: absolute; top:-60%;right:-60%;bottom:-60%;left:-60%; pointer-events: none;
     background: repeating-conic-gradient(from 0deg,
         rgba(255,255,255,.10) 0 8deg, transparent 8deg 24deg);
     animation: bfj-rays 28s linear infinite;
@@ -260,7 +260,7 @@
     background: var(--brand-soft); margin-bottom: .8rem; position: relative;
 }
 .jtimer::after {
-    content: ''; position: absolute; inset: 0; transform-origin: left;
+    content: ''; position: absolute; top:0;right:0;bottom:0;left:0; transform-origin: left;
     background: var(--fun3); border-radius: 5px;
     transform: scaleX(var(--tl, 1)); transition: background .3s;
 }
@@ -268,7 +268,7 @@
 
 /* ---- Overlay celebración ---- */
 .bfj-ov {
-    position: fixed; inset: 0; z-index: 80; display: flex; align-items: center; justify-content: center;
+    position: fixed; top:0;right:0;bottom:0;left:0; z-index: 80; display: flex; align-items: center; justify-content: center;
     background: rgba(15,18,30,.55); padding: 1rem;
 }
 .bfj-ovcard {
@@ -281,7 +281,7 @@
 .bfj-ovpts { font-family: var(--sans); font-weight: 800; color: var(--gold-ink); font-size: 1.15rem; margin: .3rem 0 .6rem; }
 .bfj-ovextra { font-family: var(--sans); font-size: .85rem; color: var(--muted); }
 .bfj-ovbtns { display: flex; gap: .6rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
-.bfj-confetti { position: fixed; inset: 0; z-index: 90; pointer-events: none; }
+.bfj-confetti { position: fixed; top:0;right:0;bottom:0;left:0; z-index: 90; pointer-events: none; }
 
 /* Estrellas que vuelan al contador del header (US-231) */
 .bfj-fly {
@@ -398,7 +398,7 @@
     .mm-card { height: 0; padding-bottom: 133.33%; }
 }
 .mm-face {
-    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    position: absolute; top:0;right:0;bottom:0;left:0; display: flex; align-items: center; justify-content: center;
     border-radius: 14px; backface-visibility: hidden; overflow: hidden;
     transition: transform .35s ease; font-size: 2rem;
 }
@@ -599,7 +599,7 @@
 @supports not (aspect-ratio: 1/1) {
     .cg-block { height: 0; padding-bottom: 100%; }
     .cg-box { height: 0; padding-bottom: 100%; }
-    .cg-box .cg-cell { position: absolute; inset: 0; }
+    .cg-box .cg-cell { position: absolute; top:0;right:0;bottom:0;left:0; }
 }
 .cg-box {
     touch-action: manipulation;
