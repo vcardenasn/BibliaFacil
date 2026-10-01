@@ -105,7 +105,7 @@ final class ApiBibleService
             'include-verse-numbers' => 'false',
             'include-verse-spans' => 'false',
         ]);
-        $fums = $res['meta']['fumsId'] ?? null;
+        $fums = $res['meta']['fumsToken'] ?? $res['meta']['fumsId'] ?? null;
         $rows = [];
         foreach (self::parseChapter($res['data']['content'] ?? []) as $num => $raw) {
             [$text, $wj] = VerseText::split($raw);
@@ -198,7 +198,10 @@ final class ApiBibleService
 
     /**
      * Aplana el JSON de capítulo a [versículo => texto con sentinels [wj]].
-     * Nodos: para.items → verse(attrs.number) / text / char(style=wj → items).
+     * Formato real API.Bible: nodos type="tag" con name="verse" (número en
+     * attrs.number), textos type="text", y char con attrs.style="wj" para
+     * palabras de Jesús. Los items dentro del tag verse solo repintan el
+     * número impreso — se ignoran.
      */
     public static function parseChapter(array $nodes): array
     {
@@ -207,8 +210,10 @@ final class ApiBibleService
         $walk = function (array $nodes, bool $wj) use (&$walk, &$out, &$current): void {
             foreach ($nodes as $node) {
                 $type = $node['type'] ?? '';
-                if ($type === 'verse') {
-                    $n = (int) ($node['number'] ?? 0);
+                $name = $node['name'] ?? '';
+                $attrs = $node['attrs'] ?? [];
+                if ($name === 'verse') {
+                    $n = (int) ($attrs['number'] ?? $node['number'] ?? 0);
                     if ($n > 0) {
                         $current = $n;
                         $out[$current] = $out[$current] ?? '';
@@ -219,7 +224,7 @@ final class ApiBibleService
                     $out[$current] .= ($wj ? '[wj]' : '') . ($node['text'] ?? '') . ($wj ? '[/wj]' : '');
                 }
                 if (!empty($node['items']) && is_array($node['items'])) {
-                    $walk($node['items'], $wj || (($node['style'] ?? '') === 'wj'));
+                    $walk($node['items'], $wj || ($name === 'char' && ($attrs['style'] ?? $node['style'] ?? '') === 'wj'));
                 }
             }
         };
