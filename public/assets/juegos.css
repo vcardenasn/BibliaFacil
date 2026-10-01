@@ -253,6 +253,11 @@
 .vf-btns .jbtn small { display: block; font-size: .7rem; font-weight: 600; margin-top: .2rem; }
 .vf-ok { border-color: var(--fun3) !important; }
 .vf-bad { border-color: var(--fun2) !important; }
+/* ⚡ respuesta en menos de 4s */
+.vf-fast {
+    display: inline-block; font-family: var(--sans); font-weight: 800;
+    font-size: .8rem; color: var(--gold-ink); margin: 0 0 .4rem;
+}
 
 /* Barra de tiempo */
 .jtimer {

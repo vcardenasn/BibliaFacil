@@ -6,7 +6,7 @@ BFJ.define('vf', function (el) {
 
         function round() {
         var qs = BFJ.pick(bank, 10);
-        var i = 0, ok = 0, streak = 0, bestStreak = 0, t = null, locked = false;
+        var i = 0, ok = 0, streak = 0, bestStreak = 0, fast = 0, t = null, locked = false;
 
         function render() {
             if (i >= qs.length) { return end(); }
@@ -38,6 +38,13 @@ BFJ.define('vf', function (el) {
             if (hit) {
                 ok++; streak++;
                 if (streak > bestStreak) { bestStreak = streak; }
+                if (t && t.left() > 8) { // <4s tras aparecer = ⚡ rápida
+                    fast++;
+                    var fx = document.createElement('span');
+                    fx.className = 'vf-fast bfj-pop';
+                    fx.textContent = '⚡ ¡rápida!';
+                    box.appendChild(fx);
+                }
                 BFJ.snd('ok');
                 box.classList.add('vf-ok');
                 BFJ.pop(box);
@@ -58,16 +65,18 @@ BFJ.define('vf', function (el) {
         }
 
         function end() {
-            // Racha premiada: cada 5 seguidas suma ⭐ extra (incentivo real)
+            // Racha premiada (+1⭐/5 seguidas) y rapidez (+1⭐/3 con ⚡)
             var bonus = Math.floor(bestStreak / 5);
-            var stars = ok + bonus;
+            var fastBonus = Math.floor(fast / 3);
+            var stars = ok + bonus + fastBonus;
             var emoji = ok >= 9 ? '🏆' : (ok >= 6 ? '🎉' : '💪');
             var title = ok >= 9 ? '¡Eres un campeón!' : (ok >= 6 ? '¡Muy bien!' : '¡Sigue practicando!');
             BFJ.celebrate({
                 slug: 'vf', stars: stars, emoji: emoji, title: title, perfect: ok === qs.length,
                 extra: ok + ' de ' + qs.length + ' correctas' +
                     (bestStreak >= 3 ? ' · racha máx 🔥x' + bestStreak : '') +
-                    (bonus ? ' · +' + bonus + '⭐ por racha' : ''),
+                    (fast ? ' · ⚡x' + fast + ' rápidas' : '') +
+                    (bonus + fastBonus ? ' · +' + (bonus + fastBonus) + '⭐ bonus' : ''),
                 onAgain: round // reinicio sin recargar la página
             });
         }
