@@ -76,8 +76,8 @@ return [
     // para proteger la cuota mensual (5,000 llamadas Starter).
     ['code' => 'rvr1960', 'name' => 'Reina-Valera 1960',            'language' => 'es', 'copyright' => '© 1960 Sociedades Bíblicas en América Latina; © renovado 1988 Sociedades Bíblicas Unidas', 'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'active' => 0],
     ['code' => 'nvi',     'name' => 'Nueva Versión Internacional',  'language' => 'es', 'copyright' => '© Biblica, Inc.',          'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'active' => 0],
-    ['code' => 'ntv',     'name' => 'Nueva Traducción Viviente',    'language' => 'es', 'copyright' => '© Tyndale House Foundation', 'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'api_bible_id' => null, 'active' => 0],
-    ['code' => 'nbla',    'name' => 'Nueva Biblia de las Américas', 'language' => 'es', 'copyright' => '© The Lockman Foundation',   'license' => 'copyrighted', 'license_status' => 'requested', 'source_url' => null, 'api_bible_id' => null, 'active' => 0],
+    ['code' => 'ntv',     'name' => 'Nueva Traducción Viviente',    'language' => 'es', 'copyright' => '© Tyndale House Foundation', 'license' => 'copyrighted', 'license_status' => 'approved', 'source_url' => 'https://tyndale.com', 'api_bible_id' => '826f63861180e056-01', 'active' => 1],
+    ['code' => 'nbla',    'name' => 'Nueva Biblia de las Américas', 'language' => 'es', 'copyright' => '© The Lockman Foundation',   'license' => 'copyrighted', 'license_status' => 'approved', 'source_url' => 'https://www.lockman.org', 'api_bible_id' => 'ce11b813f9a27e20-01', 'active' => 1],
     // KJV 400th Anniv. — disponible en el plan, pero §9.8 ToS la restringe en
     // UK/territorios británicos y no hay geo-bloqueo en hosting compartido.
     // Además ya hay KJV local (eBible.org). Dejar inactiva.
