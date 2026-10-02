@@ -1,226 +1,1890 @@
 [
-    {
-        "name": "Personajes bíblicos",
-        "icon": "🧔",
-        "rows": 9,
-        "cols": 9,
-        "words": [
-            {
-                "n": 1,
-                "w": "EVA",
-                "clue": "La primera mujer",
-                "r": 0,
-                "c": 2,
-                "dir": "v"
-            },
-            {
-                "n": 2,
-                "w": "JONAS",
-                "clue": "Estuvo dentro del gran pez",
-                "r": 0,
-                "c": 7,
-                "dir": "v"
-            },
-            {
-                "n": 3,
-                "w": "DAVID",
-                "clue": "Venció al gigante con una honda",
-                "r": 1,
-                "c": 0,
-                "dir": "h"
-            },
-            {
-                "n": 4,
-                "w": "DANIEL",
-                "clue": "Oró en el foso de los leones",
-                "r": 1,
-                "c": 4,
-                "dir": "v"
-            },
-            {
-                "n": 5,
-                "w": "NOE",
-                "clue": "Construyó un gran arca",
-                "r": 1,
-                "c": 6,
-                "dir": "h"
-            },
-            {
-                "n": 6,
-                "w": "MOISES",
-                "clue": "Guio al pueblo y partió el mar",
-                "r": 4,
-                "c": 2,
-                "dir": "h"
-            },
-            {
-                "n": 7,
-                "w": "ESTER",
-                "clue": "La reina que salvó a su pueblo",
-                "r": 4,
-                "c": 6,
-                "dir": "v"
-            },
-            {
-                "n": 8,
-                "w": "RUT",
-                "clue": "No abandonó a su suegra Noemí",
-                "r": 8,
-                "c": 6,
-                "dir": "h"
-            }
-        ]
-    },
-    {
-        "name": "Amigos de Jesús",
-        "icon": "✝️",
-        "rows": 9,
-        "cols": 9,
-        "words": [
-            {
-                "n": 1,
-                "w": "LAZARO",
-                "clue": "Amigo a quien Jesús resucitó",
-                "r": 0,
-                "c": 1,
-                "dir": "v"
-            },
-            {
-                "n": 2,
-                "w": "MATEO",
-                "clue": "Recaudador que siguió a Jesús",
-                "r": 0,
-                "c": 4,
-                "dir": "h"
-            },
-            {
-                "n": 2,
-                "w": "MARIA",
-                "clue": "La madre de Jesús",
-                "r": 0,
-                "c": 4,
-                "dir": "v"
-            },
-            {
-                "n": 3,
-                "w": "MARTA",
-                "clue": "Hermana de María, muy servicial",
-                "r": 1,
-                "c": 0,
-                "dir": "h"
-            },
-            {
-                "n": 4,
-                "w": "TOMAS",
-                "clue": "Dudó hasta ver a Jesús resucitado",
-                "r": 3,
-                "c": 7,
-                "dir": "v"
-            },
-            {
-                "n": 5,
-                "w": "PABLO",
-                "clue": "Escribió muchas cartas del NT",
-                "r": 4,
-                "c": 3,
-                "dir": "h"
-            },
-            {
-                "n": 5,
-                "w": "PEDRO",
-                "clue": "Pescador que caminó sobre el agua",
-                "r": 4,
-                "c": 3,
-                "dir": "v"
-            },
-            {
-                "n": 6,
-                "w": "JUAN",
-                "clue": "El discípulo amado",
-                "r": 6,
-                "c": 5,
-                "dir": "h"
-            }
-        ]
-    },
-    {
-        "name": "Palabras de la fe",
-        "icon": "📖",
-        "rows": 7,
-        "cols": 7,
-        "words": [
-            {
-                "n": 1,
-                "w": "ARCA",
-                "clue": "El barco que salvó a Noé y los animales",
-                "r": 0,
-                "c": 0,
-                "dir": "v"
-            },
-            {
-                "n": 2,
-                "w": "OVEJA",
-                "clue": "El animalito que el pastor fue a buscar",
-                "r": 0,
-                "c": 2,
-                "dir": "v"
-            },
-            {
-                "n": 3,
-                "w": "CRUZ",
-                "clue": "Donde Jesús murió por nosotros",
-                "r": 0,
-                "c": 6,
-                "dir": "v"
-            },
-            {
-                "n": 4,
-                "w": "SOL",
-                "clue": "El astro que alumbra el día",
-                "r": 1,
-                "c": 4,
-                "dir": "v"
-            },
-            {
-                "n": 5,
-                "w": "CIELO",
-                "clue": "Arriba, donde Dios puso las estrellas",
-                "r": 2,
-                "c": 0,
-                "dir": "h"
-            },
-            {
-                "n": 6,
-                "w": "LUZ",
-                "clue": "\"Haya ___\", dijo Dios el primer día",
-                "r": 3,
-                "c": 4,
-                "dir": "h"
-            },
-            {
-                "n": 7,
-                "w": "MAR",
-                "clue": "Lo que Moisés partió en dos",
-                "r": 4,
-                "c": 1,
-                "dir": "h"
-            },
-            {
-                "n": 8,
-                "w": "REY",
-                "clue": "David llegó a ser ___ de Israel",
-                "r": 4,
-                "c": 3,
-                "dir": "v"
-            },
-            {
-                "n": 9,
-                "w": "EDEN",
-                "clue": "El primer jardín",
-                "r": 5,
-                "c": 3,
-                "dir": "h"
-            }
-        ]
-    }
+  {
+    "name": "Personajes bíblicos",
+    "icon": "🧔",
+    "rows": 9,
+    "cols": 9,
+    "words": [
+      {
+        "n": 1,
+        "w": "EVA",
+        "clue": "La primera mujer",
+        "r": 0,
+        "c": 2,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "JONAS",
+        "clue": "Estuvo dentro del gran pez",
+        "r": 0,
+        "c": 7,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "DAVID",
+        "clue": "Venció al gigante con una honda",
+        "r": 1,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 4,
+        "w": "DANIEL",
+        "clue": "Oró en el foso de los leones",
+        "r": 1,
+        "c": 4,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "NOE",
+        "clue": "Construyó un gran arca",
+        "r": 1,
+        "c": 6,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "MOISES",
+        "clue": "Guio al pueblo y partió el mar",
+        "r": 4,
+        "c": 2,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "ESTER",
+        "clue": "La reina que salvó a su pueblo",
+        "r": 4,
+        "c": 6,
+        "dir": "v"
+      },
+      {
+        "n": 8,
+        "w": "RUT",
+        "clue": "No abandonó a su suegra Noemí",
+        "r": 8,
+        "c": 6,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "Amigos de Jesús",
+    "icon": "✝️",
+    "rows": 9,
+    "cols": 9,
+    "words": [
+      {
+        "n": 1,
+        "w": "LAZARO",
+        "clue": "Amigo a quien Jesús resucitó",
+        "r": 0,
+        "c": 1,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "MATEO",
+        "clue": "Recaudador que siguió a Jesús",
+        "r": 0,
+        "c": 4,
+        "dir": "h"
+      },
+      {
+        "n": 2,
+        "w": "MARIA",
+        "clue": "La madre de Jesús",
+        "r": 0,
+        "c": 4,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "MARTA",
+        "clue": "Hermana de María, muy servicial",
+        "r": 1,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 4,
+        "w": "TOMAS",
+        "clue": "Dudó hasta ver a Jesús resucitado",
+        "r": 3,
+        "c": 7,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "PABLO",
+        "clue": "Escribió muchas cartas del NT",
+        "r": 4,
+        "c": 3,
+        "dir": "h"
+      },
+      {
+        "n": 5,
+        "w": "PEDRO",
+        "clue": "Pescador que caminó sobre el agua",
+        "r": 4,
+        "c": 3,
+        "dir": "v"
+      },
+      {
+        "n": 6,
+        "w": "JUAN",
+        "clue": "El discípulo amado",
+        "r": 6,
+        "c": 5,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "Palabras de la fe",
+    "icon": "📖",
+    "rows": 7,
+    "cols": 7,
+    "words": [
+      {
+        "n": 1,
+        "w": "ARCA",
+        "clue": "El barco que salvó a Noé y los animales",
+        "r": 0,
+        "c": 0,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "OVEJA",
+        "clue": "El animalito que el pastor fue a buscar",
+        "r": 0,
+        "c": 2,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "CRUZ",
+        "clue": "Donde Jesús murió por nosotros",
+        "r": 0,
+        "c": 6,
+        "dir": "v"
+      },
+      {
+        "n": 4,
+        "w": "SOL",
+        "clue": "El astro que alumbra el día",
+        "r": 1,
+        "c": 4,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "CIELO",
+        "clue": "Arriba, donde Dios puso las estrellas",
+        "r": 2,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "LUZ",
+        "clue": "\"Haya ___\", dijo Dios el primer día",
+        "r": 3,
+        "c": 4,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "MAR",
+        "clue": "Lo que Moisés partió en dos",
+        "r": 4,
+        "c": 1,
+        "dir": "h"
+      },
+      {
+        "n": 8,
+        "w": "REY",
+        "clue": "David llegó a ser ___ de Israel",
+        "r": 4,
+        "c": 3,
+        "dir": "v"
+      },
+      {
+        "n": 9,
+        "w": "EDEN",
+        "clue": "El primer jardín",
+        "r": 5,
+        "c": 3,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "Génesis",
+    "icon": "🌍",
+    "rows": 12,
+    "cols": 8,
+    "words": [
+      {
+        "n": 1,
+        "w": "TORRE",
+        "clue": "La construyeron en Babel",
+        "r": 0,
+        "c": 2,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "SARA",
+        "clue": "Esposa de Abraham",
+        "r": 2,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 3,
+        "w": "EGIPTO",
+        "clue": "País donde José fue gobernador",
+        "r": 4,
+        "c": 2,
+        "dir": "h"
+      },
+      {
+        "n": 4,
+        "w": "ISAAC",
+        "clue": "Hijo de la promesa",
+        "r": 4,
+        "c": 4,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "ADAN",
+        "clue": "El primer hombre",
+        "r": 6,
+        "c": 2,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "CAIN",
+        "clue": "Hizo daño a su hermano Abel",
+        "r": 8,
+        "c": 4,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "ABEL",
+        "clue": "Pastor que ofreció la mejor ofrenda",
+        "r": 8,
+        "c": 5,
+        "dir": "v"
+      },
+      {
+        "n": 8,
+        "w": "NOE",
+        "clue": "Construyó el arca",
+        "r": 8,
+        "c": 7,
+        "dir": "v"
+      },
+      {
+        "n": 9,
+        "w": "JOSE",
+        "clue": "El de la túnica de colores",
+        "r": 10,
+        "c": 2,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "El Éxodo",
+    "icon": "🌊",
+    "rows": 13,
+    "cols": 10,
+    "words": [
+      {
+        "n": 1,
+        "w": "MAR",
+        "clue": "Se abrió en dos",
+        "r": 0,
+        "c": 6,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "ZARZA",
+        "clue": "Arbusto que ardía sin quemarse",
+        "r": 1,
+        "c": 4,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "AARON",
+        "clue": "Hermano y portavoz de Moisés",
+        "r": 2,
+        "c": 4,
+        "dir": "h"
+      },
+      {
+        "n": 4,
+        "w": "FARAON",
+        "clue": "El rey que endureció su corazón",
+        "r": 4,
+        "c": 2,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "PLAGA",
+        "clue": "Ranas, piojos y langostas fueron…",
+        "r": 5,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "MOISES",
+        "clue": "Guio al pueblo fuera de Egipto",
+        "r": 8,
+        "c": 1,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "SINAI",
+        "clue": "Monte de los diez mandamientos",
+        "r": 8,
+        "c": 6,
+        "dir": "v"
+      },
+      {
+        "n": 8,
+        "w": "NUBE",
+        "clue": "Columna que guiaba de día",
+        "r": 10,
+        "c": 6,
+        "dir": "h"
+      },
+      {
+        "n": 9,
+        "w": "MANA",
+        "clue": "Pan del cielo cada mañana",
+        "r": 11,
+        "c": 3,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "La vida de Jesús",
+    "icon": "🕊️",
+    "rows": 12,
+    "cols": 12,
+    "words": [
+      {
+        "n": 1,
+        "w": "HUERTO",
+        "clue": "Oró en Getsemaní, que era un…",
+        "r": 0,
+        "c": 10,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "GALILEA",
+        "clue": "Región donde creció",
+        "r": 1,
+        "c": 6,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "PAN",
+        "clue": "Multiplicó cinco ___ y dos peces",
+        "r": 1,
+        "c": 8,
+        "dir": "v"
+      },
+      {
+        "n": 4,
+        "w": "NAZARET",
+        "clue": "Su ciudad de la infancia",
+        "r": 2,
+        "c": 5,
+        "dir": "h"
+      },
+      {
+        "n": 5,
+        "w": "JORDAN",
+        "clue": "Río donde fue bautizado",
+        "r": 3,
+        "c": 2,
+        "dir": "v"
+      },
+      {
+        "n": 6,
+        "w": "DESIERTO",
+        "clue": "Donde ayunó cuarenta días",
+        "r": 6,
+        "c": 2,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "TEMPLO",
+        "clue": "Casa de su Padre",
+        "r": 6,
+        "c": 8,
+        "dir": "v"
+      },
+      {
+        "n": 8,
+        "w": "VINO",
+        "clue": "Su primer milagro en Caná",
+        "r": 8,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 9,
+        "w": "BELEN",
+        "clue": "Pueblo donde nació",
+        "r": 10,
+        "c": 6,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "Parábolas",
+    "icon": "🌱",
+    "rows": 13,
+    "cols": 12,
+    "words": [
+      {
+        "n": 1,
+        "w": "OVEJA",
+        "clue": "El pastor dejó las noventa y nueve por una",
+        "r": 0,
+        "c": 11,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "LEVADURA",
+        "clue": "Leuda toda la masa",
+        "r": 1,
+        "c": 2,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "PERLA",
+        "clue": "De gran precio",
+        "r": 1,
+        "c": 9,
+        "dir": "v"
+      },
+      {
+        "n": 4,
+        "w": "TESORO",
+        "clue": "Escondido en el campo",
+        "r": 2,
+        "c": 1,
+        "dir": "h"
+      },
+      {
+        "n": 5,
+        "w": "SEMBRADOR",
+        "clue": "Salió a sembrar semillas",
+        "r": 4,
+        "c": 5,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "SEMILLA",
+        "clue": "Cayó en buena tierra",
+        "r": 4,
+        "c": 5,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "RED",
+        "clue": "Atrapó peces de toda clase",
+        "r": 5,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "SAMARITANO",
+        "clue": "El buen vecino del camino",
+        "r": 8,
+        "c": 1,
+        "dir": "h"
+      },
+      {
+        "n": 8,
+        "w": "PRODIGO",
+        "clue": "El hijo que volvió a casa",
+        "r": 11,
+        "c": 3,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "Profetas",
+    "icon": "📣",
+    "rows": 12,
+    "cols": 13,
+    "words": [
+      {
+        "n": 1,
+        "w": "JEREMIAS",
+        "clue": "El profeta que lloró",
+        "r": 0,
+        "c": 8,
+        "dir": "v"
+      },
+      {
+        "n": 1,
+        "w": "JONAS",
+        "clue": "Huyó en barco de su misión",
+        "r": 0,
+        "c": 8,
+        "dir": "h"
+      },
+      {
+        "n": 2,
+        "w": "EZEQUIEL",
+        "clue": "Vio el valle de huesos secos",
+        "r": 2,
+        "c": 6,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "ISAIAS",
+        "clue": "Profetizó al Siervo sufriente",
+        "r": 3,
+        "c": 1,
+        "dir": "v"
+      },
+      {
+        "n": 4,
+        "w": "OSEAS",
+        "clue": "Amó a una esposa infiel",
+        "r": 4,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 5,
+        "w": "DANIEL",
+        "clue": "Vio la estatua del sueño",
+        "r": 6,
+        "c": 3,
+        "dir": "v"
+      },
+      {
+        "n": 6,
+        "w": "AMOS",
+        "clue": "Pastor de higos que profetizó",
+        "r": 6,
+        "c": 8,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "MALAQUIAS",
+        "clue": "Anunció al mensajero del pacto",
+        "r": 7,
+        "c": 0,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "Reyes de Israel",
+    "icon": "👑",
+    "rows": 12,
+    "cols": 13,
+    "words": [
+      {
+        "n": 1,
+        "w": "DAVID",
+        "clue": "El pastor que fue rey",
+        "r": 0,
+        "c": 5,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "SAUL",
+        "clue": "El primer rey de Israel",
+        "r": 1,
+        "c": 4,
+        "dir": "h"
+      },
+      {
+        "n": 3,
+        "w": "EZEQUIAS",
+        "clue": "Oró y sanó enfermo",
+        "r": 3,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 4,
+        "w": "SALOMON",
+        "clue": "Pidió sabiduría, no riquezas",
+        "r": 3,
+        "c": 7,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "JOSIAS",
+        "clue": "Rey niño que halló la Ley",
+        "r": 4,
+        "c": 11,
+        "dir": "v"
+      },
+      {
+        "n": 6,
+        "w": "ROBOAM",
+        "clue": "Hijo de Salomón, dividió el reino",
+        "r": 6,
+        "c": 4,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "JOSAFAT",
+        "clue": "Ganó una batalla cantando",
+        "r": 8,
+        "c": 6,
+        "dir": "h"
+      },
+      {
+        "n": 8,
+        "w": "ACAB",
+        "clue": "Rey malo, esposo de Jezabel",
+        "r": 8,
+        "c": 9,
+        "dir": "v"
+      }
+    ]
+  },
+  {
+    "name": "Mujeres de la Biblia",
+    "icon": "👩",
+    "rows": 9,
+    "cols": 13,
+    "words": [
+      {
+        "n": 1,
+        "w": "MARTA",
+        "clue": "Estaba afanada en los quehaceres",
+        "r": 0,
+        "c": 3,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "LEA",
+        "clue": "Su hermana mayor",
+        "r": 1,
+        "c": 6,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "RAQUEL",
+        "clue": "Jacob trabajó siete años por ella",
+        "r": 1,
+        "c": 8,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "RUT",
+        "clue": "La moabita leal",
+        "r": 1,
+        "c": 8,
+        "dir": "h"
+      },
+      {
+        "n": 4,
+        "w": "ANA",
+        "clue": "Oró por un hijo: Samuel",
+        "r": 2,
+        "c": 1,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "REBECA",
+        "clue": "Dio de beber a los camellos",
+        "r": 2,
+        "c": 3,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "SARA",
+        "clue": "Rió al oír que tendría un hijo",
+        "r": 4,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "NOEMI",
+        "clue": "Suegra de Rut",
+        "r": 4,
+        "c": 10,
+        "dir": "v"
+      },
+      {
+        "n": 8,
+        "w": "MARIA",
+        "clue": "Madre de Jesús",
+        "r": 4,
+        "c": 12,
+        "dir": "v"
+      },
+      {
+        "n": 9,
+        "w": "DEBORA",
+        "clue": "Profetisa y juez valiente",
+        "r": 5,
+        "c": 7,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "Los Doce y Pablo",
+    "icon": "✝️",
+    "rows": 11,
+    "cols": 11,
+    "words": [
+      {
+        "n": 1,
+        "w": "TOMAS",
+        "clue": "Pidió tocar las llagas",
+        "r": 0,
+        "c": 0,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "MATEO",
+        "clue": "Recaudador de impuestos",
+        "r": 0,
+        "c": 7,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "JUAN",
+        "clue": "El discípulo amado",
+        "r": 2,
+        "c": 5,
+        "dir": "v"
+      },
+      {
+        "n": 4,
+        "w": "ANDRES",
+        "clue": "Llevó a Pedro con Jesús",
+        "r": 3,
+        "c": 2,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "SANTIAGO",
+        "clue": "Hermano de Juan, hijo del trueno",
+        "r": 4,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "PEDRO",
+        "clue": "Pescador de Galilea",
+        "r": 6,
+        "c": 6,
+        "dir": "v"
+      },
+      {
+        "n": 6,
+        "w": "PABLO",
+        "clue": "De perseguidor a misionero",
+        "r": 6,
+        "c": 6,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "FELIPE",
+        "clue": "Le explicó al etíope",
+        "r": 7,
+        "c": 1,
+        "dir": "h"
+      },
+      {
+        "n": 8,
+        "w": "TADEO",
+        "clue": "Apóstol llamado también Lebeo",
+        "r": 10,
+        "c": 2,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "Salmos",
+    "icon": "🎵",
+    "rows": 11,
+    "cols": 12,
+    "words": [
+      {
+        "n": 1,
+        "w": "CANTO",
+        "clue": "Cantadle ___ nuevo",
+        "r": 0,
+        "c": 8,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "VALLE",
+        "clue": "De sombra de muerte (Sal 23)",
+        "r": 1,
+        "c": 7,
+        "dir": "h"
+      },
+      {
+        "n": 3,
+        "w": "GRACIAS",
+        "clue": "Dad ___ a Jehová, porque es bueno",
+        "r": 2,
+        "c": 5,
+        "dir": "v"
+      },
+      {
+        "n": 4,
+        "w": "SALMO",
+        "clue": "Cántico del libro de David",
+        "r": 4,
+        "c": 4,
+        "dir": "h"
+      },
+      {
+        "n": 5,
+        "w": "SENDA",
+        "clue": "Me guiará por ___ de justicia",
+        "r": 5,
+        "c": 1,
+        "dir": "v"
+      },
+      {
+        "n": 6,
+        "w": "REFUGIO",
+        "clue": "Dios es nuestro amparo y ___",
+        "r": 6,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "ARPA",
+        "clue": "Instrumento de cuerdas",
+        "r": 7,
+        "c": 8,
+        "dir": "v"
+      },
+      {
+        "n": 8,
+        "w": "PASTOR",
+        "clue": "\"Jehová es mi ___\"",
+        "r": 8,
+        "c": 3,
+        "dir": "h"
+      },
+      {
+        "n": 9,
+        "w": "ROCA",
+        "clue": "\"Jehová es mi ___ y mi fortaleza\"",
+        "r": 10,
+        "c": 5,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "Lugares bíblicos",
+    "icon": "🏖️",
+    "rows": 11,
+    "cols": 10,
+    "words": [
+      {
+        "n": 1,
+        "w": "EDEN",
+        "clue": "El primer jardín",
+        "r": 0,
+        "c": 4,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "BELEN",
+        "clue": "Casa de pan",
+        "r": 1,
+        "c": 2,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "BETEL",
+        "clue": "Casa de Dios",
+        "r": 2,
+        "c": 1,
+        "dir": "h"
+      },
+      {
+        "n": 4,
+        "w": "EFESO",
+        "clue": "Ciudad de la carta a los efesios",
+        "r": 4,
+        "c": 0,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "JERICO",
+        "clue": "Sus muros cayeron con trompetas",
+        "r": 4,
+        "c": 7,
+        "dir": "v"
+      },
+      {
+        "n": 6,
+        "w": "NAZARET",
+        "clue": "Ciudad de Jesús niño",
+        "r": 5,
+        "c": 2,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "ARARAT",
+        "clue": "Monte donde encalló el arca",
+        "r": 5,
+        "c": 3,
+        "dir": "v"
+      },
+      {
+        "n": 8,
+        "w": "SINAI",
+        "clue": "Monte de la Ley",
+        "r": 7,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 9,
+        "w": "ROMA",
+        "clue": "Capital del imperio",
+        "r": 9,
+        "c": 6,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "La Navidad",
+    "icon": "🌟",
+    "rows": 10,
+    "cols": 12,
+    "words": [
+      {
+        "n": 1,
+        "w": "INCIENSO",
+        "clue": "Regalo de Dios",
+        "r": 0,
+        "c": 0,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "PASTOR",
+        "clue": "Velaba el rebaño de noche",
+        "r": 1,
+        "c": 2,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "ORO",
+        "clue": "Regalo de rey",
+        "r": 2,
+        "c": 10,
+        "dir": "v"
+      },
+      {
+        "n": 4,
+        "w": "PESEBRE",
+        "clue": "Cuna del niño Jesús",
+        "r": 3,
+        "c": 4,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "MAGOS",
+        "clue": "Vinieron de Oriente",
+        "r": 3,
+        "c": 7,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "MIRRA",
+        "clue": "Regalo de perfume",
+        "r": 3,
+        "c": 7,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "ESTRELLA",
+        "clue": "Guió en la noche",
+        "r": 4,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "JOSE",
+        "clue": "El carpintero esposo de María",
+        "r": 6,
+        "c": 6,
+        "dir": "h"
+      },
+      {
+        "n": 8,
+        "w": "ANGEL",
+        "clue": "Anunció a los pastores",
+        "r": 9,
+        "c": 1,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "La Resurrección",
+    "icon": "🌅",
+    "rows": 11,
+    "cols": 13,
+    "words": [
+      {
+        "n": 1,
+        "w": "EMAUS",
+        "clue": "Camino donde abrió las Escrituras",
+        "r": 0,
+        "c": 1,
+        "dir": "h"
+      },
+      {
+        "n": 2,
+        "w": "SEPULCRO",
+        "clue": "Tumba nueva de José",
+        "r": 0,
+        "c": 5,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "TUMBA",
+        "clue": "Quedó vacía",
+        "r": 0,
+        "c": 8,
+        "dir": "v"
+      },
+      {
+        "n": 4,
+        "w": "MAGDALENA",
+        "clue": "María ___ llegó de madrugada",
+        "r": 4,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 5,
+        "w": "ANGEL",
+        "clue": "Dijo: no está aquí",
+        "r": 4,
+        "c": 1,
+        "dir": "v"
+      },
+      {
+        "n": 6,
+        "w": "DOMINGO",
+        "clue": "El primer día de la semana",
+        "r": 4,
+        "c": 3,
+        "dir": "v"
+      },
+      {
+        "n": 7,
+        "w": "PIEDRA",
+        "clue": "Fue removida",
+        "r": 5,
+        "c": 10,
+        "dir": "v"
+      },
+      {
+        "n": 8,
+        "w": "RESUCITO",
+        "clue": "¡Cristo ___!",
+        "r": 6,
+        "c": 5,
+        "dir": "h"
+      },
+      {
+        "n": 9,
+        "w": "GLORIA",
+        "clue": "Resucitó en poder y ___",
+        "r": 10,
+        "c": 5,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "La oración",
+    "icon": "🙏",
+    "rows": 7,
+    "cols": 12,
+    "words": [
+      {
+        "n": 1,
+        "w": "SANTO",
+        "clue": "Santificado sea tu nombre",
+        "r": 0,
+        "c": 4,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "PADRE",
+        "clue": "___ nuestro que estás en los cielos",
+        "r": 0,
+        "c": 7,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "PAN",
+        "clue": "El nuestro de cada día",
+        "r": 0,
+        "c": 9,
+        "dir": "h"
+      },
+      {
+        "n": 4,
+        "w": "AMEN",
+        "clue": "Así sea",
+        "r": 0,
+        "c": 10,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "GLORIA",
+        "clue": "Tuya es la ___",
+        "r": 1,
+        "c": 2,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "GRACIA",
+        "clue": "Sola ___ sola fe",
+        "r": 1,
+        "c": 2,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "REINO",
+        "clue": "Venga tu ___",
+        "r": 3,
+        "c": 7,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "PERDON",
+        "clue": "Como también nosotros perdonamos",
+        "r": 4,
+        "c": 0,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "Animales",
+    "icon": "🦁",
+    "rows": 13,
+    "cols": 10,
+    "words": [
+      {
+        "n": 1,
+        "w": "OVEJA",
+        "clue": "El animal del Salmo 23",
+        "r": 0,
+        "c": 4,
+        "dir": "v"
+      },
+      {
+        "n": 1,
+        "w": "OSO",
+        "clue": "Salió contra los jóvenes burlones",
+        "r": 0,
+        "c": 4,
+        "dir": "h"
+      },
+      {
+        "n": 2,
+        "w": "PEZ",
+        "clue": "El gran ___ tragó a Jonás",
+        "r": 2,
+        "c": 3,
+        "dir": "h"
+      },
+      {
+        "n": 3,
+        "w": "PALOMA",
+        "clue": "Volvió con rama de olivo",
+        "r": 2,
+        "c": 7,
+        "dir": "v"
+      },
+      {
+        "n": 4,
+        "w": "CAMELLO",
+        "clue": "Pasa por el ojo de una aguja",
+        "r": 4,
+        "c": 3,
+        "dir": "h"
+      },
+      {
+        "n": 4,
+        "w": "CORDERO",
+        "clue": "De Dios, que quita el pecado",
+        "r": 4,
+        "c": 3,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "AGUILA",
+        "clue": "Renueva fuerzas como el ___",
+        "r": 7,
+        "c": 1,
+        "dir": "v"
+      },
+      {
+        "n": 6,
+        "w": "LEON",
+        "clue": "Cerró sus bocas Daniel",
+        "r": 7,
+        "c": 5,
+        "dir": "v"
+      },
+      {
+        "n": 7,
+        "w": "CUERVO",
+        "clue": "Llevó pan a Elías",
+        "r": 9,
+        "c": 0,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "Alimentos",
+    "icon": "🍞",
+    "rows": 8,
+    "cols": 11,
+    "words": [
+      {
+        "n": 1,
+        "w": "ACEITE",
+        "clue": "Unges mi cabeza con ___",
+        "r": 0,
+        "c": 3,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "HIGO",
+        "clue": "Fruto de la higuera",
+        "r": 0,
+        "c": 5,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "VINO",
+        "clue": "De la vid",
+        "r": 2,
+        "c": 8,
+        "dir": "v"
+      },
+      {
+        "n": 4,
+        "w": "TRIGO",
+        "clue": "Crece con la cizaña",
+        "r": 3,
+        "c": 1,
+        "dir": "h"
+      },
+      {
+        "n": 5,
+        "w": "MIEL",
+        "clue": "Tierra que fluye leche y ___",
+        "r": 3,
+        "c": 7,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "SAL",
+        "clue": "De la tierra",
+        "r": 4,
+        "c": 6,
+        "dir": "v"
+      },
+      {
+        "n": 7,
+        "w": "PESCADO",
+        "clue": "Comió Jesús resucitado",
+        "r": 5,
+        "c": 2,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "PAN",
+        "clue": "Jesús dijo: yo soy el ___ de vida",
+        "r": 5,
+        "c": 2,
+        "dir": "v"
+      },
+      {
+        "n": 8,
+        "w": "UVA",
+        "clue": "Fruto de la vid",
+        "r": 6,
+        "c": 0,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "Libros del AT",
+    "icon": "📚",
+    "rows": 13,
+    "cols": 13,
+    "words": [
+      {
+        "n": 1,
+        "w": "ISAIAS",
+        "clue": "Libro del gran profeta",
+        "r": 0,
+        "c": 10,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "SALMOS",
+        "clue": "El libro de los cantos",
+        "r": 1,
+        "c": 3,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "GENESIS",
+        "clue": "El principio",
+        "r": 2,
+        "c": 5,
+        "dir": "v"
+      },
+      {
+        "n": 4,
+        "w": "DANIEL",
+        "clue": "Libro del cautiverio",
+        "r": 3,
+        "c": 7,
+        "dir": "h"
+      },
+      {
+        "n": 5,
+        "w": "PROVERBIOS",
+        "clue": "Los dichos sabios",
+        "r": 5,
+        "c": 1,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "JUECES",
+        "clue": "Débora y Gedeón aparecen en…",
+        "r": 8,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "JOSUE",
+        "clue": "Conquistó la tierra",
+        "r": 8,
+        "c": 0,
+        "dir": "v"
+      },
+      {
+        "n": 7,
+        "w": "ESTER",
+        "clue": "Libro sin mencionar el nombre de Dios",
+        "r": 8,
+        "c": 2,
+        "dir": "v"
+      },
+      {
+        "n": 8,
+        "w": "EXODO",
+        "clue": "La salida de Egipto",
+        "r": 8,
+        "c": 4,
+        "dir": "v"
+      }
+    ]
+  },
+  {
+    "name": "Los viajes de Pablo",
+    "icon": "🚢",
+    "rows": 13,
+    "cols": 13,
+    "words": [
+      {
+        "n": 1,
+        "w": "BERNABE",
+        "clue": "Su primer compañero de viaje",
+        "r": 0,
+        "c": 2,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "CORINTO",
+        "clue": "Iglesia con divisiones",
+        "r": 0,
+        "c": 4,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "FILIPOS",
+        "clue": "La carta del gozo",
+        "r": 2,
+        "c": 8,
+        "dir": "v"
+      },
+      {
+        "n": 4,
+        "w": "ANTIOQUIA",
+        "clue": "Donde primero fueron llamados cristianos",
+        "r": 3,
+        "c": 1,
+        "dir": "h"
+      },
+      {
+        "n": 5,
+        "w": "ROMA",
+        "clue": "Quiso llegar hasta allí",
+        "r": 5,
+        "c": 12,
+        "dir": "v"
+      },
+      {
+        "n": 6,
+        "w": "EFESO",
+        "clue": "Carta a esta iglesia",
+        "r": 6,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "PABLO",
+        "clue": "El apóstol a los gentiles",
+        "r": 6,
+        "c": 8,
+        "dir": "h"
+      },
+      {
+        "n": 8,
+        "w": "ATENAS",
+        "clue": "Predicó en el Areópago",
+        "r": 8,
+        "c": 3,
+        "dir": "h"
+      },
+      {
+        "n": 9,
+        "w": "TARSO",
+        "clue": "Su ciudad natal",
+        "r": 8,
+        "c": 4,
+        "dir": "v"
+      }
+    ]
+  },
+  {
+    "name": "La Creación",
+    "icon": "🌈",
+    "rows": 9,
+    "cols": 11,
+    "words": [
+      {
+        "n": 1,
+        "w": "LUNA",
+        "clue": "Alumbra de noche",
+        "r": 0,
+        "c": 9,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "TIERRA",
+        "clue": "Produjo hierba verde",
+        "r": 1,
+        "c": 2,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "LUZ",
+        "clue": "Lo primero que Dios hizo",
+        "r": 1,
+        "c": 8,
+        "dir": "h"
+      },
+      {
+        "n": 4,
+        "w": "ARBOL",
+        "clue": "De la ciencia del bien y del mal",
+        "r": 2,
+        "c": 5,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "ESTRELLA",
+        "clue": "Las contó y les puso nombre",
+        "r": 3,
+        "c": 2,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "MAR",
+        "clue": "Juntó las aguas",
+        "r": 4,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "SOL",
+        "clue": "Alumbra de día",
+        "r": 5,
+        "c": 4,
+        "dir": "h"
+      },
+      {
+        "n": 8,
+        "w": "ADAN",
+        "clue": "Formado del polvo",
+        "r": 6,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 8,
+        "w": "AVE",
+        "clue": "Voló sobre la faz de las aguas",
+        "r": 6,
+        "c": 0,
+        "dir": "v"
+      }
+    ]
+  },
+  {
+    "name": "El arca de Noé",
+    "icon": "⛵",
+    "rows": 13,
+    "cols": 13,
+    "words": [
+      {
+        "n": 1,
+        "w": "LLUVIA",
+        "clue": "Cayó cuarenta días",
+        "r": 0,
+        "c": 10,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "ARCA",
+        "clue": "De madera de gofer",
+        "r": 2,
+        "c": 6,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "DILUVIO",
+        "clue": "Cubrió la tierra",
+        "r": 3,
+        "c": 8,
+        "dir": "v"
+      },
+      {
+        "n": 4,
+        "w": "ARCOIRIS",
+        "clue": "Señal del pacto",
+        "r": 4,
+        "c": 4,
+        "dir": "h"
+      },
+      {
+        "n": 4,
+        "w": "ANIMAL",
+        "clue": "Entraron de dos en dos",
+        "r": 4,
+        "c": 4,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "PALOMA",
+        "clue": "Trajo la rama",
+        "r": 7,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "ARARAT",
+        "clue": "Donde reposó el arca",
+        "r": 7,
+        "c": 1,
+        "dir": "v"
+      },
+      {
+        "n": 7,
+        "w": "NOE",
+        "clue": "Halló gracia ante Dios",
+        "r": 8,
+        "c": 12,
+        "dir": "v"
+      },
+      {
+        "n": 8,
+        "w": "OLIVO",
+        "clue": "Árbol de la rama",
+        "r": 9,
+        "c": 8,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "Milagros",
+    "icon": "🔥",
+    "rows": 13,
+    "cols": 12,
+    "words": [
+      {
+        "n": 1,
+        "w": "MANA",
+        "clue": "Cayó del cielo",
+        "r": 0,
+        "c": 6,
+        "dir": "h"
+      },
+      {
+        "n": 2,
+        "w": "AGUA",
+        "clue": "Caminó sobre el…",
+        "r": 0,
+        "c": 9,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "VINO",
+        "clue": "Del agua en Caná",
+        "r": 0,
+        "c": 11,
+        "dir": "v"
+      },
+      {
+        "n": 4,
+        "w": "LEPROSO",
+        "clue": "Leproso quedó limpio",
+        "r": 3,
+        "c": 6,
+        "dir": "v"
+      },
+      {
+        "n": 4,
+        "w": "LAZARO",
+        "clue": "Salió del sepulcro",
+        "r": 3,
+        "c": 6,
+        "dir": "h"
+      },
+      {
+        "n": 5,
+        "w": "TORMENTA",
+        "clue": "Se calmó con una palabra",
+        "r": 6,
+        "c": 4,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "PANES",
+        "clue": "Cinco ___ y dos peces",
+        "r": 8,
+        "c": 2,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "PECES",
+        "clue": "Pesca maravillosa de 153",
+        "r": 8,
+        "c": 2,
+        "dir": "v"
+      },
+      {
+        "n": 7,
+        "w": "CIEGO",
+        "clue": "Bartimeo era…",
+        "r": 11,
+        "c": 0,
+        "dir": "h"
+      }
+    ]
+  },
+  {
+    "name": "Fruto del Espíritu",
+    "icon": "💖",
+    "rows": 10,
+    "cols": 12,
+    "words": [
+      {
+        "n": 1,
+        "w": "TEMPLANZA",
+        "clue": "Dominio propio",
+        "r": 0,
+        "c": 8,
+        "dir": "v"
+      },
+      {
+        "n": 2,
+        "w": "PACIENCIA",
+        "clue": "Esperar sin quejarse",
+        "r": 1,
+        "c": 2,
+        "dir": "v"
+      },
+      {
+        "n": 3,
+        "w": "ESPERANZA",
+        "clue": "No avergüenza",
+        "r": 1,
+        "c": 4,
+        "dir": "v"
+      },
+      {
+        "n": 4,
+        "w": "FE",
+        "clue": "Certeza de lo que se espera",
+        "r": 1,
+        "c": 11,
+        "dir": "v"
+      },
+      {
+        "n": 5,
+        "w": "MANSEDUMBRE",
+        "clue": "Dulzura de carácter",
+        "r": 2,
+        "c": 1,
+        "dir": "h"
+      },
+      {
+        "n": 6,
+        "w": "PAZ",
+        "clue": "Que sobrepasa todo entendimiento",
+        "r": 5,
+        "c": 7,
+        "dir": "h"
+      },
+      {
+        "n": 7,
+        "w": "BONDAD",
+        "clue": "Ser bueno con otros",
+        "r": 6,
+        "c": 0,
+        "dir": "h"
+      },
+      {
+        "n": 8,
+        "w": "GOZO",
+        "clue": "Alegría profunda",
+        "r": 7,
+        "c": 6,
+        "dir": "h"
+      },
+      {
+        "n": 9,
+        "w": "AMOR",
+        "clue": "El primero de la lista",
+        "r": 9,
+        "c": 4,
+        "dir": "h"
+      }
+    ]
+  }
 ]
