@@ -69,7 +69,10 @@ final class ApiBibleService
             if (!preg_match('/^([A-Z0-9]+)\.(\d+)\.(\d+)$/', (string) ($v['id'] ?? ''), $m)) {
                 continue;
             }
-            $text = trim((string) preg_replace('/\s+/u', ' ', strip_tags((string) ($v['text'] ?? ''))));
+            // Tags reemplazados por espacio (no vacío): sin eso strip_tags
+            // pega palabras en los límites de markup — mismo bug que parseChapter.
+            $text = trim((string) preg_replace('/\s+/u', ' ',
+                (string) preg_replace('/<[^>]+>/u', ' ', (string) ($v['text'] ?? ''))));
             if ($text === '') {
                 continue;
             }
@@ -129,8 +132,10 @@ final class ApiBibleService
 
     private function cacheFile(string $bibleId, string $chapterId): string
     {
+        // CACHE_VER en el nombre invalida cachés generadas por parsers viejos
+        // (v1 pegaba palabras en los límites de nodos — ej. "hogarni").
         $safe = preg_replace('/[^A-Za-z0-9._-]/', '', $bibleId . '__' . $chapterId);
-        return STORAGE_PATH . '/apibible/' . $safe . '.json';
+        return STORAGE_PATH . '/apibible/v2__' . $safe . '.json';
     }
 
     private function recordFums(?string $token): void
@@ -230,8 +235,21 @@ final class ApiBibleService
                         $current = (int) $m[1];
                         $out[$current] = $out[$current] ?? '';
                     }
-                    if ($current !== null) {
-                        $out[$current] .= ($wj ? '[wj]' : '') . ($node['text'] ?? '') . ($wj ? '[/wj]' : '');
+                    $txt = (string) ($node['text'] ?? '');
+                    if ($current !== null && $txt !== '') {
+                        // API.Bible no incluye espacio en los límites de nodos
+                        // (líneas de poesía q1/q2, char inline). Si el acumulado
+                        // no termina en espacio/apertura y el fragmento empieza
+                        // con letra/dígito/apertura, van separados. Si empieza
+                        // con puntuación de corte (",;") se pega directo.
+                        $prev = (string) preg_replace('/\[\/?wj\]/', '', $out[$current]);
+                        $needSpace = $prev !== ''
+                            && !preg_match('/[\s\p{Pd}¿¡«(\[\x{2018}\x{201C}"\']$/u', $prev)
+                            && preg_match('/^[\p{L}\p{N}¿¡«(\[\x{2018}\x{201C}]/u', $txt);
+                        // El espacio va ANTES del sentinel [wj] — nunca dentro
+                        // del rango de palabras de Jesús.
+                        $out[$current] .= ($needSpace ? ' ' : '')
+                            . ($wj ? '[wj]' : '') . $txt . ($wj ? '[/wj]' : '');
                     }
                 }
                 if (!empty($node['items']) && is_array($node['items'])) {
