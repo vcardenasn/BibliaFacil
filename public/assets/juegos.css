@@ -113,6 +113,48 @@
 .jh-daily.done .jh-daily-state { background: var(--fun3); color: #fff; box-shadow: none; }
 .jh-daily.done .jh-daily-emoji { animation: none; }
 
+/* ---- Misiones de la semana ---- */
+.jh-missions {
+    margin: 0 0 1.2rem; background: var(--surface);
+    border: 2px solid var(--border-strong); border-radius: 18px;
+    padding: .7rem .9rem .85rem; box-shadow: 0 3px 8px rgba(0,0,0,.12);
+}
+.jh-mis-h {
+    font-family: var(--sans); font-size: .95rem; margin: 0 0 .35rem;
+    display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap;
+}
+.jh-mis-sub { color: var(--muted); font-weight: 600; font-size: .68rem; }
+.jh-mis {
+    display: flex; align-items: center; gap: .6rem;
+    padding: .45rem 0; border-top: 1px dashed var(--border-strong);
+}
+.jh-mis-list .jh-mis:first-child { border-top: 0; }
+.jh-mis-i { font-size: 1.3rem; line-height: 1; }
+.jh-mis-t { flex: 1; min-width: 0; }
+.jh-mis-t strong { font-family: var(--sans); font-size: .82rem; display: block; }
+.jh-mis-bar {
+    display: block; height: 7px; margin-top: .28rem; border-radius: 999px;
+    background: var(--brand-soft); overflow: hidden;
+}
+.jh-mis-bar b {
+    display: block; height: 100%; border-radius: 999px;
+    background: linear-gradient(90deg, var(--brand), var(--fun1, #b8912f));
+    transition: width .5s ease;
+}
+.jh-mis-n { font-family: var(--sans); font-size: .75rem; font-weight: 800; color: var(--muted); white-space: nowrap; }
+.jh-mis.done .jh-mis-n { color: var(--fun3); }
+.jh-mis.done .jh-mis-bar b { background: var(--fun3); }
+.jh-mis.done .jh-mis-t strong { text-decoration: line-through; opacity: .75; }
+
+/* chip de misión cumplida dentro del overlay de celebración */
+.bfj-ovmision {
+    margin: .55rem auto 0; display: inline-block;
+    font-family: var(--sans); font-size: .8rem; font-weight: 800;
+    background: var(--brand-soft); color: var(--brand-ink);
+    border-radius: 999px; padding: .3rem .9rem; line-height: 1.5;
+}
+.bfj-ovmision b { color: var(--gold-ink); }
+
 /* ---- Mapa de camino (US-232): nodos serpenteantes sobre línea punteada ---- */
 .jh-path {
     position: relative; display: flex; flex-direction: column; gap: 1.15rem;

@@ -29,7 +29,7 @@
     function pick(a, n) { return shuffle(a.slice()).slice(0, n); }
 
     // ============================ Estrellas / progreso ========================
-    var data = { stars: {}, plays: {}, stickers: [], vl: {}, vlb: {} };
+    var data = { stars: {}, plays: {}, stickers: [], vl: {}, vlb: {}, missions: {}, wk: null };
     try {
         var raw = JSON.parse(localStorage.getItem('bf_games') || 'null');
         if (raw && typeof raw === 'object') {
@@ -38,6 +38,8 @@
             data.stickers = raw.stickers || [];
             data.vl = raw.vl || {};
             data.vlb = raw.vlb || {};
+            data.missions = raw.missions || {};
+            data.wk = raw.wk && raw.wk.w ? raw.wk : null;
         }
     } catch (e) {}
     function save() {
@@ -57,14 +59,14 @@
         { id: 's75',  emoji: '🥇', name: '75 estrellas',            check: function (d) { return starTotal(d) >= 75; } },
         { id: 's200', emoji: '💎', name: '200 estrellas',           check: function (d) { return starTotal(d) >= 200; } },
         { id: 'multi', emoji: '🧭', name: 'Jugó 4 juegos distintos', check: function (d) {
-                var n = 0; for (var k in d.stars) { if (d.stars[k] > 0) { n++; } } return n >= 4;
+                var n = 0; for (var k in d.stars) { if (k[0] !== '_' && d.stars[k] > 0) { n++; } } return n >= 4;
             } },
         { id: 'all7', emoji: '🎮', name: 'Probó 7 juegos distintos', check: function (d) {
                 var n = 0; for (var k in d.plays) { if (d.plays[k] > 0) { n++; } } return n >= 7;
             } },
         { id: 'perfect', emoji: '🏆', name: 'Ronda perfecta',       check: function (d, ctx) { return !!(ctx && ctx.perfect); } },
         { id: 'collector', emoji: '🌟', name: 'Estrellas en 7 juegos distintos', check: function (d) {
-                var n = 0; for (var k in d.stars) { if (d.stars[k] > 0) { n++; } } return n >= 7;
+                var n = 0; for (var k in d.stars) { if (k[0] !== '_' && d.stars[k] > 0) { n++; } } return n >= 7;
             } },
         // Progreso por niveles de "Completa el Versículo"
         { id: 'vj3', emoji: '🌱', name: 'Semillas de la Palabra', check: function (d) {
@@ -88,6 +90,64 @@
         while (i + 1 < LEVELS.length && t >= LEVELS[i + 1][0]) { i++; }
         var next = LEVELS[i + 1] || null;
         return { name: LEVELS[i][1], t: t, base: LEVELS[i][0], next: next ? next[0] : null };
+    }
+
+    // ==================== Misiones semanales ================================
+    // 3 de este catálogo por semana ISO (semilla determinística — todos los
+    // jugadores ven las mismas). wk = contadores solo de la semana actual.
+    var MISION_REWARD = 4;
+    var MISSIONS = [
+        { id: 'm-games',   emoji: '🧭', name: 'Juega 3 juegos distintos',     need: 3,
+            pro: function (w) { var n = 0; for (var k in w.plays) { n++; } return n; } },
+        { id: 'm-stars',   emoji: '⭐', name: 'Gana 15 estrellas',            need: 15,
+            pro: function (w) { return w.stars; } },
+        { id: 'm-perfect', emoji: '🏆', name: 'Logra una ronda perfecta',     need: 1,
+            pro: function (w) { return w.perfects; } },
+        { id: 'm-rounds',  emoji: '🎮', name: 'Juega 5 rondas',               need: 5,
+            pro: function (w) { var n = 0; for (var k in w.plays) { n += w.plays[k]; } return n; } },
+        { id: 'm-levels',  emoji: '🗺️', name: 'Supera un nivel (Versículo o Paloma)', need: 1,
+            pro: function (w) { return w.levels; } },
+        { id: 'm-stars30', emoji: '🌟', name: 'Gana 30 estrellas',            need: 30,
+            pro: function (w) { return w.stars; } }
+    ];
+    function weekKey() {
+        var d = new Date();
+        d = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+        var dow = (d.getDay() + 6) % 7;             // lunes = 0
+        d.setDate(d.getDate() - dow + 3);           // jueves ISO = semana/año ISO
+        var jan4 = new Date(d.getFullYear(), 0, 4);
+        var monday1 = new Date(d.getFullYear(), 0, 4 - ((jan4.getDay() + 6) % 7));
+        return d.getFullYear() + '-W' + (1 + Math.round((d - monday1) / 6048e5));
+    }
+    function weekMissions() {
+        var arr = MISSIONS.slice(), h = 5381, wk = weekKey();
+        for (var i = 0; i < wk.length; i++) { h = (h * 33 + wk.charCodeAt(i)) >>> 0; }
+        for (var j = arr.length - 1; j > 0; j--) {   // Fisher-Yates con LCG
+            h = (h * 1664525 + 1013904223) >>> 0;
+            var k = h % (j + 1), t = arr[j]; arr[j] = arr[k]; arr[k] = t;
+        }
+        return arr.slice(0, 3);
+    }
+    function wkGet() {
+        var wk = weekKey();
+        if (!data.wk || data.wk.w !== wk) {
+            data.wk = { w: wk, plays: {}, stars: 0, perfects: 0, levels: 0 };
+        }
+        return data.wk;
+    }
+    // Revisa misiones activas y otorga la recompensa; devuelve las recién hechas
+    function missionCheck() {
+        var wk = weekKey(), news = [], w = wkGet();
+        weekMissions().forEach(function (m) {
+            if (data.missions[m.id] === wk) { return; }
+            if (m.pro(w) >= m.need) {
+                data.missions[m.id] = wk;
+                news.push(m);
+                data.stars._misiones = (data.stars._misiones || 0) + MISION_REWARD;
+            }
+        });
+        if (news.length) { save(); }
+        return news;
     }
 
     // Imágenes prediseñadas OpenMoji (CC BY-SA) — mapa emoji → archivo SVG a color.
@@ -370,6 +430,8 @@
         }
         var liBefore = levelInfo();
         BFJ.stars.add(o.slug, o.stars);
+        if (o.perfect) { wkGet().perfects++; save(); }
+        var mnews = missionCheck();
         var liAfter = levelInfo();
         var lvUp = liAfter.name !== liBefore.name;
         if (window.BF_TRACK) {
@@ -397,6 +459,10 @@
             (dBonus ? '<div class="bfj-ovdaily">🗓 ¡Desafío del día! ⭐×2</div>' : '') +
             (lvUp ? '<div class="bfj-ovlvl bfj-pop">🎖 ¡Subiste de nivel!<br><strong>' +
                 esc(liAfter.name) + '</strong></div>' : '') +
+            (mnews.length ? '<div class="bfj-ovmision bfj-pop">' +
+                mnews.map(function (m) {
+                    return '🎯 Misión: ' + esc(m.name) + ' <b>+' + MISION_REWARD + '⭐</b>';
+                }).join('<br>') + '</div>' : '') +
             (o.extra ? '<p class="bfj-ovextra">' + esc(o.extra) + '</p>' : '') +
             (o.html ? '<div class="bfj-ovhtml">' + o.html + '</div>' : '') +
             (news.length ? '<div class="bfj-ovstick bfj-pop">🎁 ¡Sticker nuevo!<br>' +
@@ -489,6 +555,7 @@
             of: function (slug) { return data.stars[slug] || 0; },
             add: function (slug, n) {
                 data.stars[slug] = (data.stars[slug] || 0) + (n | 0);
+                wkGet().stars += (n | 0);
                 save();
             }
         },
@@ -501,6 +568,8 @@
         },
         played: function (slug) {
             data.plays[slug] = (data.plays[slug] || 0) + 1;
+            var w = wkGet();
+            w.plays[slug] = (w.plays[slug] || 0) + 1;
             save();
         },
         stickers: {
@@ -516,7 +585,7 @@
             pass: function (slug, idx, ok) {
                 if (!data.vlb[slug]) { data.vlb[slug] = {}; }
                 if (ok > (data.vlb[slug][idx] || 0)) { data.vlb[slug][idx] = ok; }
-                if (idx + 1 > (data.vl[slug] || 0)) { data.vl[slug] = idx + 1; }
+                if (idx + 1 > (data.vl[slug] || 0)) { data.vl[slug] = idx + 1; wkGet().levels++; }
                 save();
             }
         },
@@ -605,6 +674,26 @@
                 }
                 if (done === slugs.length) { reg.classList.add('done'); }
             });
+            // Misiones de la semana: rellena la tarjeta y otorga las cumplidas
+            var mList = document.getElementById('missionList');
+            if (mList) {
+                var granted = missionCheck();
+                var wkNow = weekKey(), wkNow2 = wkGet();
+                if (granted.length) {
+                    ts.textContent = BFJ.stars.total();
+                    if (!reducedMotion()) { confetti(); }
+                }
+                mList.innerHTML = weekMissions().map(function (m) {
+                    var done = data.missions[m.id] === wkNow;
+                    var p = Math.min(m.need, m.pro(wkNow2));
+                    return '<div class="jh-mis' + (done ? ' done' : '') + '">' +
+                        '<span class="jh-mis-i" aria-hidden="true">' + m.emoji + '</span>' +
+                        '<span class="jh-mis-t"><strong>' + esc(m.name) + '</strong>' +
+                        '<i class="jh-mis-bar"><b style="width:' + Math.round(p / m.need * 100) + '%"></b></i></span>' +
+                        '<span class="jh-mis-n">' +
+                        (done ? '✅ +' + MISION_REWARD + '⭐' : p + '/' + m.need) + '</span></div>';
+                }).join('');
+            }
             // Álbum de stickers: por hitos ya ganados (evalúa sobre historial)
             checkStickers({});
             var wall = document.getElementById('stickerWall');

@@ -31,6 +31,11 @@ $dailyGame = $games[$dailySlug];
     <span class="jh-daily-state" id="dailyState"><span aria-hidden="true">▶</span> Jugar</span>
 </a>
 
+<section class="jh-missions" aria-label="Misiones de la semana">
+    <h2 class="jh-mis-h"><span aria-hidden="true">🎯</span> Misiones de la semana <small class="jh-mis-sub">+4⭐ cada una · renueva el lunes</small></h2>
+    <div class="jh-mis-list" id="missionList"></div>
+</section>
+
 <?php
 // Regiones del mapa de progreso: el viaje bíblico Edén → Galilea.
 // Cada juego declara 'region' en config/games.php; se muestran en orden
