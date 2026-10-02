@@ -823,6 +823,21 @@ a.crumb:hover { color: var(--brand); }
 @media (max-width: 560px) { .hist-list { columns: 1; } }
 
 /* ============ Planes de lectura (EPIC 05) ============ */
+/* Tarjeta «Devocional de hoy» en el índice de planes */
+.plan-devcard {
+    display: flex; align-items: center; gap: .8rem; margin-bottom: 1rem;
+    background: var(--surface); border: 2px solid var(--gold); border-radius: 16px;
+    padding: .7rem 1rem; text-decoration: none; color: var(--ink);
+    box-shadow: var(--shadow); transition: transform .15s, box-shadow .15s;
+}
+.plan-devcard:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+.plan-devcard:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+.plan-devcard-emoji { font-size: 1.9rem; line-height: 1; }
+.plan-devcard-t { display: flex; flex-direction: column; gap: .15rem; min-width: 0; flex: 1; }
+.plan-devcard-t strong { font-family: var(--sans); font-size: .95rem; }
+.plan-devcard-t small { font-family: var(--sans); font-size: .78rem; color: var(--muted); }
+.plan-devcard-go { font-family: var(--sans); font-size: .8rem; font-weight: 800; color: var(--gold-ink); white-space: nowrap; }
+
 .plan-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: .9rem; }
 .plan-card { display: flex; flex-direction: column; gap: .3rem; text-decoration: none; color: inherit; }
 .plan-card:hover { border-color: var(--brand); }

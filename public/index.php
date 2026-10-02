@@ -407,6 +407,10 @@ if (($seg[0] ?? '') === 'planes') {
             'version' => $planVersion,
             'plans' => $plans,
             'planTotals' => $totals,
+            'planVersion' => $planVersion,
+            // Tarjeta «Devocional de hoy»: abre el versículo del día en modo
+            // devocional (?dev=N) — reutiliza el flujo del lector.
+            'votd' => $planVersion ? $repo->verseOfTheDay((int) $planVersion['id']) : null,
         ]);
         exit;
     }

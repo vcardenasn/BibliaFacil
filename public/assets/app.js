@@ -739,15 +739,18 @@
 
     var marksReady = applyMarks();
 
-    // ?dev=1 — el enlace «✍️ Devocional» de Planes de lectura abre el modo
-    // devocional sobre el v.1 del capítulo; el selector de rango permite
-    // extender la porción hasta el final del capítulo.
-    if (chapterEl && /[?&]dev=1\b/.test(location.search)) {
+    // ?dev[=N] — los enlaces «✍️ Devocional» (Planes de lectura, tarjeta
+    // «Devocional de hoy») abren el modo devocional sobre el versículo N
+    // (o el v.1 sin N); el selector de rango amplía la porción del capítulo.
+    var devMatch = chapterEl ? location.search.match(/[?&]dev(?:=(\d+))?/) : null;
+    if (devMatch) {
         marksReady.then(function () {
-            var v1 = document.querySelector('.chapter .verse');
-            if (!v1) { return; }
-            openSheet(v1);
-            devotionalMode(sheet, annMap[keyOf(v1)] || {}, v1.getAttribute('data-ref') || '');
+            var vn = devMatch[1] ? parseInt(devMatch[1], 10) : 0;
+            var v = (vn > 0 && document.getElementById('v' + vn)) || document.querySelector('.chapter .verse');
+            if (!v) { return; }
+            openSheet(v);
+            devotionalMode(sheet, annMap[keyOf(v)] || {}, v.getAttribute('data-ref') || '');
+            v.scrollIntoView({ block: 'center' });
         });
     }
 
