@@ -22,7 +22,7 @@ BFJ.define('memory', function (el) {
             '<div class="mm-grid">' + cards.map(function (c, i) {
                 return '<button type="button" class="mm-card" data-i="' + i +
                     '" aria-label="' + BFJ.T('Carta') + ' ' + (i + 1) + ' ' + BFJ.T('de') + ' ' + cards.length + '">' +
-                    '<span class="mm-face mm-back" aria-hidden="true">' + BFJ.omoji('❓') + '</span>' +
+                    '<span class="mm-face mm-back" aria-hidden="true">' + BFJ.bimg('arkset:paloma', '🕊️') + '</span>' +
                     '<span class="mm-face mm-front">' + BFJ.bimg(c.img, c.emoji) +
                     '<small class="mm-name">' + BFJ.esc(BFJ.T(c.label)) + '</small></span></button>';
             }).join('') + '</div>' +
