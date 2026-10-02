@@ -180,7 +180,7 @@
     background: url('omoji/1F3C1.svg') center/contain no-repeat;
 }
 .jh-node {
-    position: relative; display: flex; align-items: center; gap: .7rem;
+    position: relative; z-index: 1; display: flex; align-items: center; gap: .7rem;
     width: calc(50% + 1.7rem); text-decoration: none; color: var(--ink);
     transition: transform .15s;
 }
@@ -190,7 +190,7 @@
 .jh-node.alt-r { align-self: flex-end; }
 
 /* Banners de región: hito del viaje bíblico sobre el camino punteado */
-.jh-region { align-self: stretch; display: flex; justify-content: center; }
+.jh-region { align-self: stretch; display: flex; justify-content: center; position: relative; z-index: 1; }
 .jh-region-tag {
     display: inline-flex; align-items: center; gap: .45rem; flex-wrap: wrap; justify-content: center;
     background: var(--surface); border: 2.5px solid var(--border-strong);
