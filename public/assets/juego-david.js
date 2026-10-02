@@ -325,104 +325,139 @@ BFJ.define('david', function (el) {
 
         if (f.kind === 'goliath') {
             var gg = Math.sin(f.ph * 5);
-            ctx.save(); ctx.translate(0, 21); shadow(19); ctx.restore();
-            // piernas con grebas de bronce (marcha pesada)
-            ctx.fillStyle = '#d7a06a';
-            ctx.fillRect(-7 + gg * 1.5, 8, 5, 12);
-            ctx.fillRect(3 - gg * 1.5, 8, 5, 12);
-            ctx.fillStyle = '#b8860b';
-            ctx.fillRect(-7 + gg * 1.5, 14, 5, 7);
-            ctx.fillRect(3 - gg * 1.5, 14, 5, 7);
-            // coraza de escamas
-            ctx.fillStyle = '#8d6e63';
-            ctx.fillRect(-9, -16, 18, 26);
-            ctx.fillStyle = '#5d4037';
-            for (var ry = -14; ry < 9; ry += 5) {
-                for (var rx = -7; rx < 8; rx += 6) {
-                    ctx.beginPath(); ctx.arc(rx + ((ry + 14) % 10 ? 3 : 0), ry + 3, 3, 0, Math.PI); ctx.fill();
-                }
-            }
-            // cabeza: barba, casco de bronce con penacho
-            ctx.fillStyle = '#d7a06a';
-            ctx.beginPath(); ctx.arc(0, -22, 7, 0, 7); ctx.fill();
+            ctx.save(); ctx.translate(0, 22); shadow(20); ctx.restore();
+            // piernas en postura ancha + grebas de bronce + sandalias
+            ctx.strokeStyle = '#c98f5e'; ctx.lineWidth = 5; ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(-4, 6); ctx.lineTo(-7 + gg, 17); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(4, 6); ctx.lineTo(8 - gg, 17); ctx.stroke();
+            ctx.strokeStyle = '#b8860b'; ctx.lineWidth = 5.4;
+            ctx.beginPath(); ctx.moveTo(-6 + gg, 12); ctx.lineTo(-7 + gg, 17); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(7 - gg, 12); ctx.lineTo(8 - gg, 17); ctx.stroke();
             ctx.fillStyle = '#4e342e';
-            ctx.beginPath(); ctx.arc(-1, -19, 5.6, 0, Math.PI); ctx.fill();
-            ctx.fillStyle = '#c9a227';
-            ctx.beginPath(); ctx.arc(0, -25, 7.6, Math.PI, 0); ctx.fill();
-            ctx.fillRect(-7.6, -26, 15.2, 3);
-            ctx.fillStyle = '#a03030';
+            ctx.fillRect(-10.5 + gg, 17, 6.5, 3.2);
+            ctx.fillRect(5.5 - gg, 17, 6.5, 3.2);
+            // faldellín de cuero
+            ctx.fillStyle = '#6b3a2a';
             ctx.beginPath();
-            ctx.arc(0, -26, 7, Math.PI * 1.1, Math.PI * 1.9); ctx.lineTo(0, -26);
+            ctx.moveTo(-8, 1); ctx.lineTo(-9.5, 10); ctx.lineTo(9.5, 10); ctx.lineTo(8, 1);
             ctx.closePath(); ctx.fill();
-            ctx.fillStyle = '#2b1c12';
-            ctx.beginPath(); ctx.arc(-3, -22, 1.3, 0, 7); ctx.fill();    // ojo
-            // lanza con punta
-            ctx.strokeStyle = '#795548'; ctx.lineWidth = 3; ctx.lineCap = 'round';
-            ctx.beginPath(); ctx.moveTo(10, -2 + gg); ctx.lineTo(16, -34 + gg); ctx.stroke();
+            // coraza de bronce trapecio con bandas
+            ctx.fillStyle = '#c9a227';
+            ctx.beginPath();
+            ctx.moveTo(-11, -18); ctx.lineTo(-8, 2); ctx.lineTo(8, 2); ctx.lineTo(11, -18);
+            ctx.closePath(); ctx.fill();
+            ctx.strokeStyle = 'rgba(90,60,20,.55)'; ctx.lineWidth = 1.6;
+            for (var ry = -14; ry <= -2; ry += 4) {
+                var bw = 10.6 - (ry + 18) * .15;
+                ctx.beginPath(); ctx.moveTo(-bw, ry); ctx.lineTo(bw, ry); ctx.stroke();
+            }
+            // lanza al hombro (atrás, se ve toda)
+            ctx.strokeStyle = '#795548'; ctx.lineWidth = 2.8;
+            ctx.beginPath(); ctx.moveTo(13, 8 + gg); ctx.lineTo(13, -36 + gg); ctx.stroke();
             ctx.fillStyle = '#9aa0a8';
             ctx.beginPath();
-            ctx.moveTo(15, -42 + gg); ctx.lineTo(19.5, -32 + gg); ctx.lineTo(12.5, -32 + gg);
-            ctx.closePath(); ctx.fill();
-            // escudo de bronce con umbo
-            ctx.fillStyle = '#5d4037';
-            ctx.beginPath(); ctx.arc(-12, 0, 10, 0, 7); ctx.fill();
-            ctx.strokeStyle = '#c9a227'; ctx.lineWidth = 2;
-            ctx.beginPath(); ctx.arc(-12, 0, 10, 0, 7); ctx.stroke();
+            ctx.moveTo(13, -44 + gg); ctx.lineTo(16.5, -35 + gg); ctx.lineTo(13, -33 + gg);
+            ctx.lineTo(9.5, -35 + gg); ctx.closePath(); ctx.fill();
+            // brazo trasero sujetándola
+            ctx.strokeStyle = '#c98f5e'; ctx.lineWidth = 4.4;
+            ctx.beginPath(); ctx.moveTo(7, -12); ctx.lineTo(13, -6 + gg * .5); ctx.stroke();
+            // cabeza: rostro, ceño, barba, casco con plumaje
+            ctx.fillStyle = '#d7a06a';
+            ctx.beginPath(); ctx.arc(0, -24, 6.5, 0, 7); ctx.fill();
+            ctx.fillStyle = '#4e342e';
+            ctx.beginPath(); ctx.arc(0, -21, 5, .15, Math.PI - .15); ctx.fill(); // barba
+            ctx.fillStyle = '#2b1c12';
+            ctx.beginPath(); ctx.arc(-3, -25.5, 1.2, 0, 7); ctx.fill();          // ojo
+            ctx.strokeStyle = '#2b1c12'; ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(-6, -28); ctx.lineTo(-1.5, -26.5); ctx.stroke(); // ceño
+            // casco: cúpula + carrillera + nasal
             ctx.fillStyle = '#c9a227';
-            ctx.beginPath(); ctx.arc(-12, 0, 3.4, 0, 7); ctx.fill();
-        } else {
-            var isLion = f.kind === 'lion';
-            var body = isLion ? '#d8912f' : '#6d4c41';
-            var dark = isLion ? '#8f5410' : '#4e342e';
-            var mid  = isLion ? '#b26e1e' : '#5d4037';
-            var gait = Math.sin(f.ph * 9);
+            ctx.beginPath(); ctx.arc(0, -27, 7.4, Math.PI, 0); ctx.fill();
+            ctx.fillRect(-7.4, -28, 14.8, 2.4);
+            ctx.fillRect(-2, -27, 3.4, 5);                                     // nasal
+            // plumaje rojo que flota hacia atrás
+            ctx.fillStyle = '#a03030';
+            ctx.beginPath();
+            ctx.ellipse(4, -31 - Math.abs(gg), 8.5, 3.6, -.18, 0, 7); ctx.fill();
+            // escudo grande adelante: bronce, borde y umbo
+            ctx.fillStyle = '#8d6e63';
+            ctx.beginPath(); ctx.arc(-13, -4, 11, 0, 7); ctx.fill();
+            ctx.strokeStyle = '#c9a227'; ctx.lineWidth = 2.6;
+            ctx.beginPath(); ctx.arc(-13, -4, 11, 0, 7); ctx.stroke();
+            ctx.beginPath(); ctx.arc(-13, -4, 5.5, 0, 7); ctx.stroke();
+            ctx.fillStyle = '#c9a227';
+            ctx.beginPath(); ctx.arc(-13, -4, 3.2, 0, 7); ctx.fill();
+        } else if (f.kind === 'bear') {
+            var bg = Math.sin(f.ph * 7);
             ctx.save(); ctx.translate(0, k.r + 9); shadow(k.r + 4); ctx.restore();
-            // cola (león con mechón que se agita; oso corta)
-            ctx.strokeStyle = body; ctx.lineWidth = 2.4; ctx.lineCap = 'round';
+            var bb = '#7a5230', bd = '#523619', bl = '#a1896d';
+            // patas rechonchas en marcha
+            ctx.fillStyle = bd;
+            ctx.fillRect(-k.r + 1 + bg * 2.4, k.r * .35, 5.5, k.r);
+            ctx.fillRect(-k.r + 9 - bg * 2.4, k.r * .45, 5.5, k.r * .9);
+            ctx.fillRect(k.r - 12 - bg * 2.4, k.r * .35, 5.5, k.r);
+            ctx.fillRect(k.r - 4 + bg * 2.4, k.r * .45, 4.5, k.r * .9);
+            // cuerpo rollizo + giba alta
+            ctx.fillStyle = bb;
+            ctx.beginPath(); ctx.ellipse(-1, 0, k.r, k.r * .74, 0, 0, 7); ctx.fill();
+            ctx.fillStyle = bd;
+            ctx.beginPath(); ctx.arc(-k.r * .25, -k.r * .48, k.r * .5, Math.PI, 0); ctx.fill();
+            // lomito claro
+            ctx.fillStyle = '#8d6e63';
+            ctx.beginPath(); ctx.ellipse(-1, k.r * .3, k.r * .6, k.r * .3, 0, 0, 7); ctx.fill();
+            // rabito
+            ctx.fillStyle = bd;
+            ctx.beginPath(); ctx.arc(k.r * .85, -2, 2.6, 0, 7); ctx.fill();
+            // cabeza grande con orejas redondas
+            var bhx = -k.r - 2, bhy = -6;
+            ctx.fillStyle = bb;
+            ctx.beginPath(); ctx.arc(bhx, bhy, k.r * .58, 0, 7); ctx.fill();
+            ctx.fillStyle = bd;
+            ctx.beginPath(); ctx.arc(bhx - 3, bhy - 8, 3.4, 0, 7); ctx.fill();
+            ctx.beginPath(); ctx.arc(bhx + 5, bhy - 8.4, 3.4, 0, 7); ctx.fill();
+            ctx.fillStyle = '#3e2723';
+            ctx.beginPath(); ctx.arc(bhx - 3, bhy - 8, 1.7, 0, 7); ctx.fill();
+            ctx.beginPath(); ctx.arc(bhx + 5, bhy - 8.4, 1.7, 0, 7); ctx.fill();
+            // hocico claro con nariz grande
+            ctx.fillStyle = bl;
+            ctx.beginPath(); ctx.ellipse(bhx - 8, bhy + 1, 5, 3.8, 0, 0, 7); ctx.fill();
+            ctx.fillStyle = '#2b1c12';
+            ctx.beginPath(); ctx.arc(bhx - 11.5, bhy - .5, 1.9, 0, 7); ctx.fill();
+            ctx.beginPath(); ctx.arc(bhx - 2, bhy - 3.5, 1.5, 0, 7); ctx.fill();  // ojo
+        } else {
+            var lg = Math.sin(f.ph * 9);
+            var lb = '#d8912f', ld = '#8f5410', lm = '#b26e1e';
+            ctx.save(); ctx.translate(0, k.r + 9); shadow(k.r + 4); ctx.restore();
+            // cola con mechón que se agita
+            ctx.strokeStyle = lb; ctx.lineWidth = 2.4; ctx.lineCap = 'round';
             ctx.beginPath(); ctx.moveTo(k.r - 2, -4);
-            ctx.quadraticCurveTo(k.r + 9, -10 - gait * 2, k.r + 5, -16 - gait);
+            ctx.quadraticCurveTo(k.r + 9, -10 - lg * 2, k.r + 5, -16 - lg);
             ctx.stroke();
-            if (isLion) {
-                ctx.fillStyle = dark;
-                ctx.beginPath(); ctx.arc(k.r + 5, -16 - gait, 3, 0, 7); ctx.fill();
-            }
+            ctx.fillStyle = ld;
+            ctx.beginPath(); ctx.arc(k.r + 5, -16 - lg, 3, 0, 7); ctx.fill();
             // patas en marcha alterna
-            ctx.fillStyle = mid;
-            ctx.fillRect(-k.r + 3 + gait * 2, k.r * .5, 4, k.r * .8);
-            ctx.fillRect(k.r - 12 - gait * 2, k.r * .5, 4, k.r * .8);
+            ctx.fillStyle = lm;
+            ctx.fillRect(-k.r + 3 + lg * 2, k.r * .5, 4, k.r * .8);
+            ctx.fillRect(k.r - 12 - lg * 2, k.r * .5, 4, k.r * .8);
             // cuerpo + panza clara
-            ctx.fillStyle = body;
+            ctx.fillStyle = lb;
             ctx.beginPath(); ctx.ellipse(-1, 0, k.r, k.r * .66, 0, 0, 7); ctx.fill();
-            if (!isLion) {                                              // giba del oso
-                ctx.fillStyle = mid;
-                ctx.beginPath(); ctx.arc(-k.r * .3, -k.r * .5, k.r * .42, Math.PI, 0); ctx.fill();
-            }
-            ctx.fillStyle = isLion ? '#e8b45f' : '#8d6e63';
+            ctx.fillStyle = '#e8b45f';
             ctx.beginPath(); ctx.ellipse(-1, k.r * .28, k.r * .68, k.r * .32, 0, 0, 7); ctx.fill();
-            // cabeza
+            // cabeza con melena dentada
             var hx = -k.r - 2, hy = -4;
-            if (isLion) {                                               // melena dentada
-                ctx.fillStyle = dark;
-                ctx.beginPath();
-                for (var m = 0; m < 10; m++) {
-                    var ma = m / 10 * 6.283;
-                    var mr = k.r * .62 + (m % 2 ? 6.5 : 3);
-                    ctx.lineTo(hx + Math.cos(ma) * mr, hy + Math.sin(ma) * mr);
-                }
-                ctx.closePath(); ctx.fill();
-                ctx.beginPath(); ctx.arc(hx - 4, hy - 6.5, 2.4, 0, 7); ctx.fill(); // oreja
+            ctx.fillStyle = ld;
+            ctx.beginPath();
+            for (var m = 0; m < 10; m++) {
+                var ma = m / 10 * 6.283;
+                var mr = k.r * .62 + (m % 2 ? 6.5 : 3);
+                ctx.lineTo(hx + Math.cos(ma) * mr, hy + Math.sin(ma) * mr);
             }
-            ctx.fillStyle = body;
+            ctx.closePath(); ctx.fill();
+            ctx.beginPath(); ctx.arc(hx - 4, hy - 6.5, 2.4, 0, 7); ctx.fill(); // oreja
+            ctx.fillStyle = lb;
             ctx.beginPath(); ctx.arc(hx, hy, k.r * .62, 0, 7); ctx.fill();
-            if (!isLion) {                                              // orejas redondas del oso
-                ctx.fillStyle = dark;
-                ctx.beginPath(); ctx.arc(hx - 4, hy - 7, 3, 0, 7); ctx.fill();
-                ctx.beginPath(); ctx.arc(hx + 5, hy - 7, 3, 0, 7); ctx.fill();
-                ctx.fillStyle = '#3e2723';
-                ctx.beginPath(); ctx.arc(hx - 4, hy - 7, 1.5, 0, 7); ctx.fill();
-                ctx.beginPath(); ctx.arc(hx + 5, hy - 7, 1.5, 0, 7); ctx.fill();
-            }
-            ctx.fillStyle = isLion ? '#e8b45f' : '#a1887f';             // hocico
+            ctx.fillStyle = '#e8b45f';                                  // hocico
             ctx.beginPath(); ctx.ellipse(hx - k.r * .5, hy + 2, 4.2, 3.2, 0, 0, 7); ctx.fill();
             ctx.fillStyle = '#2b1c12';
             ctx.beginPath(); ctx.arc(hx - k.r * .5 - 2.5, hy + 1, 1.4, 0, 7); ctx.fill(); // nariz
