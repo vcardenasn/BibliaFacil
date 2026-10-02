@@ -288,30 +288,48 @@ BFJ.define('david', function (el) {
         ctx.beginPath(); ctx.ellipse(0, 0, rx, rx * .3, 0, 0, 7); ctx.fill();
     }
 
+    // Extremidad orgánica: trazo grueso con punta redonda (no fillRect)
+    function limb(x1, y1, x2, y2, w, c) {
+        ctx.strokeStyle = c; ctx.lineWidth = w; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    }
+    // Masa con volumen: gradiente radial, highlight arriba-izquierda
+    function blob(cx, cy, rx, ry, c1, c2) {
+        var g = ctx.createRadialGradient(cx - rx * .3, cy - ry * .35, rx * .2, cx, cy, rx * 1.15);
+        g.addColorStop(0, c1); g.addColorStop(1, c2);
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, 0, 0, 7); ctx.fill();
+    }
+
     function drawSheep(s) {
         ctx.save(); ctx.translate(s.x, s.y);
         ctx.save(); ctx.translate(0, 10); shadow(11); ctx.restore();
         var hop = Math.abs(Math.sin(s.ph * 4)) * 1.6;
         var w = Math.sin(s.ph * 4);                       // paso alterno
-        ctx.fillStyle = '#5d4730';                        // patas
-        ctx.fillRect(-6 + w * 1.4, 4, 2.4, 6);
-        ctx.fillRect(-1 - w * 1.4, 4.6, 2.4, 5.4);
-        ctx.fillRect(4 + w * 1.4, 4, 2.4, 6);
+        limb(-5, 4, -5 + w * 1.6, 9.8, 2.8, '#5d4730');   // patitas curvas
+        limb(0, 4.6, -w * 1.6, 10.2, 2.6, '#6b5340');
+        limb(5, 4, 5 + w * 1.6, 9.8, 2.8, '#5d4730');
         ctx.translate(0, -hop);
-        // lana: anillo de puffs sobre núcleo
-        ctx.fillStyle = '#f0ede4';
+        // lana: puffs con volumen (luz desde arriba-izquierda)
         for (var i = 0; i < 8; i++) {
             var a = i / 8 * 6.283;
-            ctx.beginPath(); ctx.arc(Math.cos(a) * 6.6, Math.sin(a) * 4.4 - 1, 4.1, 0, 7); ctx.fill();
+            blob(Math.cos(a) * 6.6, Math.sin(a) * 4.4 - 1, 4.1, 4.1, '#ffffff', '#ddd8cc');
         }
-        ctx.fillStyle = '#fdfdfb';
-        ctx.beginPath(); ctx.arc(0, -1, 6.8, 0, 7); ctx.fill();
-        ctx.beginPath(); ctx.arc(-9.5, -1, 2.4, 0, 7); ctx.fill(); // cola
-        ctx.fillStyle = '#4a3a28';                        // cabeza
-        ctx.beginPath(); ctx.ellipse(11, -2, 4.4, 3.6, 0, 0, 7); ctx.fill();
-        ctx.beginPath(); ctx.ellipse(9.5, -5.2, 2.6, 1.4, -.5, 0, 7); ctx.fill(); // oreja
+        blob(0, -1, 6.8, 6.8, '#ffffff', '#e9e4d6');
+        blob(-9.5, -1, 2.6, 2.6, '#ffffff', '#e9e4d6');   // cola
+        // cabeza: gota curva con oreja caída
+        ctx.fillStyle = '#4a3a28';
+        ctx.beginPath();
+        ctx.moveTo(7, -5);
+        ctx.quadraticCurveTo(15, -7, 15.5, -2);
+        ctx.quadraticCurveTo(15.5, 2.5, 10, 2);
+        ctx.quadraticCurveTo(7, 0, 7, -5);
+        ctx.fill();
+        ctx.beginPath(); ctx.ellipse(8.5, -6, 3.4, 1.7, -.6, 0, 7); ctx.fill(); // oreja
         ctx.fillStyle = '#fff';
-        ctx.beginPath(); ctx.arc(12, -2.6, 1.1, 0, 7); ctx.fill();
+        ctx.beginPath(); ctx.arc(12.5, -3.4, 1.2, 0, 7); ctx.fill();
+        ctx.fillStyle = '#2b1c12';
+        ctx.beginPath(); ctx.arc(12.7, -3.3, .65, 0, 7); ctx.fill();
         ctx.restore();
     }
 
@@ -325,62 +343,81 @@ BFJ.define('david', function (el) {
 
         if (f.kind === 'goliath') {
             var gg = Math.sin(f.ph * 5);
-            ctx.save(); ctx.translate(0, 22); shadow(20); ctx.restore();
-            // piernas en postura ancha + grebas de bronce + sandalias
-            ctx.strokeStyle = '#c98f5e'; ctx.lineWidth = 5; ctx.lineCap = 'round';
-            ctx.beginPath(); ctx.moveTo(-4, 6); ctx.lineTo(-7 + gg, 17); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(4, 6); ctx.lineTo(8 - gg, 17); ctx.stroke();
-            ctx.strokeStyle = '#b8860b'; ctx.lineWidth = 5.4;
-            ctx.beginPath(); ctx.moveTo(-6 + gg, 12); ctx.lineTo(-7 + gg, 17); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(7 - gg, 12); ctx.lineTo(8 - gg, 17); ctx.stroke();
-            ctx.fillStyle = '#4e342e';
-            ctx.fillRect(-10.5 + gg, 17, 6.5, 3.2);
-            ctx.fillRect(5.5 - gg, 17, 6.5, 3.2);
-            // faldellín de cuero
+            ctx.save(); ctx.translate(0, 22); shadow(21); ctx.restore();
+            // piernas: trazos curvos con pantorrilla + pies de sandalia
+            ctx.strokeStyle = '#c98f5e'; ctx.lineWidth = 6; ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(-5, 2); ctx.quadraticCurveTo(-8 + gg, 9, -8 + gg, 17); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(5, 2); ctx.quadraticCurveTo(9 - gg, 9, 9 - gg, 17); ctx.stroke();
+            ctx.strokeStyle = '#b8860b'; ctx.lineWidth = 6.4;           // grebas
+            ctx.beginPath(); ctx.moveTo(-8 + gg, 12); ctx.lineTo(-8 + gg, 17); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(9 - gg, 12); ctx.lineTo(9 - gg, 17); ctx.stroke();
+            ctx.fillStyle = '#4e342e';                                  // sandalias
+            ctx.beginPath(); ctx.ellipse(-9.5 + gg, 18, 4.8, 2, 0, 0, 7); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(10.5 - gg, 18, 4.8, 2, 0, 0, 7); ctx.fill();
+            // faldellín: faldón curvo con tiras
             ctx.fillStyle = '#6b3a2a';
             ctx.beginPath();
-            ctx.moveTo(-8, 1); ctx.lineTo(-9.5, 10); ctx.lineTo(9.5, 10); ctx.lineTo(8, 1);
+            ctx.moveTo(-9, 0);
+            ctx.quadraticCurveTo(-11, 6, -10, 11);
+            ctx.quadraticCurveTo(0, 13, 10, 11);
+            ctx.quadraticCurveTo(11, 6, 9, 0);
             ctx.closePath(); ctx.fill();
-            // coraza de bronce trapecio con bandas
-            ctx.fillStyle = '#c9a227';
-            ctx.beginPath();
-            ctx.moveTo(-11, -18); ctx.lineTo(-8, 2); ctx.lineTo(8, 2); ctx.lineTo(11, -18);
-            ctx.closePath(); ctx.fill();
-            ctx.strokeStyle = 'rgba(90,60,20,.55)'; ctx.lineWidth = 1.6;
-            for (var ry = -14; ry <= -2; ry += 4) {
-                var bw = 10.6 - (ry + 18) * .15;
-                ctx.beginPath(); ctx.moveTo(-bw, ry); ctx.lineTo(bw, ry); ctx.stroke();
+            ctx.strokeStyle = '#4e2a1e'; ctx.lineWidth = 1.4;
+            ctx.beginPath(); ctx.moveTo(-4, 4); ctx.lineTo(-5, 11); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(4, 4); ctx.lineTo(5, 11); ctx.stroke();
+            // torso: coraza como óvalo muscular con bandas arqueadas
+            blob(0, -8, 11.5, 13, '#d9b44a', '#9a7420');
+            ctx.strokeStyle = 'rgba(96,64,16,.5)'; ctx.lineWidth = 1.7;
+            for (var ry = -16; ry <= 0; ry += 4) {
+                var bw = Math.sqrt(Math.max(0, 1 - Math.pow(ry / 13, 2))) * 11;
+                ctx.beginPath();
+                ctx.moveTo(-bw, ry); ctx.quadraticCurveTo(0, ry + 2.2, bw, ry);
+                ctx.stroke();
             }
-            // lanza al hombro (atrás, se ve toda)
-            ctx.strokeStyle = '#795548'; ctx.lineWidth = 2.8;
-            ctx.beginPath(); ctx.moveTo(13, 8 + gg); ctx.lineTo(13, -36 + gg); ctx.stroke();
+            // hombreras
+            blob(-9, -17, 4.4, 3.4, '#d9b44a', '#9a7420');
+            blob(9, -17, 4.4, 3.4, '#d9b44a', '#9a7420');
+            // lanza al hombro: asta curva + punta de hoja
+            ctx.strokeStyle = '#795548'; ctx.lineWidth = 2.8; ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(14, 8 + gg); ctx.quadraticCurveTo(15, -18, 13, -37 + gg); ctx.stroke();
             ctx.fillStyle = '#9aa0a8';
             ctx.beginPath();
-            ctx.moveTo(13, -44 + gg); ctx.lineTo(16.5, -35 + gg); ctx.lineTo(13, -33 + gg);
-            ctx.lineTo(9.5, -35 + gg); ctx.closePath(); ctx.fill();
-            // brazo trasero sujetándola
-            ctx.strokeStyle = '#c98f5e'; ctx.lineWidth = 4.4;
-            ctx.beginPath(); ctx.moveTo(7, -12); ctx.lineTo(13, -6 + gg * .5); ctx.stroke();
-            // cabeza: rostro, ceño, barba, casco con plumaje
-            ctx.fillStyle = '#d7a06a';
-            ctx.beginPath(); ctx.arc(0, -24, 6.5, 0, 7); ctx.fill();
-            ctx.fillStyle = '#4e342e';
-            ctx.beginPath(); ctx.arc(0, -21, 5, .15, Math.PI - .15); ctx.fill(); // barba
-            ctx.fillStyle = '#2b1c12';
-            ctx.beginPath(); ctx.arc(-3, -25.5, 1.2, 0, 7); ctx.fill();          // ojo
-            ctx.strokeStyle = '#2b1c12'; ctx.lineWidth = 1.5;
-            ctx.beginPath(); ctx.moveTo(-6, -28); ctx.lineTo(-1.5, -26.5); ctx.stroke(); // ceño
-            // casco: cúpula + carrillera + nasal
-            ctx.fillStyle = '#c9a227';
-            ctx.beginPath(); ctx.arc(0, -27, 7.4, Math.PI, 0); ctx.fill();
-            ctx.fillRect(-7.4, -28, 14.8, 2.4);
-            ctx.fillRect(-2, -27, 3.4, 5);                                     // nasal
-            // plumaje rojo que flota hacia atrás
-            ctx.fillStyle = '#a03030';
+            ctx.moveTo(13, -45 + gg);
+            ctx.quadraticCurveTo(17, -37 + gg, 15.5, -33 + gg);
+            ctx.quadraticCurveTo(13, -31 + gg, 10.5, -33 + gg);
+            ctx.quadraticCurveTo(9, -37 + gg, 13, -45 + gg);
+            ctx.fill();
+            // brazo sujetándola
+            ctx.strokeStyle = '#c98f5e'; ctx.lineWidth = 5; ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(8, -14); ctx.quadraticCurveTo(12, -10, 14, -7 + gg * .5); ctx.stroke();
+            // cabeza: rostro volumétrico + barba + ceño
+            blob(0, -24, 6.8, 6.8, '#e2b184', '#b5794a');
+            ctx.fillStyle = '#4e342e';                                   // barba
             ctx.beginPath();
-            ctx.ellipse(4, -31 - Math.abs(gg), 8.5, 3.6, -.18, 0, 7); ctx.fill();
-            // escudo grande adelante: bronce, borde y umbo
-            ctx.fillStyle = '#8d6e63';
+            ctx.moveTo(-5.5, -23);
+            ctx.quadraticCurveTo(-6, -17, 0, -15.5);
+            ctx.quadraticCurveTo(6, -17, 5.5, -23);
+            ctx.quadraticCurveTo(0, -19, -5.5, -23);
+            ctx.fill();
+            ctx.fillStyle = '#2b1c12';
+            ctx.beginPath(); ctx.arc(-3, -25.5, 1.2, 0, 7); ctx.fill();  // ojo
+            ctx.strokeStyle = '#2b1c12'; ctx.lineWidth = 1.6; ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(-6, -28.5); ctx.quadraticCurveTo(-3.5, -26.8, -1, -27); ctx.stroke(); // ceño
+            // casco: media esfera suave + nasal + plumaje ondeando
+            ctx.fillStyle = '#c9a227';
+            ctx.beginPath(); ctx.arc(0, -27, 7.6, Math.PI, 0); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(0, -27, 7.9, 1.8, 0, 0, 7); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(-1.5, -24.5, 2.2, 3, 0, 0, 7); ctx.fill(); // nasal
+            ctx.fillStyle = '#a03030';                                   // pluma
+            ctx.beginPath();
+            ctx.moveTo(-2, -33);
+            ctx.quadraticCurveTo(4 + gg, -40, 14, -36 - Math.abs(gg));
+            ctx.quadraticCurveTo(7, -32, -2, -33);
+            ctx.fill();
+            // escudo: círculo con volumen + umbo
+            var sg = ctx.createRadialGradient(-16, -8, 3, -13, -4, 13);
+            sg.addColorStop(0, '#a08070'); sg.addColorStop(1, '#5d4037');
+            ctx.fillStyle = sg;
             ctx.beginPath(); ctx.arc(-13, -4, 11, 0, 7); ctx.fill();
             ctx.strokeStyle = '#c9a227'; ctx.lineWidth = 2.6;
             ctx.beginPath(); ctx.arc(-13, -4, 11, 0, 7); ctx.stroke();
@@ -390,85 +427,89 @@ BFJ.define('david', function (el) {
         } else if (f.kind === 'bear') {
             var bg = Math.sin(f.ph * 7);
             ctx.save(); ctx.translate(0, k.r + 9); shadow(k.r + 4); ctx.restore();
-            var bb = '#7a5230', bd = '#523619', bl = '#a1896d';
-            // patas rechonchas en marcha
-            ctx.fillStyle = bd;
-            ctx.fillRect(-k.r + 1 + bg * 2.4, k.r * .35, 5.5, k.r);
-            ctx.fillRect(-k.r + 9 - bg * 2.4, k.r * .45, 5.5, k.r * .9);
-            ctx.fillRect(k.r - 12 - bg * 2.4, k.r * .35, 5.5, k.r);
-            ctx.fillRect(k.r - 4 + bg * 2.4, k.r * .45, 4.5, k.r * .9);
-            // cuerpo rollizo + giba alta
-            ctx.fillStyle = bb;
-            ctx.beginPath(); ctx.ellipse(-1, 0, k.r, k.r * .74, 0, 0, 7); ctx.fill();
-            ctx.fillStyle = bd;
-            ctx.beginPath(); ctx.arc(-k.r * .25, -k.r * .48, k.r * .5, Math.PI, 0); ctx.fill();
-            // lomito claro
-            ctx.fillStyle = '#8d6e63';
-            ctx.beginPath(); ctx.ellipse(-1, k.r * .3, k.r * .6, k.r * .3, 0, 0, 7); ctx.fill();
-            // rabito
-            ctx.fillStyle = bd;
-            ctx.beginPath(); ctx.arc(k.r * .85, -2, 2.6, 0, 7); ctx.fill();
-            // cabeza grande con orejas redondas
+            // patas: tronquitos redondeados en marcha alterna
+            limb(-k.r + 4, k.r * .3, -k.r + 2 + bg * 2.4, k.r * 1.35, 6, '#523619');
+            limb(k.r - 8, k.r * .3, k.r - 6 - bg * 2.4, k.r * 1.35, 6, '#523619');
+            limb(-k.r + 10, k.r * .4, -k.r + 9 - bg * 2, k.r * 1.3, 5.6, '#63432a');
+            limb(k.r - 15, k.r * .4, k.r - 14 + bg * 2, k.r * 1.3, 5.6, '#63432a');
+            // cuerpo: pera con gradiente + giba fundida
+            blob(0, 0, k.r, k.r * .78, '#8a6238', '#5c3d20');
+            blob(-k.r * .3, -k.r * .52, k.r * .55, k.r * .42, '#8a6238', '#6b4a28');
+            // panza clara curva
+            ctx.fillStyle = 'rgba(180,140,100,.5)';
+            ctx.beginPath(); ctx.ellipse(-2, k.r * .32, k.r * .55, k.r * .28, 0, 0, 7); ctx.fill();
+            blob(k.r * .85, -2, 2.8, 2.8, '#8a6238', '#5c3d20');         // rabito
+            // cabeza: volumen + orejas + hocico claro + nariz húmeda
             var bhx = -k.r - 2, bhy = -6;
-            ctx.fillStyle = bb;
-            ctx.beginPath(); ctx.arc(bhx, bhy, k.r * .58, 0, 7); ctx.fill();
-            ctx.fillStyle = bd;
-            ctx.beginPath(); ctx.arc(bhx - 3, bhy - 8, 3.4, 0, 7); ctx.fill();
-            ctx.beginPath(); ctx.arc(bhx + 5, bhy - 8.4, 3.4, 0, 7); ctx.fill();
+            blob(bhx, bhy, k.r * .6, k.r * .58, '#8a6238', '#5c3d20');
+            blob(bhx - 3.5, bhy - 8, 3.6, 3.6, '#7a5230', '#523619');
+            blob(bhx + 5, bhy - 8.4, 3.6, 3.6, '#7a5230', '#523619');
             ctx.fillStyle = '#3e2723';
-            ctx.beginPath(); ctx.arc(bhx - 3, bhy - 8, 1.7, 0, 7); ctx.fill();
-            ctx.beginPath(); ctx.arc(bhx + 5, bhy - 8.4, 1.7, 0, 7); ctx.fill();
-            // hocico claro con nariz grande
-            ctx.fillStyle = bl;
-            ctx.beginPath(); ctx.ellipse(bhx - 8, bhy + 1, 5, 3.8, 0, 0, 7); ctx.fill();
+            ctx.beginPath(); ctx.arc(bhx - 3.5, bhy - 8, 1.8, 0, 7); ctx.fill();
+            ctx.beginPath(); ctx.arc(bhx + 5, bhy - 8.4, 1.8, 0, 7); ctx.fill();
+            ctx.fillStyle = '#b09479';                                   // hocico
+            ctx.beginPath();
+            ctx.moveTo(bhx - 12.5, bhy + 1);
+            ctx.quadraticCurveTo(bhx - 12.5, bhy - 3, bhx - 8, bhy - 2.5);
+            ctx.quadraticCurveTo(bhx - 3, bhy - 2, bhx - 3.5, bhy + 2);
+            ctx.quadraticCurveTo(bhx - 5, bhy + 5.5, bhx - 9, bhy + 5);
+            ctx.quadraticCurveTo(bhx - 12.5, bhy + 5, bhx - 12.5, bhy + 1);
+            ctx.fill();
             ctx.fillStyle = '#2b1c12';
-            ctx.beginPath(); ctx.arc(bhx - 11.5, bhy - .5, 1.9, 0, 7); ctx.fill();
-            ctx.beginPath(); ctx.arc(bhx - 2, bhy - 3.5, 1.5, 0, 7); ctx.fill();  // ojo
+            ctx.beginPath(); ctx.ellipse(bhx - 11.8, bhy, 2.1, 1.8, 0, 0, 7); ctx.fill(); // nariz
+            ctx.beginPath(); ctx.arc(bhx - 1.5, bhy - 3.5, 1.5, 0, 7); ctx.fill();        // ojo
         } else {
             var lg = Math.sin(f.ph * 9);
-            var lb = '#d8912f', ld = '#8f5410', lm = '#b26e1e';
             ctx.save(); ctx.translate(0, k.r + 9); shadow(k.r + 4); ctx.restore();
-            // cola con mechón que se agita
-            ctx.strokeStyle = lb; ctx.lineWidth = 2.4; ctx.lineCap = 'round';
+            // cola: curva viva con mechón
+            ctx.strokeStyle = '#c07f28'; ctx.lineWidth = 2.6; ctx.lineCap = 'round';
             ctx.beginPath(); ctx.moveTo(k.r - 2, -4);
-            ctx.quadraticCurveTo(k.r + 9, -10 - lg * 2, k.r + 5, -16 - lg);
+            ctx.quadraticCurveTo(k.r + 10, -8 - lg * 3, k.r + 5, -16 - lg);
             ctx.stroke();
-            ctx.fillStyle = ld;
-            ctx.beginPath(); ctx.arc(k.r + 5, -16 - lg, 3, 0, 7); ctx.fill();
-            // patas en marcha alterna
-            ctx.fillStyle = lm;
-            ctx.fillRect(-k.r + 3 + lg * 2, k.r * .5, 4, k.r * .8);
-            ctx.fillRect(k.r - 12 - lg * 2, k.r * .5, 4, k.r * .8);
-            // cuerpo + panza clara
-            ctx.fillStyle = lb;
-            ctx.beginPath(); ctx.ellipse(-1, 0, k.r, k.r * .66, 0, 0, 7); ctx.fill();
-            ctx.fillStyle = '#e8b45f';
-            ctx.beginPath(); ctx.ellipse(-1, k.r * .28, k.r * .68, k.r * .32, 0, 0, 7); ctx.fill();
-            // cabeza con melena dentada
+            blob(k.r + 5, -16 - lg, 3.2, 3.2, '#8f5410', '#6b3d0a');
+            // patas esbeltas en marcha
+            limb(-k.r + 5, k.r * .45, -k.r + 3 + lg * 2.4, k.r * 1.35, 4.4, '#b26e1e');
+            limb(k.r - 9, k.r * .45, k.r - 7 - lg * 2.4, k.r * 1.35, 4.4, '#b26e1e');
+            limb(-k.r + 11, k.r * .5, -k.r + 10 - lg * 2, k.r * 1.3, 3.8, '#c07f28');
+            // cuerpo felino con gradiente
+            blob(-1, 0, k.r, k.r * .68, '#e8aa4e', '#b06e16');
+            ctx.fillStyle = 'rgba(240,200,120,.6)';                      // panza
+            ctx.beginPath(); ctx.ellipse(-1, k.r * .3, k.r * .6, k.r * .3, 0, 0, 7); ctx.fill();
+            // melena: anillo de mechones solapados (peludo, no dentado)
             var hx = -k.r - 2, hy = -4;
-            ctx.fillStyle = ld;
-            ctx.beginPath();
             for (var m = 0; m < 10; m++) {
                 var ma = m / 10 * 6.283;
-                var mr = k.r * .62 + (m % 2 ? 6.5 : 3);
-                ctx.lineTo(hx + Math.cos(ma) * mr, hy + Math.sin(ma) * mr);
+                blob(hx + Math.cos(ma) * (k.r * .58), hy + Math.sin(ma) * (k.r * .58),
+                    k.r * .34, k.r * .34, '#9a5c12', '#6e3f08');
             }
-            ctx.closePath(); ctx.fill();
-            ctx.beginPath(); ctx.arc(hx - 4, hy - 6.5, 2.4, 0, 7); ctx.fill(); // oreja
-            ctx.fillStyle = lb;
-            ctx.beginPath(); ctx.arc(hx, hy, k.r * .62, 0, 7); ctx.fill();
-            ctx.fillStyle = '#e8b45f';                                  // hocico
-            ctx.beginPath(); ctx.ellipse(hx - k.r * .5, hy + 2, 4.2, 3.2, 0, 0, 7); ctx.fill();
+            blob(hx, hy, k.r * .6, k.r * .6, '#e8aa4e', '#b06e16');      // cara
+            blob(hx - 2, hy - k.r * .55, 2.8, 2.8, '#c07f28', '#8f5410'); // oreja
+            // hocico + nariz + ojo
+            ctx.fillStyle = '#f0c87e';
+            ctx.beginPath();
+            ctx.moveTo(hx - k.r * .5 - 4.4, hy + 1);
+            ctx.quadraticCurveTo(hx - k.r * .5 - 4.4, hy - 1.5, hx - k.r * .5 - 1, hy - 1.5);
+            ctx.quadraticCurveTo(hx - k.r * .5 + 3, hy - 1.5, hx - k.r * .5 + 3, hy + 2);
+            ctx.quadraticCurveTo(hx - k.r * .5 + 1, hy + 5, hx - k.r * .5 - 2, hy + 5);
+            ctx.quadraticCurveTo(hx - k.r * .5 - 4.4, hy + 4.5, hx - k.r * .5 - 4.4, hy + 1);
+            ctx.fill();
+            ctx.fillStyle = '#4a2e1a';
+            ctx.beginPath(); ctx.ellipse(hx - k.r * .5 - 3, hy - .5, 1.8, 1.4, 0, 0, 7); ctx.fill(); // nariz
             ctx.fillStyle = '#2b1c12';
-            ctx.beginPath(); ctx.arc(hx - k.r * .5 - 2.5, hy + 1, 1.4, 0, 7); ctx.fill(); // nariz
-            ctx.beginPath(); ctx.arc(hx - 1, hy - 2.5, 1.4, 0, 7); ctx.fill();            // ojo
+            ctx.beginPath(); ctx.arc(hx - 1, hy - 3, 1.5, 0, 7); ctx.fill();                        // ojo
         }
-        // vida
+        // vida: píldora redondeada
         ctx.globalAlpha = 1;
-        ctx.fillStyle = 'rgba(0,0,0,.25)';
-        ctx.fillRect(-k.r, -k.r - 14, k.r * 2, 4);
-        ctx.fillStyle = f.hp > k.hp / 2 ? '#6fbf5a' : '#e05252';
-        ctx.fillRect(-k.r, -k.r - 14, k.r * 2 * (f.hp / k.hp), 4);
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = 'rgba(0,0,0,.3)'; ctx.lineWidth = 5;
+        ctx.beginPath(); ctx.moveTo(-k.r + 2, -k.r - 14); ctx.lineTo(k.r - 2, -k.r - 14); ctx.stroke();
+        if (f.hp > 0) {
+            ctx.strokeStyle = f.hp > k.hp / 2 ? '#6fbf5a' : '#e05252'; ctx.lineWidth = 3.4;
+            ctx.beginPath();
+            ctx.moveTo(-k.r + 2, -k.r - 14);
+            ctx.lineTo(-k.r + 2 + (k.r * 2 - 4) * (f.hp / k.hp), -k.r - 14);
+            ctx.stroke();
+        }
         ctx.restore();
     }
 
@@ -476,46 +517,59 @@ BFJ.define('david', function (el) {
         ctx.save(); ctx.translate(84, 178);
         ctx.save(); ctx.translate(0, 21); shadow(12); ctx.restore();
         var aim = armT > 0 ? -Math.sin(armT * 10) * .8 : 0;
-        // piernas + sandalias
-        ctx.strokeStyle = '#d7a06a'; ctx.lineWidth = 3.6; ctx.lineCap = 'round';
-        ctx.beginPath(); ctx.moveTo(-3, 10); ctx.lineTo(-3, 20); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(3, 10); ctx.lineTo(3, 20); ctx.stroke();
+        // piernas curvas + pies de sandalia
+        limb(-2.5, 8, -3.5, 18, 3.8, '#c98f5e');
+        limb(2.5, 8, 3.5, 18, 3.8, '#c98f5e');
         ctx.fillStyle = '#6d4c41';
-        ctx.fillRect(-5.4, 19, 5, 2.6); ctx.fillRect(1, 19, 5, 2.6);
-        // túnica de pastor con orla y ceñidor
+        ctx.beginPath(); ctx.ellipse(-4.5, 19.5, 3.4, 1.7, 0, 0, 7); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(4.5, 19.5, 3.4, 1.7, 0, 0, 7); ctx.fill();
+        // túnica: campana curva de hombro a bajo, no trapecio
         ctx.fillStyle = '#e8dcc0';
         ctx.beginPath();
-        ctx.moveTo(-7, 12); ctx.lineTo(-5, -6); ctx.lineTo(5, -6); ctx.lineTo(7, 12);
-        ctx.closePath(); ctx.fill();
-        ctx.fillStyle = '#8d6e63';
-        ctx.fillRect(-7, 9.5, 14, 2.5);                                   // orla
-        ctx.fillStyle = '#a03030';
-        ctx.fillRect(-5, -2, 10, 2.4);                                    // ceñidor
-        ctx.fillStyle = '#795548';                                        // zurrón de piedras
-        ctx.beginPath(); ctx.arc(-6, 6, 3.2, 0, 7); ctx.fill();
-        // cabeza: cabello con bucle + cinta azul
-        ctx.fillStyle = '#d7a06a';
-        ctx.beginPath(); ctx.arc(0, -13, 6, 0, 7); ctx.fill();
+        ctx.moveTo(-5.5, -6);
+        ctx.quadraticCurveTo(-8, 0, -8.5, 9);
+        ctx.quadraticCurveTo(-8.5, 13, -3, 13);
+        ctx.quadraticCurveTo(0, 13.5, 3, 13);
+        ctx.quadraticCurveTo(8.5, 13, 8.5, 9);
+        ctx.quadraticCurveTo(8, 0, 5.5, -6);
+        ctx.quadraticCurveTo(0, -9, -5.5, -6);
+        ctx.fill();
+        // orla y ceñidor como trazos que siguen la tela
+        ctx.strokeStyle = '#8d6e63'; ctx.lineWidth = 2; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(-7.8, 9.5); ctx.quadraticCurveTo(0, 12.4, 7.8, 9.5); ctx.stroke();
+        ctx.strokeStyle = '#a03030'; ctx.lineWidth = 2.6;
+        ctx.beginPath(); ctx.moveTo(-5.6, -1); ctx.quadraticCurveTo(0, 1.2, 5.6, -1); ctx.stroke();
+        // zurrón: bolsita redonda con nudo
+        blob(-6.5, 5.5, 3.4, 3.6, '#9a7355', '#6b4a30');
+        ctx.fillStyle = '#5d4037';
+        ctx.beginPath(); ctx.arc(-6.5, 2.2, 1.2, 0, 7); ctx.fill();
+        // cabeza con volumen
+        blob(0, -13, 6.2, 6.2, '#eec19a', '#c98f5e');
+        // cabello: copete de rizos + bucle lateral
         ctx.fillStyle = '#4a2e1a';
-        ctx.beginPath(); ctx.arc(0, -15.5, 6.4, Math.PI * 1.02, Math.PI * 1.98); ctx.fill();
-        ctx.beginPath(); ctx.arc(-4, -13.5, 2.4, 0, 7); ctx.fill();
-        ctx.fillStyle = '#3a5fb0';
-        ctx.fillRect(-6.2, -16.4, 12.4, 2);
+        ctx.beginPath(); ctx.arc(0, -16, 6, Math.PI * .98, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(-4.2, -16.5, 2.6, 0, 7); ctx.fill();
+        ctx.beginPath(); ctx.arc(0.5, -18.5, 2.8, 0, 7); ctx.fill();
+        ctx.beginPath(); ctx.arc(4, -16.5, 2.4, 0, 7); ctx.fill();
+        ctx.beginPath(); ctx.arc(-5, -13, 2.2, 0, 7); ctx.fill();        // bucle
+        // cinta azul siguiendo la curva del cabello
+        ctx.strokeStyle = '#3a5fb0'; ctx.lineWidth = 2; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.arc(0, -14.5, 5.9, Math.PI * 1.08, Math.PI * 1.92); ctx.stroke();
         ctx.fillStyle = '#2b1c12';
-        ctx.beginPath(); ctx.arc(2.6, -13, 1.1, 0, 7); ctx.fill();        // ojo
+        ctx.beginPath(); ctx.arc(2.4, -12.6, 1.1, 0, 7); ctx.fill();     // ojo
+        ctx.strokeStyle = '#b5794a'; ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.arc(3.5, -10, 1.6, .3, Math.PI * .8); ctx.stroke(); // sonrisa
         // brazo con honda: las cuerdas giran de verdad al cargar
         ctx.save(); ctx.translate(4, -8); ctx.rotate(-.7 + aim);
-        ctx.strokeStyle = '#d7a06a'; ctx.lineWidth = 3.4;
-        ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(12, 0); ctx.stroke();
+        limb(0, 0, 12, 0, 3.6, '#d7a06a');
         var sw = t * (armT > 0 ? .03 : .008);
         var lx = 12 + Math.cos(sw) * 8, ly = -3 + Math.sin(sw) * 5;
-        ctx.strokeStyle = '#5d4037'; ctx.lineWidth = 1.6;
+        ctx.strokeStyle = '#5d4037'; ctx.lineWidth = 1.6; ctx.lineCap = 'round';
         ctx.beginPath();
         ctx.moveTo(12, 0); ctx.lineTo(lx, ly - 3.5);
         ctx.moveTo(12, 0); ctx.lineTo(lx, ly + 3.5);
         ctx.stroke();
-        ctx.fillStyle = '#8d8d94';
-        ctx.beginPath(); ctx.arc(lx, ly, 2.4, 0, 7); ctx.fill();          // piedra en la honda
+        blob(lx, ly, 2.6, 2.6, '#a8a8b0', '#70707a');                    // piedra
         ctx.restore();
         ctx.restore();
     }
