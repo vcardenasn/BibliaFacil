@@ -36,6 +36,8 @@ $totalDays = count($days);
                 <?php foreach ($d['items'] as $it): ?>
                 <a href="<?= e(url("{$planVersion['code']}/{$it['slug']}/{$it['ch']}")) ?>"><?= e($it['name']) ?> <?= (int) $it['ch'] ?></a>
                 <?php endforeach; ?>
+                <a class="pd-dev" href="<?= e(url("{$planVersion['code']}/{$d['items'][0]['slug']}/{$d['items'][0]['ch']}")) ?>?dev=1"
+                    title="Abre la lectura en modo devocional — anota qué te enseña el pasaje">✍️ Devocional</a>
             </span>
         </li>
         <?php endforeach; ?>

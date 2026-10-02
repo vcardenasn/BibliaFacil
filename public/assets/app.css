@@ -853,6 +853,9 @@ a.crumb:hover { color: var(--brand); }
 .plan-day.done .pd-num { color: var(--muted); }
 .pd-links { display: inline-flex; flex-wrap: wrap; gap: .25rem .6rem; }
 .pd-links a { font-size: .88rem; }
+.pd-dev { font-size: .76rem !important; color: var(--muted); border: 1px solid var(--border-strong); border-radius: 999px; padding: .15rem .55rem; }
+.pd-dev:hover { color: var(--brand); border-color: var(--brand); }
+.pd-dev:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .plan-bar span { transition: none; } }
 
 /* Citación bajo el capítulo (ToS API.Bible §7.2) y ficha de licencia */

@@ -321,8 +321,8 @@
 
     var annMap = {}; // id → record
     function applyMarks() {
-        if (!chapterEl) { return; }
-        DB.all().then(function (list) {
+        if (!chapterEl) { return Promise.resolve(); }
+        return DB.all().then(function (list) {
             annMap = {};
             list.forEach(function (r) { annMap[r.id] = r; });
             document.querySelectorAll('.verse').forEach(function (el) {
@@ -611,7 +611,7 @@
         var card = sh.querySelector('.vs-card');
         card.innerHTML =
             '<div class="vs-head"><button type="button" class="vs-x" data-a="back">← Volver</button>' +
-            '<strong>Devocional</strong><button type="button" class="vs-x" data-a="close" aria-label="Cerrar">✕</button></div>' +
+            '<strong>📓 Devocional — mis apuntes</strong><button type="button" class="vs-x" data-a="close" aria-label="Cerrar">✕</button></div>' +
             '<div class="vs-devotional">' +
             '<label class="vs-dev-range">Porción desde v. ' + from + ' hasta <select>' + options.join('') + '</select></label>' +
             '<blockquote class="vs-dev-passage"></blockquote>' +
@@ -737,7 +737,19 @@
         if (ev.key === 'Escape') { closeSheet(); closePanel(); }
     });
 
-    applyMarks();
+    var marksReady = applyMarks();
+
+    // ?dev=1 — el enlace «✍️ Devocional» de Planes de lectura abre el modo
+    // devocional sobre el v.1 del capítulo; el selector de rango permite
+    // extender la porción hasta el final del capítulo.
+    if (chapterEl && /[?&]dev=1\b/.test(location.search)) {
+        marksReady.then(function () {
+            var v1 = document.querySelector('.chapter .verse');
+            if (!v1) { return; }
+            openSheet(v1);
+            devotionalMode(sheet, annMap[keyOf(v1)] || {}, v1.getAttribute('data-ref') || '');
+        });
+    }
 
     // ============================ Mis anotaciones ==============================
     var mias = document.getElementById('miasApp');
