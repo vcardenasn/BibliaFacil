@@ -5,27 +5,27 @@
 BFJ.define('david', function (el) {
     var ROUNDS = [
         {
-            name: 'Ronda 1 · El león',
-            ref: '1 Samuel 17:34-35',
-            desc: '«Tu siervo apacentaba las ovejas de su padre… salió tras el león y lo hirió.»',
+            name: BFJ.T('Ronda 1 · El león'),
+            ref: '1 ' + BFJ.T('Samuel') + ' 17:34-35',
+            desc: BFJ.T('«Tu siervo apacentaba las ovejas de su padre… salió tras el león y lo hirió.»'),
             waves: [['lion', 5]], spawnEvery: 2400, burst: 2
         },
         {
-            name: 'Ronda 2 · El oso',
-            ref: '1 Samuel 17:36',
-            desc: '«León y oso, tu siervo los mató.»',
+            name: BFJ.T('Ronda 2 · El oso'),
+            ref: '1 ' + BFJ.T('Samuel') + ' 17:36',
+            desc: BFJ.T('«León y oso, tu siervo los mató.»'),
             waves: [['lion', 3], ['bear', 3]], spawnEvery: 2600, burst: 2
         },
         {
-            name: 'Ronda 3 · Goliat',
-            ref: '1 Samuel 17:45-49',
-            desc: '«Tú vienes con espada; yo vengo en el nombre de Jehová.»',
+            name: BFJ.T('Ronda 3 · Goliat'),
+            ref: '1 ' + BFJ.T('Samuel') + ' 17:45-49',
+            desc: BFJ.T('«Tú vienes con espada; yo vengo en el nombre de Jehová.»'),
             waves: [['lion', 2], ['bear', 3], ['goliath', 1]], spawnEvery: 2800, burst: 2
         },
         {
-            name: 'Libre · El buen pastor',
-            ref: 'Salmo 23',
-            desc: 'Jehová es mi pastor. ¿Cuánto aguantas guardando el rebaño?',
+            name: BFJ.T('Libre · El buen pastor'),
+            ref: BFJ.T('Salmo') + ' 23',
+            desc: BFJ.T('Jehová es mi pastor. ¿Cuánto aguantas guardando el rebaño?'),
             endless: true, waves: [['lion', 4], ['bear', 3]], spawnEvery: 2100, burst: 2
         }
     ];
@@ -49,22 +49,22 @@ BFJ.define('david', function (el) {
             '<p class="pn-s">' + BFJ.esc(r.desc) + '</p>' +
             '<p class="pn-ref">📖 ' + r.ref + '</p>' +
             '<p class="pn-goal">' + (r.endless
-                ? '🏁 Sin meta — defiende todo lo que puedas'
-                : '🏁 Repele a todos los depredadores') + '</p>' +
-            (best ? '<p class="pn-best">✨ Tu récord: ' + best + ' enemigos</p>' : '') +
-            '<button type="button" class="jbtn jbtn-main" id="dvGo">▶ ¡A defender!</button>' +
-            '<p class="pn-k">👆 Toca a los depredadores para lanzar piedras</p>'
+                ? BFJ.T('🏁 Sin meta — defiende todo lo que puedas')
+                : BFJ.T('🏁 Repele a todos los depredadores')) + '</p>' +
+            (best ? '<p class="pn-best">✨ ' + BFJ.T('Tu récord:') + ' ' + best + ' ' + BFJ.T('enemigos') + '</p>' : '') +
+            '<button type="button" class="jbtn jbtn-main" id="dvGo">' + BFJ.T('▶ ¡A defender!') + '</button>' +
+            '<p class="pn-k">' + BFJ.T('👆 Toca a los depredadores para lanzar piedras') + '</p>'
         );
     }
 
     el.innerHTML =
         '<div class="pn-stage" id="dvStage">' +
         '<canvas class="pn-cv" id="dvCv" width="480" height="320" ' +
-        'aria-label="David y las Ovejas: toca los depredadores para lanzarles piedras"></canvas>' +
+        'aria-label="' + BFJ.T('David y las Ovejas: toca los depredadores para lanzarles piedras') + '"></canvas>' +
         '<div class="pn-hud" aria-hidden="true">' +
         '<span id="dvSheep">🐑 ' + SHEEP_N + '</span><span id="dvKills">⚔️ 0</span>' +
         '</div>' +
-        '<div class="pn-hint" id="dvHint" hidden>👆 ¡Toca al depredador!</div>' +
+        '<div class="pn-hint" id="dvHint" hidden>' + BFJ.T('👆 ¡Toca al depredador!') + '</div>' +
         '<div class="pn-menu" id="dvMenu"></div>' +
         '</div>';
 
@@ -178,13 +178,13 @@ BFJ.define('david', function (el) {
             BFJ.levels.pass('david', ri, kills);
         }
         var title = success
-            ? (ri === 2 ? '¡El pastor venció al gigante!' : '¡Rebaño a salvo!')
-            : 'El rebaño se dispersó…';
+            ? (ri === 2 ? BFJ.T('¡El pastor venció al gigante!') : BFJ.T('¡Rebaño a salvo!'))
+            : BFJ.T('El rebaño se dispersó…');
         BFJ.celebrate({
             slug: 'david', stars: stars,
             emoji: success ? '🏆' : '🐑', title: title,
-            extra: kills + ' depredadores vencidos · ' + left + '/' + SHEEP_N + ' ovejas' +
-                (isRecord ? ' · ✨ ¡récord!' : ''),
+            extra: kills + ' ' + BFJ.T('depredadores vencidos') + ' · ' + left + '/' + SHEEP_N + ' ' + BFJ.T('ovejas') +
+                (isRecord ? ' · ' + BFJ.T('✨ ¡récord!') : ''),
             perfect: success && left === SHEEP_N,
             onAgain: function () { startRound(); }
         });
@@ -455,7 +455,9 @@ BFJ.define('david', function (el) {
     function startRound() {
         reset();
         over = false; won = false; playing = true;
-        menu.hidden = true;
+        // .pn-menu lleva display:flex en CSS — el atributo `hidden` no le gana,
+        // hay que ocultarlo con estilo inline (como hace la paloma)
+        menu.style.display = 'none';
         hint.hidden = false;
         setTimeout(function () { hint.hidden = true; }, 2600);
         last = 0;
