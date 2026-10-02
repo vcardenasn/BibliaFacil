@@ -4,77 +4,105 @@
         "b": "🐳",
         "name": "Jonás y el gran pez",
         "ia": "arkset:jonas",
-        "ib": "arkset:jonas-agua"
+        "ib": "arkset:jonas-agua",
+        "na": "Jonás",
+        "nb": "El gran pez"
     },
     {
         "a": "🚢",
         "b": "🌈",
         "name": "Noé y el arcoíris",
         "ia": "arkset:arca-animales",
-        "ib": "arkset:noe"
+        "ib": "arkset:noe",
+        "na": "El arca",
+        "nb": "Noé"
     },
     {
         "a": "🦁",
         "b": "🙏",
-        "name": "Daniel orando"
+        "name": "Daniel orando",
+        "na": "El león",
+        "nb": "Daniel"
     },
     {
         "a": "🪨",
         "b": "👦",
-        "name": "David y su honda"
+        "name": "David y su honda",
+        "na": "La piedra",
+        "nb": "David"
     },
     {
         "a": "🔥",
         "b": "🌳",
-        "name": "Moisés y la zarza"
+        "name": "Moisés y la zarza",
+        "na": "El fuego",
+        "nb": "La zarza"
     },
     {
         "a": "👶",
         "b": "⭐",
-        "name": "El nacimiento de Jesús"
+        "name": "El nacimiento de Jesús",
+        "na": "Jesús niño",
+        "nb": "La estrella"
     },
     {
         "a": "🍞",
         "b": "🐟",
-        "name": "Panes y peces"
+        "name": "Panes y peces",
+        "na": "Los panes",
+        "nb": "Los peces"
     },
     {
         "a": "🐑",
         "b": "🧑‍🌾",
         "name": "La oveja perdida",
         "ia": "arkset:oveja",
-        "ib": "arkset:noe"
+        "ib": "arkset:noe",
+        "na": "La oveja",
+        "nb": "El pastor"
     },
     {
         "a": "🌊",
         "b": "🚶",
-        "name": "Jesús sobre el agua"
+        "name": "Jesús sobre el agua",
+        "na": "El mar",
+        "nb": "Jesús"
     },
     {
         "a": "🏰",
         "b": "🎺",
-        "name": "Las murallas de Jericó"
+        "name": "Las murallas de Jericó",
+        "na": "Jericó",
+        "nb": "Las trompetas"
     },
     {
         "a": "🍎",
         "b": "🐍",
         "name": "Adán y Eva",
         "ia": "arkset:adan",
-        "ib": "arkset:eva-eden"
+        "ib": "arkset:eva-eden",
+        "na": "El fruto",
+        "nb": "La serpiente"
     },
     {
         "a": "😴",
         "b": "🪜",
-        "name": "La escalera de Jacob"
+        "name": "La escalera de Jacob",
+        "na": "Jacob",
+        "nb": "La escalera"
     },
     {
         "a": "💇",
         "b": "💪",
-        "name": "Sansón y su fuerza"
+        "name": "Sansón y su fuerza",
+        "na": "Sansón",
+        "nb": "Su fuerza"
     },
     {
         "a": "👑",
         "b": "💃",
-        "name": "La reina Ester"
+        "name": "La reina Ester",
+        "na": "La corona",
+        "nb": "Reina Ester"
     }
 ]

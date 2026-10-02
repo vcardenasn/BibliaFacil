@@ -8,8 +8,8 @@ BFJ.define('memory', function (el) {
         var pairs = BFJ.pick(bank, 8);
         var cards = [];
         pairs.forEach(function (p, pi) {
-            cards.push({ pid: pi, emoji: p.a, img: p.ia || '' });
-            cards.push({ pid: pi, emoji: p.b, img: p.ib || '' });
+            cards.push({ pid: pi, emoji: p.a, img: p.ia || '', label: p.na || p.name });
+            cards.push({ pid: pi, emoji: p.b, img: p.ib || '', label: p.nb || p.name });
         });
         BFJ.shuffle(cards);
 
@@ -23,7 +23,8 @@ BFJ.define('memory', function (el) {
                 return '<button type="button" class="mm-card" data-i="' + i +
                     '" aria-label="' + BFJ.T('Carta') + ' ' + (i + 1) + ' ' + BFJ.T('de') + ' ' + cards.length + '">' +
                     '<span class="mm-face mm-back" aria-hidden="true">' + BFJ.omoji('❓') + '</span>' +
-                    '<span class="mm-face mm-front">' + BFJ.bimg(c.img, c.emoji) + '</span></button>';
+                    '<span class="mm-face mm-front">' + BFJ.bimg(c.img, c.emoji) +
+                    '<small class="mm-name">' + BFJ.esc(BFJ.T(c.label)) + '</small></span></button>';
             }).join('') + '</div>' +
             '<div class="mm-found" id="mmFound" aria-live="polite"></div>';
 
@@ -46,7 +47,7 @@ BFJ.define('memory', function (el) {
             if (lock || btn.classList.contains('open') || btn.classList.contains('done')) { return; }
             BFJ.snd('click');
             btn.classList.add('open');
-            btn.setAttribute('aria-label', BFJ.T('Carta') + ' ' + (i + 1) + ': ' + pairs[cards[i].pid].name);
+            btn.setAttribute('aria-label', BFJ.T('Carta') + ' ' + (i + 1) + ': ' + cards[i].label);
             open.push({ i: i, btn: btn });
             if (open.length < 2) { return; }
 
