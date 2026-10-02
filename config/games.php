@@ -14,6 +14,7 @@ return [
     'versiculo' => ['name' => 'Completa el Versículo',  'img' => '1F4D6', 'desc' => 'Versículos por niveles: ¡desbloquéalos todos!', 'ready' => true, 'color' => '#1971c2', 'region' => 'desierto'],
     'historia'  => ['name' => 'Ordena la Historia',     'img' => '1F4DC', 'desc' => 'Pon las escenas en orden.', 'ready' => true, 'color' => '#f76707', 'region' => 'historias'],
     'memory'    => ['name' => 'Memory Bíblico',         'img' => '1F0CF', 'desc' => 'Encuentra todas las parejas.', 'ready' => true, 'color' => '#d6336c', 'region' => 'historias'],
+    'david'     => ['name' => 'David y las Ovejas',      'img' => '1F411', 'desc' => 'Protege el rebaño con la honda de David.', 'ready' => true, 'color' => '#5c940d', 'region' => 'historias'],
     'libros'    => ['name' => 'Ordena los Libros',      'img' => '1F4DA', 'desc' => '¿Sabes el orden de la Biblia?', 'ready' => true, 'color' => '#0ca678', 'region' => 'prometida'],
     'personaje' => ['name' => 'Adivina el Personaje',   'img' => '1F3AD', 'desc' => 'Descubre quién es con pistas.', 'ready' => true, 'color' => '#e8890c', 'region' => 'prometida'],
     'sopa'      => ['name' => 'Sopa de Letras',          'img' => '1F50D', 'desc' => 'Encuentra las palabras escondidas.', 'ready' => true, 'color' => '#ae3ec9', 'region' => 'galilea'],
