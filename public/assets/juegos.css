@@ -47,7 +47,9 @@
     display: inline-flex; align-items: center; gap: .4rem;
     background: color-mix(in srgb, var(--brand-ink) 18%, transparent); border-radius: 999px;
     padding: .4rem 1rem; font-family: var(--sans); font-weight: 700; color: var(--brand-ink);
+    white-space: nowrap; max-width: 100%; overflow: hidden;
 }
+.jh-stars strong { overflow: hidden; text-overflow: ellipsis; }
 .jh-stars.bfj-bump { animation: bfj-pop .35s; }
 .jh-level-wrap { display: inline-flex; flex-direction: column; gap: .25rem; align-items: center; }
 .jh-level {
@@ -213,7 +215,7 @@
     box-shadow: 0 3px 8px rgba(0,0,0,.22), inset 0 -3px 0 rgba(0,0,0,.08);
     transition: border-color .2s;
 }
-.jh-node-info { display: flex; flex-direction: column; gap: .15rem; min-width: 0; }
+.jh-node-info { display: flex; flex-direction: column; gap: .15rem; min-width: 0; overflow: hidden; }
 .jh-node-info strong { font-family: var(--sans); font-size: .92rem; line-height: 1.2; }
 .jh-node-info small { color: var(--muted); font-family: var(--sans); font-size: .72rem; line-height: 1.25; }
 .jh-emoji { font-size: 1.9rem; line-height: 1; filter: drop-shadow(0 3px 4px rgba(0,0,0,.18)); }
@@ -224,6 +226,7 @@
 .jh-best {
     align-self: flex-start; font-family: var(--sans); font-size: .72rem; font-weight: 700;
     color: var(--muted); background: var(--brand-soft); border-radius: 999px; padding: .2rem .7rem;
+    max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .jh-node.alt-l .jh-best { align-self: flex-end; }
 .jh-best.won { color: var(--brand); background: var(--gold-soft); }
@@ -358,7 +361,7 @@
 }
 .bfj-ovemoji { font-size: 3.4rem; }
 .bfj-ovcard h2 { font-family: var(--sans); margin: .4rem 0; }
-.bfj-ovstars { font-size: 1.5rem; letter-spacing: .1em; }
+.bfj-ovstars { font-size: 1.4rem; letter-spacing: .06em; line-height: 1.45; word-break: break-all; }
 .bfj-ovpts { font-family: var(--sans); font-weight: 800; color: var(--gold-ink); font-size: 1.15rem; margin: .3rem 0 .6rem; }
 .bfj-ovhtml { margin: .5rem 0; max-width: 100%; }
 .bfj-ovhtml .hs-panel { background: var(--card); min-width: 84px; flex: 0 0 84px; }
