@@ -60,7 +60,7 @@ BFJ.define('memory', function (el) {
                     a.btn.classList.add('done'); b.btn.classList.add('done');
                     matched++;
                     document.getElementById('mmOk').textContent = matched;
-                    BFJ.snd('ok');
+                    BFJ.snd('pop');
                     BFJ.burst(a.btn); BFJ.burst(b.btn); // US-234 — la pareja estalla en ⭐
                     var name = pairs[cards[a.i].pid].name;
                     foundNames.push(name);

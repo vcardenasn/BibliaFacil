@@ -44,7 +44,9 @@
         try { localStorage.setItem('bf_games', JSON.stringify(data)); } catch (e) {}
     }
     var LEVELS = [
-        [0, '🌱 Explorador'], [15, '📗 Aprendiz'], [50, '🏅 Maestro'], [120, '👑 Leyenda']
+        [0, '🌱 Explorador'], [15, '📗 Aprendiz'], [40, '🕯️ Discípulo'],
+        [80, '⭐ Siervo Fiel'], [140, '⚔️ Guerrero'], [220, '🔥 Profeta'],
+        [320, '✝️ Apóstol'], [450, '👑 Leyenda']
     ];
 
     // ============================ Stickers (US-179) ===========================
@@ -179,6 +181,27 @@
         o.start(c.currentTime + t0);
         o.stop(c.currentTime + t0 + dur + .02);
     }
+    // Ruido blanco filtrado con barrido — base de whoosh/flap/pop sin archivos
+    function noise(t0, dur, f0, f1, vol) {
+        var c = ctx();
+        if (!c) { return; }
+        var n = Math.max(64, Math.floor(c.sampleRate * dur));
+        var buf = c.createBuffer(1, n, c.sampleRate);
+        var ch = buf.getChannelData(0);
+        for (var i = 0; i < n; i++) { ch[i] = Math.random() * 2 - 1; }
+        var src = c.createBufferSource(); src.buffer = buf;
+        var fl = c.createBiquadFilter();
+        fl.type = 'bandpass';
+        fl.frequency.setValueAtTime(f0, c.currentTime + t0);
+        fl.frequency.exponentialRampToValueAtTime(f1, c.currentTime + t0 + dur);
+        fl.Q.value = .9;
+        var g = c.createGain();
+        g.gain.setValueAtTime(vol, c.currentTime + t0);
+        g.gain.exponentialRampToValueAtTime(.001, c.currentTime + t0 + dur);
+        src.connect(fl); fl.connect(g); g.connect(c.destination);
+        src.start(c.currentTime + t0);
+        src.stop(c.currentTime + t0 + dur + .02);
+    }
     function snd(kind) {
         buzz(kind); // US-231 — háptica táctil gratis en móviles (no hace ruido)
         if (muted) { return; }
@@ -188,7 +211,15 @@
             else if (kind === 'bad') { tone(233, 0, .16, 'sawtooth', .1); tone(175, .1, .22, 'sawtooth', .1); }
             else if (kind === 'win') {
                 [523, 659, 784, 1047].forEach(function (f, i) { tone(f, i * .13, .25, 'triangle'); });
-            } else if (kind === 'tick') { tone(880, 0, .04, 'square', .06); }
+                [1568, 2093].forEach(function (f, i) { tone(f, .55 + i * .1, .22, 'sine', .08); });
+            }
+            else if (kind === 'tick') { tone(880, 0, .04, 'square', .06); }
+            else if (kind === 'pop') { noise(0, .07, 1400, 3200, .13); tone(880, 0, .05, 'sine', .08); }
+            else if (kind === 'flap') { noise(0, .13, 420, 1900, .11); }
+            else if (kind === 'whoosh') { noise(0, .3, 300, 2400, .1); }
+            else if (kind === 'sparkle') {
+                [1568, 1976, 2637].forEach(function (f, i) { tone(f, i * .05, .15, 'sine', .11); });
+            }
         } catch (e) {}
     }
     // Vibración corta por resultado — navigator.vibrate no existe en iOS, no pasa nada
@@ -337,7 +368,10 @@
             dailyMarkDone(daily.date, o.slug);
             dBonus = true;
         }
+        var liBefore = levelInfo();
         BFJ.stars.add(o.slug, o.stars);
+        var liAfter = levelInfo();
+        var lvUp = liAfter.name !== liBefore.name;
         if (window.BF_TRACK) {
             window.BF_TRACK('game_win', o.slug);
             window.BF_TRACK('game_stars', o.slug, o.stars);
@@ -361,6 +395,8 @@
                 ? '⭐'.repeat(Math.min(o.stars, 10)) : '☆') + '</div>' +
             '<p class="bfj-ovpts">+' + o.stars + ' estrella' + (o.stars === 1 ? '' : 's') + '</p>' +
             (dBonus ? '<div class="bfj-ovdaily">🗓 ¡Desafío del día! ⭐×2</div>' : '') +
+            (lvUp ? '<div class="bfj-ovlvl bfj-pop">🎖 ¡Subiste de nivel!<br><strong>' +
+                esc(liAfter.name) + '</strong></div>' : '') +
             (o.extra ? '<p class="bfj-ovextra">' + esc(o.extra) + '</p>' : '') +
             (o.html ? '<div class="bfj-ovhtml">' + o.html + '</div>' : '') +
             (news.length ? '<div class="bfj-ovstick bfj-pop">🎁 ¡Sticker nuevo!<br>' +
@@ -406,6 +442,10 @@
         }
         snd('win');
         confetti();
+        if (lvUp) {
+            snd('sparkle');
+            setTimeout(function () { confetti(1200); }, 650);
+        }
         ov.addEventListener('keydown', function (ev) {
             if (ev.key === 'Escape') { ev.stopPropagation(); dismiss(false); }
         });

@@ -88,7 +88,8 @@ BFJ.define('trivia', function (el) {
                 if (hit) {
                     ok++; streak++;
                     if (streak > bestStreak) { bestStreak = streak; }
-                    if (t && t.left() > 11) { // <4s tras aparecer = ⚡ rápida
+                    var rapid = t && t.left() > 11; // <4s tras aparecer = ⚡ rápida
+                    if (rapid) {
                         fast++;
                         var qbox = el.querySelector('.vf-qbox');
                         if (qbox) {
@@ -96,7 +97,7 @@ BFJ.define('trivia', function (el) {
                                 '<span class="vf-fast bfj-pop">⚡ ¡rápida!</span>');
                         }
                     }
-                    BFJ.snd('ok');
+                    BFJ.snd(rapid ? 'sparkle' : 'ok');
                     BFJ.burst(el.querySelector('.tr-opt.ok'));
                 }
                 else { streak = 0; BFJ.snd('bad'); BFJ.shake(el.firstElementChild); }

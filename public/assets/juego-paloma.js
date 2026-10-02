@@ -108,7 +108,7 @@ BFJ.define('paloma', function (el) {
         }
         dove.vy = -190;
         flapT = .55;
-        BFJ.snd('click');
+        BFJ.snd('flap');
     }
 
     function spawnCloud() {
@@ -266,7 +266,7 @@ BFJ.define('paloma', function (el) {
                 o.taken = true; got++;
                 hudOl.textContent = '🌿 ' + got + (f.olivesNeeded ? '/' + f.olivesNeeded : '');
                 popup(o.x, o.y - 12, '+1 🌿');
-                BFJ.snd('ok');
+                BFJ.snd('sparkle');
                 // meta de ramas cumplida + distancia cumplida → victoria
                 if (!f.endless && got >= f.olivesNeeded && dist >= f.goal) { win(); }
             }
