@@ -393,11 +393,82 @@ BFJ.define('paloma', function (el) {
         ctx.globalAlpha = 1;
     }
 
+    // ==== Sprite de la paloma: atlas prerenderizado con frames de aleteo ====
+    // El arte vectorial se pinta UNA vez en 6 frames (alas arriba → abajo) a
+    // devicePixelRatio; en runtime solo se hace drawImage — más nítido, más
+    // barato por frame y animación de frames como un sprite-sheet real.
+    var FW = 64, FH = 56;                    // tamaño lógico del frame
+    var WINGS = [-1.15, -.72, -.3, .12, .55, .95]; // poses de ala
+    var SPR = [];
+
+    // Ala con plumas: borde de ataque curvo, 3 puntas en el borde de fuga
+    function wingShape(g, dark) {
+        g.fillStyle = dark ? '#c9d4e0' : '#f2f6fa';
+        g.strokeStyle = '#a8b8c8'; g.lineWidth = 1;
+        g.beginPath();
+        g.moveTo(0, 0);
+        g.quadraticCurveTo(-6, -9, -16, -12);       // borde de ataque
+        g.quadraticCurveTo(-21, -13, -23, -10);     // punta
+        g.lineTo(-15, -7);                           // pluma 1
+        g.lineTo(-19, -3); g.lineTo(-11, -3);        // pluma 2
+        g.lineTo(-13, 1); g.lineTo(-5, 0);           // pluma 3
+        g.quadraticCurveTo(-1, 0, 0, 0);
+        g.closePath(); g.fill(); g.stroke();
+    }
+
+    function paintDove(g, wing) {
+        // cola en abanico
+        g.fillStyle = '#dde5ec';
+        g.beginPath();
+        g.moveTo(-9, -1); g.lineTo(-24, -8); g.lineTo(-21, -2);
+        g.lineTo(-24, 4); g.lineTo(-9, 3);
+        g.closePath(); g.fill();
+
+        // ala trasera (detrás del cuerpo, se mueve con desfase)
+        g.save(); g.translate(-2, -3); g.rotate(-wing * .8 - .15);
+        wingShape(g, true);
+        g.restore();
+
+        // cuerpo con gradiente
+        g.save(); g.scale(1.35, .95);
+        var bg = g.createRadialGradient(-2, -2, 2, 0, 0, 15);
+        bg.addColorStop(0, '#ffffff'); bg.addColorStop(1, '#e2e9f0');
+        g.fillStyle = bg;
+        g.beginPath(); g.arc(0, 0, 11, 0, 7); g.fill();
+        g.restore();
+
+        // ala delantera emplumada
+        g.save(); g.translate(-1, -4); g.rotate(-wing);
+        wingShape(g, false);
+        g.restore();
+
+        // cabeza + pico + ojo
+        g.fillStyle = '#f6f9fc';
+        g.beginPath(); g.arc(10, -7, 6.5, 0, 7); g.fill();
+        g.fillStyle = '#f0a030';
+        g.beginPath(); g.moveTo(15, -8); g.lineTo(22, -6); g.lineTo(15, -5);
+        g.closePath(); g.fill();
+        g.fillStyle = '#2b3a4a';
+        g.beginPath(); g.arc(11.5, -8.5, 1.4, 0, 7); g.fill();
+    }
+
+    WINGS.forEach(function (w) {
+        var fc = document.createElement('canvas');
+        fc.width = FW * DPR; fc.height = FH * DPR;
+        var g = fc.getContext('2d');
+        g.scale(DPR, DPR);
+        g.translate(FW / 2, FH / 2 + 2);
+        paintDove(g, w);
+        SPR.push(fc);
+    });
+
     function drawDove() {
         var bob = Math.sin(t * .006) * 2;
         var rot = Math.max(-.5, Math.min(.7, dove.vy / 320));
         var wSpd = flapT > 0 ? .09 : .02;
         var wing = Math.sin(t * wSpd) * (flapT > 0 ? .95 : .3) - .25;
+        var si = Math.round((wing - WINGS[0]) / (WINGS[5] - WINGS[0]) * (SPR.length - 1));
+        si = Math.max(0, Math.min(SPR.length - 1, si));
 
         ctx.save();
         ctx.translate(dove.x, dove.y + bob * .3);
@@ -415,48 +486,7 @@ BFJ.define('paloma', function (el) {
             }
         }
 
-        // cola
-        ctx.fillStyle = '#dde5ec';
-        ctx.beginPath();
-        ctx.moveTo(-10, -1); ctx.lineTo(-23, -7); ctx.lineTo(-21, -1);
-        ctx.lineTo(-23, 5); ctx.lineTo(-10, 3);
-        ctx.closePath(); ctx.fill();
-
-        // ala trasera
-        ctx.save();
-        ctx.translate(-2, -3);
-        ctx.rotate(-wing * .8 - .2);
-        ctx.fillStyle = '#c9d4e0';
-        ctx.scale(1, .5);
-        ctx.beginPath(); ctx.arc(-3, -8, 12, 0, 7); ctx.fill();
-        ctx.restore();
-
-        // cuerpo
-        ctx.save();
-        ctx.scale(1.35, .95);
-        var bg = ctx.createRadialGradient(-2, -2, 2, 0, 0, 15);
-        bg.addColorStop(0, '#ffffff'); bg.addColorStop(1, '#e2e9f0');
-        ctx.fillStyle = bg;
-        ctx.beginPath(); ctx.arc(0, 0, 11, 0, 7); ctx.fill();
-        ctx.restore();
-
-        // ala delantera
-        ctx.save();
-        ctx.translate(-1, -4);
-        ctx.rotate(-wing);
-        ctx.fillStyle = '#f2f6fa';
-        ctx.strokeStyle = '#b9c6d4'; ctx.lineWidth = 1;
-        ctx.scale(1, .55);
-        ctx.beginPath(); ctx.arc(-4, -9, 13, 0, 7); ctx.fill(); ctx.stroke();
-        ctx.restore();
-
-        // cabeza + pico + ojo
-        ctx.fillStyle = '#f6f9fc';
-        ctx.beginPath(); ctx.arc(10, -7, 6.5, 0, 7); ctx.fill();
-        ctx.fillStyle = '#f0a030';
-        ctx.beginPath(); ctx.moveTo(15, -8); ctx.lineTo(22, -6); ctx.lineTo(15, -5); ctx.closePath(); ctx.fill();
-        ctx.fillStyle = '#2b3a4a';
-        ctx.beginPath(); ctx.arc(11.5, -8.5, 1.4, 0, 7); ctx.fill();
+        ctx.drawImage(SPR[si], -FW / 2, -FH / 2 - 2, FW, FH);
 
         // ramita de olivo en el pico si ya recogió alguna
         if (got > 0) {
