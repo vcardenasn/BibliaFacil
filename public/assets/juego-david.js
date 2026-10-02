@@ -8,31 +8,31 @@ BFJ.define('david', function (el) {
             name: 'Ronda 1 · El león',
             ref: '1 Samuel 17:34-35',
             desc: '«Tu siervo apacentaba las ovejas de su padre… salió tras el león y lo hirió.»',
-            waves: [['lion', 4]], spawnEvery: 2600
+            waves: [['lion', 5]], spawnEvery: 2400, burst: 2
         },
         {
             name: 'Ronda 2 · El oso',
             ref: '1 Samuel 17:36',
             desc: '«León y oso, tu siervo los mató.»',
-            waves: [['lion', 2], ['bear', 3]], spawnEvery: 2300
+            waves: [['lion', 3], ['bear', 3]], spawnEvery: 2600, burst: 2
         },
         {
             name: 'Ronda 3 · Goliat',
             ref: '1 Samuel 17:45-49',
             desc: '«Tú vienes con espada; yo vengo en el nombre de Jehová.»',
-            waves: [['lion', 2], ['bear', 2], ['goliath', 1]], spawnEvery: 2500
+            waves: [['lion', 2], ['bear', 3], ['goliath', 1]], spawnEvery: 2800, burst: 2
         },
         {
             name: 'Libre · El buen pastor',
             ref: 'Salmo 23',
             desc: 'Jehová es mi pastor. ¿Cuánto aguantas guardando el rebaño?',
-            endless: true, waves: [['lion', 4], ['bear', 3]], spawnEvery: 2100
+            endless: true, waves: [['lion', 4], ['bear', 3]], spawnEvery: 2100, burst: 2
         }
     ];
     var KINDS = {
-        lion:    { hp: 2, speed: 30, r: 15, score: 1, emoji: '🦁' },
-        bear:    { hp: 3, speed: 19, r: 19, score: 2, emoji: '🐻' },
-        goliath: { hp: 6, speed: 9,  r: 27, score: 5, emoji: '🗿' }
+        lion:    { hp: 2, speed: 38, r: 15, score: 1, emoji: '🦁' },
+        bear:    { hp: 3, speed: 24, r: 19, score: 2, emoji: '🐻' },
+        goliath: { hp: 6, speed: 11, r: 27, score: 5, emoji: '🗿' }
     };
     var SHEEP_N = 5;
 
@@ -207,10 +207,12 @@ BFJ.define('david', function (el) {
             s.y += (s.ty - s.y) * dt * .6 + Math.sin(s.ph * 4) * .18;
         });
 
-        // oleada
+        // oleada: ráfaga de `burst` depredadores a la vez (la presión real
+        // viene de objetivos simultáneos, no del intervalo)
         spawnIn -= ms;
         if (spawnIn <= 0 && (queue.length || round().endless)) {
-            spawnFoe();
+            var burst = round().burst || 1;
+            for (var b = 0; b < burst && (queue.length || round().endless); b++) { spawnFoe(); }
             var gap = round().spawnEvery - Math.min(900, kills * 60);
             spawnIn = round().endless && kills > 12 ? gap * .8 : gap;
         }
