@@ -160,12 +160,20 @@
     position: relative; display: flex; flex-direction: column; gap: 1.15rem;
     padding: .8rem 0 2rem;
 }
-/* camino punteado central + meta al final */
-.jh-path::before {
-    content: ''; position: absolute; top: .6rem; bottom: 1.4rem; left: 50%;
-    border-left: 5px dashed color-mix(in srgb, var(--brand) 40%, var(--border-strong));
-    transform: translateX(-50%); border-radius: 4px;
+/* sendero de tierra serpenteante (SVG calculado por JS) + meta al final */
+.jh-trail {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    overflow: visible; pointer-events: none;
 }
+.jh-trail-base {
+    stroke: #e2d3ab; stroke-width: 15; stroke-linecap: round;
+}
+.jh-trail-dash {
+    stroke: #b0925a; stroke-width: 2.2; stroke-linecap: round;
+    stroke-dasharray: 1 12;
+}
+[data-theme="dark"] .jh-trail-base { stroke: #3a3f55; }
+[data-theme="dark"] .jh-trail-dash { stroke: #7a6a45; }
 .jh-path::after {
     content: ''; position: absolute; left: 50%; bottom: -.55rem;
     transform: translateX(-50%); width: 1.9rem; height: 1.9rem;

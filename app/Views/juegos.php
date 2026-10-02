@@ -49,6 +49,10 @@ $JH_REGIONS = [
 ];
 ?>
 <div class="jh-path">
+    <svg class="jh-trail" id="jhTrail" aria-hidden="true" preserveAspectRatio="none">
+        <path class="jh-trail-base" fill="none"/>
+        <path class="jh-trail-dash" fill="none"/>
+    </svg>
     <?php $nAlt = 0; $lastRegion = null; ?>
     <?php foreach ($games as $gslug => $g): ?>
         <?php

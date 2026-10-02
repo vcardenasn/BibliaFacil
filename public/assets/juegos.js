@@ -674,6 +674,38 @@
                 }
                 if (done === slugs.length) { reg.classList.add('done'); }
             });
+            // Sendero SVG: curva suave que une anillos y banners hasta la meta
+            var jhPath = document.querySelector('.jh-path');
+            var jhTrail = document.getElementById('jhTrail');
+            if (jhPath && jhTrail) {
+                var drawTrail = function () {
+                    var pb = jhPath.getBoundingClientRect();
+                    var pts = [];
+                    jhPath.querySelectorAll('.jh-node-ring, .jh-region-tag').forEach(function (n) {
+                        var r = n.getBoundingClientRect();
+                        pts.push([r.left + r.width / 2 - pb.left, r.top + r.height / 2 - pb.top]);
+                    });
+                    if (pts.length < 2) { return; }
+                    var d = 'M' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
+                    for (var i = 1; i < pts.length; i++) {
+                        var p0 = pts[i - 1], p1 = pts[i];
+                        var my = ((p0[1] + p1[1]) / 2).toFixed(1);
+                        d += ' C' + p0[0].toFixed(1) + ' ' + my + ' ' +
+                             p1[0].toFixed(1) + ' ' + my + ' ' +
+                             p1[0].toFixed(1) + ' ' + p1[1].toFixed(1);
+                    }
+                    // tramo final hasta la bandera 🏁 al pie del camino
+                    var last = pts[pts.length - 1];
+                    d += ' C' + last[0].toFixed(1) + ' ' + (last[1] + 45).toFixed(1) + ' ' +
+                         (pb.width / 2).toFixed(1) + ' ' + (pb.height - 6).toFixed(1) + ' ' +
+                         (pb.width / 2).toFixed(1) + ' ' + pb.height.toFixed(1);
+                    jhTrail.setAttribute('viewBox', '0 0 ' + pb.width + ' ' + pb.height);
+                    var ps = jhTrail.querySelectorAll('path');
+                    for (var q = 0; q < ps.length; q++) { ps[q].setAttribute('d', d); }
+                };
+                drawTrail();
+                window.addEventListener('resize', drawTrail);
+            }
             // Misiones de la semana: rellena la tarjeta y otorga las cumplidas
             var mList = document.getElementById('missionList');
             if (mList) {
