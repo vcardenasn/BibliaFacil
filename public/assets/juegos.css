@@ -134,9 +134,28 @@
     width: calc(50% + 1.7rem); text-decoration: none; color: var(--ink);
     transition: transform .15s;
 }
-/* nodos a un lado y otro del camino: el anillo queda centrado en la línea */
-.jh-node:nth-child(odd)  { align-self: flex-start; flex-direction: row-reverse; text-align: right; }
-.jh-node:nth-child(even) { align-self: flex-end; }
+/* nodos a un lado y otro del camino: el anillo queda centrado en la línea.
+   Clases explícitas (no nth-child) porque los banners de región rompen la paridad */
+.jh-node.alt-l { align-self: flex-start; flex-direction: row-reverse; text-align: right; }
+.jh-node.alt-r { align-self: flex-end; }
+
+/* Banners de región: hito del viaje bíblico sobre el camino punteado */
+.jh-region { align-self: stretch; display: flex; justify-content: center; }
+.jh-region-tag {
+    display: inline-flex; align-items: center; gap: .45rem; flex-wrap: wrap; justify-content: center;
+    background: var(--surface); border: 2.5px solid var(--border-strong);
+    border-radius: 999px; padding: .32rem .95rem;
+    font-family: var(--sans); font-size: .8rem; font-weight: 800; color: var(--brand-ink);
+    box-shadow: 0 2px 6px rgba(0,0,0,.16);
+}
+.jh-region-tag .omoji { width: 1.25rem; height: 1.25rem; }
+.jh-region-tag small { color: var(--muted); font-weight: 700; font-size: .7rem; }
+.jh-region-n {
+    background: var(--brand-soft); color: var(--brand-ink);
+    border-radius: 999px; padding: .05rem .55rem; font-size: .7rem;
+}
+.jh-region.done .jh-region-tag { border-color: var(--gold); background: var(--gold-soft); }
+.jh-region.done .jh-region-n { background: var(--gold); color: #fff; }
 .jh-node-ring {
     position: relative; flex: 0 0 auto; display: grid; place-items: center;
     width: 3.5rem; height: 3.5rem; border-radius: 50%; background: var(--surface);
@@ -156,7 +175,7 @@
     align-self: flex-start; font-family: var(--sans); font-size: .72rem; font-weight: 700;
     color: var(--muted); background: var(--brand-soft); border-radius: 999px; padding: .2rem .7rem;
 }
-.jh-node:nth-child(odd) .jh-best { align-self: flex-end; }
+.jh-node.alt-l .jh-best { align-self: flex-end; }
 .jh-best.won { color: var(--brand); background: var(--gold-soft); }
 /* Estados del nodo: por explorar / siguiente sugerido / completado / dominado */
 .jh-node.is-todo .jh-node-ring { border-style: dashed; }

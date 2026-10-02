@@ -16,7 +16,8 @@ return function (TestCase $t): void {
         $html = $render();
         $ready = count(array_filter($games, function ($g) { return !empty($g['ready']); }));
         $t->assertSame(1, substr_count($html, 'class="jh-path"'));
-        $t->assertSame($ready, substr_count($html, 'class="jh-node"'));
+        $nodes = substr_count($html, 'class="jh-node"') + substr_count($html, 'class="jh-node ');
+        $t->assertSame($ready, $nodes);
         $t->assertSame($ready, substr_count($html, 'jh-node-ring'));
         foreach (array_keys($games) as $slug) {
             if (!empty($games[$slug]['ready'])) {

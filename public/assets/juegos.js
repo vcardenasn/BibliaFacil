@@ -593,6 +593,18 @@
                     else { node.classList.add('is-todo'); }
                 }
             });
+            // Mapa de progreso: contador por región (juegos con ⭐ de esa zona)
+            document.querySelectorAll('.jh-region[data-reg-slugs]').forEach(function (reg) {
+                var slugs = reg.getAttribute('data-reg-slugs').split(',');
+                var done = 0;
+                slugs.forEach(function (s) { if (BFJ.stars.of(s) > 0) { done++; } });
+                var badge = reg.querySelector('.jh-region-n');
+                if (badge) {
+                    badge.hidden = false;
+                    badge.textContent = done + '/' + slugs.length;
+                }
+                if (done === slugs.length) { reg.classList.add('done'); }
+            });
             // Álbum de stickers: por hitos ya ganados (evalúa sobre historial)
             checkStickers({});
             var wall = document.getElementById('stickerWall');

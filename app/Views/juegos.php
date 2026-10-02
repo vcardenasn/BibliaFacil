@@ -31,10 +31,41 @@ $dailyGame = $games[$dailySlug];
     <span class="jh-daily-state" id="dailyState"><span aria-hidden="true">▶</span> Jugar</span>
 </a>
 
+<?php
+// Regiones del mapa de progreso: el viaje bíblico Edén → Galilea.
+// Cada juego declara 'region' en config/games.php; se muestran en orden
+// de catálogo y agrupan tramos del camino con banner + contador de avance.
+$JH_REGIONS = [
+    'comienzos' => ['emoji' => '1F334', 'name' => 'Los Comienzos',    'ref' => 'Génesis 1–9'],
+    'desierto'  => ['emoji' => '1F3DC', 'name' => 'El Desierto',      'ref' => 'Éxodo'],
+    'historias' => ['emoji' => '1F4DC', 'name' => 'Las Historias',    'ref' => 'Los héroes de la fe'],
+    'prometida' => ['emoji' => '1F3D6', 'name' => 'Tierra Prometida', 'ref' => 'Josué — Reyes'],
+    'galilea'   => ['emoji' => '26F5',  'name' => 'Junto al Lago',    'ref' => 'Los Evangelios'],
+];
+?>
 <div class="jh-path">
+    <?php $nAlt = 0; $lastRegion = null; ?>
     <?php foreach ($games as $gslug => $g): ?>
+        <?php
+        $region = $g['region'] ?? null;
+        if ($region && $region !== $lastRegion && isset($JH_REGIONS[$region])):
+            $lastRegion = $region;
+            $rg = $JH_REGIONS[$region];
+            // slugs de esta región para el contador "n/m" que llena el JS
+            $regSlugs = array_keys(array_filter($games, function ($x) use ($region) {
+                return ($x['region'] ?? null) === $region;
+            }));
+        ?>
+        <div class="jh-region" data-reg-slugs="<?= e(implode(',', $regSlugs)) ?>">
+            <span class="jh-region-tag">
+                <?= omoji($rg['emoji']) ?> <?= e($rg['name']) ?>
+                <small><?= e($rg['ref']) ?></small>
+                <b class="jh-region-n" hidden>0/<?= count($regSlugs) ?></b>
+            </span>
+        </div>
+        <?php endif; ?>
         <?php if (!empty($g['ready'])): ?>
-        <a class="jh-node" href="<?= e(url('juegos/' . $gslug)) ?>" data-slug="<?= e($gslug) ?>"
+        <a class="jh-node <?= $nAlt++ % 2 ? 'alt-r' : 'alt-l' ?>" href="<?= e(url('juegos/' . $gslug)) ?>" data-slug="<?= e($gslug) ?>"
             style="--gc:<?= e($g['color'] ?? '#4dabf7') ?>">
             <span class="jh-node-ring" aria-hidden="true"><span class="jh-emoji"><?= omoji($g['img'] ?? '') ?></span></span>
             <span class="jh-node-info">
@@ -44,7 +75,7 @@ $dailyGame = $games[$dailySlug];
             </span>
         </a>
         <?php else: ?>
-        <div class="jh-node locked" aria-disabled="true">
+        <div class="jh-node locked <?= $nAlt++ % 2 ? 'alt-r' : 'alt-l' ?>" aria-disabled="true">
             <span class="jh-node-ring" aria-hidden="true"><span class="jh-emoji"><?= omoji('1F512') ?></span></span>
             <span class="jh-node-info">
                 <strong><?= e($g['name']) ?></strong>
