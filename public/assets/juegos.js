@@ -184,10 +184,10 @@
               '" alt="" loading="lazy" onerror="this.outerHTML=this.dataset.f" data-f="' + e + '">'
             : e;
     }
-    // Ilustración descargada: ref "bibleimg:jonas-a" (.jpg) o "arkset:noe" (.png).
-    // Si falta la imagen, cae al emoji OpenMoji.
+    // Ilustración descargada: ref "bibleimg:jonas-a" (.jpg), "cover:cruc-x" (.jpg)
+    // o "arkset:noe" (.png). Si falta la imagen, cae al emoji OpenMoji.
     function bimg(ref, emoji) {
-        var m = /^(bibleimg|arkset):([0-9a-z_-]+)$/i.exec(ref || '');
+        var m = /^(bibleimg|cover|arkset):([0-9a-z_-]+)$/i.exec(ref || '');
         if (!m) { return omoji(emoji || ''); }
         var ext = m[1] === 'arkset' ? 'png' : 'jpg';
         // bimg-png = figura con fondo transparente → contain; jpg = escena → cover

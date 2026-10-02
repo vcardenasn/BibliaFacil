@@ -420,6 +420,13 @@
 .tr-cat span { font-size: 2.2rem; }
 /* Imágenes OpenMoji dentro de los juegos (portadas, escenas, cartas) */
 .tr-cat .omoji, .hs-cover .omoji { height: 2.6rem; width: auto; }
+/* Portada ilustrada en tarjetas de selección (crucigrama, sopa…) */
+.tr-cat-img { padding-top: 0; overflow: hidden; }
+.tr-cat-img .hs-cover { display: block; width: calc(100% + 1.2rem); margin: 0 -.6rem; }
+.tr-cat-img .hs-cover .bimg {
+    width: 100%; height: 4.6rem; max-width: 100%; max-height: 4.6rem;
+    object-fit: cover; border-radius: 0; box-shadow: none;
+}
 .hs-card .omoji, .hs-scene .omoji { height: 2.1rem; width: auto; }
 .mm-face .omoji { width: 74%; height: auto; }
 .mm-face .bimg {

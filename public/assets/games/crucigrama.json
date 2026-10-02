@@ -69,7 +69,8 @@
         "c": 6,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-personajes"
   },
   {
     "name": "Amigos de Jesús",
@@ -141,7 +142,8 @@
         "c": 5,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-amigos-jesus"
   },
   {
     "name": "Palabras de la fe",
@@ -221,7 +223,8 @@
         "c": 3,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-palabras-fe"
   },
   {
     "name": "Génesis",
@@ -301,7 +304,8 @@
         "c": 2,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-genesis"
   },
   {
     "name": "El Éxodo",
@@ -381,7 +385,8 @@
         "c": 3,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-exodo"
   },
   {
     "name": "La vida de Jesús",
@@ -461,7 +466,8 @@
         "c": 6,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-jesus"
   },
   {
     "name": "Parábolas",
@@ -541,7 +547,8 @@
         "c": 3,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-parabolas"
   },
   {
     "name": "Profetas",
@@ -613,7 +620,8 @@
         "c": 0,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-profetas"
   },
   {
     "name": "Reyes de Israel",
@@ -685,7 +693,8 @@
         "c": 9,
         "dir": "v"
       }
-    ]
+    ],
+    "img": "cover:cruc-reyes"
   },
   {
     "name": "Mujeres de la Biblia",
@@ -773,7 +782,8 @@
         "c": 7,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-mujeres"
   },
   {
     "name": "Los Doce y Pablo",
@@ -853,7 +863,8 @@
         "c": 2,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-apostoles"
   },
   {
     "name": "Salmos",
@@ -933,7 +944,8 @@
         "c": 5,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-salmos"
   },
   {
     "name": "Lugares bíblicos",
@@ -1013,7 +1025,8 @@
         "c": 6,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-lugares"
   },
   {
     "name": "La Navidad",
@@ -1093,7 +1106,8 @@
         "c": 1,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-navidad"
   },
   {
     "name": "La Resurrección",
@@ -1173,7 +1187,8 @@
         "c": 5,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-resurreccion"
   },
   {
     "name": "La oración",
@@ -1245,7 +1260,8 @@
         "c": 0,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-oracion"
   },
   {
     "name": "Animales",
@@ -1325,7 +1341,8 @@
         "c": 0,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-animales"
   },
   {
     "name": "Alimentos",
@@ -1405,7 +1422,8 @@
         "c": 0,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-alimentos"
   },
   {
     "name": "Libros del AT",
@@ -1485,7 +1503,8 @@
         "c": 4,
         "dir": "v"
       }
-    ]
+    ],
+    "img": "cover:cruc-libros-at"
   },
   {
     "name": "Los viajes de Pablo",
@@ -1565,7 +1584,8 @@
         "c": 4,
         "dir": "v"
       }
-    ]
+    ],
+    "img": "cover:cruc-pablo"
   },
   {
     "name": "La Creación",
@@ -1645,7 +1665,8 @@
         "c": 0,
         "dir": "v"
       }
-    ]
+    ],
+    "img": "cover:cruc-creacion"
   },
   {
     "name": "El arca de Noé",
@@ -1725,7 +1746,8 @@
         "c": 8,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-arca"
   },
   {
     "name": "Milagros",
@@ -1805,7 +1827,8 @@
         "c": 0,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-milagros"
   },
   {
     "name": "Fruto del Espíritu",
@@ -1885,6 +1908,7 @@
         "c": 4,
         "dir": "h"
       }
-    ]
+    ],
+    "img": "cover:cruc-fruto"
   }
 ]

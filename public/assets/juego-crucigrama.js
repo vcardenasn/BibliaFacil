@@ -8,8 +8,8 @@ BFJ.define('crucigrama', function (el) {
         function picker() {
             var html = '<div class="tr-cats">';
             puzzles.forEach(function (p, ix) {
-                html += '<button type="button" class="tr-cat" data-p="' + ix + '">' +
-                    '<span class="hs-cover">' + BFJ.omoji(p.icon) + '</span><strong>' + BFJ.esc(p.name) + '</strong>' +
+                html += '<button type="button" class="tr-cat tr-cat-img" data-p="' + ix + '">' +
+                    '<span class="hs-cover">' + BFJ.bimg(p.img || '', p.icon) + '</span><strong>' + BFJ.esc(p.name) + '</strong>' +
                     '<small>' + p.words.length + ' ' + BFJ.T('palabras') + '</small></button>';
             });
             el.innerHTML = html + '</div>' +
