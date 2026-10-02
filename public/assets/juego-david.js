@@ -1,6 +1,7 @@
 // David y las Ovejas — tower-defense táctil bíblico (1 Sam 17:34-49).
 // El jugador toca la pantalla para lanzar piedras con la honda y proteger
-// el rebaño de leones y osos; la última ronda es contra Goliat.
+// el rebaño: leones y osos se llevan ovejas en el lomo y hay que alcanzarlos
+// para rescatarlas (1 Sam 17:35); Goliat las espanta. La última ronda es Goliat.
 // Canvas 2D a devicePixelRatio + fallback touchstart/keyCode (iOS <13).
 BFJ.define('david', function (el) {
     var ROUNDS = [
@@ -50,21 +51,21 @@ BFJ.define('david', function (el) {
             '<p class="pn-ref">📖 ' + r.ref + '</p>' +
             '<p class="pn-goal">' + (r.endless
                 ? BFJ.T('🏁 Sin meta — defiende todo lo que puedas')
-                : BFJ.T('🏁 Repele a todos los depredadores')) + '</p>' +
-            (best ? '<p class="pn-best">✨ ' + BFJ.T('Tu récord:') + ' ' + best + ' ' + BFJ.T('enemigos') + '</p>' : '') +
+                : BFJ.T('🏁 No dejes que se lleven a tus ovejas')) + '</p>' +
+            (best ? '<p class="pn-best">✨ ' + BFJ.T('Tu récord:') + ' ' + best + ' ' + BFJ.T('ahuyentados') + '</p>' : '') +
             '<button type="button" class="jbtn jbtn-main" id="dvGo">' + BFJ.T('▶ ¡A defender!') + '</button>' +
-            '<p class="pn-k">' + BFJ.T('👆 Toca a los depredadores para lanzar piedras') + '</p>'
+            '<p class="pn-k">' + BFJ.T('👆 Toca los animales para lanzar piedras · si se llevan una oveja, ¡alcánzalos y rescátala!') + '</p>'
         );
     }
 
     el.innerHTML =
         '<div class="pn-stage" id="dvStage">' +
         '<canvas class="pn-cv" id="dvCv" width="480" height="320" ' +
-        'aria-label="' + BFJ.T('David y las Ovejas: toca los depredadores para lanzarles piedras') + '"></canvas>' +
+        'aria-label="' + BFJ.T('David y las Ovejas: toca los animales para lanzar piedras y proteger el rebaño') + '"></canvas>' +
         '<div class="pn-hud" aria-hidden="true">' +
-        '<span id="dvSheep">🐑 ' + SHEEP_N + '</span><span id="dvKills">⚔️ 0</span>' +
+        '<span id="dvSheep">🐑 ' + SHEEP_N + '</span><span id="dvKills">🛡️ 0</span>' +
         '</div>' +
-        '<div class="pn-hint" id="dvHint" hidden>' + BFJ.T('👆 ¡Toca al depredador!') + '</div>' +
+        '<div class="pn-hint" id="dvHint" hidden>' + BFJ.T('👆 ¡Lanza piedras y rescata a tus ovejas!') + '</div>' +
         '<div class="pn-menu" id="dvMenu"></div>' +
         '</div>';
 
@@ -91,7 +92,8 @@ BFJ.define('david', function (el) {
         for (var i = 0; i < SHEEP_N; i++) {
             sheep.push({
                 x: 30 + Math.random() * 110, y: 150 + Math.random() * 140,
-                tx: 0, ty: 0, ph: Math.random() * 6.28, alive: true
+                tx: 0, ty: 0, ph: Math.random() * 6.28,
+                alive: true, carried: false, fleeing: false, lost: false
             });
         }
         foes = []; stones = []; parts = []; popups = [];
@@ -105,7 +107,7 @@ BFJ.define('david', function (el) {
         queue.sort(function (a, b) { return (a === 'goliath' ? 1 : 0) - (b === 'goliath' ? 1 : 0); });
         t = 0; kills = 0; reload = 0; spawnIn = 1200; armT = 0;
         hudSheep.textContent = '🐑 ' + sheep.length;
-        hudKills.textContent = '⚔️ 0';
+        hudKills.textContent = '🛡️ 0';
     }
 
     function spawnFoe() {
@@ -114,7 +116,8 @@ BFJ.define('david', function (el) {
         var k = KINDS[kind];
         foes.push({
             kind: kind, hp: k.hp, x: W + 30, y: 150 + Math.random() * 140,
-            flash: 0, flee: false, ph: Math.random() * 6.28
+            flash: 0, flee: false, repelled: false, carrying: null,
+            ph: Math.random() * 6.28
         });
     }
 
@@ -132,7 +135,14 @@ BFJ.define('david', function (el) {
 
     function popup(x, y, txt) { popups.push({ x: x, y: y, txt: txt, life: 1 }); }
 
+    function sheepLeft() {
+        return sheep.filter(function (s) { return !s.lost; }).length;
+    }
+
+    // El enemigo queda en 0: huye espantado y, si cargaba una oveja,
+    // la suelta — la oveja regresa caminando al redil (1 Sam 17:35).
     function hurtFoe(f) {
+        if (f.hp <= 0) { return; }
         f.hp--; f.flash = .18;
         for (var i = 0; i < 6; i++) {
             parts.push({ x: f.x, y: f.y, vx: (Math.random() - .5) * 130,
@@ -140,14 +150,25 @@ BFJ.define('david', function (el) {
         }
         if (f.hp <= 0) {
             kills++;
-            hudKills.textContent = '⚔️ ' + kills;
-            popup(f.x, f.y - f.r - 8, '+1 ⚔️');
+            hudKills.textContent = '🛡️ ' + kills;
+            popup(f.x, f.y - f.r - 8, '+1 🛡️');
             BFJ.snd('pop');
-            foes.splice(foes.indexOf(f), 1);
+            if (f.carrying) {
+                var s = f.carrying;
+                f.carrying = null;
+                s.carried = false; s.alive = true; s.tx = 0;
+                s.x = f.x; s.y = Math.min(H - 12, f.y + kSafe(f));
+                popup(s.x, s.y - 18, BFJ.T('¡Rescatada!') + ' 🐑');
+                BFJ.snd('ok');
+            }
+            f.flee = true; f.repelled = true;
         } else {
             BFJ.snd('click');
         }
     }
+
+    // punto de suelta un poco por debajo del enemigo según su radio
+    function kSafe(f) { return KINDS[f.kind].r + 6; }
 
     function die() {
         if (over || won) { return; }
@@ -166,8 +187,7 @@ BFJ.define('david', function (el) {
     function finish(success) {
         cancelAnimationFrame(raf);
         playing = false;
-        var left = 0;
-        sheep.forEach(function (s) { if (s.alive) { left++; } });
+        var left = sheepLeft();
         var isRecord = kills > best;
         if (isRecord) {
             best = kills;
@@ -183,7 +203,7 @@ BFJ.define('david', function (el) {
         BFJ.celebrate({
             slug: 'david', stars: stars,
             emoji: success ? '🏆' : '🐑', title: title,
-            extra: kills + ' ' + BFJ.T('depredadores vencidos') + ' · ' + left + '/' + SHEEP_N + ' ' + BFJ.T('ovejas') +
+            extra: kills + ' ' + BFJ.T('depredadores ahuyentados') + ' · ' + left + '/' + SHEEP_N + ' ' + BFJ.T('ovejas a salvo') +
                 (isRecord ? ' · ' + BFJ.T('✨ ¡récord!') : ''),
             perfect: success && left === SHEEP_N,
             onAgain: function () { startRound(); }
@@ -195,9 +215,21 @@ BFJ.define('david', function (el) {
         t += ms; reload = Math.max(0, reload - dt); armT = Math.max(0, armT - dt);
         if (over || won) { return; }
 
-        // ovejas deambulan por el prado izquierdo
+        // ovejas deambulan por el prado izquierdo; las espantadas huyen a la
+        // izquierda y se pierden al salir de pantalla
         sheep.forEach(function (s) {
-            if (!s.alive) { return; }
+            if (!s.alive) {
+                if (s.fleeing && !s.lost) {
+                    s.ph += dt * 2.4;
+                    s.x -= 95 * dt;
+                    if (s.x < -24) {
+                        s.lost = true; s.fleeing = false;
+                        hudSheep.textContent = '🐑 ' + sheepLeft();
+                        if (sheep.every(function (o) { return o.lost; })) { die(); }
+                    }
+                }
+                return;
+            }
             s.ph += dt * .8;
             if (s.tx === 0 || Math.random() < .004) {
                 s.tx = 25 + Math.random() * 115;
@@ -217,14 +249,29 @@ BFJ.define('david', function (el) {
             spawnIn = round().endless && kills > 12 ? gap * .8 : gap;
         }
 
-        // enemigos avanzan a la oveja viva más cercana; al alcanzarla huyen
+        // enemigos avanzan a la oveja más cercana; leones/osos se la llevan
+        // en el lomo (se pueden rescatar) y Goliat las espanta
         for (var i = foes.length - 1; i >= 0; i--) {
             var f = foes[i], k = KINDS[f.kind];
             f.flash = Math.max(0, f.flash - dt);
             f.ph += dt;
             if (f.flee) {
-                f.x += k.speed * 3.2 * dt;
-                if (f.x > W + 40) { foes.splice(i, 1); }
+                // cargar una oveja lo hace más lento: ventana de rescate
+                f.x += k.speed * (f.carrying ? 1.7 : 3.2) * dt;
+                if (f.carrying) {
+                    f.carrying.x = f.x;
+                    f.carrying.y = f.y - k.r - 6;      // va en el lomo
+                }
+                if (f.x > W + 40) {
+                    if (f.carrying) {
+                        f.carrying.carried = false;
+                        f.carrying.lost = true;
+                        hudSheep.textContent = '🐑 ' + sheepLeft();
+                        popup(W - 30, f.y - 20, '🐑…');
+                        if (sheep.every(function (s) { return s.lost; })) { die(); return; }
+                    }
+                    foes.splice(i, 1);
+                }
                 continue;
             }
             var target = null, bd = 1e9;
@@ -239,15 +286,22 @@ BFJ.define('david', function (el) {
             f.y += (target.y - f.y) / dist * k.speed * dt;
             if (dist < k.r + 12) {
                 target.alive = false;
-                f.flee = true;
-                hudSheep.textContent = '🐑 ' + sheep.filter(function (s) { return s.alive; }).length;
-                popup(target.x, target.y - 14, '💔');
-                BFJ.snd('bad');
-                for (var j = 0; j < 8; j++) {
-                    parts.push({ x: target.x, y: target.y, vx: (Math.random() - .5) * 120,
-                        vy: -Math.random() * 100, s: 2 + Math.random() * 2, life: 1, c: '#fff' });
+                if (f.kind === 'goliath') {
+                    // el gigante no se lleva ovejas: las espanta y sigue
+                    target.fleeing = true;
+                    popup(target.x, target.y - 14, '😱');
+                    BFJ.snd('bad');
+                } else {
+                    target.carried = true;
+                    f.carrying = target;
+                    f.flee = true;
+                    popup(target.x, target.y - 16, BFJ.T('¡Rescátala!'));
+                    BFJ.snd('bad');
+                    for (var j = 0; j < 8; j++) {
+                        parts.push({ x: target.x, y: target.y, vx: (Math.random() - .5) * 120,
+                            vy: -Math.random() * 100, s: 2 + Math.random() * 2, life: 1, c: '#fff' });
+                    }
                 }
-                if (sheep.every(function (s) { return !s.alive; })) { die(); return; }
             }
         }
 
@@ -594,8 +648,11 @@ BFJ.define('david', function (el) {
         ctx.beginPath(); ctx.arc(85, 225, 92, 0, 7); ctx.stroke();
         if (ctx.setLineDash) { ctx.setLineDash([]); }
 
-        sheep.forEach(function (s) { if (s.alive) { drawSheep(s); } });
+        // ovejas del prado y las que huyen espantadas; las cargadas se
+        // dibujan después de los enemigos para verse sobre su lomo
+        sheep.forEach(function (s) { if (s.alive || s.fleeing) { drawSheep(s); } });
         foes.forEach(drawFoe);
+        sheep.forEach(function (s) { if (s.carried) { drawSheep(s); } });
         drawDavid();
 
         // piedras en vuelo (parábola)
