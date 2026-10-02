@@ -17,10 +17,16 @@ final class ReferenceParser
      */
     public function __construct(array $books)
     {
+        static $enAliases = null;
+        if ($enAliases === null) {
+            $enFile = BASE_PATH . '/config/books_en.php';
+            $enAliases = is_file($enFile) ? (array) require $enFile : [];
+        }
         foreach ($books as $book) {
             $aliases = array_merge(
                 [$book['name'], $book['slug'], $book['osis']],
-                explode(',', (string) $book['aliases'])
+                explode(',', (string) $book['aliases']),
+                explode(',', (string) ($enAliases[$book['osis']] ?? ''))
             );
             foreach ($aliases as $alias) {
                 $alias = self::normalize($alias);

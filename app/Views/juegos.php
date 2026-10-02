@@ -1,13 +1,13 @@
 <?php // EPIC 17 + EPIC 23: hub con identidad por juego, nivel y mapa de camino (US-232). ?>
 <div class="jh-hero">
     <div class="jh-rays" aria-hidden="true"></div>
-    <h1><?= omoji('1F3AE', '', 'eager') ?> Juegos Bíblicos</h1>
-    <p>Aprende la Palabra jugando — sigue el camino</p>
+    <h1><?= omoji('1F3AE', '', 'eager') ?> <?= e(t('Juegos Bíblicos')) ?></h1>
+    <p><?= e(t('Aprende la Palabra jugando — sigue el camino')) ?></p>
     <div class="jh-score">
         <span class="jh-stars" id="hubStars"><span aria-hidden="true">⭐</span> <strong id="totalStars">0</strong></span>
         <span class="jh-level-wrap">
-            <span class="jh-level" id="levelBadge">🌱 Explorador</span>
-            <span class="jh-levelbar" role="progressbar" aria-label="Progreso al siguiente nivel" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="levelBar"></span></span>
+            <span class="jh-level" id="levelBadge">🌱 <?= e(t('Explorador')) ?></span>
+            <span class="jh-levelbar" role="progressbar" aria-label="<?= e(t('Progreso al siguiente nivel')) ?>" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="levelBar"></span></span>
         </span>
     </div>
 </div>
@@ -24,15 +24,15 @@ $dailyGame = $games[$dailySlug];
     style="--gc:<?= e($dailyGame['color'] ?? '#4dabf7') ?>">
     <span class="jh-daily-emoji" aria-hidden="true"><?= omoji('1F4C5', '', 'eager') ?></span>
     <span class="jh-daily-info">
-        <span class="jh-daily-tag">Desafío de hoy · <?= date('d/m') ?></span>
-        <strong><?= e($dailyGame['name']) ?></strong>
-        <small id="dailyHint">Complétalo hoy y gana <span aria-hidden="true">⭐</span>×2</small>
+        <span class="jh-daily-tag"><?= e(t('Desafío de hoy')) ?> · <?= date('d/m') ?></span>
+        <strong><?= e(t($dailyGame['name'])) ?></strong>
+        <small id="dailyHint"><?= e(t('Complétalo hoy y gana')) ?> <span aria-hidden="true">⭐</span>×2</small>
     </span>
-    <span class="jh-daily-state" id="dailyState"><span aria-hidden="true">▶</span> Jugar</span>
+    <span class="jh-daily-state" id="dailyState"><span aria-hidden="true">▶</span> <?= e(t('Jugar')) ?></span>
 </a>
 
-<section class="jh-missions" aria-label="Misiones de la semana">
-    <h2 class="jh-mis-h"><span aria-hidden="true">🎯</span> Misiones de la semana <small class="jh-mis-sub">+4⭐ cada una · renueva el lunes</small></h2>
+<section class="jh-missions" aria-label="<?= e(t('Misiones de la semana')) ?>">
+    <h2 class="jh-mis-h"><span aria-hidden="true">🎯</span> <?= e(t('Misiones de la semana')) ?> <small class="jh-mis-sub">+4⭐ <?= e(t('cada una')) ?> · <?= e(t('renueva el lunes')) ?></small></h2>
     <div class="jh-mis-list" id="missionList"></div>
 </section>
 
@@ -41,11 +41,11 @@ $dailyGame = $games[$dailySlug];
 // Cada juego declara 'region' en config/games.php; se muestran en orden
 // de catálogo y agrupan tramos del camino con banner + contador de avance.
 $JH_REGIONS = [
-    'comienzos' => ['emoji' => '1F334', 'name' => 'Los Comienzos',    'ref' => 'Génesis 1–9'],
-    'desierto'  => ['emoji' => '1F3DC', 'name' => 'El Desierto',      'ref' => 'Éxodo'],
-    'historias' => ['emoji' => '1F4DC', 'name' => 'Las Historias',    'ref' => 'Los héroes de la fe'],
-    'prometida' => ['emoji' => '1F3D6', 'name' => 'Tierra Prometida', 'ref' => 'Josué — Reyes'],
-    'galilea'   => ['emoji' => '26F5',  'name' => 'Junto al Lago',    'ref' => 'Los Evangelios'],
+    'comienzos' => ['emoji' => '1F334', 'name' => t('Los Comienzos'),    'ref' => t('Génesis 1–9')],
+    'desierto'  => ['emoji' => '1F3DC', 'name' => t('El Desierto'),      'ref' => t('Éxodo')],
+    'historias' => ['emoji' => '1F4DC', 'name' => t('Las Historias'),    'ref' => t('Los héroes de la fe')],
+    'prometida' => ['emoji' => '1F3D6', 'name' => t('Tierra Prometida'), 'ref' => t('Josué — Reyes')],
+    'galilea'   => ['emoji' => '26F5',  'name' => t('Junto al Lago'),    'ref' => t('Los Evangelios')],
 ];
 ?>
 <div class="jh-path">
@@ -78,26 +78,26 @@ $JH_REGIONS = [
             style="--gc:<?= e($g['color'] ?? '#4dabf7') ?>">
             <span class="jh-node-ring" aria-hidden="true"><span class="jh-emoji"><?= omoji($g['img'] ?? '') ?></span></span>
             <span class="jh-node-info">
-                <strong><?= e($g['name']) ?></strong>
-                <small><?= e($g['desc']) ?></small>
-                <span class="jh-best" data-best><span aria-hidden="true">☆</span> ¡Juega ya!</span>
+                <strong><?= e(t($g['name'])) ?></strong>
+                <small><?= e(t($g['desc'])) ?></small>
+                <span class="jh-best" data-best><span aria-hidden="true">☆</span> <?= e(t('¡Juega ya!')) ?></span>
             </span>
         </a>
         <?php else: ?>
         <div class="jh-node locked <?= $nAlt++ % 2 ? 'alt-r' : 'alt-l' ?>" aria-disabled="true">
             <span class="jh-node-ring" aria-hidden="true"><span class="jh-emoji"><?= omoji('1F512') ?></span></span>
             <span class="jh-node-info">
-                <strong><?= e($g['name']) ?></strong>
-                <small><?= e($g['desc']) ?></small>
-                <span class="jh-best">Muy pronto</span>
+                <strong><?= e(t($g['name'])) ?></strong>
+                <small><?= e(t($g['desc'])) ?></small>
+                <span class="jh-best"><?= e(t('Muy pronto')) ?></span>
             </span>
         </div>
         <?php endif; ?>
     <?php endforeach; ?>
 </div>
 
-<h2 class="jh-sub"><span aria-hidden="true">🏆</span> Mi álbum de stickers</h2>
+<h2 class="jh-sub"><span aria-hidden="true">🏆</span> <?= e(t('Mi álbum de stickers')) ?></h2>
 <div class="jh-stickers" id="stickerWall"></div>
 
-<p class="jh-note">Tus estrellas se guardan en este dispositivo — sin cuentas <span aria-hidden="true">🌟</span></p>
-<p class="jh-note">Ilustraciones de <a href="https://openmoji.org" rel="noopener" target="_blank">OpenMoji</a> — CC BY-SA 4.0</p>
+<p class="jh-note"><?= e(t('Tus estrellas se guardan en este dispositivo — sin cuentas')) ?> <span aria-hidden="true">🌟</span></p>
+<p class="jh-note"><?= e(t('Ilustraciones de')) ?> <a href="https://openmoji.org" rel="noopener" target="_blank">OpenMoji</a> — CC BY-SA 4.0</p>

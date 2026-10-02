@@ -4,65 +4,65 @@
 ?>
 <?php if (!$book): ?>
 <div class="page-hero">
-    <h1>⇄ Comparar versiones</h1>
-    <p>Elige un pasaje y dos versiones para leerlas lado a lado.</p>
+    <h1>⇄ <?= e(t('Comparar versiones')) ?></h1>
+    <p><?= e(t('Elige un pasaje y dos versiones para leerlas lado a lado.')) ?></p>
 </div>
 <form class="cmp-pick card" method="get" action="<?= e(url('comparar')) ?>">
-    <label for="cmp-book">Libro</label>
+    <label for="cmp-book"><?= e(t('Libro')) ?></label>
     <select id="cmp-book" name="book">
         <?php foreach ($books as $b): ?>
-        <option value="<?= e($b['slug']) ?>"><?= e($b['name']) ?></option>
+        <option value="<?= e($b['slug']) ?>"><?= e(t($b['name'])) ?></option>
         <?php endforeach; ?>
     </select>
-    <label for="cmp-cap">Capítulo</label>
+    <label for="cmp-cap"><?= e(t('Capítulo')) ?></label>
     <input id="cmp-cap" type="number" name="cap" value="1" min="1" max="150" inputmode="numeric">
-    <label for="cmp-a">Versión A</label>
+    <label for="cmp-a"><?= e(t('Versión A')) ?></label>
     <select id="cmp-a" name="a">
         <?php foreach ($versions as $v): ?>
         <option value="<?= e($v['code']) ?>"<?= $v['code'] === config('app.default_version', 'rvr1909') ? ' selected' : '' ?>><?= e($v['name']) ?></option>
         <?php endforeach; ?>
     </select>
-    <label for="cmp-b">Versión B</label>
+    <label for="cmp-b"><?= e(t('Versión B')) ?></label>
     <select id="cmp-b" name="b">
         <?php foreach ($versions as $v): ?>
         <option value="<?= e($v['code']) ?>"<?= $v['code'] === 'onbv' ? ' selected' : '' ?>><?= e($v['name']) ?></option>
         <?php endforeach; ?>
     </select>
-    <button type="submit">Comparar</button>
+    <button type="submit"><?= e(t('Comparar')) ?></button>
 </form>
 <?php else: ?>
 <div class="reader-head">
     <?php if ($nav['prev']): ?>
-    <a class="nav-btn" href="<?= e(url($nav['prev'])) ?>" rel="prev">← Ant.</a>
+    <a class="nav-btn" href="<?= e(url($nav['prev'])) ?>" rel="prev">← <?= e(t('Ant.')) ?></a>
     <?php else: ?><span class="nav-btn disabled"></span><?php endif; ?>
 
-    <h1><?= e($book['name']) ?><span class="chapnum">Capítulo <?= (int) $chapter ?> · comparación</span></h1>
+    <h1><?= e(t($book['name'])) ?><span class="chapnum"><?= e(t('Capítulo')) ?> <?= (int) $chapter ?> · <?= e(t('comparación')) ?></span></h1>
 
     <?php if ($nav['next']): ?>
-    <a class="nav-btn" href="<?= e(url($nav['next'])) ?>" rel="next">Sig. →</a>
+    <a class="nav-btn" href="<?= e(url($nav['next'])) ?>" rel="next"><?= e(t('Sig.')) ?> →</a>
     <?php else: ?><span class="nav-btn disabled"></span><?php endif; ?>
 </div>
 
-<form class="cmp-switch" method="get" action="<?= e(url('comparar')) ?>" aria-label="Cambiar versiones a comparar">
+<form class="cmp-switch" method="get" action="<?= e(url('comparar')) ?>" aria-label="<?= e(t('Cambiar versiones a comparar')) ?>">
     <input type="hidden" name="book" value="<?= e($book['slug']) ?>">
     <input type="hidden" name="cap" value="<?= (int) $chapter ?>">
-    <select name="a" aria-label="Versión A" data-autosubmit>
+    <select name="a" aria-label="<?= e(t('Versión A')) ?>" data-autosubmit>
         <?php foreach ($versions as $v): ?>
         <option value="<?= e($v['code']) ?>"<?= $v['id'] === $va['id'] ? ' selected' : '' ?>><?= e($v['name']) ?></option>
         <?php endforeach; ?>
     </select>
     <span aria-hidden="true">⇄</span>
-    <select name="b" aria-label="Versión B" data-autosubmit>
+    <select name="b" aria-label="<?= e(t('Versión B')) ?>" data-autosubmit>
         <?php foreach ($versions as $v): ?>
         <option value="<?= e($v['code']) ?>"<?= $v['id'] === $vb['id'] ? ' selected' : '' ?>><?= e($v['name']) ?></option>
         <?php endforeach; ?>
     </select>
-    <noscript><button type="submit">Comparar</button></noscript>
+    <noscript><button type="submit"><?= e(t('Comparar')) ?></button></noscript>
 </form>
 
-<div class="cmp-grid" role="table" aria-label="Comparación de <?= e($book['name']) ?> <?= (int) $chapter ?>">
+<div class="cmp-grid" role="table" aria-label="<?= e(t('Comparación de')) ?> <?= e(t($book['name'])) ?> <?= (int) $chapter ?>">
     <div class="cmp-head" role="row">
-        <span role="columnheader" aria-label="Versículo"></span>
+        <span role="columnheader" aria-label="<?= e(t('Versículo')) ?>"></span>
         <div role="columnheader"><a href="<?= e(url("{$va['code']}/{$book['slug']}/{$chapter}")) ?>"><?= e(strtoupper($va['code'])) ?></a></div>
         <div role="columnheader"><a href="<?= e(url("{$vb['code']}/{$book['slug']}/{$chapter}")) ?>"><?= e(strtoupper($vb['code'])) ?></a></div>
     </div>
@@ -82,8 +82,8 @@
 </div>
 
 <p class="reader-tools">
-    <a href="<?= e(url("{$va['code']}/{$book['slug']}/{$chapter}")) ?>">Leer en <?= e(strtoupper($va['code'])) ?></a> ·
-    <a href="<?= e(url("{$vb['code']}/{$book['slug']}/{$chapter}")) ?>">Leer en <?= e(strtoupper($vb['code'])) ?></a>
+    <a href="<?= e(url("{$va['code']}/{$book['slug']}/{$chapter}")) ?>"><?= e(t('Leer en')) ?> <?= e(strtoupper($va['code'])) ?></a> ·
+    <a href="<?= e(url("{$vb['code']}/{$book['slug']}/{$chapter}")) ?>"><?= e(t('Leer en')) ?> <?= e(strtoupper($vb['code'])) ?></a>
 </p>
 <p class="muted cmp-copyright"><?= e($va['name']) ?><?= !empty($va['copyright']) ? ' · ' . e($va['copyright']) : '' ?><br><?= e($vb['name']) ?><?= !empty($vb['copyright']) ? ' · ' . e($vb['copyright']) : '' ?></p>
 <?php endif; ?>

@@ -1,7 +1,7 @@
 // US-178 — Adivina el Personaje: 3 pistas progresivas, menos pistas = más ⭐.
 // Ronda de 5 personajes: pista 1 = 3⭐, pista 2 = 2⭐, pista 3 = 1⭐.
 BFJ.define('personaje', function (el) {
-    el.innerHTML = '<section class="card notice"><p>Cargando… ⏳</p></section>';
+    el.innerHTML = '<section class="card notice"><p>' + BFJ.T('Cargando… ⏳') + '</p></section>';
     BFJ.fetchBank('personajes.json').then(function (bank) {
         round();
 
@@ -29,13 +29,13 @@ BFJ.define('personaje', function (el) {
 
             el.innerHTML =
                 '<div class="vf-qbox" id="pbox">' +
-                '<div class="vf-prog"><span>🔍 Personaje ' + (i + 1) + ' / ' + deck.length + '</span>' +
+                '<div class="vf-prog"><span>' + BFJ.T('🔍 Personaje') + ' ' + (i + 1) + ' / ' + deck.length + '</span>' +
                 '<span class="vf-streak">⭐ ' + total + '</span></div>' +
                 // US-234 — silueta misteriosa que se ilumina al acertar
                 '<div class="pj-mystery" aria-hidden="true"><span class="pj-sil">' + BFJ.bimg(p.img, p.emoji) + '</span></div>' +
                 '<div class="pj-clues">' +
                 p.clues.slice(0, clue + 1).map(function (c, ci) {
-                    return '<div class="pj-clue bfj-pop"><em>Pista ' + (ci + 1) + '</em>' + BFJ.esc(c) + '</div>';
+                    return '<div class="pj-clue bfj-pop"><em>' + BFJ.T('Pista') + ' ' + (ci + 1) + '</em>' + BFJ.esc(c) + '</div>';
                 }).join('') +
                 '</div>' +
                 '<div class="tr-opts" id="popts">' +
@@ -45,7 +45,7 @@ BFJ.define('personaje', function (el) {
                 }).join('') +
                 '</div>' +
                 (clue < 2
-                    ? '<button type="button" class="jbtn jbtn-ghost pj-more" id="pjMore">🔍 Otra pista (−⭐)</button>'
+                    ? '<button type="button" class="jbtn jbtn-ghost pj-more" id="pjMore">' + BFJ.T('🔍 Otra pista (−⭐)') + '</button>'
                     : '') +
                 '</div>';
 
@@ -76,7 +76,7 @@ BFJ.define('personaje', function (el) {
                 if (sil) { sil.classList.add('show'); }
                 var pbox = document.getElementById('pbox');
                 pbox.insertAdjacentHTML('beforeend',
-                    '<div class="pj-reveal bfj-pop"><span>' + BFJ.bimg(p.img, p.emoji) + '</span><strong>¡Es ' + BFJ.esc(p.name) + '!</strong>' +
+                    '<div class="pj-reveal bfj-pop"><span>' + BFJ.bimg(p.img, p.emoji) + '</span><strong>' + BFJ.T('¡Es ') + BFJ.esc(p.name) + '!</strong>' +
                     '<em>+' + stars + '⭐</em></div>');
                 i++;
                 setTimeout(render, 1500);
@@ -96,7 +96,7 @@ BFJ.define('personaje', function (el) {
                     if (sil2) { sil2.classList.add('show'); }
                     var pbox2 = document.getElementById('pbox');
                     pbox2.insertAdjacentHTML('beforeend',
-                        '<div class="pj-reveal bfj-pop"><span>' + BFJ.bimg(p.img, p.emoji) + '</span><strong>Era ' + BFJ.esc(p.name) + '</strong><em>+0⭐</em></div>');
+                        '<div class="pj-reveal bfj-pop"><span>' + BFJ.bimg(p.img, p.emoji) + '</span><strong>' + BFJ.T('Era ') + BFJ.esc(p.name) + '</strong><em>+0⭐</em></div>');
                     i++;
                     setTimeout(render, 1800);
                 }
@@ -105,10 +105,10 @@ BFJ.define('personaje', function (el) {
 
         function end() {
             var emoji = total >= 13 ? '🏆' : (total >= 8 ? '🎉' : '🔍');
-            var title = total >= 13 ? '¡Detective bíblico!' : (total >= 8 ? '¡Muy buenas pistas!' : '¡Sigue intentando!');
+            var title = total >= 13 ? BFJ.T('¡Detective bíblico!') : (total >= 8 ? BFJ.T('¡Muy buenas pistas!') : BFJ.T('¡Sigue intentando!'));
             BFJ.celebrate({
                 slug: 'personaje', stars: total, emoji: emoji, title: title, perfect: total >= 15,
-                extra: total + '⭐ de 15 posibles',
+                extra: total + '⭐ ' + BFJ.T('de 15 posibles'),
                 onAgain: round // reinicio sin recargar la página
             });
         }
@@ -116,6 +116,6 @@ BFJ.define('personaje', function (el) {
         render();
         }
     }).catch(function () {
-        el.innerHTML = '<section class="card notice"><p>No pude cargar el juego 😢 Intenta de nuevo.</p></section>';
+        el.innerHTML = '<section class="card notice"><p>' + BFJ.T('No pude cargar el juego 😢 Intenta de nuevo.') + '</p></section>';
     });
 });

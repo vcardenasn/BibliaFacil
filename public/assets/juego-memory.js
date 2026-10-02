@@ -1,6 +1,6 @@
 // US-175 — Memory Bíblico: 8 parejas personaje↔hazaña, grid 4×4, flip 3D.
 BFJ.define('memory', function (el) {
-    el.innerHTML = '<section class="card notice"><p>Cargando… ⏳</p></section>';
+    el.innerHTML = '<section class="card notice"><p>' + BFJ.T('Cargando… ⏳') + '</p></section>';
     BFJ.fetchBank('memory.json').then(function (bank) {
         round();
 
@@ -17,11 +17,11 @@ BFJ.define('memory', function (el) {
         var foundNames = [];
 
         el.innerHTML =
-            '<div class="vf-prog"><span>Parejas: <strong id="mmOk">0</strong> / ' + pairs.length + '</span>' +
-            '<span>Movimientos: <strong id="mmMv">0</strong></span></div>' +
+            '<div class="vf-prog"><span>' + BFJ.T('Parejas') + ': <strong id="mmOk">0</strong> / ' + pairs.length + '</span>' +
+            '<span>' + BFJ.T('Movimientos') + ': <strong id="mmMv">0</strong></span></div>' +
             '<div class="mm-grid">' + cards.map(function (c, i) {
                 return '<button type="button" class="mm-card" data-i="' + i +
-                    '" aria-label="Carta ' + (i + 1) + ' de ' + cards.length + '">' +
+                    '" aria-label="' + BFJ.T('Carta') + ' ' + (i + 1) + ' ' + BFJ.T('de') + ' ' + cards.length + '">' +
                     '<span class="mm-face mm-back" aria-hidden="true">' + BFJ.omoji('❓') + '</span>' +
                     '<span class="mm-face mm-front">' + BFJ.bimg(c.img, c.emoji) + '</span></button>';
             }).join('') + '</div>' +
@@ -46,7 +46,7 @@ BFJ.define('memory', function (el) {
             if (lock || btn.classList.contains('open') || btn.classList.contains('done')) { return; }
             BFJ.snd('click');
             btn.classList.add('open');
-            btn.setAttribute('aria-label', 'Carta ' + (i + 1) + ': ' + pairs[cards[i].pid].name);
+            btn.setAttribute('aria-label', BFJ.T('Carta') + ' ' + (i + 1) + ': ' + pairs[cards[i].pid].name);
             open.push({ i: i, btn: btn });
             if (open.length < 2) { return; }
 
@@ -73,8 +73,8 @@ BFJ.define('memory', function (el) {
                 BFJ.snd('bad');
                 setTimeout(function () {
                     a.btn.classList.remove('open'); b.btn.classList.remove('open');
-                    a.btn.setAttribute('aria-label', 'Carta ' + (a.i + 1) + ' de ' + cards.length);
-                    b.btn.setAttribute('aria-label', 'Carta ' + (b.i + 1) + ' de ' + cards.length);
+                    a.btn.setAttribute('aria-label', BFJ.T('Carta') + ' ' + (a.i + 1) + ' ' + BFJ.T('de') + ' ' + cards.length);
+                    b.btn.setAttribute('aria-label', BFJ.T('Carta') + ' ' + (b.i + 1) + ' ' + BFJ.T('de') + ' ' + cards.length);
                     open = []; lock = false;
                 }, 750);
             }
@@ -85,13 +85,13 @@ BFJ.define('memory', function (el) {
             BFJ.celebrate({
                 slug: 'memory', stars: stars, perfect: moves <= 10,
                 emoji: moves <= 10 ? '🏆' : '🎉',
-                title: moves <= 10 ? '¡Memoria de campeón!' : '¡Completaste el memory!',
-                extra: 'Encontraste ' + pairs.length + ' parejas en ' + moves + ' movimientos',
+                title: moves <= 10 ? BFJ.T('¡Memoria de campeón!') : BFJ.T('¡Completaste el memory!'),
+                extra: BFJ.T('Encontraste') + ' ' + pairs.length + ' ' + BFJ.T('parejas en') + ' ' + moves + ' ' + BFJ.T('movimientos'),
                 onAgain: round // reinicio sin recargar la página
             });
         }
         }
     }).catch(function () {
-        el.innerHTML = '<section class="card notice"><p>No pude cargar el juego 😢 Intenta de nuevo.</p></section>';
+        el.innerHTML = '<section class="card notice"><p>' + BFJ.T('No pude cargar el juego 😢 Intenta de nuevo.') + '</p></section>';
     });
 });

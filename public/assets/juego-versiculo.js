@@ -3,19 +3,19 @@
 // api/versiculo?set=… y se desbloquea al superar el anterior (BFJ.levels).
 BFJ.define('versiculo', function (el) {
     var LEVELS = [
-        { set: 'salmos',     icon: '🎵', name: 'Salmos',                desc: 'Cantos y oraciones',        n: 5, secs: 20, need: 3 },
-        { set: 'sabiduria',  icon: '💡', name: 'Sabiduría',             desc: 'Proverbios, Job y más',     n: 6, secs: 18, need: 4 },
-        { set: 'evangelios', icon: '✝️', name: 'Los Evangelios',        desc: 'La vida de Jesús',          n: 6, secs: 16, need: 4 },
-        { set: 'cartas',     icon: '✉️', name: 'Las Cartas',            desc: 'Hechos y cartas del NT',    n: 7, secs: 15, need: 5 },
-        { set: 'historia',   icon: '📜', name: 'Historias antiguas',    desc: 'De Génesis a Ester',        n: 7, secs: 14, need: 5 },
-        { set: 'profetas',   icon: '🗣️', name: 'Profetas y revelación', desc: 'De Isaías a Apocalipsis',   n: 8, secs: 12, need: 6 },
-        { set: 'biblia',     icon: '🌍', name: 'Toda la Biblia',        desc: 'El desafío final',          n: 8, secs: 14, need: 6 }
+        { set: 'salmos',     icon: '🎵', name: 'Salmos',                desc: BFJ.T('Cantos y oraciones'),        n: 5, secs: 20, need: 3 },
+        { set: 'sabiduria',  icon: '💡', name: BFJ.T('Sabiduría'),             desc: BFJ.T('Proverbios, Job y más'),     n: 6, secs: 18, need: 4 },
+        { set: 'evangelios', icon: '✝️', name: BFJ.T('Los Evangelios'),        desc: BFJ.T('La vida de Jesús'),          n: 6, secs: 16, need: 4 },
+        { set: 'cartas',     icon: '✉️', name: BFJ.T('Las Cartas'),            desc: BFJ.T('Hechos y cartas del NT'),    n: 7, secs: 15, need: 5 },
+        { set: 'historia',   icon: '📜', name: BFJ.T('Historias antiguas'),    desc: BFJ.T('De Génesis a Ester'),        n: 7, secs: 14, need: 5 },
+        { set: 'profetas',   icon: '🗣️', name: BFJ.T('Profetas y revelación'), desc: BFJ.T('De Isaías a Apocalipsis'),   n: 8, secs: 12, need: 6 },
+        { set: 'biblia',     icon: '🌍', name: BFJ.T('Toda la Biblia'),        desc: BFJ.T('El desafío final'),          n: 8, secs: 14, need: 6 }
     ];
 
     function menu() {
         var done = BFJ.levels.passed('versiculo');
-        var html = '<div class="vf-qbox"><h3 class="vj-ltitle">Elige tu nivel 📖</h3>' +
-            '<p class="vj-lsub">Supera cada nivel para abrir el siguiente y ganar stickers 🎁</p>' +
+        var html = '<div class="vf-qbox"><h3 class="vj-ltitle">' + BFJ.T('Elige tu nivel 📖') + '</h3>' +
+            '<p class="vj-lsub">' + BFJ.T('Supera cada nivel para abrir el siguiente y ganar stickers 🎁') + '</p>' +
             '<div class="vj-lgrid" role="list">' +
             LEVELS.map(function (L, ix) {
                 var locked = ix > done;
@@ -26,11 +26,11 @@ BFJ.define('versiculo', function (el) {
                     ' style="--d:' + ix * 55 + 'ms">' +
                     '<i aria-hidden="true">' + BFJ.omoji(locked ? '🔒' : L.icon) + '</i>' +
                     '<b>' + (ix + 1) + '. ' + L.name + '</b>' +
-                    '<small>' + L.desc + ' · ' + L.n + ' versículos · pasas con ' + L.need + '</small>' +
+                    '<small>' + L.desc + ' · ' + L.n + ' ' + BFJ.T('versículos') + ' · ' + BFJ.T('pasas con') + ' ' + L.need + '</small>' +
                     '<span class="vj-lvs">' +
-                    (locked ? 'Pasa el nivel anterior'
-                        : (ix < done ? '✅ Superado · mejor ' + best + '/' + L.n
-                            : '▶ ¡A jugar!')) +
+                    (locked ? BFJ.T('Pasa el nivel anterior')
+                        : (ix < done ? '✅ ' + BFJ.T('Superado · mejor') + ' ' + best + '/' + L.n
+                            : BFJ.T('▶ ¡A jugar!'))) +
                     '</span></button></div>';
             }).join('') + '</div></div>';
         el.innerHTML = html;
@@ -44,7 +44,7 @@ BFJ.define('versiculo', function (el) {
 
     function play(lix) {
         var L = LEVELS[lix];
-        el.innerHTML = '<section class="card notice"><p>Cargando… ⏳</p></section>';
+        el.innerHTML = '<section class="card notice"><p>' + BFJ.T('Cargando… ⏳') + '</p></section>';
         fetch('/juegos/api/versiculo?n=' + L.n + '&set=' + L.set).then(function (r) {
             if (!r.ok) { throw new Error('api ' + r.status); }
             return r.json();
@@ -60,8 +60,8 @@ BFJ.define('versiculo', function (el) {
                 var q = qs[i];
                 el.innerHTML =
                     '<div class="vf-qbox">' +
-                    '<div class="vf-prog"><span>' + BFJ.omoji(L.icon) + ' Nivel ' + (lix + 1) +
-                        ' · ' + (i + 1) + ' / ' + qs.length + ' · pasas con ' + need + '</span>' +
+                    '<div class="vf-prog"><span>' + BFJ.omoji(L.icon) + ' ' + BFJ.T('Nivel') + ' ' + (lix + 1) +
+                        ' · ' + (i + 1) + ' / ' + qs.length + ' · ' + BFJ.T('pasas con') + ' ' + need + '</span>' +
                     '<span class="vf-streak' + (streak >= 3 ? ' hot' : '') + '">' +
                     (streak > 1 ? '🔥 x' + streak : '') + '</span></div>' +
                     '<div class="jtimer" id="vjt" aria-hidden="true"></div>' +
@@ -111,16 +111,16 @@ BFJ.define('versiculo', function (el) {
                 var last = lix === LEVELS.length - 1;
                 var emoji = won ? (last ? '🌍' : '🏆') : '💪';
                 var title = won
-                    ? (last ? '¡Biblia completa!' : '¡Nivel ' + (lix + 1) + ' superado!')
-                    : '¡Casi lo logras!';
-                var extra = ok + ' de ' + qs.length + ' versículos' +
+                    ? (last ? BFJ.T('¡Biblia completa!') : BFJ.T('¡Nivel %d superado!').replace('%d', lix + 1))
+                    : BFJ.T('¡Casi lo logras!');
+                var extra = ok + ' ' + BFJ.T('de') + ' ' + qs.length + ' ' + BFJ.T('versículos') +
                     (won
-                        ? (last ? ' — ¡completaste todos los niveles!' : ' — se abrió el nivel ' + (lix + 2))
-                        : ' — necesitas ' + need + ' para pasar');
+                        ? (last ? ' — ' + BFJ.T('¡completaste todos los niveles!') : ' — ' + BFJ.T('se abrió el nivel') + ' ' + (lix + 2))
+                        : ' — ' + BFJ.T('necesitas') + ' ' + need + ' ' + BFJ.T('para pasar'));
                 BFJ.celebrate({
                     slug: 'versiculo', stars: ok, emoji: emoji, title: title,
                     perfect: ok === qs.length, extra: extra,
-                    againLabel: won && !last ? '▶ Nivel ' + (lix + 2) : '🔄 Reintentar',
+                    againLabel: won && !last ? '▶ ' + BFJ.T('Nivel') + ' ' + (lix + 2) : BFJ.T('🔄 Reintentar'),
                     onAgain: function () {
                         if (won && !last) { play(lix + 1); }
                         else if (!won) { play(lix); }
@@ -131,8 +131,8 @@ BFJ.define('versiculo', function (el) {
 
             render();
         }).catch(function () {
-            el.innerHTML = '<section class="card notice"><p>No pude cargar el juego 😢</p>' +
-                '<p><button type="button" class="jbtn jbtn-main" id="vjRetry">🔄 Reintentar</button></p></section>';
+            el.innerHTML = '<section class="card notice"><p>' + BFJ.T('No pude cargar el juego 😢') + '</p>' +
+                '<p><button type="button" class="jbtn jbtn-main" id="vjRetry">' + BFJ.T('🔄 Reintentar') + '</button></p></section>';
             document.getElementById('vjRetry').addEventListener('click', function () { play(lix); });
         });
     }

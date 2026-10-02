@@ -4,6 +4,11 @@
 (function () {
     'use strict';
 
+    // i18n: window.BF_T mapea 'Texto en español' → idioma activo (BF_LANG).
+    // Sin entrada en el mapa, devuelve el español intacto.
+    var TMAP = window.BF_T || {};
+    function T(s) { return TMAP[s] || s; }
+
     var root = document.documentElement;
 
     // ============================ Preferencias ===============================
@@ -87,21 +92,21 @@
             if (panel) { closePanel(); return; }
             panel = document.createElement('dialog');
             panel.className = 'prefpanel';
-            panel.setAttribute('aria-label', 'Apariencia');
+            panel.setAttribute('aria-label', T('Apariencia'));
             panel.innerHTML =
-                '<div class="pp-head"><strong>Apariencia</strong><button type="button" class="pp-close" aria-label="Cerrar apariencia">✕</button></div>' +
-                '<div class="pp-row"><span>Tema</span><div class="seg" data-k="theme">' +
-                seg('light', '☀', 'Claro') + seg('dark', '☾', 'Oscuro') + seg('sepia', '◐', 'Sepia') + seg('contrast', '◆', 'Alto contraste') + '</div></div>' +
-                '<div class="pp-row"><span>Acento</span><div class="seg seg-acc" data-k="accent">' +
-                seg('indigo', '●', 'Índigo') + seg('oliva', '●', 'Oliva') + seg('terracota', '●', 'Terracota') + seg('purpura', '●', 'Púrpura') + seg('teal', '●', 'Verde azulado') + '</div></div>' +
-                '<div class="pp-row"><span>Tamaño</span><input type="range" min="1" max="4" step="1" data-k="font" value="' + P.get('font', '2') + '" aria-label="Tamaño de letra"></div>' +
-                '<div class="pp-row"><span>Letra</span><div class="seg" data-k="family">' + seg('serif', 'Serif') + seg('sans', 'Sans') + '</div></div>' +
-                '<div class="pp-row"><span>Interlineado</span><div class="seg" data-k="lineh">' + seg('compact', 'Compacto') + seg('normal', 'Normal') + seg('ample', 'Amplio') + '</div></div>' +
-                '<div class="pp-row"><span>Palabras de Jesús en rojo</span><button type="button" class="tog" data-k="wj" role="switch" aria-label="Palabras de Jesús en rojo"></button></div>' +
-                '<div class="pp-row"><span>Números de versículo</span><button type="button" class="tog" data-k="vnum" role="switch" aria-label="Números de versículo"></button></div>' +
-                '<div class="pp-row"><span>Espaciado de letras</span><button type="button" class="tog" data-k="spacing" role="switch" aria-label="Espaciado amplio de letras"></button></div>' +
-                '<div class="pp-row"><span>Párrafo fluido</span><button type="button" class="tog" data-k="flow" data-on="para" role="switch" aria-label="Párrafo fluido"></button></div>' +
-                '<div class="pp-row"><span>Modo zen (sin barras)</span><button type="button" class="tog" data-k="zen" role="switch" aria-label="Modo zen (sin barras)"></button></div>';
+                '<div class="pp-head"><strong>' + T('Apariencia') + '</strong><button type="button" class="pp-close" aria-label="' + T('Cerrar apariencia') + '">✕</button></div>' +
+                '<div class="pp-row"><span>' + T('Tema') + '</span><div class="seg" data-k="theme">' +
+                seg('light', '☀', T('Claro')) + seg('dark', '☾', T('Oscuro')) + seg('sepia', '◐', T('Sepia')) + seg('contrast', '◆', T('Alto contraste')) + '</div></div>' +
+                '<div class="pp-row"><span>' + T('Acento') + '</span><div class="seg seg-acc" data-k="accent">' +
+                seg('indigo', '●', T('Índigo')) + seg('oliva', '●', T('Oliva')) + seg('terracota', '●', T('Terracota')) + seg('purpura', '●', T('Púrpura')) + seg('teal', '●', T('Verde azulado')) + '</div></div>' +
+                '<div class="pp-row"><span>' + T('Tamaño') + '</span><input type="range" min="1" max="4" step="1" data-k="font" value="' + P.get('font', '2') + '" aria-label="' + T('Tamaño de letra') + '"></div>' +
+                '<div class="pp-row"><span>' + T('Letra') + '</span><div class="seg" data-k="family">' + seg('serif', 'Serif') + seg('sans', 'Sans') + '</div></div>' +
+                '<div class="pp-row"><span>' + T('Interlineado') + '</span><div class="seg" data-k="lineh">' + seg('compact', T('Compacto')) + seg('normal', T('Normal')) + seg('ample', T('Amplio')) + '</div></div>' +
+                '<div class="pp-row"><span>' + T('Palabras de Jesús en rojo') + '</span><button type="button" class="tog" data-k="wj" role="switch" aria-label="' + T('Palabras de Jesús en rojo') + '"></button></div>' +
+                '<div class="pp-row"><span>' + T('Números de versículo') + '</span><button type="button" class="tog" data-k="vnum" role="switch" aria-label="' + T('Números de versículo') + '"></button></div>' +
+                '<div class="pp-row"><span>' + T('Espaciado de letras') + '</span><button type="button" class="tog" data-k="spacing" role="switch" aria-label="' + T('Espaciado amplio de letras') + '"></button></div>' +
+                '<div class="pp-row"><span>' + T('Párrafo fluido') + '</span><button type="button" class="tog" data-k="flow" data-on="para" role="switch" aria-label="' + T('Párrafo fluido') + '"></button></div>' +
+                '<div class="pp-row"><span>' + T('Modo zen (sin barras)') + '</span><button type="button" class="tog" data-k="zen" role="switch" aria-label="' + T('Modo zen (sin barras)') + '"></button></div>';
             document.body.appendChild(panel);
             panel.showModal();
             prefBtn.setAttribute('aria-expanded', 'true');
@@ -173,8 +178,8 @@
             zenBtn.type = 'button';
             zenBtn.className = 'zen-exit';
             zenBtn.textContent = '✕';
-            zenBtn.title = 'Salir del modo zen';
-            zenBtn.setAttribute('aria-label', 'Salir del modo zen');
+            zenBtn.title = T('Salir del modo zen');
+            zenBtn.setAttribute('aria-label', T('Salir del modo zen'));
             zenBtn.addEventListener('click', function () {
                 apply('zen', 'off'); P.set('zen', 'off'); syncZen(); syncPanel();
                 TK('pref', 'zen:off');
@@ -229,7 +234,7 @@
                 count += visible;
             });
             bookStatus.hidden = !query;
-            bookStatus.textContent = count ? count + ' libro(s) encontrado(s).' : 'No se encontraron libros. Prueba otro nombre.';
+            bookStatus.textContent = count ? count + ' ' + T('libro(s) encontrado(s).') : T('No se encontraron libros. Prueba otro nombre.');
         });
     }
     var chapterEl = document.querySelector('.chapter[data-pos]');
@@ -338,9 +343,9 @@
         if (!rec) { return; }
         if (rec.color) { el.classList.add('hl' + rec.color); }
         var html = '';
-        if (rec.note) { el.classList.add('has-note'); html += '<i title="Tiene nota">✎</i>'; }
-        if (rec.devotional) { el.classList.add('has-devotional'); html += '<i title="Tiene devocional">◇</i>'; }
-        if (rec.fav) { el.classList.add('has-fav'); html += '<i title="Favorito">♥</i>'; }
+        if (rec.note) { el.classList.add('has-note'); html += '<i title="' + T('Tiene nota') + '">✎</i>'; }
+        if (rec.devotional) { el.classList.add('has-devotional'); html += '<i title="' + T('Tiene devocional') + '">◇</i>'; }
+        if (rec.fav) { el.classList.add('has-fav'); html += '<i title="' + T('Favorito') + '">♥</i>'; }
         if (html) {
             var s = document.createElement('span');
             s.className = 'vmarks';
@@ -371,31 +376,31 @@
         sheet.className = 'vsheet';
         sheet.setAttribute('role', 'dialog');
         sheet.setAttribute('aria-modal', 'true');
-        sheet.setAttribute('aria-label', 'Opciones del versículo ' + ref);
+        sheet.setAttribute('aria-label', T('Opciones del versículo') + ' ' + ref);
         sheet.innerHTML =
             '<div class="vs-backdrop"></div><div class="vs-card">' +
             '<div class="vs-head"><strong>' + esc(ref) + '</strong>' +
-            '<button type="button" class="vs-x" aria-label="Cerrar">✕</button></div>' +
-            '<div class="vs-row vs-colors"><span class="vs-lab">Resaltar</span>' +
+            '<button type="button" class="vs-x" aria-label="' + T('Cerrar') + '">✕</button></div>' +
+            '<div class="vs-row vs-colors"><span class="vs-lab">' + T('Resaltar') + '</span>' +
             [1, 2, 3, 4, 5].map(function (c) {
                 return '<button type="button" class="sw sw' + c + (rec.color === c ? ' on' : '') + '" data-c="' + c + '" aria-label="Color ' + c + '"></button>';
             }).join('') +
-            '<button type="button" class="sw sw0" data-c="0" title="Quitar resaltado">✕</button></div>' +
+            '<button type="button" class="sw sw0" data-c="0" title="' + T('Quitar resaltado') + '">✕</button></div>' +
             '<div class="vs-row vs-acts">' +
-            '<button type="button" data-a="devotional" class="va2 va-dev' + (rec.devotional ? ' on' : '') + '">Hacer devocional</button>' +
-            '<button type="button" data-a="note" class="va2' + (rec.note ? ' on' : '') + '">✎ Nota</button>' +
-            '<button type="button" data-a="fav" class="va2' + (rec.fav ? ' on' : '') + '">♥ Favorito</button>' +
-            '<button type="button" data-a="copy" class="va2">⧉ Copiar</button>' +
-            '<button type="button" data-a="share" class="va2">↗ Compartir</button>' +
-            '<button type="button" data-a="img" class="va2">🖼 Imagen</button>' +
-            '<button type="button" data-a="range" class="va2" aria-expanded="false">⇅ Rango</button>' +
-            (cmpUrl ? '<a class="va2" href="' + esc(cmpUrl) + '">⇄ Comparar</a>' : '') +
+            '<button type="button" data-a="devotional" class="va2 va-dev' + (rec.devotional ? ' on' : '') + '">' + T('Hacer devocional') + '</button>' +
+            '<button type="button" data-a="note" class="va2' + (rec.note ? ' on' : '') + '">' + T('✎ Nota') + '</button>' +
+            '<button type="button" data-a="fav" class="va2' + (rec.fav ? ' on' : '') + '">' + T('♥ Favorito') + '</button>' +
+            '<button type="button" data-a="copy" class="va2">' + T('⧉ Copiar') + '</button>' +
+            '<button type="button" data-a="share" class="va2">' + T('↗ Compartir') + '</button>' +
+            '<button type="button" data-a="img" class="va2">' + T('🖼 Imagen') + '</button>' +
+            '<button type="button" data-a="range" class="va2" aria-expanded="false">' + T('⇅ Rango') + '</button>' +
+            (cmpUrl ? '<a class="va2" href="' + esc(cmpUrl) + '">' + T('⇄ Comparar') + '</a>' : '') +
             '</div>' +
-            '<div class="vs-range" hidden><label>Hasta v. <select class="vs-range-sel"></select></label>' +
-            '<button type="button" data-a="copyrange" class="va2">⧉ Copiar rango</button></div>' +
-            '<div class="vs-note" hidden><textarea rows="3" maxlength="2000" placeholder="Escribe tu nota…">' + esc(rec.note || '') + '</textarea>' +
-            '<div class="vs-note-btns"><button type="button" data-a="save" class="va2 on">Guardar</button>' +
-            (rec.note ? '<button type="button" data-a="delnote" class="va2">Borrar nota</button>' : '') + '</div></div>' +
+            '<div class="vs-range" hidden><label>' + T('Hasta v.') + ' <select class="vs-range-sel"></select></label>' +
+            '<button type="button" data-a="copyrange" class="va2">' + T('⧉ Copiar rango') + '</button></div>' +
+            '<div class="vs-note" hidden><textarea rows="3" maxlength="2000" placeholder="' + T('Escribe tu nota…') + '">' + esc(rec.note || '') + '</textarea>' +
+            '<div class="vs-note-btns"><button type="button" data-a="save" class="va2 on">' + T('Guardar') + '</button>' +
+            (rec.note ? '<button type="button" data-a="delnote" class="va2">' + T('Borrar nota') + '</button>' : '') + '</div></div>' +
             '</div>';
         document.body.appendChild(sheet);
         requestAnimationFrame(function () { sheet.classList.add('show'); });
@@ -442,7 +447,7 @@
                 });
                 var status = sheet.querySelector('.vs-dev-status');
                 if (!answers.some(Boolean)) {
-                    status.textContent = 'Escribe al menos una reflexión antes de guardar.';
+                    status.textContent = T('Escribe al menos una reflexión antes de guardar.');
                     sheet.querySelector('.vs-devotional textarea').focus();
                     return;
                 }
@@ -455,8 +460,8 @@
                 TK('ann', 'devotional');
                 saveAnn(id, rec, ref);
                 paintVerse(sheetVerse, rec);
-                act.textContent = 'Guardado';
-                status.textContent = 'Tu devocional se guardó en este dispositivo.';
+                act.textContent = T('Guardado');
+                status.textContent = T('Tu devocional se guardó en este dispositivo.');
                 setTimeout(closeSheet, 700);
             } else if (a === 'deldevotional') {
                 delete rec.devotional;
@@ -471,7 +476,7 @@
                 rec.note = sheet.querySelector('textarea').value.trim() || null;
                 if (rec.note) { TK('ann', 'note'); }
                 saveAnn(id, rec, ref);
-                act.textContent = '✓ Guardada';
+                act.textContent = T('✓ Guardada');
                 setTimeout(closeSheet, 700);
             } else if (a === 'delnote') {
                 rec.note = null;
@@ -489,8 +494,8 @@
                 TK('share', 'copy');
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(payload).then(function () {
-                        act.textContent = '✓ Copiado';
-                        setTimeout(function () { act.textContent = '⧉ Copiar'; }, 1100);
+                        act.textContent = T('✓ Copiado');
+                        setTimeout(function () { act.textContent = T('⧉ Copiar'); }, 1100);
                     });
                 }
             } else if (a === 'range') {
@@ -527,8 +532,8 @@
                 TK('share', 'range');
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText('“' + parts.join(' ') + '” — ' + rangeRef + '\n' + rUrl).then(function () {
-                        act.textContent = '✓ Copiado';
-                        setTimeout(function () { act.textContent = '⧉ Copiar rango'; }, 1100);
+                        act.textContent = T('✓ Copiado');
+                        setTimeout(function () { act.textContent = T('⧉ Copiar rango'); }, 1100);
                     });
                 }
             } else if (a === 'share') {
@@ -578,7 +583,7 @@
         '¿Qué está mostrando la Palabra de Dios que necesito reconocer, cambiar o dejar en mi vida?',
         '¿Qué pensamiento, actitud, decisión o conducta necesito corregir a la luz de lo que Dios me enseña?',
         '¿Qué debo hacer hoy para poner en práctica lo que Dios me ha enseñado?'
-    ];
+    ].map(function (q) { return T(q); });
 
     function devotionalPortion(from, to, ref) {
         var texts = [];
@@ -610,17 +615,17 @@
         var answers = Array.isArray(saved.answers) ? saved.answers : [];
         var card = sh.querySelector('.vs-card');
         card.innerHTML =
-            '<div class="vs-head"><button type="button" class="vs-x" data-a="back">← Volver</button>' +
-            '<strong>📓 Devocional — mis apuntes</strong><button type="button" class="vs-x" data-a="close" aria-label="Cerrar">✕</button></div>' +
+            '<div class="vs-head"><button type="button" class="vs-x" data-a="back">' + T('← Volver') + '</button>' +
+            '<strong>' + T('📓 Devocional — mis apuntes') + '</strong><button type="button" class="vs-x" data-a="close" aria-label="' + T('Cerrar') + '">✕</button></div>' +
             '<div class="vs-devotional">' +
-            '<label class="vs-dev-range">Porción desde v. ' + from + ' hasta <select>' + options.join('') + '</select></label>' +
+            '<label class="vs-dev-range">' + T('Porción desde v.') + ' ' + from + T(' hasta ') + '<select>' + options.join('') + '</select></label>' +
             '<blockquote class="vs-dev-passage"></blockquote>' +
             '<div class="vs-dev-fields">' + DEVOTIONAL_QUESTIONS.map(function (question, i) {
                 return '<label><span>' + esc(question) + '</span><textarea rows="3" maxlength="4000">' + esc(answers[i] || '') + '</textarea></label>';
             }).join('') + '</div>' +
             '<p class="vs-dev-status" role="status"></p>' +
-            '<div class="vs-note-btns"><button type="button" data-a="savedevotional" class="va2 on">Guardar devocional</button>' +
-            (rec.devotional ? '<button type="button" data-a="deldevotional" class="va2">Eliminar</button>' : '') + '</div></div>';
+            '<div class="vs-note-btns"><button type="button" data-a="savedevotional" class="va2 on">' + T('Guardar devocional') + '</button>' +
+            (rec.devotional ? '<button type="button" data-a="deldevotional" class="va2">' + T('Eliminar') + '</button>' : '') + '</div></div>';
 
         var select = card.querySelector('.vs-dev-range select');
         var passage = card.querySelector('.vs-dev-passage');
@@ -655,16 +660,16 @@
         sh._vtext = text; sh._vref = ref;
         var card = sh.querySelector('.vs-card');
         card.innerHTML =
-            '<div class="vs-head"><button type="button" class="vs-x" data-a="back">← Volver</button>' +
+            '<div class="vs-head"><button type="button" class="vs-x" data-a="back">' + T('← Volver') + '</button>' +
             '<strong>' + esc(ref) + '</strong><span></span></div>' +
             '<div class="vs-row"><div class="seg">' +
-            '<button type="button" data-a="fmt" data-fmt="story"' + (fmt === 'story' ? ' class="on"' : '') + '>Historia</button>' +
-            '<button type="button" data-a="fmt" data-fmt="square"' + (fmt === 'square' ? ' class="on"' : '') + '>Cuadrada</button>' +
-            '<button type="button" data-a="fmt" data-fmt="wide"' + (fmt === 'wide' ? ' class="on"' : '') + '>Ancha</button></div></div>' +
-            '<div class="vs-imgwrap"><img alt="Vista previa de la imagen"></div>' +
+            '<button type="button" data-a="fmt" data-fmt="story"' + (fmt === 'story' ? ' class="on"' : '') + '>' + T('Historia') + '</button>' +
+            '<button type="button" data-a="fmt" data-fmt="square"' + (fmt === 'square' ? ' class="on"' : '') + '>' + T('Cuadrada') + '</button>' +
+            '<button type="button" data-a="fmt" data-fmt="wide"' + (fmt === 'wide' ? ' class="on"' : '') + '>' + T('Ancha') + '</button></div></div>' +
+            '<div class="vs-imgwrap"><img alt="' + T('Vista previa de la imagen') + '"></div>' +
             '<div class="vs-row vs-acts">' +
-            '<button type="button" data-a="dl" class="va2 on">⬇ Descargar PNG</button>' +
-            '<button type="button" data-a="shimg" class="va2">↗ Compartir</button></div>';
+            '<button type="button" data-a="dl" class="va2 on">' + T('⬇ Descargar PNG') + '</button>' +
+            '<button type="button" data-a="shimg" class="va2">' + T('↗ Compartir') + '</button></div>';
         sh._cv = drawVerseImage(text, ref, fmt);
         card.querySelector('.vs-imgwrap img').src = sh._cv.toDataURL('image/png');
     }
@@ -777,8 +782,8 @@
                     st++; t.setDate(t.getDate() - 1);
                 }
                 sb.hidden = false;
-                sb.innerHTML = '<strong>🔥 ' + st + (st === 1 ? ' día' : ' días') + ' seguidos</strong>' +
-                    '<span>' + dlist.length + (dlist.length === 1 ? ' día' : ' días') + ' de lectura en total</span>';
+                sb.innerHTML = '<strong>🔥 ' + st + (st === 1 ? ' ' + T('día') : ' ' + T('días')) + ' ' + T('seguidos') + '</strong>' +
+                    '<span>' + dlist.length + (dlist.length === 1 ? ' ' + T('día') : ' ' + T('días')) + ' ' + T('de lectura en total') + '</span>';
             }
         }
 
@@ -791,7 +796,7 @@
                 var DAY = 86400000;
                 var rel = function (ts) {
                     var d = Math.floor((Date.now() - ts) / DAY);
-                    return d <= 0 ? 'hoy' : (d === 1 ? 'ayer' : 'hace ' + d + ' días');
+                    return d <= 0 ? T('hoy') : (d === 1 ? T('ayer') : d + ' ' + T('días atrás'));
                 };
                 histBox.hidden = false;
                 document.getElementById('histList').innerHTML = hlist.slice(0, 12).map(function (h) {
@@ -808,7 +813,7 @@
                     all.forEach(function (r) { if (r.slug) { names[r.slug] = bookName(r); } });
                     var slugs = Object.keys(names).sort(function (a, b) { return names[a].localeCompare(names[b], 'es'); });
                     if (book && !(book in names)) { book = ''; }
-                    bookSel.innerHTML = '<option value="">Todos los libros</option>' +
+                    bookSel.innerHTML = '<option value="">' + T('Todos los libros') + '</option>' +
                         slugs.map(function (s) {
                             return '<option value="' + esc(s) + '"' + (s === book ? ' selected' : '') + '>' + esc(names[s]) + '</option>';
                         }).join('');
@@ -831,16 +836,16 @@
 
                 if (countEl) {
                     countEl.textContent = !all.length ? ''
-                        : (!filtered.length ? 'Sin anotaciones con estos filtros.'
-                        : filtered.length + (filtered.length === 1 ? ' anotación' : ' anotaciones') +
-                          (filter !== 'all' || q || book ? ' con los filtros actuales.' : ' en total.'));
+                        : (!filtered.length ? T('Sin anotaciones con estos filtros.')
+                        : filtered.length + (filtered.length === 1 ? ' ' + T('anotación') : ' ' + T('anotaciones')) +
+                          (filter !== 'all' || q || book ? T(' con los filtros actuales.') : T(' en total.')));
                 }
 
                 var box = document.getElementById('miasList');
                 if (!filtered.length) {
                     box.innerHTML = all.length
-                        ? '<p class="muted" style="padding:2rem 0;text-align:center">Nada coincide con los filtros actuales.<br><button type="button" data-clear>Limpiar filtros</button></p>'
-                        : '<p class="muted" style="padding:2rem 0;text-align:center">Aún no tienes anotaciones.<br>Toca un versículo en el lector para resaltarlo, anotarlo o marcarlo ♥.</p>';
+                        ? '<p class="muted" style="padding:2rem 0;text-align:center">' + T('Nada coincide con los filtros actuales.') + '<br><button type="button" data-clear>' + T('Limpiar filtros') + '</button></p>'
+                        : '<p class="muted" style="padding:2rem 0;text-align:center">' + T('Aún no tienes anotaciones.') + '<br>' + T('Toca un versículo en el lector para resaltarlo, anotarlo o marcarlo ♥.') + '</p>';
                     return;
                 }
                 var list = filtered;
@@ -853,7 +858,7 @@
                     if (r.fav) { tags += '<span class="tag">♥</span>'; }
                     var devotional = '';
                     if (r.devotional) {
-                        devotional = '<div class="mi-dev"><strong>Devocional · ' + esc(r.devotional.ref || r.ref) + '</strong>' +
+                        devotional = '<div class="mi-dev"><strong>' + T('Devocional · ') + esc(r.devotional.ref || r.ref) + '</strong>' +
                             (r.devotional.answers || []).map(function (answer, i) {
                                 return answer ? '<p><b>' + (i + 1) + '.</b> ' + esc(answer) + '</p>' : '';
                             }).join('') + '</div>';
@@ -862,7 +867,7 @@
                         '<div class="mi-head"><a href="' + url + '"><strong>' + esc(r.ref || r.id) + '</strong></a>' +
                         '<span class="mi-ver">' + esc((r.version || '').toUpperCase()) + '</span>' + tags + '</div>' +
                         (r.note ? '<p class="mi-note">' + esc(r.note) + '</p>' : '') + devotional +
-                        '<button type="button" class="mi-del" title="Borrar">Borrar</button></div>';
+                        '<button type="button" class="mi-del" title="' + T('Borrar') + '">' + T('Borrar') + '</button></div>';
                 }).join('');
             });
         }
@@ -938,16 +943,16 @@
             mailBtn.addEventListener('click', function () {
                 if (!lastList.length) { return; }
                 TK('ann', 'mail');
-                var lines = ['Mis anotaciones — Biblia Fácil', ''];
+                var lines = [T('Mis anotaciones') + ' — Biblia Fácil', ''];
                 lastList.forEach(function (r) {
                     var marks = [];
-                    if (r.color) { marks.push('resaltada'); }
-                    if (r.fav) { marks.push('favorita'); }
+                    if (r.color) { marks.push(T('resaltada')); }
+                    if (r.fav) { marks.push(T('favorita')); }
                     var line = '• ' + (r.ref || r.id) + ' (' + (r.version || '').toUpperCase() + ')';
                     if (marks.length) { line += ' — ' + marks.join(', '); }
                     if (r.note) { line += '\n  ✎ ' + r.note; }
                     if (r.devotional) {
-                        line += '\n  Devocional · ' + (r.devotional.ref || r.ref);
+                        line += '\n  ' + T('Devocional · ') + (r.devotional.ref || r.ref);
                         (r.devotional.answers || []).forEach(function (answer, i) {
                             if (answer) { line += '\n  ' + (i + 1) + '. ' + answer; }
                         });
@@ -958,9 +963,9 @@
                 var body = lines.join('\n');
                 var MAX = 6000; // los clientes de correo truncan mailto: muy largos
                 if (body.length > MAX) {
-                    body = body.slice(0, MAX) + '\n\n…(lista recortada — usa "Exportar" para el archivo completo)';
+                    body = body.slice(0, MAX) + '\n\n…' + T('(lista recortada — usa "Exportar" para el archivo completo)');
                 }
-                location.href = 'mailto:?subject=' + encodeURIComponent('Mis anotaciones — Biblia Fácil') +
+                location.href = 'mailto:?subject=' + encodeURIComponent(T('Mis anotaciones') + ' — Biblia Fácil') +
                     '&body=' + encodeURIComponent(body);
             });
         }
@@ -997,7 +1002,7 @@
                         });
                         chain.then(renderMias);
                         TK('ann', 'import');
-                    } catch (e) { alert('No pude leer ese archivo JSON.'); }
+                    } catch (e) { alert(T('No pude leer ese archivo JSON.')); }
                 };
                 rd.readAsText(f);
                 impInput.value = '';
@@ -1045,7 +1050,7 @@
                 box.hidden = false;
                 cb.setAttribute('aria-expanded', 'true');
             })
-            .catch(function () { box.textContent = 'No se pudo cargar el contexto.'; box.hidden = false; })
+            .catch(function () { box.textContent = T('No se pudo cargar el contexto.'); box.hidden = false; })
             .finally(function () { cb.disabled = false; });
     });
 
@@ -1075,13 +1080,13 @@
         }
         function paintPlan() {
             var done = pst.d.length;
-            lab.textContent = done + ' de ' + totalDays + ' días';
+            lab.textContent = done + ' ' + T('de') + ' ' + totalDays + ' ' + T('días');
             bar.style.width = (done * 100 / totalDays).toFixed(1) + '%';
             if (barWrap) { barWrap.setAttribute('aria-valuenow', String(done)); }
             var nx = nextPlanDay();
             if (goBtn) {
                 goBtn.setAttribute('href', '#d' + (nx || totalDays));
-                goBtn.textContent = nx ? 'Ir al día ' + nx + ' ↓' : 'Plan completado';
+                goBtn.textContent = nx ? T('Ir al día') + ' ' + nx + ' ↓' : T('Plan completado');
             }
             dayEls.forEach(function (el) {
                 var n = parseInt(el.id.slice(1), 10);
@@ -1093,13 +1098,13 @@
             btnStart.hidden = !!pst.s;
             btnReset.hidden = !pst.s;
             if (pace) {
-                if (!pst.s) { pace.textContent = 'Toca «Empezar» para registrar tu ritmo, o marca días directamente.'; }
-                else if (!nx) { pace.textContent = 'Completaste el plan. ¡Enhorabuena!'; }
+                if (!pst.s) { pace.textContent = T('Toca «Empezar» para registrar tu ritmo, o marca días directamente.'); }
+                else if (!nx) { pace.textContent = T('Completaste el plan. ¡Enhorabuena!'); }
                 else {
                     var expected = Math.min(totalDays, Math.floor((Date.now() - pst.s) / 86400000) + 1);
-                    pace.textContent = nx === expected ? '¡Vas al día!'
-                        : (nx < expected ? 'Deberías ir por el día ' + expected + ' — te falta el día ' + nx + '.'
-                        : 'Vas adelantado: toca el día ' + expected + ' y ya vas en el ' + nx + '.');
+                    pace.textContent = nx === expected ? T('¡Vas al día!')
+                        : (nx < expected ? T('Deberías ir por el día') + ' ' + expected + ' — ' + T('te falta el día') + ' ' + nx + '.'
+                        : T('Vas adelantado: toca el día') + ' ' + expected + ' ' + T('y ya vas en el') + ' ' + nx + '.');
                 }
             }
         }
@@ -1127,7 +1132,7 @@
         try { s = JSON.parse(P.get('plan_' + el.getAttribute('data-planprog'), 'null')); } catch (e) {}
         if (s && Array.isArray(s.d) && s.d.length) {
             el.hidden = false;
-            el.textContent = '✓ ' + s.d.length + (s.d.length === 1 ? ' día completado' : ' días completados');
+            el.textContent = '✓ ' + s.d.length + (s.d.length === 1 ? ' ' + T('día completado') : ' ' + T('días completados'));
         }
     });
 
@@ -1227,19 +1232,19 @@
     function renderBar() {
         if (!lbar) { return; }
         var html = lstate === 'off'
-            ? '<button type="button" data-l="play">▶ Escuchar</button>'
+            ? '<button type="button" data-l="play">▶ ' + T('Escuchar') + '</button>'
             : '<button type="button" data-l="' + (lstate === 'pause' ? 'play' : 'pause') + '">' +
               (lstate === 'pause' ? '▶' : '⏸') + '</button>' +
-              '<button type="button" data-l="stop" aria-label="Detener">■</button>';
+              '<button type="button" data-l="stop" aria-label="' + T('Detener') + '">■</button>';
         if (lvoices.length) {
-            html += '<select data-lsel aria-label="Voz" title="Voz">';
+            html += '<select data-lsel aria-label="' + T('Voz') + '" title="' + T('Voz') + '">';
             lvoices.forEach(function (v) {
                 html += '<option value="' + esc(v.voiceURI) + '"' + (v.voiceURI === lvuri ? ' selected' : '') + '>' +
                     esc(v.name.replace(/Microsoft |Google |Apple /i, '')) + '</option>';
             });
             html += '</select>';
         }
-        html += '<button type="button" data-l="rate" title="Velocidad">' + lrate + '×</button>';
+        html += '<button type="button" data-l="rate" title="' + T('Velocidad') + '">' + lrate + '×</button>';
         lbar.innerHTML = html;
     }
     function speakCur() {

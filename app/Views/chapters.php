@@ -1,8 +1,8 @@
-<h1><?= e($book['name']) ?></h1>
+<h1><?= e(t($book['name'])) ?></h1>
 <?php if (!empty($intro)): ?>
-<p class="book-intro"><?= e($intro) ?></p>
+<p class="book-intro"><?= e(t($intro)) ?></p>
 <?php endif; ?>
-<p class="muted">Elige un capítulo — <?= (int) $book['chapters'] ?> en total.</p>
+<p class="muted"><?= e(t('Elige un capítulo')) ?> — <?= (int) $book['chapters'] ?> <?= e(t('en total')) ?>.</p>
 
 <ul class="chapter-grid">
     <?php for ($c = 1; $c <= (int) $book['chapters']; $c++): ?>

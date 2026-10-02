@@ -1,7 +1,7 @@
 // Crucigrama Bíblico: mini-crucigramas generados en games/crucigrama.json.
 // Toca una casilla o una pista para elegir palabra; escribe y avanza solo.
 BFJ.define('crucigrama', function (el) {
-    el.innerHTML = '<section class="card notice"><p>Cargando… ⏳</p></section>';
+    el.innerHTML = '<section class="card notice"><p>' + BFJ.T('Cargando… ⏳') + '</p></section>';
     BFJ.fetchBank('crucigrama.json').then(function (puzzles) {
         picker();
 
@@ -10,10 +10,10 @@ BFJ.define('crucigrama', function (el) {
             puzzles.forEach(function (p, ix) {
                 html += '<button type="button" class="tr-cat" data-p="' + ix + '">' +
                     '<span class="hs-cover">' + BFJ.omoji(p.icon) + '</span><strong>' + BFJ.esc(p.name) + '</strong>' +
-                    '<small>' + p.words.length + ' palabras</small></button>';
+                    '<small>' + p.words.length + ' ' + BFJ.T('palabras') + '</small></button>';
             });
             el.innerHTML = html + '</div>' +
-                '<p class="jh-note">Elige un crucigrama — toca una casilla y escribe las letras.</p>';
+                '<p class="jh-note">' + BFJ.T('Elige un crucigrama — toca una casilla y escribe las letras.') + '</p>';
             el.querySelectorAll('[data-p]').forEach(function (b) {
                 b.addEventListener('click', function () {
                     BFJ.snd('click');
@@ -42,7 +42,7 @@ BFJ.define('crucigrama', function (el) {
             var html = '<div class="vf-qbox">' +
                 '<div class="vf-prog"><span>' + BFJ.omoji(p.icon) + ' ' + BFJ.esc(p.name) + '</span>' +
                 '<span class="cg-prog" aria-live="polite">0 / ' + p.words.length + '</span></div>' +
-                '<div class="cg-grid" style="--c:' + p.cols + '" aria-label="Crucigrama: ' + BFJ.esc(p.name) + '">';
+                '<div class="cg-grid" style="--c:' + p.cols + '" aria-label="' + BFJ.T('Crucigrama:') + ' ' + BFJ.esc(p.name) + '">';
             for (var r = 0; r < p.rows; r++) {
                 for (var c = 0; c < p.cols; c++) {
                     var key = r + ':' + c, cell = cells[key];
@@ -54,14 +54,14 @@ BFJ.define('crucigrama', function (el) {
                         (starts[key] ? '<i>' + starts[key] + '</i>' : '') +
                         '<input class="cg-cell" data-r="' + r + '" data-c="' + c + '"' +
                         ' maxlength="1" autocomplete="off" autocapitalize="characters" inputmode="text"' +
-                        ' aria-label="Fila ' + (r + 1) + ', columna ' + (c + 1) + '"></label>';
+                        ' aria-label="' + BFJ.T('Fila') + ' ' + (r + 1) + ', ' + BFJ.T('columna') + ' ' + (c + 1) + '"></label>';
                 }
             }
             html += '</div>' +
                 '<p class="cg-actions"><button type="button" class="jbtn jbtn-ghost" id="cgHint">' +
-                '💡 Revelar letra <small>(−1⭐)</small></button></p>' +
+                BFJ.T('💡 Revelar letra') + ' <small>(−1⭐)</small></button></p>' +
                 '<div class="cg-clues">' +
-                clueList('Horizontales →', 'h') + clueList('Verticales ↓', 'v') +
+                clueList(BFJ.T('Horizontales') + ' →', 'h') + clueList(BFJ.T('Verticales') + ' ↓', 'v') +
                 '</div></div>';
             el.innerHTML = html;
 
@@ -243,21 +243,21 @@ BFJ.define('crucigrama', function (el) {
                 BFJ.celebrate({
                     slug: 'crucigrama', stars: stars,
                     emoji: flawless ? '🏆' : '🧩',
-                    title: flawless ? '¡Sin una sola falla!' : '¡Crucigrama resuelto!',
+                    title: flawless ? BFJ.T('¡Sin una sola falla!') : BFJ.T('¡Crucigrama resuelto!'),
                     perfect: flawless,
-                    extra: p.words.length + ' palabras de "' + p.name + '"' +
-                        (flawless ? ' · ¡perfecto! +2⭐'
-                            : (errs ? ' · ' + errs + ' fallo' + (errs === 1 ? '' : 's') : '') +
-                              (hints ? ' · ' + hints + ' pista' + (hints === 1 ? '' : 's') + ' 💡' : '')),
-                    againLabel: '🔁 Otro crucigrama',
+                    extra: p.words.length + ' ' + BFJ.T('palabras de') + ' "' + p.name + '"' +
+                        (flawless ? ' · ' + BFJ.T('¡perfecto! +2⭐')
+                            : (errs ? ' · ' + errs + ' ' + (errs === 1 ? BFJ.T('fallo') : BFJ.T('fallos')) : '') +
+                              (hints ? ' · ' + hints + ' ' + (hints === 1 ? BFJ.T('pista') : BFJ.T('pistas')) + ' 💡' : '')),
+                    againLabel: BFJ.T('🔁 Otro crucigrama'),
                     onAgain: picker
                 });
             }
             } catch (e) {
-                el.innerHTML = '<section class="card notice"><p>No pude armar el crucigrama 😢 Intenta de nuevo.</p></section>';
+                el.innerHTML = '<section class="card notice"><p>' + BFJ.T('No pude armar el crucigrama 😢 Intenta de nuevo.') + '</p></section>';
             }
         }
     }).catch(function () {
-        el.innerHTML = '<section class="card notice"><p>No pude cargar el juego 😢 Intenta de nuevo.</p></section>';
+        el.innerHTML = '<section class="card notice"><p>' + BFJ.T('No pude cargar el juego 😢 Intenta de nuevo.') + '</p></section>';
     });
 });

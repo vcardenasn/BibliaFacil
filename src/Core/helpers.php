@@ -32,6 +32,18 @@ function e(mixed $value): string
     return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
+/** Traducción: la clave ES el texto en español; lang/{lang}.php lo mapea. */
+function t(string $es): string
+{
+    return \Biblia\Core\I18n::t($es);
+}
+
+/** Idioma activo: 'es' | 'en'. */
+function lang(): string
+{
+    return \Biblia\Core\I18n::lang();
+}
+
 function url(string $path = ''): string
 {
     $path = '/' . ltrim($path, '/');

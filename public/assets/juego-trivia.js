@@ -1,32 +1,32 @@
 // US-173 — Trivia Bíblica: categorías, 10 preguntas, timer 15s, racha.
 BFJ.define('trivia', function (el) {
     var CATS = {
-        mezcla: { name: '¡Mezcla!', emoji: '🎲' },
-        personajes: { name: 'Personajes', emoji: '🧔' },
-        historias: { name: 'Historias', emoji: '📖' },
-        milagros: { name: 'Milagros de Jesús', emoji: '✨' },
-        animales: { name: 'Animales', emoji: '🦁' },
-        genesis: { name: 'Génesis', emoji: '🌍' },
-        exodo: { name: 'El Éxodo', emoji: '🌊' },
-        jesus: { name: 'Vida de Jesús', emoji: '🕊️' },
-        parabolas: { name: 'Parábolas', emoji: '🌱' },
-        profetas: { name: 'Profetas', emoji: '📣' },
-        reyes: { name: 'Reyes', emoji: '👑' },
-        mujeres: { name: 'Mujeres', emoji: '👩' },
-        apostoles: { name: 'Apóstoles', emoji: '✝️' },
-        salmos: { name: 'Salmos', emoji: '🎵' },
-        lugares: { name: 'Lugares', emoji: '🏖️' },
-        navidad: { name: 'Navidad', emoji: '🌟' },
-        pascua: { name: 'La Resurrección', emoji: '🌅' },
-        oracion: { name: 'La Oración', emoji: '🙏' },
-        numeros: { name: 'Números', emoji: '🔢' },
-        alimentos: { name: 'Alimentos', emoji: '🍞' },
-        libros: { name: 'Los Libros', emoji: '📚' },
-        pablo: { name: 'Hechos y Pablo', emoji: '🚢' },
-        milagrosat: { name: 'Milagros del AT', emoji: '🔥' },
-        versiculos: { name: 'Versículos famosos', emoji: '📜' }
+        mezcla: { name: BFJ.T('¡Mezcla!'), emoji: '🎲' },
+        personajes: { name: BFJ.T('Personajes'), emoji: '🧔' },
+        historias: { name: BFJ.T('Historias'), emoji: '📖' },
+        milagros: { name: BFJ.T('Milagros de Jesús'), emoji: '✨' },
+        animales: { name: BFJ.T('Animales'), emoji: '🦁' },
+        genesis: { name: BFJ.T('Génesis'), emoji: '🌍' },
+        exodo: { name: BFJ.T('El Éxodo'), emoji: '🌊' },
+        jesus: { name: BFJ.T('Vida de Jesús'), emoji: '🕊️' },
+        parabolas: { name: BFJ.T('Parábolas'), emoji: '🌱' },
+        profetas: { name: BFJ.T('Profetas'), emoji: '📣' },
+        reyes: { name: BFJ.T('Reyes'), emoji: '👑' },
+        mujeres: { name: BFJ.T('Mujeres'), emoji: '👩' },
+        apostoles: { name: BFJ.T('Apóstoles'), emoji: '✝️' },
+        salmos: { name: BFJ.T('Salmos'), emoji: '🎵' },
+        lugares: { name: BFJ.T('Lugares'), emoji: '🏖️' },
+        navidad: { name: BFJ.T('Navidad'), emoji: '🌟' },
+        pascua: { name: BFJ.T('La Resurrección'), emoji: '🌅' },
+        oracion: { name: BFJ.T('La Oración'), emoji: '🙏' },
+        numeros: { name: BFJ.T('Números'), emoji: '🔢' },
+        alimentos: { name: BFJ.T('Alimentos'), emoji: '🍞' },
+        libros: { name: BFJ.T('Los Libros'), emoji: '📚' },
+        pablo: { name: BFJ.T('Hechos y Pablo'), emoji: '🚢' },
+        milagrosat: { name: BFJ.T('Milagros del AT'), emoji: '🔥' },
+        versiculos: { name: BFJ.T('Versículos famosos'), emoji: '📜' }
     };
-    el.innerHTML = '<section class="card notice"><p>Cargando… ⏳</p></section>';
+    el.innerHTML = '<section class="card notice"><p>' + BFJ.T('Cargando… ⏳') + '</p></section>';
     BFJ.fetchBank('trivia.json').then(function (bank) {
         catScreen();
 
@@ -36,7 +36,7 @@ BFJ.define('trivia', function (el) {
                 html += '<button type="button" class="tr-cat" data-cat="' + k + '">' +
                     '<span class="hs-cover">' + BFJ.omoji(CATS[k].emoji) + '</span><strong>' + CATS[k].name + '</strong></button>';
             }
-            el.innerHTML = html + '</div><p class="jh-note">Elige una categoría — ¡10 preguntas contra el reloj!</p>';
+            el.innerHTML = html + '</div><p class="jh-note">' + BFJ.T('Elige una categoría — ¡10 preguntas contra el reloj!') + '</p>';
             el.querySelectorAll('[data-cat]').forEach(function (b) {
                 b.addEventListener('click', function () {
                     BFJ.snd('click');
@@ -94,7 +94,7 @@ BFJ.define('trivia', function (el) {
                         var qbox = el.querySelector('.vf-qbox');
                         if (qbox) {
                             qbox.insertAdjacentHTML('beforeend',
-                                '<span class="vf-fast bfj-pop">⚡ ¡rápida!</span>');
+                                '<span class="vf-fast bfj-pop">' + BFJ.T('⚡ ¡rápida!') + '</span>');
                         }
                     }
                     BFJ.snd(rapid ? 'sparkle' : 'ok');
@@ -109,15 +109,15 @@ BFJ.define('trivia', function (el) {
                 var bonus = Math.floor(bestStreak / 5);  // racha de 5+ suma ⭐
                 var fastBonus = Math.floor(fast / 3);    // 3 rápidas ⚡ = +1⭐
                 var emoji = ok >= 9 ? '🏆' : (ok >= 6 ? '🎉' : '💪');
-                var title = ok >= 9 ? '¡Experto bíblico!' : (ok >= 6 ? '¡Muy bien!' : '¡Sigue practicando!');
+                var title = ok >= 9 ? BFJ.T('¡Experto bíblico!') : (ok >= 6 ? BFJ.T('¡Muy bien!') : BFJ.T('¡Sigue practicando!'));
                 BFJ.celebrate({
                     slug: 'trivia', stars: ok + bonus + fastBonus, emoji: emoji, title: title,
                     perfect: ok === qs.length,
-                    extra: ok + ' de ' + qs.length + ' correctas · ' + CATS[cat].name +
-                        (bestStreak >= 3 ? ' · racha máx 🔥x' + bestStreak : '') +
-                        (fast ? ' · ⚡x' + fast + ' rápidas' : '') +
-                        (bonus + fastBonus ? ' · +' + (bonus + fastBonus) + '⭐ bonus' : ''),
-                    againLabel: '🔁 Otra categoría',
+                    extra: ok + ' ' + BFJ.T('de') + ' ' + qs.length + ' ' + BFJ.T('correctas') + ' · ' + CATS[cat].name +
+                        (bestStreak >= 3 ? ' · ' + BFJ.T('racha máx') + ' 🔥x' + bestStreak : '') +
+                        (fast ? ' · ⚡x' + fast + ' ' + BFJ.T('rápidas') : '') +
+                        (bonus + fastBonus ? ' · +' + (bonus + fastBonus) + '⭐ ' + BFJ.T('bonus') : ''),
+                    againLabel: BFJ.T('🔁 Otra categoría'),
                     onAgain: catScreen
                 });
             }
@@ -125,6 +125,6 @@ BFJ.define('trivia', function (el) {
             render();
         }
     }).catch(function () {
-        el.innerHTML = '<section class="card notice"><p>No pude cargar el juego 😢 Intenta de nuevo.</p></section>';
+        el.innerHTML = '<section class="card notice"><p>' + BFJ.T('No pude cargar el juego 😢 Intenta de nuevo.') + '</p></section>';
     });
 });

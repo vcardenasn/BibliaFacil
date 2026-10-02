@@ -1,6 +1,6 @@
 // US-174 — Ordena la Historia: escenas mezcladas, tócalas en el orden correcto.
 BFJ.define('historia', function (el) {
-    el.innerHTML = '<section class="card notice"><p>Cargando… ⏳</p></section>';
+    el.innerHTML = '<section class="card notice"><p>' + BFJ.T('Cargando… ⏳') + '</p></section>';
     BFJ.fetchBank('historia.json').then(function (bank) {
         picker();
 
@@ -11,7 +11,7 @@ BFJ.define('historia', function (el) {
                     return '<button type="button" class="tr-cat" data-s="' + s.id + '">' +
                         '<span class="hs-cover">' + BFJ.omoji(s.emoji) + '</span><strong>' + BFJ.esc(s.name) + '</strong></button>';
                 }).join('') +
-                '</div><p class="jh-note">Elige una historia y pon sus escenas en orden 🎬</p>';
+                '</div><p class="jh-note">' + BFJ.T('Elige una historia y pon sus escenas en orden 🎬') + '</p>';
             el.querySelectorAll('[data-s]').forEach(function (b) {
                 b.addEventListener('click', function () {
                     BFJ.snd('click');
@@ -31,7 +31,7 @@ BFJ.define('historia', function (el) {
                     return '<div class="hs-slot" data-i="' + i + '"><em>' + (i + 1) + '</em><div class="hs-into"></div></div>';
                 }).join('') +
                 '</div>' +
-                '<p class="hs-hint">👆 Toca las tarjetas en el orden correcto</p>' +
+                '<p class="hs-hint">' + BFJ.T('👆 Toca las tarjetas en el orden correcto') + '</p>' +
                 '<div class="hs-pool">' +
                 order.map(function (si) {
                     var s = story.scenes[si];
@@ -78,27 +78,27 @@ BFJ.define('historia', function (el) {
                     }).join('') +
                     '</div>' +
                     (story.ref
-                        ? '<p class="hs-ref">📖 Léela completa en <strong>' + BFJ.esc(story.ref) + '</strong></p>'
+                        ? '<p class="hs-ref">' + BFJ.T('📖 Léela completa en') + ' <strong>' + BFJ.esc(story.ref) + '</strong></p>'
                         : '');
                 var recap = document.createElement('div');
                 recap.className = 'hs-recap bfj-pop';
-                recap.innerHTML = '<h3 class="hs-rt">📖 ¡Así va la historia!</h3>' + comic;
+                recap.innerHTML = '<h3 class="hs-rt">' + BFJ.T('📖 ¡Así va la historia!') + '</h3>' + comic;
                 el.appendChild(recap);
 
                 var stars = Math.max(1, 5 - errors);
                 BFJ.celebrate({
                     slug: 'historia', stars: stars, perfect: errors === 0,
                     emoji: errors === 0 ? '🏆' : '🎬',
-                    title: errors === 0 ? '¡Orden perfecto!' : '¡Historia completada!',
+                    title: errors === 0 ? BFJ.T('¡Orden perfecto!') : BFJ.T('¡Historia completada!'),
                     html: comic,
-                    extra: story.name + ' · ' + (errors === 0 ? 'sin errores' : errors + ' error' + (errors === 1 ? '' : 'es')) +
-                        (story.ref ? ' — léela en 📖 ' + story.ref : ''),
-                    againLabel: '📖 Otra historia',
+                    extra: story.name + ' · ' + (errors === 0 ? BFJ.T('sin errores') : errors + ' ' + (errors === 1 ? BFJ.T('error') : BFJ.T('errores'))) +
+                        (story.ref ? ' — ' + BFJ.T('léela en 📖') + ' ' + story.ref : ''),
+                    againLabel: BFJ.T('📖 Otra historia'),
                     onAgain: picker
                 });
             }
         }
     }).catch(function () {
-        el.innerHTML = '<section class="card notice"><p>No pude cargar el juego 😢 Intenta de nuevo.</p></section>';
+        el.innerHTML = '<section class="card notice"><p>' + BFJ.T('No pude cargar el juego 😢 Intenta de nuevo.') + '</p></section>';
     });
 });

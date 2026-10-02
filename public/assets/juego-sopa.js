@@ -1,7 +1,7 @@
 // Sopa de Letras: toca la primera y la última letra de cada palabra escondida.
 // Temas y palabras en games/sopa.json; la cuadrícula se arma en el cliente.
 BFJ.define('sopa', function (el) {
-    el.innerHTML = '<section class="card notice"><p>Cargando… ⏳</p></section>';
+    el.innerHTML = '<section class="card notice"><p>' + BFJ.T('Cargando… ⏳') + '</p></section>';
     BFJ.fetchBank('sopa.json').then(function (bank) {
         picker();
 
@@ -13,13 +13,13 @@ BFJ.define('sopa', function (el) {
                 var t = bank[k];
                 html += '<button type="button" class="tr-cat" data-cat="' + k + '">' +
                     '<span class="hs-cover">' + BFJ.omoji(t.icon) + '</span><strong>' + BFJ.esc(t.name) + '</strong>' +
-                    '<small>' + t.words.length + ' palabras</small></button>';
+                    '<small>' + t.words.length + ' ' + BFJ.T('palabras') + '</small></button>';
             }
             el.innerHTML = html + '</div>' +
                 '<p class="sp-mode"><button type="button" class="jbtn jbtn-ghost" id="spMode" aria-pressed="' + timed + '">' +
-                (timed ? '⏱ Contrarreloj: <b>ON</b>' : '🐢 Tranquilo · activar ⏱') + '</button></p>' +
-                '<p class="jh-note">Elige un tema y toca la <b>primera</b> y la <b>última</b> letra de cada palabra.' +
-                (timed ? ' ¡Contra el reloj: 15 s por palabra, +2⭐ si terminas!' : '') + '</p>';
+                (timed ? BFJ.T('⏱ Contrarreloj: <b>ON</b>') : BFJ.T('🐢 Tranquilo · activar ⏱')) + '</button></p>' +
+                '<p class="jh-note">' + BFJ.T('Elige un tema y toca la <b>primera</b> y la <b>última</b> letra de cada palabra.') +
+                (timed ? ' ' + BFJ.T('¡Contra el reloj: 15 s por palabra, +2⭐ si terminas!') : '') + '</p>';
             document.getElementById('spMode').addEventListener('click', function () {
                 timed = !timed;
                 BFJ.snd('click');
@@ -67,23 +67,23 @@ BFJ.define('sopa', function (el) {
                 '<div class="vf-prog"><span>' + BFJ.omoji(t.icon) + ' ' + BFJ.esc(t.name) + '</span>' +
                 '<span class="sp-prog" aria-live="polite">0 / ' + words.length + '</span></div>' +
                 (timed ? '<div class="jtimer" id="spt" aria-hidden="true"></div>' : '') +
-                '<p class="sp-hint" id="spHint">🔍 Toca la <b>primera</b> letra de una palabra.</p>' +
-                '<div class="sp-pal" role="group" aria-label="Color del marcador">' +
-                '<span class="sp-pal-l">🎨 Marcador:</span>' +
+                '<p class="sp-hint" id="spHint">' + BFJ.T('🔍 Toca la <b>primera</b> letra de una palabra.') + '</p>' +
+                '<div class="sp-pal" role="group" aria-label="' + BFJ.T('Color del marcador') + '">' +
+                '<span class="sp-pal-l">🎨 ' + BFJ.T('Marcador:') + '</span>' +
                 '<button type="button" class="sp-sw sp-auto' + (hl < 0 ? ' on' : '') +
-                    '" data-hl="-1" aria-label="Color del tema" title="Color del tema">A</button>' +
+                    '" data-hl="-1" aria-label="' + BFJ.T('Color del tema') + '" title="' + BFJ.T('Color del tema') + '">A</button>' +
                 HLS.map(function (h, hi) {
                     return '<button type="button" class="sp-sw' + (hi === hl ? ' on' : '') +
                         '" data-hl="' + hi + '" style="--sw:' + h.c +
-                        '" aria-label="Marcador ' + (hi + 1) + '"></button>';
+                        '" aria-label="' + BFJ.T('Marcador') + ' ' + (hi + 1) + '"></button>';
                 }).join('') + '</div>' +
-                '<div class="sp-grid" aria-label="Sopa de letras: ' + BFJ.esc(t.name) + '"' +
+                '<div class="sp-grid" aria-label="' + BFJ.T('Sopa de letras:') + ' ' + BFJ.esc(t.name) + '"' +
                 ' style="--n:' + S + '">' +
                 grid.map(function (row, r) {
                     return row.map(function (ch, c) {
                         return '<button type="button" class="sp-cell" data-r="' + r +
-                            '" data-c="' + c + '" aria-label="Letra ' + ch + ', fila ' + (r + 1) +
-                            ', columna ' + (c + 1) + '">' + ch + '</button>';
+                            '" data-c="' + c + '" aria-label="' + BFJ.T('letra') + ' ' + ch + ', ' + BFJ.T('fila') + ' ' + (r + 1) +
+                            ', ' + BFJ.T('columna') + ' ' + (c + 1) + '">' + ch + '</button>';
                     }).join('');
                 }).join('') +
                 '</div>' +
@@ -136,14 +136,14 @@ BFJ.define('sopa', function (el) {
                 if (!anchor) {
                     anchor = cell;
                     cell.classList.add('sp-anchor');
-                    hint.innerHTML = '👆 Ahora toca la <b>última</b> letra (en línea recta).';
+                    hint.innerHTML = BFJ.T('👆 Ahora toca la <b>última</b> letra (en línea recta).');
                     BFJ.snd('click');
                     return;
                 }
                 if (cell === anchor) { // segundo toque = cancelar
                     anchor = null;
                     cell.classList.remove('sp-anchor');
-                    hint.innerHTML = '🔍 Toca la <b>primera</b> letra de una palabra.';
+                    hint.innerHTML = BFJ.T('🔍 Toca la <b>primera</b> letra de una palabra.');
                     return;
                 }
                 var cells = line(anchor, cell);
@@ -159,7 +159,7 @@ BFJ.define('sopa', function (el) {
                     var chip = el.querySelector('.sp-word[data-w="' + hit + '"]');
                     if (chip) { chip.classList.add('sp-done'); }
                     el.querySelector('.sp-prog').textContent = found + ' / ' + words.length;
-                    hint.textContent = '✅ ¡' + hit + '! Quedan ' + left.length + ' palabras.';
+                    hint.textContent = '✅ ¡' + hit + '! ' + BFJ.T('Quedan') + ' ' + left.length + ' ' + BFJ.T('palabras.');
                     BFJ.snd('ok');
                     BFJ.burst(cells[cells.length - 1]);
                     if (!left.length) { ended = true; setTimeout(function () { end(false); }, 500); }
@@ -172,7 +172,7 @@ BFJ.define('sopa', function (el) {
                         cc.classList.add('sp-miss');
                         setTimeout(function () { cc.classList.remove('sp-miss'); }, 400);
                     });
-                    hint.innerHTML = '🔍 Intenta otra — ¡en <b>línea recta</b>!';
+                    hint.innerHTML = BFJ.T('🔍 Intenta otra — ¡en <b>línea recta</b>!');
                 }
             }
 
@@ -208,20 +208,20 @@ BFJ.define('sopa', function (el) {
                 BFJ.celebrate({
                     slug: 'sopa', stars: stars,
                     emoji: timedOut ? '⏱' : (flawless ? '🏆' : '🔍'),
-                    title: timedOut ? '¡Se acabó el tiempo!'
-                        : (flawless ? '¡Vista de águila!' : '¡Todas encontradas!'),
+                    title: timedOut ? BFJ.T('¡Se acabó el tiempo!')
+                        : (flawless ? BFJ.T('¡Vista de águila!') : BFJ.T('¡Todas encontradas!')),
                     perfect: !timedOut && flawless,
-                    extra: found + ' de ' + words.length + ' palabras de "' + t.name + '"' +
-                        (timedOut ? ' · ⏱ el reloj ganó esta vez'
-                            : (flawless ? ' · ¡sin fallos! +2⭐'
-                                : ' · ' + misses + ' fallo' + (misses === 1 ? '' : 's')) +
-                              (tBonus ? ' · ⏱ ¡contrarreloj vencido! +2⭐' : '')),
-                    againLabel: '🔁 Otro tema',
+                    extra: found + ' ' + BFJ.T('de') + ' ' + words.length + ' ' + BFJ.T('palabras de') + ' "' + t.name + '"' +
+                        (timedOut ? ' · ' + BFJ.T('⏱ el reloj ganó esta vez')
+                            : (flawless ? ' · ' + BFJ.T('¡sin fallos! +2⭐')
+                                : ' · ' + misses + ' ' + (misses === 1 ? BFJ.T('fallo') : BFJ.T('fallos'))) +
+                              (tBonus ? ' · ' + BFJ.T('⏱ ¡contrarreloj vencido! +2⭐') : '')),
+                    againLabel: BFJ.T('🔁 Otro tema'),
                     onAgain: picker
                 });
             }
             } catch (e) {
-                el.innerHTML = '<section class="card notice"><p>No pude armar la sopa 😢 Intenta de nuevo.</p></section>';
+                el.innerHTML = '<section class="card notice"><p>' + BFJ.T('No pude armar la sopa 😢 Intenta de nuevo.') + '</p></section>';
             }
         }
 
@@ -271,6 +271,6 @@ BFJ.define('sopa', function (el) {
             return { grid: g, missing: missing };
         }
     }).catch(function () {
-        el.innerHTML = '<section class="card notice"><p>No pude cargar el juego 😢 Intenta de nuevo.</p></section>';
+        el.innerHTML = '<section class="card notice"><p>' + BFJ.T('No pude cargar el juego 😢 Intenta de nuevo.') + '</p></section>';
     });
 });

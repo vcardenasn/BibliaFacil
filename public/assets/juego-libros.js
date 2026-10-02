@@ -1,6 +1,6 @@
 // US-176 — Ordena los Libros: bloques del canon, tap en orden sobre tarjetas.
 BFJ.define('libros', function (el) {
-    el.innerHTML = '<section class="card notice"><p>Cargando… ⏳</p></section>';
+    el.innerHTML = '<section class="card notice"><p>' + BFJ.T('Cargando… ⏳') + '</p></section>';
     BFJ.fetchBank('libros.json').then(function (blocks) {
         picker();
 
@@ -10,9 +10,9 @@ BFJ.define('libros', function (el) {
                 blocks.map(function (b) {
                     return '<button type="button" class="tr-cat" data-b="' + b.id + '">' +
                         '<span class="hs-cover">' + BFJ.omoji(b.emoji) + '</span><strong>' + BFJ.esc(b.name) + '</strong>' +
-                        '<small class="lb-diff">' + b.books.length + ' libros · ' + b.diff + '</small></button>';
+                        '<small class="lb-diff">' + b.books.length + ' ' + BFJ.T('libros') + ' · ' + BFJ.T(b.diff) + '</small></button>';
                 }).join('') +
-                '</div><p class="jh-note">Aprende el orden de la Biblia bloque por bloque 📚</p>';
+                '</div><p class="jh-note">' + BFJ.T('Aprende el orden de la Biblia bloque por bloque 📚') + '</p>';
             el.querySelectorAll('[data-b]').forEach(function (b) {
                 b.addEventListener('click', function () {
                     BFJ.snd('click');
@@ -32,7 +32,7 @@ BFJ.define('libros', function (el) {
                     return '<div class="hs-slot lb-slot" data-i="' + i + '"><em>' + (i + 1) + '</em><div class="hs-into"></div></div>';
                 }).join('') +
                 '</div>' +
-                '<p class="hs-hint">📚 ' + BFJ.esc(block.name) + ' — toca los libros en orden</p>' +
+                '<p class="hs-hint">📚 ' + BFJ.esc(block.name) + ' — ' + BFJ.T('toca los libros en orden') + '</p>' +
                 '<div class="hs-pool lb-pool">' +
                 order.map(function (bi) {
                     return '<button type="button" class="hs-card lb-card" data-bi="' + bi + '">' +
@@ -68,15 +68,15 @@ BFJ.define('libros', function (el) {
                 BFJ.celebrate({
                     slug: 'libros', stars: stars, perfect: errors === 0,
                     emoji: errors === 0 ? '🏆' : '📚',
-                    title: errors === 0 ? '¡Orden perfecto!' : '¡Bloque completado!',
-                    extra: block.name + ' · ' + n + ' libros · ' +
-                        (errors === 0 ? 'sin errores' : errors + ' error' + (errors === 1 ? '' : 'es')),
-                    againLabel: '📚 Otro bloque',
+                    title: errors === 0 ? BFJ.T('¡Orden perfecto!') : BFJ.T('¡Bloque completado!'),
+                    extra: block.name + ' · ' + n + ' ' + BFJ.T('libros') + ' · ' +
+                        (errors === 0 ? BFJ.T('sin errores') : errors + ' ' + (errors === 1 ? BFJ.T('error') : BFJ.T('errores'))),
+                    againLabel: BFJ.T('📚 Otro bloque'),
                     onAgain: picker
                 });
             }
         }
     }).catch(function () {
-        el.innerHTML = '<section class="card notice"><p>No pude cargar el juego 😢 Intenta de nuevo.</p></section>';
+        el.innerHTML = '<section class="card notice"><p>' + BFJ.T('No pude cargar el juego 😢 Intenta de nuevo.') + '</p></section>';
     });
 });

@@ -50,11 +50,13 @@ final class ReadingPlan
     {
         $a = $chunk[0];
         $b = $chunk[count($chunk) - 1];
+        $na = t($a['name']);
+        $nb = t($b['name']);
         if ($a['slug'] === $b['slug']) {
             return $a['ch'] === $b['ch']
-                ? "{$a['name']} {$a['ch']}"
-                : "{$a['name']} {$a['ch']}–{$b['ch']}";
+                ? "{$na} {$a['ch']}"
+                : "{$na} {$a['ch']}–{$b['ch']}";
         }
-        return "{$a['name']} {$a['ch']} – {$b['name']} {$b['ch']}";
+        return "{$na} {$a['ch']} – {$nb} {$b['ch']}";
     }
 }

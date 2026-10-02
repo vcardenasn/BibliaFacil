@@ -1,6 +1,6 @@
 // US-177 — ¿Verdadero o Falso? 10 afirmaciones, timer de 12s, racha con fuego.
 BFJ.define('vf', function (el) {
-    el.innerHTML = '<section class="card notice"><p>Cargando… ⏳</p></section>';
+    el.innerHTML = '<section class="card notice"><p>' + BFJ.T('Cargando… ⏳') + '</p></section>';
     BFJ.fetchBank('vf.json').then(function (bank) {
         round();
 
@@ -14,14 +14,14 @@ BFJ.define('vf', function (el) {
             var q = qs[i];
             el.innerHTML =
                 '<div class="vf-qbox" id="vfbox">' +
-                '<div class="vf-prog"><span>Pregunta ' + (i + 1) + ' / ' + qs.length + '</span>' +
+                '<div class="vf-prog"><span>' + BFJ.T('Pregunta') + ' ' + (i + 1) + ' / ' + qs.length + '</span>' +
                 '<span class="vf-streak' + (streak >= 3 ? ' hot' : '') + '">' +
                 (streak > 1 ? '🔥 x' + streak : '') + '</span></div>' +
                 '<div class="jtimer" id="vftimer" aria-hidden="true"></div>' +
                 '<p class="vf-q">' + BFJ.esc(q.t) + '</p>' +
                 '<div class="vf-btns">' +
-                '<button type="button" class="jbtn" data-a="1">✓<small>VERDADERO</small></button>' +
-                '<button type="button" class="jbtn" data-a="0">✗<small>FALSO</small></button>' +
+                '<button type="button" class="jbtn" data-a="1">✓<small>' + BFJ.T('VERDADERO') + '</small></button>' +
+                '<button type="button" class="jbtn" data-a="0">✗<small>' + BFJ.T('FALSO') + '</small></button>' +
                 '</div></div>';
             t = BFJ.timer(document.getElementById('vftimer'), 12, function () { answer(null); });
             el.querySelectorAll('[data-a]').forEach(function (b) {
@@ -42,7 +42,7 @@ BFJ.define('vf', function (el) {
                     fast++;
                     var fx = document.createElement('span');
                     fx.className = 'vf-fast bfj-pop';
-                    fx.textContent = '⚡ ¡rápida!';
+                    fx.textContent = BFJ.T('⚡ ¡rápida!');
                     box.appendChild(fx);
                 }
                 BFJ.snd('ok');
@@ -70,13 +70,13 @@ BFJ.define('vf', function (el) {
             var fastBonus = Math.floor(fast / 3);
             var stars = ok + bonus + fastBonus;
             var emoji = ok >= 9 ? '🏆' : (ok >= 6 ? '🎉' : '💪');
-            var title = ok >= 9 ? '¡Eres un campeón!' : (ok >= 6 ? '¡Muy bien!' : '¡Sigue practicando!');
+            var title = ok >= 9 ? BFJ.T('¡Eres un campeón!') : (ok >= 6 ? BFJ.T('¡Muy bien!') : BFJ.T('¡Sigue practicando!'));
             BFJ.celebrate({
                 slug: 'vf', stars: stars, emoji: emoji, title: title, perfect: ok === qs.length,
-                extra: ok + ' de ' + qs.length + ' correctas' +
-                    (bestStreak >= 3 ? ' · racha máx 🔥x' + bestStreak : '') +
-                    (fast ? ' · ⚡x' + fast + ' rápidas' : '') +
-                    (bonus + fastBonus ? ' · +' + (bonus + fastBonus) + '⭐ bonus' : ''),
+                extra: ok + ' ' + BFJ.T('de') + ' ' + qs.length + ' ' + BFJ.T('correctas') +
+                    (bestStreak >= 3 ? ' · ' + BFJ.T('racha máx') + ' 🔥x' + bestStreak : '') +
+                    (fast ? ' · ⚡x' + fast + ' ' + BFJ.T('rápidas') : '') +
+                    (bonus + fastBonus ? ' · +' + (bonus + fastBonus) + '⭐ ' + BFJ.T('bonus') : ''),
                 onAgain: round // reinicio sin recargar la página
             });
         }
@@ -84,6 +84,6 @@ BFJ.define('vf', function (el) {
         render();
         }
     }).catch(function () {
-        el.innerHTML = '<section class="card notice"><p>No pude cargar el juego 😢 Intenta de nuevo.</p></section>';
+        el.innerHTML = '<section class="card notice"><p>' + BFJ.T('No pude cargar el juego 😢 Intenta de nuevo.') + '</p></section>';
     });
 });

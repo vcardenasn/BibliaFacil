@@ -8,6 +8,8 @@ use Biblia\Bible\ReferenceParser;
 use Biblia\Core\FeatureFlags;
 use Biblia\Games\VerseQuiz;
 
+\Biblia\Core\I18n::boot(); // ?lang= → cookie bf_lang → 'es' (antes de salida)
+
 $repo = new BibleRepository();
 $versions = $repo->versions();
 $path = trim((string) parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
@@ -19,7 +21,7 @@ $seg = $path === '' ? [] : explode('/', $path);
 
 $notFound = function (string $msg = 'Página no encontrada.') use ($versions): void {
     http_response_code(404);
-    view('notfound', ['title' => 'No encontrado', 'message' => $msg, 'versions' => $versions]);
+    view('notfound', ['title' => t('No encontrado'), 'message' => t($msg), 'versions' => $versions]);
 };
 
 // ---- /robots.txt — dinámico: el Sitemap toma el dominio actual (EPIC 18) ----
@@ -125,7 +127,7 @@ if (($seg[0] ?? '') === 'buscar') {
         \Biblia\Core\Metrics::bump('search_r', $results === [] ? 'empty' : 'hit');
     }
     view('search', [
-        'title' => 'Buscar',
+        'title' => t('Buscar'),
         'versions' => $versions,
         'version' => $version,
         'q' => $q,
@@ -139,7 +141,7 @@ if (($seg[0] ?? '') === 'temas') {
     $temas = config('temas');
     $tv = $repo->versionByCode((string) ($_GET['v'] ?? '')) ?: $repo->versionByCode((string) config('app.default_version', 'rvr1909')) ?: ($versions[0] ?? null);
     if (count($seg) === 1) {
-        view('temas', ['title' => 'Versículos por tema', 'versions' => $versions, 'version' => $tv, 'temas' => $temas]);
+        view('temas', ['title' => t('Versículos por tema'), 'versions' => $versions, 'version' => $tv, 'temas' => $temas]);
         exit;
     }
     $slug = (string) $seg[1];
@@ -148,7 +150,7 @@ if (($seg[0] ?? '') === 'temas') {
         exit;
     }
     view('tema', [
-        'title' => 'Versículos de ' . $temas[$slug]['name'],
+        'title' => t('Versículos de') . ' ' . t($temas[$slug]['name']),
         'versions' => $versions, 'version' => $tv,
         'tema' => $temas[$slug], 'slug' => $slug,
         'verses' => $repo->versesByRefs((int) $tv['id'], $temas[$slug]['refs']),
@@ -173,7 +175,7 @@ if (($seg[0] ?? '') === 'versiculo' && isset($seg[1])) {
         }
     }
     view('versiculo', [
-        'title' => $e['title'] . ' — texto y significado',
+        'title' => t($e['title']) . ' — ' . t('texto y significado'),
         'versions' => $versions,
         'version' => $versions[0] ?? null,
         'entry' => $e, 'texts' => $texts, 'slug' => $slug,
@@ -212,11 +214,15 @@ if (($seg[0] ?? '') === 'versiculo-del-dia') {
         if ($ad !== $d) { $archive[] = $ad; }
     }
     $meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    $ts = strtotime($d);
+    $fechaTxt = lang() === 'en'
+        ? date('F j, Y', $ts)
+        : (int) date('j', $ts) . ' de ' . $meses[(int) date('n', $ts) - 1] . ' de ' . date('Y', $ts);
     view('votd', [
-        'title' => 'Versículo del día — ' . date('d/m/Y', strtotime($d)),
+        'title' => t('Versículo del día') . ' — ' . date(lang() === 'en' ? 'm/d/Y' : 'd/m/Y', $ts),
         'versions' => $versions, 'version' => $vv,
         'votd' => $vv ? $repo->verseOfTheDay((int) $vv['id'], $d) : null,
-        'fechaTxt' => (int) date('j', strtotime($d)) . ' de ' . $meses[(int) date('n', strtotime($d)) - 1] . ' de ' . date('Y', strtotime($d)),
+        'fechaTxt' => $fechaTxt,
         'prev' => date('Y-m-d', strtotime($d . ' -1 day')),
         'next' => $d < date('Y-m-d') ? date('Y-m-d', strtotime($d . ' +1 day')) : null,
         'archive' => $archive,
@@ -229,7 +235,7 @@ if (($seg[0] ?? '') === 'versiculo-del-dia') {
 if (($seg[0] ?? '') === 'guias') {
     $guias = config('guias');
     if (count($seg) === 1) {
-        view('guias', ['title' => 'Guías', 'versions' => $versions, 'version' => $versions[0] ?? null, 'guias' => $guias]);
+        view('guias', ['title' => t('Guías'), 'versions' => $versions, 'version' => $versions[0] ?? null, 'guias' => $guias]);
         exit;
     }
     $gslug = (string) $seg[1];
@@ -238,7 +244,7 @@ if (($seg[0] ?? '') === 'guias') {
         exit;
     }
     view('guia', [
-        'title' => $guias[$gslug]['title'],
+        'title' => t($guias[$gslug]['title']),
         'versions' => $versions, 'version' => $versions[0] ?? null,
         'guia' => $guias[$gslug],
     ]);
@@ -276,7 +282,7 @@ if (($seg[0] ?? '') === 'v' && count($seg) === 4) {
         $notFound('Ese versículo no existe.');
         exit;
     }
-    $ref = $svv['book_name'] . ' ' . $svv['chapter'] . ':' . $svv['verse'];
+    $ref = t($svv['book_name']) . ' ' . $svv['chapter'] . ':' . $svv['verse'];
     view('shareverse', [
         'title' => $ref . ' — ' . $sv['name'],
         'versions' => $versions, 'version' => $sv,
@@ -332,7 +338,7 @@ if (($seg[0] ?? '') === 'comparar') {
     if (!$cbook) {
         // Picker: elegir libro/capítulo/versiones sin JS (GET → redirect canónico)
         view('comparar', [
-            'title' => 'Comparar versiones',
+            'title' => t('Comparar versiones'),
             'versions' => $versions,
             'version' => $versions[0] ?? null,
             'books' => $repo->books(),
@@ -375,7 +381,7 @@ if (($seg[0] ?? '') === 'comparar') {
         }
     }
     view('comparar', [
-        'title' => "Comparar {$cbook['name']} {$cch}: " . strtoupper($va['code']) . ' vs ' . strtoupper($vb['code']),
+        'title' => t('Comparar') . " " . t($cbook['name']) . " {$cch}: " . strtoupper($va['code']) . ' vs ' . strtoupper($vb['code']),
         'versions' => $versions,
         'version' => $va,
         'books' => $repo->books(),
@@ -402,7 +408,7 @@ if (($seg[0] ?? '') === 'planes') {
         $totals = [];
         foreach ($plans as $ps => $p) { $totals[$ps] = count(ReadingPlan::readings($p, $booksAll)); }
         view('planes', [
-            'title' => 'Planes de lectura de la Biblia',
+            'title' => t('Planes de lectura de la Biblia'),
             'versions' => $versions,
             'version' => $planVersion,
             'plans' => $plans,
@@ -420,7 +426,7 @@ if (($seg[0] ?? '') === 'planes') {
         exit;
     }
     view('plan', [
-        'title' => $plans[$slug]['name'] . ' — plan de lectura',
+        'title' => t($plans[$slug]['name']) . ' — ' . t('plan de lectura'),
         'versions' => $versions,
         'version' => $planVersion,
         'plan' => $plans[$slug],
@@ -435,7 +441,7 @@ if (($seg[0] ?? '') === 'planes') {
 // ---- /licencias — copyright y atribución (requerido por API.Bible §7) -------
 if (($seg[0] ?? '') === 'licencias') {
     view('licencias', [
-        'title' => 'Licencias y copyright',
+        'title' => t('Licencias y copyright'),
         'versions' => $versions,
     ]);
     exit;
@@ -443,7 +449,7 @@ if (($seg[0] ?? '') === 'licencias') {
 
 if (($seg[0] ?? '') === 'mias') {
     view('mias', [
-        'title' => 'Mis anotaciones',
+        'title' => t('Mis anotaciones'),
         'versions' => $versions,
         'version' => $versions[0] ?? null,
     ]);
@@ -486,7 +492,7 @@ if (($seg[0] ?? '') === 'juegos') {
     $games = config('games');
     if (count($seg) === 1) {
         view('juegos', [
-            'title' => 'Juegos Bíblicos',
+            'title' => t('Juegos Bíblicos'),
             'versions' => $versions,
             'version' => $versions[0] ?? null,
             'games' => $games,
@@ -502,7 +508,7 @@ if (($seg[0] ?? '') === 'juegos') {
         exit;
     }
     view('juego', [
-        'title' => $games[$slug]['name'],
+        'title' => t($games[$slug]['name']),
         'versions' => $versions,
         'version' => $versions[0] ?? null,
         'game' => $games[$slug],
@@ -524,11 +530,11 @@ if ($seg === []) {
         $savedVersion = $repo->versionByCode($matches[1]);
         $savedBook = $repo->book($matches[2]);
         if ($savedVersion && $savedBook && (int) $matches[3] <= (int) $savedBook['chapters']) {
-            $continue = ['path' => $pos, 'label' => $savedBook['name'] . ' ' . $matches[3], 'version' => $savedVersion['name']];
+            $continue = ['path' => $pos, 'label' => t($savedBook['name']) . ' ' . $matches[3], 'version' => $savedVersion['name']];
         }
     }
     view('home', [
-        'title' => 'Lee la Biblia en línea, gratis y sin anuncios',
+        'title' => t('Lee la Biblia en línea, gratis y sin anuncios'),
         'versions' => $versions,
         'bodyClass' => 'home-page',
         'votdVersion' => $homeVersion,
@@ -569,7 +575,7 @@ if (!$book) {
 // ---- /{version}/{libro} — índice de capítulos --------------------------------
 if (count($seg) === 2) {
     view('chapters', [
-        'title' => "{$book['name']} — {$version['name']}",
+        'title' => t($book['name']) . " — {$version['name']}",
         'versions' => $versions,
         'version' => $version,
         'book' => $book,
@@ -594,7 +600,7 @@ if (count($seg) === 3 && $chapter >= 1 && $chapter <= (int) $book['chapters']) {
         }
     }
     view('reader', [
-        'title' => "{$book['name']} {$chapter} — {$version['name']}",
+        'title' => t($book['name']) . " {$chapter} — {$version['name']}",
         'versions' => $versions,
         'version' => $version,
         'book' => $book,

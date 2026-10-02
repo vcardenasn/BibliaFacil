@@ -14,6 +14,10 @@
         }
     }
 
+    // i18n: window.BF_T mapea 'Texto en español' → idioma activo.
+    var TMAP = window.BF_T || {};
+    function T(s) { return TMAP[s] || s; }
+
     function esc(s) {
         return String(s).replace(/[&<>"']/g, function (c) {
             return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -46,36 +50,36 @@
         try { localStorage.setItem('bf_games', JSON.stringify(data)); } catch (e) {}
     }
     var LEVELS = [
-        [0, '🌱 Explorador'], [15, '📗 Aprendiz'], [40, '🕯️ Discípulo'],
-        [80, '⭐ Siervo Fiel'], [140, '⚔️ Guerrero'], [220, '🔥 Profeta'],
-        [320, '✝️ Apóstol'], [450, '👑 Leyenda']
+        [0, '🌱 ' + T('Explorador')], [15, '📗 ' + T('Aprendiz')], [40, '🕯️ ' + T('Discípulo')],
+        [80, '⭐ ' + T('Siervo Fiel')], [140, '⚔️ ' + T('Guerrero')], [220, '🔥 ' + T('Profeta')],
+        [320, '✝️ ' + T('Apóstol')], [450, '👑 ' + T('Leyenda')]
     ];
 
     // ============================ Stickers (US-179) ===========================
     // check(d, ctx) → bool; ctx = {perfect, slug}
     var STICKERS = [
-        { id: 's10',  emoji: '🥉', name: 'Primeras 10 estrellas',   check: function (d) { return starTotal(d) >= 10; } },
-        { id: 's30',  emoji: '🥈', name: '30 estrellas',            check: function (d) { return starTotal(d) >= 30; } },
-        { id: 's75',  emoji: '🥇', name: '75 estrellas',            check: function (d) { return starTotal(d) >= 75; } },
-        { id: 's200', emoji: '💎', name: '200 estrellas',           check: function (d) { return starTotal(d) >= 200; } },
-        { id: 'multi', emoji: '🧭', name: 'Jugó 4 juegos distintos', check: function (d) {
+        { id: 's10',  emoji: '🥉', name: T('Primeras 10 estrellas'),   check: function (d) { return starTotal(d) >= 10; } },
+        { id: 's30',  emoji: '🥈', name: T('30 estrellas'),            check: function (d) { return starTotal(d) >= 30; } },
+        { id: 's75',  emoji: '🥇', name: T('75 estrellas'),            check: function (d) { return starTotal(d) >= 75; } },
+        { id: 's200', emoji: '💎', name: T('200 estrellas'),           check: function (d) { return starTotal(d) >= 200; } },
+        { id: 'multi', emoji: '🧭', name: T('Jugó 4 juegos distintos'), check: function (d) {
                 var n = 0; for (var k in d.stars) { if (k[0] !== '_' && d.stars[k] > 0) { n++; } } return n >= 4;
             } },
-        { id: 'all7', emoji: '🎮', name: 'Probó 7 juegos distintos', check: function (d) {
+        { id: 'all7', emoji: '🎮', name: T('Probó 7 juegos distintos'), check: function (d) {
                 var n = 0; for (var k in d.plays) { if (d.plays[k] > 0) { n++; } } return n >= 7;
             } },
-        { id: 'perfect', emoji: '🏆', name: 'Ronda perfecta',       check: function (d, ctx) { return !!(ctx && ctx.perfect); } },
-        { id: 'collector', emoji: '🌟', name: 'Estrellas en 7 juegos distintos', check: function (d) {
+        { id: 'perfect', emoji: '🏆', name: T('Ronda perfecta'),       check: function (d, ctx) { return !!(ctx && ctx.perfect); } },
+        { id: 'collector', emoji: '🌟', name: T('Estrellas en 7 juegos distintos'), check: function (d) {
                 var n = 0; for (var k in d.stars) { if (k[0] !== '_' && d.stars[k] > 0) { n++; } } return n >= 7;
             } },
         // Progreso por niveles de "Completa el Versículo"
-        { id: 'vj3', emoji: '🌱', name: 'Semillas de la Palabra', check: function (d) {
+        { id: 'vj3', emoji: '🌱', name: T('Semillas de la Palabra'), check: function (d) {
                 return ((d.vl || {}).versiculo || 0) >= 3;
             } },
-        { id: 'vj5', emoji: '📖', name: 'Estudiante de la Palabra', check: function (d) {
+        { id: 'vj5', emoji: '📖', name: T('Estudiante de la Palabra'), check: function (d) {
                 return ((d.vl || {}).versiculo || 0) >= 5;
             } },
-        { id: 'vj7', emoji: '👑', name: 'Maestro del Versículo', check: function (d) {
+        { id: 'vj7', emoji: '👑', name: T('Maestro del Versículo'), check: function (d) {
                 return ((d.vl || {}).versiculo || 0) >= 7;
             } }
     ];
@@ -97,17 +101,17 @@
     // jugadores ven las mismas). wk = contadores solo de la semana actual.
     var MISION_REWARD = 4;
     var MISSIONS = [
-        { id: 'm-games',   emoji: '🧭', name: 'Juega 3 juegos distintos',     need: 3,
+        { id: 'm-games',   emoji: '🧭', name: T('Juega 3 juegos distintos'),     need: 3,
             pro: function (w) { var n = 0; for (var k in w.plays) { n++; } return n; } },
-        { id: 'm-stars',   emoji: '⭐', name: 'Gana 15 estrellas',            need: 15,
+        { id: 'm-stars',   emoji: '⭐', name: T('Gana 15 estrellas'),            need: 15,
             pro: function (w) { return w.stars; } },
-        { id: 'm-perfect', emoji: '🏆', name: 'Logra una ronda perfecta',     need: 1,
+        { id: 'm-perfect', emoji: '🏆', name: T('Logra una ronda perfecta'),     need: 1,
             pro: function (w) { return w.perfects; } },
-        { id: 'm-rounds',  emoji: '🎮', name: 'Juega 5 rondas',               need: 5,
+        { id: 'm-rounds',  emoji: '🎮', name: T('Juega 5 rondas'),               need: 5,
             pro: function (w) { var n = 0; for (var k in w.plays) { n += w.plays[k]; } return n; } },
-        { id: 'm-levels',  emoji: '🗺️', name: 'Supera un nivel (Versículo o Paloma)', need: 1,
+        { id: 'm-levels',  emoji: '🗺️', name: T('Supera un nivel (Versículo o Paloma)'), need: 1,
             pro: function (w) { return w.levels; } },
-        { id: 'm-stars30', emoji: '🌟', name: 'Gana 30 estrellas',            need: 30,
+        { id: 'm-stars30', emoji: '🌟', name: T('Gana 30 estrellas'),            need: 30,
             pro: function (w) { return w.stars; } }
     ];
     function weekKey() {
@@ -448,24 +452,24 @@
         ov.className = 'bfj-ov';
         ov.setAttribute('role', 'dialog');
         ov.setAttribute('aria-modal', 'true');
-        ov.setAttribute('aria-label', o.title || '¡Bien hecho!');
+        ov.setAttribute('aria-label', o.title || T('¡Bien hecho!'));
         ov.innerHTML =
             '<div class="bfj-ovcard bfj-pop">' +
             '<div class="bfj-ovemoji">' + omoji(o.emoji || '🎉') + '</div>' +
-            '<h2>' + esc(o.title || '¡Bien hecho!') + '</h2>' +
+            '<h2>' + esc(o.title || T('¡Bien hecho!')) + '</h2>' +
             '<div class="bfj-ovstars">' + (o.stars > 0
                 ? '⭐'.repeat(Math.min(o.stars, 10)) : '☆') + '</div>' +
-            '<p class="bfj-ovpts">+' + o.stars + ' estrella' + (o.stars === 1 ? '' : 's') + '</p>' +
-            (dBonus ? '<div class="bfj-ovdaily">🗓 ¡Desafío del día! ⭐×2</div>' : '') +
-            (lvUp ? '<div class="bfj-ovlvl bfj-pop">🎖 ¡Subiste de nivel!<br><strong>' +
+            '<p class="bfj-ovpts">+' + o.stars + ' ' + (o.stars === 1 ? T('estrella') : T('estrellas')) + '</p>' +
+            (dBonus ? '<div class="bfj-ovdaily">' + T('🗓 ¡Desafío del día! ⭐×2') + '</div>' : '') +
+            (lvUp ? '<div class="bfj-ovlvl bfj-pop">' + T('🎖 ¡Subiste de nivel!') + '<br><strong>' +
                 esc(liAfter.name) + '</strong></div>' : '') +
             (mnews.length ? '<div class="bfj-ovmision bfj-pop">' +
                 mnews.map(function (m) {
-                    return '🎯 Misión: ' + esc(m.name) + ' <b>+' + MISION_REWARD + '⭐</b>';
+                    return T('🎯 Misión: ') + esc(m.name) + ' <b>+' + MISION_REWARD + '⭐</b>';
                 }).join('<br>') + '</div>' : '') +
             (o.extra ? '<p class="bfj-ovextra">' + esc(o.extra) + '</p>' : '') +
             (o.html ? '<div class="bfj-ovhtml">' + o.html + '</div>' : '') +
-            (news.length ? '<div class="bfj-ovstick bfj-pop">🎁 ¡Sticker nuevo!<br>' +
+            (news.length ? '<div class="bfj-ovstick bfj-pop">' + T('🎁 ¡Sticker nuevo!') + '<br>' +
                 news.map(function (s) {
                     return '<span class="bfj-stick"><i class="bfj-gift" aria-hidden="true">' + omoji('🎁') + '</i> ' + esc(s.name) +
                         '<i class="bfj-stemo" hidden>' + omoji(s.emoji) + '</i></span>';
@@ -473,8 +477,8 @@
                 '</div>' : '') +
             '<div class="bfj-ovbtns">' +
             (o.onAgain ? '<button type="button" class="jbtn jbtn-main" data-c="again">' +
-                esc(o.againLabel || '🔁 Otra ronda') + '</button>' : '') +
-            '<button type="button" class="jbtn jbtn-ghost" data-c="hub">🎮 Juegos</button>' +
+                esc(o.againLabel || T('🔁 Otra ronda')) + '</button>' : '') +
+            '<button type="button" class="jbtn jbtn-ghost" data-c="hub">🎮 ' + T('Juegos') + '</button>' +
             '</div></div>';
         document.body.appendChild(ov);
         // US-231 — contador de estrellas en vivo + estrellas voladoras + unboxing
@@ -598,6 +602,7 @@
             });
         }
     };
+    BFJ.T = T; // traducción ES→idioma activo (los juegos la usan como BFJ.T)
     window.BFJ = BFJ;
 
     // ============================ Arranque ====================================
@@ -625,8 +630,8 @@
             if (lb) {
                 lb.textContent = li.name;
                 lb.title = li.next
-                    ? li.t + '/' + li.next + ' ⭐ para el siguiente nivel'
-                    : li.t + ' ⭐ — ¡nivel máximo!';
+                    ? li.t + '/' + li.next + ' ' + T('⭐ para el siguiente nivel')
+                    : li.t + ' ' + T('⭐ — ¡nivel máximo!');
             }
             var barFill = document.querySelector('.jh-levelbar span');
             if (barFill) {
@@ -643,9 +648,9 @@
             if (dc && dailyDone(dc.getAttribute('data-date'), dc.getAttribute('data-slug'))) {
                 dc.classList.add('done');
                 var ds = document.getElementById('dailyState');
-                if (ds) { ds.textContent = '✅ ¡Hecho!'; }
+                if (ds) { ds.textContent = T('✅ ¡Hecho!'); }
                 var dh = document.getElementById('dailyHint');
-                if (dh) { dh.textContent = 'Vuelve mañana por otro desafío'; }
+                if (dh) { dh.textContent = T('Vuelve mañana por otro desafío'); }
             }
             // US-232 — estados del camino: done / now (siguiente) / todo / master
             var nowMarked = false;
@@ -657,7 +662,7 @@
                     if (b) { b.textContent = '⭐ ' + n; b.classList.add('won'); }
                     node.classList.add(n >= 15 ? 'is-master' : 'is-done');
                 } else {
-                    if (!(data.plays[slug] || 0) && b) { b.textContent = '✨ ¡Nuevo!'; }
+                    if (!(data.plays[slug] || 0) && b) { b.textContent = T('✨ ¡Nuevo!'); }
                     if (!nowMarked) { node.classList.add('is-now'); nowMarked = true; }
                     else { node.classList.add('is-todo'); }
                 }
@@ -758,8 +763,8 @@
                     var tag = document.createElement('span');
                     tag.className = 'jg-daily-tag';
                     tag.textContent = dailyDone(daily.date, slug)
-                        ? '🗓 Desafío completado hoy'
-                        : '🗓 Desafío del día · ⭐×2';
+                        ? T('🗓 Desafío completado hoy')
+                        : T('🗓 Desafío del día · ⭐×2');
                     head.appendChild(tag);
                 }
             }
@@ -767,7 +772,7 @@
                 BFJ._t0 = Date.now(); // para métrica game_s (tiempo por ronda)
                 BFJ.games[slug](app);
             } else {
-                app.innerHTML = '<section class="card notice"><p>Este juego está en camino 🔧</p></section>';
+                app.innerHTML = '<section class="card notice"><p>' + T('Este juego está en camino 🔧') + '</p></section>';
             }
         }
     }

@@ -36,13 +36,18 @@ final class Seo
      */
     public static function build(string $view, array $data): array
     {
+        // Idioma de la UI (i18n: ?lang=/cookie) — base del <html lang>.
+        // En páginas donde domina el texto bíblico, gana el idioma de la
+        // versión leída (KJV→en aunque la UI sea es).
+        $uiLang = I18n::lang();
+        $uiIsEn = $uiLang === 'en';
         $meta = [
-            'desc' => 'Lee la Biblia en múltiples versiones, fácil y rápido.',
+            'desc' => t('Lee la Biblia en múltiples versiones, fácil y rápido.'),
             'canonical' => self::abs((string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH)),
             'noindex' => in_array($view, ['search', 'mias', 'comparar', 'notfound', 'error'], true),
             'ogType' => 'website',
-            'locale' => 'es_LA',
-            'htmlLang' => 'es',
+            'locale' => $uiIsEn ? 'en_US' : 'es_LA',
+            'htmlLang' => $uiLang,
             'image' => null,
             'hreflang' => [],
             'jsonld' => [],
@@ -52,14 +57,10 @@ final class Seo
         $version = $data['version'] ?? null;
         $versions = $data['versions'] ?? [];
         $en = $version && ($version['language'] ?? 'es') === 'en';
-        if ($en) {
-            $meta['locale'] = 'en_US';
-            $meta['htmlLang'] = 'en';
-        }
 
         switch ($view) {
             case 'home':
-                $meta['desc'] = 'Lee la Biblia en línea gratis y sin anuncios. Encuentra versículos, explora temas y aprende con juegos bíblicos, sin crear una cuenta.';
+                $meta['desc'] = t('Lee la Biblia en línea gratis y sin anuncios. Encuentra versículos, explora temas y aprende con juegos bíblicos, sin crear una cuenta.');
                 $meta['canonical'] = self::abs('/');
                 $meta['jsonld'] = [self::websiteLd()];
                 $votd = $data['votd'] ?? null;
@@ -70,6 +71,7 @@ final class Seo
                 break;
 
             case 'reader':
+                if ($en) { $meta['locale'] = 'en_US'; $meta['htmlLang'] = 'en'; }
                 $meta['desc'] = self::chapterDesc($data['verses'] ?? []);
                 $meta['ogType'] = 'article';
                 $meta['crumbs'] = self::crumbs($version, $data['book'] ?? null, $data['chapter'] ?? null);
@@ -79,8 +81,8 @@ final class Seo
                     [
                         '@context' => 'https://schema.org',
                         '@type' => 'Article',
-                        'headline' => "{$data['book']['name']} {$data['chapter']} — {$version['name']}",
-                        'isPartOf' => ['@type' => 'Book', 'name' => "Biblia {$version['name']}", 'bookEdition' => $data['book']['name']],
+                        'headline' => t($data['book']['name']) . " {$data['chapter']} — {$version['name']}",
+                        'isPartOf' => ['@type' => 'Book', 'name' => "Biblia {$version['name']}", 'bookEdition' => t($data['book']['name'])],
                         'inLanguage' => $meta['htmlLang'],
                         'isAccessibleForFree' => true,
                     ],
@@ -88,6 +90,7 @@ final class Seo
                 break;
 
             case 'chapters':
+                if ($en) { $meta['locale'] = 'en_US'; $meta['htmlLang'] = 'en'; }
                 $book = $data['book'] ?? null;
                 $meta['desc'] = $book ? "Índice de capítulos de {$book['name']} ({$book['chapters']} capítulos) — {$version['name']}." : $meta['desc'];
                 $meta['crumbs'] = self::crumbs($version, $book, null);
@@ -96,7 +99,8 @@ final class Seo
                 break;
 
             case 'books':
-                $meta['desc'] = $version ? "Lee la Biblia {$version['name']} en línea, gratis — los 66 libros con búsqueda y audio." : $meta['desc'];
+                if ($en) { $meta['locale'] = 'en_US'; $meta['htmlLang'] = 'en'; }
+                $meta['desc'] = $version ? t('Lee la Biblia en línea, gratis — los 66 libros con búsqueda y audio.') . " {$version['name']}" : $meta['desc'];
                 $meta['crumbs'] = self::crumbs($version, null, null);
                 $meta['hreflang'] = self::hreflang($version, $versions, (string) $version['code']);
                 $meta['jsonld'] = [self::breadcrumbLd($meta['crumbs']), self::websiteLd()];
@@ -105,79 +109,79 @@ final class Seo
             case 'comparar':
                 $cb = $data['book'] ?? null;
                 if ($cb && !empty($data['va']) && !empty($data['vb'])) {
-                    $meta['desc'] = "Compara {$cb['name']} {$data['chapter']} entre {$data['va']['name']} y {$data['vb']['name']}, versículo a versículo.";
+                    $meta['desc'] = t('Compara versículo a versículo entre dos versiones.') . " {$cb['name']} {$data['chapter']} — {$data['va']['name']} / {$data['vb']['name']}.";
                     $meta['canonical'] = self::abs("comparar/{$cb['slug']}/{$data['chapter']}/{$data['va']['code']}/{$data['vb']['code']}");
-                    $meta['crumbs'] = self::pageCrumbs('Comparar', "{$cb['name']} {$data['chapter']}", 'comparar');
+                    $meta['crumbs'] = self::pageCrumbs(t('Comparar'), t($cb['name']) . " {$data['chapter']}", 'comparar');
                 } else {
-                    $meta['desc'] = 'Compara dos versiones de la Biblia lado a lado, versículo por versículo.';
+                    $meta['desc'] = t('Compara dos versiones de la Biblia lado a lado, versículo por versículo.');
                     $meta['canonical'] = self::abs('comparar');
-                    $meta['crumbs'] = self::pageCrumbs('Comparar');
+                    $meta['crumbs'] = self::pageCrumbs(t('Comparar'));
                 }
                 break;
 
             case 'planes':
-                $meta['desc'] = 'Planes de lectura bíblica gratis y sin cuenta: la Biblia en un año, el Nuevo Testamento en 90 días, Salmos y Proverbios en un mes.';
-                $meta['crumbs'] = self::pageCrumbs('Planes de lectura');
+                $meta['desc'] = t('Planes de lectura bíblica gratis y sin cuenta: la Biblia en un año, el Nuevo Testamento en 90 días, Salmos y Proverbios en un mes.');
+                $meta['crumbs'] = self::pageCrumbs(t('Planes de lectura'));
                 $meta['jsonld'] = [self::breadcrumbLd($meta['crumbs'])];
                 break;
 
             case 'plan':
                 $p = $data['plan'] ?? [];
-                $meta['desc'] = ($p['desc'] ?? 'Plan de lectura bíblica.') . ' Progreso guardado en tu dispositivo.';
-                $meta['crumbs'] = self::pageCrumbs('Planes de lectura', $p['name'] ?? null, 'planes');
+                $meta['desc'] = t($p['desc'] ?? 'Plan de lectura bíblica.') . ' ' . t('Progreso guardado en tu dispositivo.');
+                $meta['crumbs'] = self::pageCrumbs(t('Planes de lectura'), isset($p['name']) ? t($p['name']) : null, 'planes');
                 $meta['jsonld'] = [self::breadcrumbLd($meta['crumbs']), [
                     '@context' => 'https://schema.org',
                     '@type' => 'ItemList',
-                    'name' => $p['name'] ?? 'Plan de lectura',
+                    'name' => t($p['name'] ?? 'Plan de lectura'),
                     'numberOfItems' => count($data['days'] ?? []),
                 ]];
                 break;
 
             case 'juegos':
-                $meta['desc'] = 'Juegos bíblicos gratis para niños — trivia, memoria, ordena la historia, completa el versículo y más.';
+                $meta['desc'] = t('Juegos bíblicos gratis para niños — trivia, memoria, ordena la historia, completa el versículo y más.');
                 break;
 
             case 'juego':
                 $g = $data['game'] ?? [];
-                $meta['desc'] = "Juega {$g['name']} gratis — juego bíblico para niños en Biblia Fácil.";
+                $meta['desc'] = t('Juega gratis — juego bíblico para niños en Biblia Fácil.') . ' ' . t($g['name'] ?? '');
                 break;
 
             case 'search':
-                $meta['desc'] = 'Busca cualquier versículo o palabra en la Biblia.';
+                $meta['desc'] = t('Busca cualquier versículo o palabra en la Biblia.');
                 break;
 
             case 'temas':
-                $meta['desc'] = 'Versículos de la Biblia por tema — amor, fe, ánimo, paz, familia y más, listos para leer y compartir.';
-                $meta['crumbs'] = self::pageCrumbs('Temas');
+                $meta['desc'] = t('Versículos de la Biblia por tema — amor, fe, ánimo, paz, familia y más, listos para leer y compartir.');
+                $meta['crumbs'] = self::pageCrumbs(t('Temas'));
                 break;
 
             case 'tema':
                 $t = $data['tema'] ?? [];
-                $meta['desc'] = ($t['desc'] ?? 'Versículos por tema') . ' Colección curada en Biblia Fácil.';
-                $meta['crumbs'] = self::pageCrumbs('Temas', $t['name'] ?? null, 'temas');
+                $meta['desc'] = t($t['desc'] ?? 'Versículos por tema') . ' ' . t('Colección curada en Biblia Fácil.');
+                $meta['crumbs'] = self::pageCrumbs(t('Temas'), isset($t['name']) ? t($t['name']) : null, 'temas');
                 $meta['jsonld'] = [self::breadcrumbLd($meta['crumbs']), [
                     '@context' => 'https://schema.org',
                     '@type' => 'ItemList',
-                    'name' => 'Versículos de ' . ($t['name'] ?? ''),
+                    'name' => t('Versículos de') . ' ' . t($t['name'] ?? ''),
                     'numberOfItems' => count($data['verses'] ?? []),
                 ]];
                 break;
 
             case 'versiculo':
                 $en2 = $data['entry'] ?? [];
-                $meta['desc'] = ($en2['context'] ?? '') . ' Léelo en varias versiones en Biblia Fácil.';
+                $meta['desc'] = t($en2['context'] ?? '') . ' ' . t('Léelo en varias versiones en Biblia Fácil.');
                 $meta['ogType'] = 'article';
                 // og:image con la versión por defecto (US-200)
                 if (!empty($data['texts'][0])) {
                     $t0 = $data['texts'][0];
                     $meta['image'] = self::abs("img/{$t0['code']}/{$t0['book_slug']}/{$t0['chapter']}/{$t0['verse']}");
                 }
-                $meta['crumbs'] = self::pageCrumbs('Versículos', $en2['title'] ?? null, 'versiculo');
+                $meta['crumbs'] = self::pageCrumbs(t('Versículos'), isset($en2['title']) ? t($en2['title']) : null, 'versiculo');
                 $meta['jsonld'] = [self::breadcrumbLd($meta['crumbs']), [
                     '@context' => 'https://schema.org',
                     '@type' => 'Article',
-                    'headline' => ($en2['title'] ?? '') . ' — texto y significado',
-                    'inLanguage' => 'es',
+                    'headline' => t($en2['title'] ?? '') . ' — ' . t('texto y significado'),
+                    'inLanguage' => $meta['htmlLang'],
                     'isAccessibleForFree' => true,
                 ]];
                 break;
@@ -185,9 +189,9 @@ final class Seo
             case 'votd':
                 $vt = $data['votd'] ?? null;
                 $meta['desc'] = $vt
-                    ? '"' . mb_substr(strip_tags((string) $vt['text']), 0, 120) . '…" — ' . $vt['book_name'] . ' ' . $vt['chapter'] . ':' . $vt['verse']
-                    : 'Un versículo de la Biblia cada día.';
-                $meta['crumbs'] = self::pageCrumbs('Versículo del día');
+                    ? '"' . mb_substr(strip_tags((string) $vt['text']), 0, 120) . '…" — ' . t($vt['book_name']) . ' ' . $vt['chapter'] . ':' . $vt['verse']
+                    : t('Un versículo de la Biblia cada día.');
+                $meta['crumbs'] = self::pageCrumbs(t('Versículo del día'));
                 break;
 
             case 'shareverse':
@@ -195,7 +199,7 @@ final class Seo
                 $meta['desc'] = '"' . mb_substr(strip_tags((string) ($sv['text'] ?? '')), 0, 140) . '…" — ' . ($data['ref'] ?? '');
                 $meta['ogType'] = 'article';
                 $meta['image'] = $data['imgUrl'] ?? null;
-                $meta['crumbs'] = self::pageCrumbs('Versículo', $data['ref'] ?? null);
+                $meta['crumbs'] = self::pageCrumbs(t('Versículo'), $data['ref'] ?? null);
                 $meta['jsonld'] = [[
                     '@context' => 'https://schema.org',
                     '@type' => 'Article',
@@ -209,8 +213,8 @@ final class Seo
 
             case 'guia':
                 $g = $data['guia'] ?? [];
-                $meta['desc'] = ($g['desc'] ?? '') . ' — guía de Biblia Fácil.';
-                $meta['crumbs'] = self::pageCrumbs('Guías', $g['title'] ?? null, 'guias');
+                $meta['desc'] = t($g['desc'] ?? '') . ' — ' . t('guía de Biblia Fácil.');
+                $meta['crumbs'] = self::pageCrumbs(t('Guías'), isset($g['title']) ? t($g['title']) : null, 'guias');
                 $meta['jsonld'] = [self::breadcrumbLd($meta['crumbs'])];
                 break;
         }
@@ -221,7 +225,7 @@ final class Seo
     /** Breadcrumbs para páginas no-versionadas: Inicio › Sección › Página. */
     private static function pageCrumbs(string $section, ?string $current = null, string $sectionUrl = ''): array
     {
-        $c = [['label' => 'Inicio', 'url' => url('/')]];
+        $c = [['label' => t('Inicio'), 'url' => url('/')]];
         if ($current === null) {
             $c[] = ['label' => $section, 'url' => null];
         } else {
@@ -241,21 +245,21 @@ final class Seo
                 break;
             }
         }
-        return $t === '' ? 'Lee este capítulo de la Biblia.' : mb_substr($t, 0, 155) . (mb_strlen($t) > 155 ? '…' : '');
+        return $t === '' ? t('Lee este capítulo de la Biblia.') : mb_substr($t, 0, 155) . (mb_strlen($t) > 155 ? '…' : '');
     }
 
     /** Breadcrumbs: Versión › Libro › Capítulo (último sin URL). */
     private static function crumbs(?array $version, ?array $book, ?int $chapter): array
     {
-        $c = [['label' => 'Inicio', 'url' => url('/')]];
+        $c = [['label' => t('Inicio'), 'url' => url('/')]];
         if ($version) {
             $c[] = ['label' => $version['name'], 'url' => url((string) $version['code'])];
         }
         if ($book) {
-            $c[] = ['label' => $book['name'], 'url' => url("{$version['code']}/{$book['slug']}")];
+            $c[] = ['label' => t($book['name']), 'url' => url("{$version['code']}/{$book['slug']}")];
         }
         if ($book && $chapter) {
-            $c[] = ['label' => "Capítulo {$chapter}", 'url' => null];
+            $c[] = ['label' => t('Capítulo') . " {$chapter}", 'url' => null];
         }
         return $c;
     }

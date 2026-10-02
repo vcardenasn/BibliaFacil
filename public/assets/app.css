@@ -145,6 +145,19 @@ code {
 .topnav button:hover, .searchlink button:hover, .topnav .navlink:hover { border-color: var(--brand); }
 .topnav button:active, .topnav .navlink:active { transform: scale(.95); }
 
+/* Selector de idioma (i18n) */
+.langswitch { display: inline-flex; }
+.topnav .langsw {
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--sans); font-size: .8rem; font-weight: 700; letter-spacing: .04em;
+    border: 1px solid var(--border-strong); background: var(--surface); color: var(--ink);
+    border-radius: 999px; padding: .42rem .55rem; text-decoration: none;
+    min-width: 44px; min-height: 44px;
+    transition: border-color .15s, transform .1s, background .15s;
+}
+.topnav .langsw:hover { border-color: var(--brand); background: var(--brand-soft); color: var(--brand); }
+.topnav .langsw:active { transform: scale(.95); }
+
 .page { max-width: var(--measure); margin: 0 auto; padding: 1.1rem .95rem 3.5rem; }
 
 /* Breadcrumbs SEO (US-186) */

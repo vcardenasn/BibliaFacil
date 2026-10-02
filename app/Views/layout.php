@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="<?= e($meta['htmlLang'] ?? 'es') ?>">
+<html lang="<?= e($meta['htmlLang'] ?? lang()) ?>">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= e($title ?? 'Biblia Fácil') ?> · Biblia Fácil</title>
-<meta name="description" content="<?= e($meta['desc'] ?? 'Lee la Biblia en múltiples versiones, fácil y rápido.') ?>">
+<meta name="description" content="<?= e($meta['desc'] ?? t('Lee la Biblia en múltiples versiones, fácil y rápido.')) ?>">
 <?php if (!empty($meta['noindex'])): ?>
 <meta name="robots" content="noindex,follow">
 <?php endif; ?>
@@ -14,7 +14,7 @@
 <meta property="og:description" content="<?= e($meta['desc'] ?? '') ?>">
 <meta property="og:url" content="<?= e($meta['canonical'] ?? '') ?>">
 <meta property="og:site_name" content="Biblia Fácil">
-<meta property="og:locale" content="<?= e($meta['locale'] ?? 'es_LA') ?>">
+<meta property="og:locale" content="<?= e($meta['locale'] ?? (lang() === 'en' ? 'en_US' : 'es_LA')) ?>">
 <?php if (!empty($meta['image'])): ?>
 <meta property="og:image" content="<?= e($meta['image']) ?>">
 <meta property="og:image:width" content="1200">
@@ -48,7 +48,7 @@
 <?php endforeach; ?>
 </head>
 <body<?= !empty($bodyClass) ? ' class="' . e($bodyClass) . '"' : '' ?><?= \Biblia\Core\FeatureFlags::enabled('FF_PWA') ? ' data-sw="' . e(url('sw.js')) . '"' : '' ?>>
-<a class="skip-link" href="#main-content">Saltar al contenido</a>
+<a class="skip-link" href="#main-content"><?= e(t('Saltar al contenido')) ?></a>
 <header class="topbar">
     <a class="brand" href="<?= e(url('/')) ?>"><span class="cross" aria-hidden="true">✝</span> Biblia Fácil</a>
     <?php
@@ -56,16 +56,16 @@
     $defaultRead = (string) config('app.default_version', 'rvr1909');
     $readCode = in_array($defaultRead, array_column($versions ?? [], 'code'), true) ? $defaultRead : ($versions[0]['code'] ?? 'rvr1909');
     ?>
-    <nav class="primary-nav" aria-label="Navegación principal">
-        <a href="<?= e(url('/')) ?>"<?= $activeSection === '' ? ' aria-current="page"' : '' ?>><span aria-hidden="true">⌂</span><span>Inicio</span></a>
-        <a href="<?= e(url($readCode)) ?>"<?= in_array($activeSection, array_column($versions ?? [], 'code'), true) ? ' aria-current="true"' : '' ?>><span aria-hidden="true">▤</span><span>Leer</span></a>
-        <a href="<?= e(url('planes')) ?>"<?= $activeSection === 'planes' ? ' aria-current="page"' : '' ?>><span aria-hidden="true">▦</span><span>Planes</span></a>
-        <a href="<?= e(url('temas')) ?>"<?= in_array($activeSection, ['temas', 'guias', 'versiculo', 'versiculo-del-dia', 'v'], true) ? ' aria-current="true"' : '' ?>><span aria-hidden="true">◇</span><span>Explorar</span></a>
-        <a href="<?= e(url('juegos')) ?>"<?= $activeSection === 'juegos' ? ' aria-current="true"' : '' ?>><span aria-hidden="true">✦</span><span>Juegos</span></a>
-        <a href="<?= e(url('mias')) ?>"<?= $activeSection === 'mias' ? ' aria-current="page"' : '' ?>><span aria-hidden="true">♡</span><span>Mis notas</span></a>
+    <nav class="primary-nav" aria-label="<?= e(t('Navegación principal')) ?>">
+        <a href="<?= e(url('/')) ?>"<?= $activeSection === '' ? ' aria-current="page"' : '' ?>><span aria-hidden="true">⌂</span><span><?= e(t('Inicio')) ?></span></a>
+        <a href="<?= e(url($readCode)) ?>"<?= in_array($activeSection, array_column($versions ?? [], 'code'), true) ? ' aria-current="true"' : '' ?>><span aria-hidden="true">▤</span><span><?= e(t('Leer')) ?></span></a>
+        <a href="<?= e(url('planes')) ?>"<?= $activeSection === 'planes' ? ' aria-current="page"' : '' ?>><span aria-hidden="true">▦</span><span><?= e(t('Planes')) ?></span></a>
+        <a href="<?= e(url('temas')) ?>"<?= in_array($activeSection, ['temas', 'guias', 'versiculo', 'versiculo-del-dia', 'v'], true) ? ' aria-current="true"' : '' ?>><span aria-hidden="true">◇</span><span><?= e(t('Explorar')) ?></span></a>
+        <a href="<?= e(url('juegos')) ?>"<?= $activeSection === 'juegos' ? ' aria-current="true"' : '' ?>><span aria-hidden="true">✦</span><span><?= e(t('Juegos')) ?></span></a>
+        <a href="<?= e(url('mias')) ?>"<?= $activeSection === 'mias' ? ' aria-current="page"' : '' ?>><span aria-hidden="true">♡</span><span><?= e(t('Mis notas')) ?></span></a>
     </nav>
     <?php if (!empty($versions) && !empty($version)): ?>
-    <select class="vswitch" id="versionSwitch" data-version="<?= e($version['code']) ?>" aria-label="Cambiar versión" title="Cambiar versión">
+    <select class="vswitch" id="versionSwitch" data-version="<?= e($version['code']) ?>" aria-label="<?= e(t('Cambiar versión')) ?>" title="<?= e(t('Cambiar versión')) ?>">
         <?php foreach ($versions as $v): ?>
         <option value="<?= e($v['code']) ?>"<?= $v['id'] === $version['id'] ? ' selected' : '' ?>><?= e($v['name']) ?></option>
         <?php endforeach; ?>
@@ -75,15 +75,22 @@
         <?php if (!empty($version)): ?>
         <input type="hidden" name="v" value="<?= e($version['code']) ?>">
         <?php endif; ?>
-        <label class="sr-only" for="quick-reference">Ir a una referencia bíblica</label>
-        <input id="quick-reference" type="text" name="q" placeholder="Ir a: Juan 3:16" autocomplete="off">
+        <label class="sr-only" for="quick-reference"><?= e(t('Ir a una referencia bíblica')) ?></label>
+        <input id="quick-reference" type="text" name="q" placeholder="<?= e(t('Ir a: Juan 3:16')) ?>" autocomplete="off">
     </form>
     <div class="topnav">
+        <span class="langswitch" role="group" aria-label="<?= e(t('Idioma')) ?>">
+            <?php if (lang() === 'es'): ?>
+            <a class="langsw" href="<?= e(\Biblia\Core\I18n::switchUrl('en')) ?>" hreflang="en" title="Switch to English" aria-label="Switch to English">EN</a>
+            <?php else: ?>
+            <a class="langsw" href="<?= e(\Biblia\Core\I18n::switchUrl('es')) ?>" hreflang="es" title="Cambiar a español" aria-label="Cambiar a español">ES</a>
+            <?php endif; ?>
+        </span>
         <?php if (!empty($versions)): ?>
-        <a class="navlink" href="<?= e(url('buscar')) ?>" title="Buscar en la Biblia" aria-label="Buscar en la Biblia">⌕</a>
+        <a class="navlink" href="<?= e(url('buscar')) ?>" title="<?= e(t('Buscar en la Biblia')) ?>" aria-label="<?= e(t('Buscar en la Biblia')) ?>">⌕</a>
         <?php endif; ?>
-        <button type="button" id="themeBtn" title="Modo oscuro" aria-label="Modo oscuro">☾</button>
-        <button type="button" id="prefBtn" title="Apariencia" aria-label="Apariencia">⚙</button>
+        <button type="button" id="themeBtn" title="<?= e(t('Modo oscuro')) ?>" aria-label="<?= e(t('Modo oscuro')) ?>">☾</button>
+        <button type="button" id="prefBtn" title="<?= e(t('Apariencia')) ?>" aria-label="<?= e(t('Apariencia')) ?>">⚙</button>
     </div>
 </header>
 
@@ -104,20 +111,21 @@
 <footer class="footer">
     <?php if (!empty($version)): ?>
     <p><?= e($version['name']) ?><?= !empty($version['copyright']) ? ' · ' . e($version['copyright']) : '' ?>
-        <?php if (!empty($version['api_bible_id'])): ?>· provista por <a href="https://api.bible" rel="noopener">API.Bible</a><?php endif; ?></p>
+        <?php if (!empty($version['api_bible_id'])): ?>· <?= e(t('provista por')) ?> <a href="https://api.bible" rel="noopener">API.Bible</a><?php endif; ?></p>
     <?php endif; ?>
-    <p>Biblia Fácil — lee la Biblia, fácil. ·
-        <a href="<?= e(url('temas')) ?>">Temas</a> ·
-        <a href="<?= e(url('planes')) ?>">Planes de lectura</a> ·
-        <a href="<?= e(url('versiculo-del-dia')) ?>">Versículo del día</a> ·
-        <a href="<?= e(url('guias')) ?>">Guías</a> ·
-        <a href="<?= e(url('juegos')) ?>">Juegos</a> ·
-        <a href="<?= e(url('licencias')) ?>">Licencias</a></p>
+    <p><?= e(t('Biblia Fácil — lee la Biblia, fácil.')) ?> ·
+        <a href="<?= e(url('temas')) ?>"><?= e(t('Temas')) ?></a> ·
+        <a href="<?= e(url('planes')) ?>"><?= e(t('Planes de lectura')) ?></a> ·
+        <a href="<?= e(url('versiculo-del-dia')) ?>"><?= e(t('Versículo del día')) ?></a> ·
+        <a href="<?= e(url('guias')) ?>"><?= e(t('Guías')) ?></a> ·
+        <a href="<?= e(url('juegos')) ?>"><?= e(t('Juegos')) ?></a> ·
+        <a href="<?= e(url('licencias')) ?>"><?= e(t('Licencias')) ?></a></p>
     <?php if (!empty($visits) && env('FF_COUNTER', '1') === '1'): ?>
-    <p class="visits"><span class="visits-ico" aria-hidden="true">✝</span><strong><?= number_format($visits[1]) ?></strong> visitas</p>
+    <p class="visits"><span class="visits-ico" aria-hidden="true">✝</span><strong><?= number_format($visits[1]) ?></strong> <?= e(t('visitas')) ?></p>
     <?php endif; ?>
 </footer>
 
+<script>window.BF_T = <?= json_encode(\Biblia\Core\I18n::all(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;window.BF_LANG = <?= json_encode(lang()) ?>;</script>
 <script src="<?= e(asset('app.js')) ?>"></script>
 <?php foreach (($extraJs ?? []) as $j): ?>
 <script src="<?= e(asset($j)) ?>"></script>

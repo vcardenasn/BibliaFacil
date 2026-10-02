@@ -24,6 +24,21 @@ return function (TestCase $t): void {
         'Cantares 2'       => ['SNG', 2, null, null],
         'romanos 8:28'     => ['ROM', 8, 28, null],
         'Jeremías 29:11'   => ['JER', 29, 11, null],
+        // Aliases en inglés (config/books_en.php) — i18n
+        'John 3:16'            => ['JHN', 3, 16, null],
+        'john 3.16-17'         => ['JHN', 3, 16, 17],
+        'Matthew 5'            => ['MAT', 5, null, null],
+        'Psalm 23'             => ['PSA', 23, null, null],
+        'psalms 91:1'          => ['PSA', 91, 1, null],
+        '1 Corinthians 13'     => ['1CO', 13, null, null],
+        '1 cor 13:4'           => ['1CO', 13, 4, null],
+        '1 John 2:1'           => ['1JN', 2, 1, null],
+        'Genesis 1:1'          => ['GEN', 1, 1, null],
+        'Revelation 22'        => ['REV', 22, null, null],
+        'Song of Solomon 2'    => ['SNG', 2, null, null],
+        'acts 2'               => ['ACT', 2, null, null],
+        'gospel of john 1'     => ['JHN', 1, null, null],
+        'Philippians 4:13'     => ['PHP', 4, 13, null],
     ];
 
     foreach ($cases as $input => [$osis, $ch, $v, $vEnd]) {

@@ -7,27 +7,27 @@ BFJ.define('paloma', function (el) {
     // Vuelos = niveles de la historia (Gén 8:8-12)
     var FLIGHTS = [
         {
-            name: 'Vuelo 1 · La primera salida',
-            ref: 'Génesis 8:8-9',
-            desc: 'Noé soltó a la paloma para ver si había bajado el agua.',
+            name: BFJ.T('Vuelo 1 · La primera salida'),
+            ref: BFJ.T('Génesis') + ' 8:8-9',
+            desc: BFJ.T('Noé soltó a la paloma para ver si había bajado el agua.'),
             goal: 250, gapAdd: 26, olivesNeeded: 0
         },
         {
-            name: 'Vuelo 2 · La rama de olivo',
-            ref: 'Génesis 8:10-11',
-            desc: 'La paloma volvió al atardecer con una rama de olivo en el pico.',
+            name: BFJ.T('Vuelo 2 · La rama de olivo'),
+            ref: BFJ.T('Génesis') + ' 8:10-11',
+            desc: BFJ.T('La paloma volvió al atardecer con una rama de olivo en el pico.'),
             goal: 380, gapAdd: 10, olivesNeeded: 2
         },
         {
-            name: 'Vuelo 3 · El Monte Ararat',
-            ref: 'Génesis 8:12 · 9:13',
-            desc: 'Esta vez la paloma no regresó: ¡encontró tierra firme!',
+            name: BFJ.T('Vuelo 3 · El Monte Ararat'),
+            ref: BFJ.T('Génesis') + ' 8:12 · 9:13',
+            desc: BFJ.T('Esta vez la paloma no regresó: ¡encontró tierra firme!'),
             goal: 520, gapAdd: 0, olivesNeeded: 3, ararat: true
         },
         {
-            name: 'Vuelo libre · Hasta el horizonte',
-            ref: 'Génesis 9:13',
-            desc: 'La tierra floreció de nuevo. ¿Hasta dónde llegas?',
+            name: BFJ.T('Vuelo libre · Hasta el horizonte'),
+            ref: BFJ.T('Génesis') + ' 9:13',
+            desc: BFJ.T('La tierra floreció de nuevo. ¿Hasta dónde llegas?'),
             goal: 0, gapAdd: 0, olivesNeeded: 0, endless: true
         }
     ];
@@ -45,24 +45,24 @@ BFJ.define('paloma', function (el) {
             '<p class="pn-s">' + BFJ.esc(f.desc) + '</p>' +
             '<p class="pn-ref">📖 ' + f.ref + '</p>' +
             (f.endless
-                ? '<p class="pn-goal">🏁 Sin meta — ¡solo vuela!</p>'
-                : '<p class="pn-goal">🏁 Meta: ' + f.goal + ' m' +
-                  (f.olivesNeeded ? ' + ' + f.olivesNeeded + ' ramas 🌿' : '') + '</p>') +
-            (best ? '<p class="pn-best">✨ Tu récord: ' + best + ' m</p>' : '') +
-            '<button type="button" class="jbtn jbtn-main" id="pnGo">▶ ¡A volar!</button>' +
-            '<p class="pn-k">👆 Toca la pantalla o presiona <kbd>espacio</kbd> para volar</p>'
+                ? '<p class="pn-goal">' + BFJ.T('🏁 Sin meta — ¡solo vuela!') + '</p>'
+                : '<p class="pn-goal">🏁 ' + BFJ.T('Meta:') + ' ' + f.goal + ' m' +
+                  (f.olivesNeeded ? ' + ' + f.olivesNeeded + ' ' + BFJ.T('ramas 🌿') : '') + '</p>') +
+            (best ? '<p class="pn-best">✨ ' + BFJ.T('Tu récord:') + ' ' + best + ' m</p>' : '') +
+            '<button type="button" class="jbtn jbtn-main" id="pnGo">' + BFJ.T('▶ ¡A volar!') + '</button>' +
+            '<p class="pn-k">' + BFJ.T('👆 Toca la pantalla o presiona <kbd>espacio</kbd> para volar') + '</p>'
         );
     }
 
     el.innerHTML =
         '<div class="pn-stage" id="pnStage">' +
         '<canvas class="pn-cv" id="pnCv" width="480" height="320" ' +
-        'aria-label="La Paloma de Noé: esquiva las nubes y recoge ramas de olivo"></canvas>' +
+        'aria-label="' + BFJ.T('La Paloma de Noé: esquiva las nubes y recoge ramas de olivo') + '"></canvas>' +
         '<div class="pn-prog" id="pnProg"><i id="pnFill"></i><b id="pnIco">🕊️</b></div>' +
         '<div class="pn-hud" aria-hidden="true">' +
         '<span id="pnOl">🌿 0</span><span id="pnM">0 m</span>' +
         '</div>' +
-        '<div class="pn-hint" id="pnHint" hidden>👆 ¡Toca para volar!</div>' +
+        '<div class="pn-hint" id="pnHint" hidden>' + BFJ.T('👆 ¡Toca para volar!') + '</div>' +
         '<div class="pn-menu" id="pnMenu"></div>' +
         '</div>';
 
@@ -187,19 +187,19 @@ BFJ.define('paloma', function (el) {
 
         var emoji, title;
         if (success && f.ararat) {
-            emoji = '🌈'; title = '¡Encontró tierra firme!';
+            emoji = '🌈'; title = BFJ.T('¡Encontró tierra firme!');
         } else if (success) {
-            emoji = '🕊️'; title = '¡Vuelo completado!';
+            emoji = '🕊️'; title = BFJ.T('¡Vuelo completado!');
         } else {
-            emoji = '⛈️'; title = m >= 150 ? '¡Buen intento!' : '¡Sigue intentando!';
+            emoji = '⛈️'; title = m >= 150 ? BFJ.T('¡Buen intento!') : BFJ.T('¡Sigue intentando!');
         }
-        var extra = 'Volaste ' + m + ' m' +
-            (got ? ' · ' + got + ' rama' + (got === 1 ? '' : 's') + ' de olivo 🌿' : '') +
-            (isRecord ? ' · ¡Nuevo récord! ✨' : '');
+        var extra = BFJ.T('Volaste') + ' ' + m + ' m' +
+            (got ? ' · ' + got + ' ' + (got === 1 ? BFJ.T('rama') : BFJ.T('ramas')) + ' ' + BFJ.T('de olivo 🌿') : '') +
+            (isRecord ? ' · ' + BFJ.T('¡Nuevo récord! ✨') : '');
 
         BFJ.celebrate({
             slug: 'paloma', stars: stars, emoji: emoji, title: title, extra: extra,
-            againLabel: success && fi < 3 ? '🕊️ Siguiente vuelo' : '🔁 Otra vez',
+            againLabel: success && fi < 3 ? BFJ.T('🕊️ Siguiente vuelo') : BFJ.T('🔁 Otra vez'),
             onAgain: function () {
                 if (success && fi < 3) { fi++; }
                 showMenu();
