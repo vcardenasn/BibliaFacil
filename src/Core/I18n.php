@@ -88,3 +88,4 @@ final class I18n
         return $path . '?' . http_build_query($q);
     }
 }
+
