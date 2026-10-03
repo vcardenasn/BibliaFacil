@@ -391,6 +391,7 @@
             '<button type="button" data-a="note" class="va2' + (rec.note ? ' on' : '') + '">' + T('✎ Nota') + '</button>' +
             '<button type="button" data-a="fav" class="va2' + (rec.fav ? ' on' : '') + '">' + T('♥ Favorito') + '</button>' +
             '<button type="button" data-a="copy" class="va2">' + T('⧉ Copiar') + '</button>' +
+            '<button type="button" data-a="wa" class="va2 va-wa" aria-label="WhatsApp">' + T('WhatsApp') + '</button>' +
             '<button type="button" data-a="share" class="va2">' + T('↗ Compartir') + '</button>' +
             '<button type="button" data-a="img" class="va2">' + T('🖼 Imagen') + '</button>' +
             '<button type="button" data-a="range" class="va2" aria-expanded="false">' + T('⇅ Rango') + '</button>' +
@@ -536,6 +537,10 @@
                         setTimeout(function () { act.textContent = T('⧉ Copiar rango'); }, 1100);
                     });
                 }
+            } else if (a === 'wa') {
+                // WhatsApp directo: 1 toque, sin hoja nativa — el canal que más convierte
+                TK('share', 'wa-btn');
+                window.open('https://wa.me/?text=' + encodeURIComponent('“' + text + '” — ' + ref + ' ' + surl), '_blank', 'noopener');
             } else if (a === 'share') {
                 var pl = '“' + text + '” — ' + ref + ' ' + surl;
                 TK('share', navigator.share ? 'native' : 'wa');
