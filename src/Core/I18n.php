@@ -8,7 +8,7 @@ namespace Biblia\Core;
  * registrada, t() devuelve el español intacto (nunca rompe la UI).
  *
  * Resolución de idioma (en index.php, antes de cualquier salida):
- *   ?lang=es|en → cookie bf_lang (1 año) → 'es' por defecto.
+ *   ?lang=es|en → cookie bf_lang (1 año) → Accept-Language → 'es' por defecto.
  */
 final class I18n
 {
@@ -43,7 +43,32 @@ final class I18n
             return;
         }
         $ck = (string) ($_COOKIE['bf_lang'] ?? '');
-        self::$lang = in_array($ck, self::LANGS, true) ? $ck : 'es';
+        if (in_array($ck, self::LANGS, true)) {
+            self::$lang = $ck;
+            return;
+        }
+        self::$lang = self::fromHeader();
+    }
+
+    /** Primer idioma soportado del Accept-Language; 'es' si no hay match
+     *  (bots/curl sin header caen en español, el idioma fuente). */
+    private static function fromHeader(): string
+    {
+        $h = (string) ($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '');
+        $prefs = [];
+        foreach (explode(',', $h) as $part) {
+            $seg = explode(';', trim($part));
+            $primary = strtolower(explode('-', trim($seg[0]))[0]);
+            $q = isset($seg[1]) ? (float) str_replace('q=', '', trim($seg[1])) : 1.0;
+            if ($primary !== '') { $prefs[$primary] = max($q, $prefs[$primary] ?? 0); }
+        }
+        arsort($prefs);
+        foreach ($prefs as $primary => $q) {
+            if (in_array($primary, self::LANGS, true)) {
+                return $primary;
+            }
+        }
+        return 'es';
     }
 
     public static function t(string $es): string
