@@ -2,10 +2,24 @@
 BFJ.define('memory', function (el) {
     el.innerHTML = '<section class="card notice"><p>' + BFJ.T('Cargando… ⏳') + '</p></section>';
     BFJ.fetchBank('memory.json').then(function (bank) {
+        // Bolsa: reparte las 14 parejas sin repetir; solo se rebaraja
+        // cuando se agotan, así ninguna ronda repite personajes.
+        var bag = [];
+        function take(n) {
+            var out = [];
+            while (out.length < n) {
+                if (!bag.length) {
+                    // rebaraja solo las que aún no salieron en ESTA ronda
+                    bag = BFJ.shuffle(bank.filter(function (p) { return out.indexOf(p) < 0; }));
+                }
+                out.push(bag.pop());
+            }
+            return out;
+        }
         round();
 
         function round() {
-        var pairs = BFJ.pick(bank, 8);
+        var pairs = take(8);
         var cards = [];
         pairs.forEach(function (p, pi) {
             cards.push({ pid: pi, emoji: p.a, img: p.ia || '', label: p.na || p.name });
