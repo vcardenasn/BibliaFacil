@@ -733,18 +733,17 @@ a.crumb:hover { color: var(--brand); }
 .home-button.primary:hover { background: var(--brand-strong); }
 .home-button.secondary { color: var(--ink); background: var(--surface); border: 1px solid var(--border-strong); }
 .home-button.secondary:hover { border-color: var(--brand); }
-/* Compartir la app por WhatsApp — pill pequeño junto a las acciones del hero */
+/* Compartir la app por WhatsApp — tercer botón del hero, mismo tamaño que .home-button */
 .home-wa {
-    display: inline-flex; align-items: center; align-self: center; gap: .35rem;
-    min-height: 34px; padding: .35rem .8rem; border-radius: 999px;
-    background: #25d366; color: #fff; font: 700 .8rem/1 var(--sans);
-    text-decoration: none; box-shadow: 0 2px 8px rgba(37, 211, 102, .35);
-    transition: transform .15s, box-shadow .15s;
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    min-height: 48px; padding: .6rem 1.15rem; border-radius: 12px;
+    background: #25d366; color: #fff; font: 700 .9rem/1.3 var(--sans);
+    text-decoration: none; transition: background .15s, transform .15s;
 }
-.home-wa:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 211, 102, .45); text-decoration: none; color: #fff; }
-.home-wa:active { transform: scale(.96); }
+.home-wa:hover { background: #1fbd59; text-decoration: none; color: #fff; }
+.home-wa:active { transform: scale(.97); }
 .home-wa::before {
-    content: ''; width: 1.05em; height: 1.05em; background: currentColor; flex: none;
+    content: ''; width: 1.15em; height: 1.15em; background: currentColor; flex: none;
     -webkit-mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.5 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7-2.9-1.2-4.7-4.1-4.9-4.3-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4l.9 2.1c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.8 1.4 1.8 2.2 1.3 1.1 2.3 1.5 2.6 1.6.3.1.5.1.7-.1l1-1.2c.2-.3.4-.2.7-.1l2 .9c.3.2.5.3.6.4 0 .1 0 .7-.2 1.2z"/></svg>') center/contain no-repeat;
     mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.5 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7-2.9-1.2-4.7-4.1-4.9-4.3-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4l.9 2.1c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.8 1.4 1.8 2.2 1.3 1.1 2.3 1.5 2.6 1.6.3.1.5.1.7-.1l1-1.2c.2-.3.4-.2.7-.1l2 .9c.3.2.5.3.6.4 0 .1 0 .7-.2 1.2z"/></svg>') center/contain no-repeat;
 }
