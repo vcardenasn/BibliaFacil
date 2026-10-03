@@ -434,8 +434,10 @@ return [
     // ============================ Compartir ================================
     'leer el capítulo completo' => 'read the full chapter',
     'Tarjeta de' => 'Card of',
+    'Compartir' => 'Share',
     'Compartir en' => 'Share on',
     'Copiar enlace' => 'Copy link',
+    'Te comparto Biblia Fácil — la Biblia en español, gratis y sin anuncios:' => 'Check out Biblia Fácil — the Bible online, free and ad-free:',
 
     // ============================ Licencias ================================
     'Licencias y copyright' => 'Licenses and copyright',
