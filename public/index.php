@@ -112,6 +112,11 @@ if (($seg[0] ?? '') === 'ir') {
             exit;
         }
     }
+    if (!$ref && $version && trim($q) !== '' && FeatureFlags::enabled('FF_SEARCH')) {
+        $params = http_build_query(['q' => trim($q), 'v' => $version['code']]);
+        header('Location: ' . url('buscar') . '?' . $params);
+        exit;
+    }
     $notFound('No entendí la referencia "' . $q . '". Ejemplos: "Juan 3:16", "Salmos 23", "1 Corintios 13".');
     exit;
 }
