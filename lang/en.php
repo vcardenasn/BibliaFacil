@@ -18,7 +18,7 @@ return [
     'Cambiar versión' => 'Change version',
     'Ir a una referencia bíblica' => 'Go to a Bible reference',
     'Busca una palabra o referencia bíblica' => 'Search a word or Bible reference',
-    'Ej.: convicción o Juan 3:16' => 'E.g. conviction or John 3:16',
+    'Ej.: amor o Juan 3:16' => 'E.g. love or John 3:16',
     'Ir a: Juan 3:16' => 'Go to: John 3:16',
     'Idioma' => 'Language',
     'Buscar en la Biblia' => 'Search the Bible',

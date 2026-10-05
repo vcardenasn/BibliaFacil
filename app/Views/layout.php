@@ -76,7 +76,7 @@
         <input type="hidden" name="v" value="<?= e($version['code']) ?>">
         <?php endif; ?>
         <label class="sr-only" for="quick-reference"><?= e(t('Busca una palabra o referencia bíblica')) ?></label>
-        <input id="quick-reference" type="text" name="q" placeholder="<?= e(t('Ej.: convicción o Juan 3:16')) ?>" autocomplete="off">
+        <input id="quick-reference" type="text" name="q" placeholder="<?= e(t('Ej.: amor o Juan 3:16')) ?>" autocomplete="off">
     </form>
     <div class="topnav">
         <span class="langswitch" role="group" aria-label="<?= e(t('Idioma')) ?>">
