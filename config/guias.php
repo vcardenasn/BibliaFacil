@@ -5,7 +5,7 @@ return [
     'que-version' => [
         'emoji' => '⚖️',
         'title' => '¿Qué versión elegir?',
-        'desc' => 'Comparativa sencilla de las 6 biblias de Biblia Fácil',
+        'desc' => 'Comparativa sencilla de las 6 biblias de Palabra Fiel',
         'html' => '
 <p>No hay una "mejor" versión para todos — depende de para qué la uses. Aquí va una guía rápida de las que tenemos:</p>
 <h3>🇪🇸 En español</h3>
@@ -45,7 +45,7 @@ return [
 <p><strong>Génesis</strong>, <strong>Éxodo</strong>, <strong>Romanos</strong> y luego lo que te llame — con nuestro selector "Ir a" saltas a cualquier referencia (ej: <em>salmos 23</em>).</p>
 <h3>Hábitos que ayudan</h3>
 <ul>
-    <li>Mismo horario cada día — Biblia Fácil guarda tu racha 🔥 en tu dispositivo.</li>
+    <li>Mismo horario cada día — Palabra Fiel guarda tu racha 🔥 en tu dispositivo.</li>
     <li>Usa <strong>▶ Escuchar</strong> mientras cocinas o caminas.</li>
     <li>Marca versículos con resaltado y notas — quedan en <em>Mis anotaciones</em> ✎.</li>
     <li>¿Con niños? → <a href="/juegos">Juegos bíblicos</a> 🎮</li>

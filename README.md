@@ -1,4 +1,4 @@
-# Biblia Fácil
+# Palabra Fiel
 
 App web para leer la Biblia en múltiples versiones — abrir → leer, sin login ni fricción.
 Stack VCN: PHP 8.1+ puro, MySQL + PDO, sin framework ni Composer en runtime.

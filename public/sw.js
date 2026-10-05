@@ -1,4 +1,4 @@
-// Biblia Fácil — service worker (EPIC 08 / US-080).
+// Palabra Fiel — service worker (EPIC 08 / US-080).
 // Páginas: network-first con caché de los capítulos ya visitados →
 // lectura offline de lo que ya leíste. Assets (/assets/, /img/):
 // stale-while-revalidate. Nunca cachea /api, /track.php ni POST.
@@ -23,7 +23,7 @@ function offlineHtml() {
     return new Response(
         '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">' +
         '<meta name="viewport" content="width=device-width,initial-scale=1">' +
-        '<title>Sin conexión · Biblia Fácil</title><style>' +
+        '<title>Sin conexión · Palabra Fiel</title><style>' +
         'body{font-family:system-ui;background:#f7f4ee;color:#232838;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0;text-align:center}' +
         'div{max-width:22rem;padding:2rem}h1{font-size:1.4rem}p{color:#5c6372;line-height:1.6}' +
         '</style></head><body><div><h1>✝ Sin conexión</h1>' +

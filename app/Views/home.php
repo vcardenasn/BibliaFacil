@@ -6,7 +6,7 @@
         <div class="home-actions">
             <a class="home-button primary" href="<?= e(url(($startVersion['code'] ?? 'rvr1909') . '/juan/1')) ?>"><?= e(t('Empezar a leer')) ?> <span aria-hidden="true">→</span></a>
             <a class="home-button secondary" href="<?= e(url('temas')) ?>"><?= e(t('Explorar temas')) ?></a>
-            <a class="home-wa" href="https://wa.me/?text=<?= rawurlencode(t('Te comparto Biblia Fácil — la Biblia en español, gratis y sin anuncios:') . ' ' . \Biblia\Core\Seo::abs()) ?>" target="_blank" rel="noopener"><?= e(t('Compartir')) ?></a>
+            <a class="home-wa" href="https://wa.me/?text=<?= rawurlencode(t('Te comparto Palabra Fiel — la Biblia en español, gratis y sin anuncios:') . ' ' . \Biblia\Core\Seo::abs()) ?>" target="_blank" rel="noopener"><?= e(t('Compartir')) ?></a>
         </div>
         <?php if ($continue): ?>
         <a class="home-continue" href="<?= e(url($continue['path'])) ?>"><?= e(t('Continuar leyendo:')) ?> <strong><?= e($continue['label']) ?></strong><span> · <?= e($continue['version']) ?></span> <span aria-hidden="true">→</span></a>
@@ -81,6 +81,6 @@
     </div>
 </section>
 
-<section class="home-trust" aria-label="<?= e(t('Por qué Biblia Fácil')) ?>">
+<section class="home-trust" aria-label="<?= e(t('Por qué Palabra Fiel')) ?>">
     <span><?= e(t('Sin anuncios')) ?></span><span><?= e(t('Sin crear cuenta')) ?></span><span><?= e(t('Lectura y juegos gratis')) ?></span>
 </section>

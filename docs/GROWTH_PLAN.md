@@ -1,4 +1,4 @@
-# Biblia Fácil — Plan de Crecimiento Orgánico (12 meses)
+# Palabra Fiel — Plan de Crecimiento Orgánico (12 meses)
 
 > Documento de estrategia. **No implica cambios de código todavía.**
 > Elaborado a partir del análisis del repositorio, producción
@@ -44,7 +44,7 @@
 | **A. Creyente hispanohablante móvil (25-55, LATAM + US hispano)** que comparte versículos en WhatsApp/Facebook | Encontrar un versículo por tema/ocasión y enviarlo como imagen bonita | Imagen + link sin registro, sin anuncios | **P0** |
 | **B. Maestros de escuela dominical / líderes de niños** | Material y dinámicas listas para la clase | 7 juegos gratis, sin cuentas, proyectables | **P0** (nodo multiplicador: 1 maestro → 10-30 niños → familias) |
 | **C. Padres cristianos** | Actividades bíblicas para hijos con pantalla "segura" | Juegos sin anuncios ni chat | P1 |
-| **D. Lector nuevo / "quiero entender la Biblia"** | Biblia en lenguaje sencillo | PDDPT y ONBV son de lenguaje fácil — **coincide con la marca "Biblia Fácil"** | P1 |
+| **D. Lector nuevo / "quiero entender la Biblia"** | Biblia en lenguaje sencillo | PDDPT y ONBV usan lenguaje sencillo — ayudan a empezar sin abrumarse | P1 |
 | E. Estudiante de Biblia | Comparar versiones, referencias | 6 versiones lado a lado (EPIC 14 pendiente) | P2 |
 
 ### 0.4 Problema que resuelve
@@ -220,7 +220,7 @@ Repeat:    siguiente plan
 Trigger:   iglesia quiere versículo del día en su web
 Action:    copia <script> del widget
 Value:     contenido diario gratis
-Share:     cada web muestra "vía Biblia Fácil" (backlink)
+Share:     cada web muestra "vía Palabra Fiel" (backlink)
 New user:  visitantes de la iglesia
 Repeat:    automático diario
 ```
@@ -435,7 +435,7 @@ Responsable: **O** = owner, **D** = Devin (dev), **R** = revisor voluntario.
 | G4-3 | Reta a un amigo (juegos) | Semilla determinista en URL; pantalla de comparación | Mismo set de preguntas para ambos; métrica challenge_* | P1 | — | M | Retos enviados/jugados |
 | G4-4 | Tarjeta de racha | Imagen "N días leyendo" + share | Se genera en 7/14/30 | P2 | — | S | Shares racha |
 | G4-5 | Kit maestros | `/maestros`, PDFs imprimibles con QR `?s=qr`, modo proyector en juegos | 10 PDFs; QR medible | P0 | G1-4 | L | Visitas `s=qr`, backlinks |
-| G4-6 | Widget iglesias | `<script>`/iframe votd con "vía Biblia Fácil" | Instalable con 1 línea; no rompe sitios host | P2 | G1-2 | M | Dominios referentes |
+| G4-6 | Widget iglesias | `<script>`/iframe votd con "vía Palabra Fiel" | Instalable con 1 línea; no rompe sitios host | P2 | G1-2 | M | Dominios referentes |
 
 ### EPIC G5 — Content engine y automatización (P1)
 

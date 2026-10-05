@@ -16,4 +16,4 @@
 </div>
 
 <p class="share-label"><?= e(t('Comparte este tema:')) ?></p>
-<?= sharebar(\Biblia\Core\Seo::abs('temas/' . $slug), t('Versículos sobre') . ' ' . t($tema['name']) . ' — Biblia Fácil') ?>
+<?= sharebar(\Biblia\Core\Seo::abs('temas/' . $slug), t('Versículos sobre') . ' ' . t($tema['name']) . ' — Palabra Fiel') ?>

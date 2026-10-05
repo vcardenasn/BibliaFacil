@@ -1,4 +1,4 @@
-// Biblia Fácil — motor de juegos bíblicos (EPIC 17 / US-170+171).
+// Palabra Fiel — motor de juegos bíblicos (EPIC 17 / US-170+171).
 // Global BFJ: estrellas persistentes, confetti, sonidos Web Audio,
 // shake/pop, timer animado, overlay de celebración, registro de juegos.
 (function () {

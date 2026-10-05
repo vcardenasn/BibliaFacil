@@ -1,11 +1,11 @@
 <div class="page-hero">
     <h1><span aria-hidden="true">⚖️</span> <?= e(t('Licencias y copyright')) ?></h1>
-    <p><?= e(t('Atribución de las versiones bíblicas y recursos usados en Biblia Fácil.')) ?></p>
+    <p><?= e(t('Atribución de las versiones bíblicas y recursos usados en Palabra Fiel.')) ?></p>
 </div>
 
 <section class="card">
     <h2><?= e(t('Versiones de la Biblia')) ?></h2>
-    <p class="muted"><?= e(t('Biblia Fácil es un proyecto comunitario sin fines de lucro: sin anuncios, sin suscripciones y sin compras.')) ?></p>
+    <p class="muted"><?= e(t('Palabra Fiel es un proyecto comunitario sin fines de lucro: sin anuncios, sin suscripciones y sin compras.')) ?></p>
     <ul class="license-list">
     <?php
     $apiSourced = array_filter($versions ?? [], fn ($v) => !empty($v['api_bible_id']));

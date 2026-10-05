@@ -189,7 +189,7 @@ if (($seg[0] ?? '') === 'versiculo-del-dia') {
     if (($seg[1] ?? '') === 'rss') {
         header('Content-Type: application/rss+xml; charset=utf-8');
         echo '<?xml version="1.0" encoding="UTF-8"?>', "\n",
-            '<rss version="2.0"><channel><title>Versículo del día — Biblia Fácil</title>',
+            '<rss version="2.0"><channel><title>Versículo del día — Palabra Fiel</title>',
             '<link>', \Biblia\Core\Seo::abs('versiculo-del-dia'), '</link>',
             '<description>Un versículo de la Biblia cada día.</description><language>es</language>', "\n";
         for ($i = 0; $i < 30; $i++) {

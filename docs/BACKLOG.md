@@ -1,4 +1,4 @@
-# Biblia Fácil — Backlog
+# Palabra Fiel — Backlog
 
 App para leer la Biblia en múltiples versiones, uso comunitario no-comercial.
 Texto en BD propia (sin API en runtime). Versiones con copyright solo vía

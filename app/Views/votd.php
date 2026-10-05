@@ -26,5 +26,5 @@
 
 <?php if ($votd): ?>
 <p class="share-label"><?= e(t('Comparte el versículo del día:')) ?></p>
-<?= sharebar(\Biblia\Core\Seo::abs('versiculo-del-dia' . ($d !== date('Y-m-d') ? '?d=' . $d : '')), t('Versículo del día:') . ' ' . t($votd['book_name']) . ' ' . $votd['chapter'] . ':' . $votd['verse'] . ' — Biblia Fácil') ?>
+<?= sharebar(\Biblia\Core\Seo::abs('versiculo-del-dia' . ($d !== date('Y-m-d') ? '?d=' . $d : '')), t('Versículo del día:') . ' ' . t($votd['book_name']) . ' ' . $votd['chapter'] . ':' . $votd['verse'] . ' — Palabra Fiel') ?>
 <?php endif; ?>

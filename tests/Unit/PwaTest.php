@@ -7,7 +7,7 @@ return function (TestCase $t): void {
     $t->run('manifest: JSON válido, campos instalables e íconos reales', function () use ($t) {
         $file = BASE_PATH . '/public/manifest.webmanifest';
         $m = json_decode((string) file_get_contents($file), true);
-        $t->assertSame('Biblia Fácil', $m['name']);
+        $t->assertSame('Palabra Fiel', $m['name']);
         $t->assertSame('standalone', $m['display']);
         $t->assertSame('/', $m['start_url']);
         $t->assertSame('es', $m['lang']);

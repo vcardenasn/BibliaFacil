@@ -143,7 +143,7 @@ final class Seo
 
             case 'juego':
                 $g = $data['game'] ?? [];
-                $meta['desc'] = t('Juega gratis — juego bíblico para niños en Biblia Fácil.') . ' ' . t($g['name'] ?? '');
+                $meta['desc'] = t('Juega gratis — juego bíblico para niños en Palabra Fiel.') . ' ' . t($g['name'] ?? '');
                 break;
 
             case 'search':
@@ -157,7 +157,7 @@ final class Seo
 
             case 'tema':
                 $t = $data['tema'] ?? [];
-                $meta['desc'] = t($t['desc'] ?? 'Versículos por tema') . ' ' . t('Colección curada en Biblia Fácil.');
+                $meta['desc'] = t($t['desc'] ?? 'Versículos por tema') . ' ' . t('Colección curada en Palabra Fiel.');
                 $meta['crumbs'] = self::pageCrumbs(t('Temas'), isset($t['name']) ? t($t['name']) : null, 'temas');
                 $meta['jsonld'] = [self::breadcrumbLd($meta['crumbs']), [
                     '@context' => 'https://schema.org',
@@ -169,7 +169,7 @@ final class Seo
 
             case 'versiculo':
                 $en2 = $data['entry'] ?? [];
-                $meta['desc'] = t($en2['context'] ?? '') . ' ' . t('Léelo en varias versiones en Biblia Fácil.');
+                $meta['desc'] = t($en2['context'] ?? '') . ' ' . t('Léelo en varias versiones en Palabra Fiel.');
                 $meta['ogType'] = 'article';
                 // og:image con la versión por defecto (US-200)
                 if (!empty($data['texts'][0])) {
@@ -213,7 +213,7 @@ final class Seo
 
             case 'guia':
                 $g = $data['guia'] ?? [];
-                $meta['desc'] = t($g['desc'] ?? '') . ' — ' . t('guía de Biblia Fácil.');
+                $meta['desc'] = t($g['desc'] ?? '') . ' — ' . t('guía de Palabra Fiel.');
                 $meta['crumbs'] = self::pageCrumbs(t('Guías'), isset($g['title']) ? t($g['title']) : null, 'guias');
                 $meta['jsonld'] = [self::breadcrumbLd($meta['crumbs'])];
                 break;
@@ -302,7 +302,7 @@ final class Seo
         return [
             '@context' => 'https://schema.org',
             '@type' => 'WebSite',
-            'name' => 'Biblia Fácil',
+            'name' => 'Palabra Fiel',
             'url' => self::abs('/'),
             'potentialAction' => [
                 '@type' => 'SearchAction',

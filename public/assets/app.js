@@ -1,4 +1,4 @@
-// Biblia Fácil — preferencias, anotaciones (IndexedDB local-first),
+// Palabra Fiel — preferencias, anotaciones (IndexedDB local-first),
 // sheet de acciones por versículo, panel Apariencia, compartir/copiar.
 // Sin cuenta: todo persiste en el dispositivo (localStorage + IndexedDB).
 (function () {
@@ -714,7 +714,7 @@
 
         x.font = '600 ' + Math.round(w * .024) + 'px Georgia, serif';
         x.fillStyle = 'rgba(253,247,234,.7)';
-        x.fillText('✝ ' + (location.host || 'Biblia Fácil'), w / 2, h * .94); // US-203: dominio transparente
+        x.fillText('✝ ' + (location.host || 'Palabra Fiel'), w / 2, h * .94); // US-203: dominio transparente
         return cv;
     }
 
@@ -948,7 +948,7 @@
             mailBtn.addEventListener('click', function () {
                 if (!lastList.length) { return; }
                 TK('ann', 'mail');
-                var lines = [T('Mis anotaciones') + ' — Biblia Fácil', ''];
+                var lines = [T('Mis anotaciones') + ' — Palabra Fiel', ''];
                 lastList.forEach(function (r) {
                     var marks = [];
                     if (r.color) { marks.push(T('resaltada')); }
@@ -970,7 +970,7 @@
                 if (body.length > MAX) {
                     body = body.slice(0, MAX) + '\n\n…' + T('(lista recortada — usa "Exportar" para el archivo completo)');
                 }
-                location.href = 'mailto:?subject=' + encodeURIComponent(T('Mis anotaciones') + ' — Biblia Fácil') +
+                location.href = 'mailto:?subject=' + encodeURIComponent(T('Mis anotaciones') + ' — Palabra Fiel') +
                     '&body=' + encodeURIComponent(body);
             });
         }

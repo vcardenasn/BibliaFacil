@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title><?= e($title ?? 'Biblia Fácil') ?> · Biblia Fácil</title>
+<title><?= e($title ?? 'Palabra Fiel') ?> · Palabra Fiel</title>
 <meta name="description" content="<?= e($meta['desc'] ?? t('Lee la Biblia en múltiples versiones, fácil y rápido.')) ?>">
 <?php if (!empty($meta['noindex'])): ?>
 <meta name="robots" content="noindex,follow">
 <?php endif; ?>
 <link rel="canonical" href="<?= e($meta['canonical'] ?? '') ?>">
 <meta property="og:type" content="<?= e($meta['ogType'] ?? 'website') ?>">
-<meta property="og:title" content="<?= e(($title ?? 'Biblia Fácil') . ' · Biblia Fácil') ?>">
+<meta property="og:title" content="<?= e(($title ?? 'Palabra Fiel') . ' · Palabra Fiel') ?>">
 <meta property="og:description" content="<?= e($meta['desc'] ?? '') ?>">
 <meta property="og:url" content="<?= e($meta['canonical'] ?? '') ?>">
-<meta property="og:site_name" content="Biblia Fácil">
+<meta property="og:site_name" content="Palabra Fiel">
 <meta property="og:locale" content="<?= e($meta['locale'] ?? (lang() === 'en' ? 'en_US' : 'es_LA')) ?>">
 <?php if (!empty($meta['image'])): ?>
 <meta property="og:image" content="<?= e($meta['image']) ?>">
@@ -24,7 +24,7 @@
 <?php else: ?>
 <meta name="twitter:card" content="summary">
 <?php endif; ?>
-<meta name="twitter:title" content="<?= e(($title ?? 'Biblia Fácil') . ' · Biblia Fácil') ?>">
+<meta name="twitter:title" content="<?= e(($title ?? 'Palabra Fiel') . ' · Palabra Fiel') ?>">
 <meta name="twitter:description" content="<?= e($meta['desc'] ?? '') ?>">
 <?php foreach (($meta['hreflang'] ?? []) as $lang => $u): ?>
 <link rel="alternate" hreflang="<?= e($lang) ?>" href="<?= e($u) ?>">
@@ -35,7 +35,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Biblia Fácil">
+<meta name="apple-mobile-web-app-title" content="Palabra Fiel">
 <?php endif; ?>
 <link rel="apple-touch-icon" href="<?= e(asset('icons/apple-touch-icon.png')) ?>">
 <link rel="stylesheet" href="<?= e(asset('app.css')) ?>">
@@ -50,7 +50,7 @@
 <body<?= !empty($bodyClass) ? ' class="' . e($bodyClass) . '"' : '' ?><?= \Biblia\Core\FeatureFlags::enabled('FF_PWA') ? ' data-sw="' . e(url('sw.js')) . '"' : '' ?>>
 <a class="skip-link" href="#main-content"><?= e(t('Saltar al contenido')) ?></a>
 <header class="topbar">
-    <a class="brand" href="<?= e(url('/')) ?>"><span class="cross" aria-hidden="true">✝</span> Biblia Fácil</a>
+    <a class="brand" href="<?= e(url('/')) ?>"><span class="cross" aria-hidden="true">✝</span> Palabra Fiel</a>
     <?php
     $activeSection = explode('/', trim((string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/'))[0];
     $defaultRead = (string) config('app.default_version', 'rvr1909');
@@ -113,7 +113,7 @@
     <p><?= e($version['name']) ?><?= !empty($version['copyright']) ? ' · ' . e($version['copyright']) : '' ?>
         <?php if (!empty($version['api_bible_id'])): ?>· <?= e(t('provista por')) ?> <a href="https://api.bible" rel="noopener">API.Bible</a><?php endif; ?></p>
     <?php endif; ?>
-    <p><?= e(t('Biblia Fácil — lee la Biblia, fácil.')) ?> ·
+    <p><?= e(t('Palabra Fiel — lee la Biblia, fácil.')) ?> ·
         <a href="<?= e(url('temas')) ?>"><?= e(t('Temas')) ?></a> ·
         <a href="<?= e(url('planes')) ?>"><?= e(t('Planes de lectura')) ?></a> ·
         <a href="<?= e(url('versiculo-del-dia')) ?>"><?= e(t('Versículo del día')) ?></a> ·
