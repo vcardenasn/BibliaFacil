@@ -398,7 +398,8 @@
             (cmpUrl ? '<a class="va2" href="' + esc(cmpUrl) + '">' + T('⇄ Comparar') + '</a>' : '') +
             '</div>' +
             '<div class="vs-range" hidden><label>' + T('Hasta v.') + ' <select class="vs-range-sel"></select></label>' +
-            '<button type="button" data-a="copyrange" class="va2">' + T('⧉ Copiar rango') + '</button></div>' +
+            '<button type="button" data-a="copyrange" class="va2">' + T('⧉ Copiar rango') + '</button>' +
+            '<button type="button" data-a="warange" class="va2 va-wa" aria-label="WhatsApp">' + T('WhatsApp') + '</button></div>' +
             '<div class="vs-note" hidden><textarea rows="3" maxlength="2000" placeholder="' + T('Escribe tu nota…') + '">' + esc(rec.note || '') + '</textarea>' +
             '<div class="vs-note-btns"><button type="button" data-a="save" class="va2 on">' + T('Guardar') + '</button>' +
             (rec.note ? '<button type="button" data-a="delnote" class="va2">' + T('Borrar nota') + '</button>' : '') + '</div></div>' +
@@ -516,7 +517,7 @@
                 }
                 rz.hidden = !rz.hidden;
                 act.setAttribute('aria-expanded', String(!rz.hidden));
-            } else if (a === 'copyrange') {
+            } else if (a === 'copyrange' || a === 'warange') {
                 var rsel = sheet.querySelector('.vs-range-sel');
                 var vFrom = parseInt(sheetVerse.id.slice(1), 10);
                 var vTo = rsel.value ? parseInt(rsel.value, 10) : 0;
@@ -530,12 +531,18 @@
                 var base = ref.replace(/:\d+.*$/, '');
                 var rangeRef = vTo > vFrom ? base + ':' + vFrom + '-' + vTo : ref;
                 var rUrl = location.origin + '/' + chapterEl.getAttribute('data-pos') + '#v' + vFrom;
-                TK('share', 'range');
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText('“' + parts.join(' ') + '” — ' + rangeRef + '\n' + rUrl).then(function () {
-                        act.textContent = T('✓ Copiado');
-                        setTimeout(function () { act.textContent = T('⧉ Copiar rango'); }, 1100);
-                    });
+                var rText = '“' + parts.join(' ') + '” — ' + rangeRef + '\n' + rUrl;
+                if (a === 'warange') {
+                    TK('share', 'wa-range');
+                    window.open('https://wa.me/?text=' + encodeURIComponent(rText), '_blank', 'noopener');
+                } else {
+                    TK('share', 'range');
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(rText).then(function () {
+                            act.textContent = T('✓ Copiado');
+                            setTimeout(function () { act.textContent = T('⧉ Copiar rango'); }, 1100);
+                        });
+                    }
                 }
             } else if (a === 'wa') {
                 // WhatsApp directo: 1 toque, sin hoja nativa — el canal que más convierte
@@ -935,7 +942,7 @@
                     var blob = new Blob([JSON.stringify({ app: 'bibliafacil', v: 1, ann: list }, null, 2)], { type: 'application/json' });
                     var a = document.createElement('a');
                     a.href = URL.createObjectURL(blob);
-                    a.download = 'biblia-facil-anotaciones.json';
+                    a.download = 'palabra-fiel-anotaciones.json';
                     a.click();
                     URL.revokeObjectURL(a.href);
                 });
