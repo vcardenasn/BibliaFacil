@@ -3,7 +3,7 @@
 // imágenes) → los juegos funcionan 100% sin internet. Páginas: network-first
 // con caché de lo visitado. Assets: stale-while-revalidate.
 // Nunca cachea /api, /track.php ni POST.
-var VERSION = 'bf-v2';
+var VERSION = 'bf-v3';
 var PAGES = VERSION + '-pages';
 var ASSETS = VERSION + '-assets';
 var COREC = VERSION + '-core';
@@ -24,6 +24,34 @@ var PRECACHE_CORE = [
         '/juegos/personaje',
         '/juegos/sopa',
         '/juegos/crucigrama',
+        '/temas',
+        '/temas/amor',
+        '/temas/fe',
+        '/temas/animo',
+        '/temas/paz',
+        '/temas/esperanza',
+        '/temas/familia',
+        '/temas/matrimonio',
+        '/temas/hijos',
+        '/temas/perdon',
+        '/temas/sabiduria',
+        '/temas/oracion',
+        '/temas/gratitud',
+        '/temas/proteccion',
+        '/temas/ninos',
+        '/temas/fortaleza',
+        '/temas/trabajo',
+        '/planes',
+        '/planes/biblia-en-un-ano',
+        '/planes/nuevo-testamento-90',
+        '/planes/salmos-proverbios',
+        '/guias',
+        '/guias/que-version',
+        '/guias/como-leer',
+        '/mias',
+        '/versiculo-del-dia',
+        '/comparar',
+        '/licencias',
         '/assets/app.css',
         '/assets/app.js',
         '/assets/sw-register.js',
