@@ -401,8 +401,7 @@
             '<div class="vs-range-row"><label>' + T('Hasta v.') + ' <select class="vs-range-sel"></select></label>' +
             '<span class="vs-range-info" aria-live="polite"></span></div>' +
             '<div class="vs-range-row">' +
-            '<button type="button" data-a="copyrange" class="va2">' + T('⧉ Copiar rango') + '</button>' +
-            '<button type="button" data-a="warange" class="va2 va-wa" aria-label="WhatsApp">' + T('WhatsApp') + '</button></div></div>' +
+            '<button type="button" data-a="copyrange" class="va2">' + T('⧉ Copiar rango') + '</button></div></div>' +
             '<div class="vs-note" hidden><textarea rows="3" maxlength="2000" placeholder="' + T('Escribe tu nota…') + '">' + esc(rec.note || '') + '</textarea>' +
             '<div class="vs-note-btns"><button type="button" data-a="save" class="va2 on">' + T('Guardar') + '</button>' +
             (rec.note ? '<button type="button" data-a="delnote" class="va2">' + T('Borrar nota') + '</button>' : '') + '</div></div>' +
@@ -413,6 +412,25 @@
         sheet.querySelector('.vs-backdrop').addEventListener('click', closeSheet);
         sheet.querySelector('.vs-x').addEventListener('click', closeSheet);
         sheet.querySelector('.vs-range-sel').addEventListener('change', paintRange);
+
+        // Texto citado del rango elegido ('' si el panel está cerrado o sin v.
+        // final válido) — lo usan copiar-rango y el botón de WhatsApp.
+        function rangeText() {
+            var rz = sheet.querySelector('.vs-range');
+            if (!rz || rz.hidden) { return ''; }
+            var rsel = rz.querySelector('.vs-range-sel');
+            var vFrom = parseInt(sheetVerse.id.slice(1), 10);
+            var vTo = rsel.value ? parseInt(rsel.value, 10) : 0;
+            if (vTo <= vFrom) { return ''; }
+            var parts = [];
+            document.querySelectorAll('.chapter .verse').forEach(function (v) {
+                var n = parseInt(v.id.slice(1), 10);
+                if (n >= vFrom && n <= vTo) { parts.push(v.getAttribute('data-text') || v.textContent.trim()); }
+            });
+            var base = ref.replace(/:\d+.*$/, '');
+            var rUrl = location.origin + '/' + chapterEl.getAttribute('data-pos') + '#v' + vFrom;
+            return '“' + parts.join(' ') + '” — ' + base + ':' + vFrom + '-' + vTo + '\n' + rUrl;
+        }
 
         // Foco dentro del diálogo + trampa de Tab (UX-04)
         var closeBtn = sheet.querySelector('.vs-x');
@@ -524,37 +542,21 @@
                 rz.hidden = !rz.hidden;
                 act.setAttribute('aria-expanded', String(!rz.hidden));
                 paintRange();
-            } else if (a === 'copyrange' || a === 'warange') {
-                var rsel = sheet.querySelector('.vs-range-sel');
-                var vFrom = parseInt(sheetVerse.id.slice(1), 10);
-                var vTo = rsel.value ? parseInt(rsel.value, 10) : 0;
-                var parts = [];
-                document.querySelectorAll('.chapter .verse').forEach(function (v) {
-                    var n = parseInt(v.id.slice(1), 10);
-                    if (n >= vFrom && n <= vTo) {
-                        parts.push(v.getAttribute('data-text') || v.textContent.trim());
-                    }
-                });
-                var base = ref.replace(/:\d+.*$/, '');
-                var rangeRef = vTo > vFrom ? base + ':' + vFrom + '-' + vTo : ref;
-                var rUrl = location.origin + '/' + chapterEl.getAttribute('data-pos') + '#v' + vFrom;
-                var rText = '“' + parts.join(' ') + '” — ' + rangeRef + '\n' + rUrl;
-                if (a === 'warange') {
-                    TK('share', 'wa-range');
-                    window.open('https://wa.me/?text=' + encodeURIComponent(rText), '_blank', 'noopener');
-                } else {
-                    TK('share', 'range');
-                    if (navigator.clipboard) {
-                        navigator.clipboard.writeText(rText).then(function () {
-                            act.textContent = T('✓ Copiado');
-                            setTimeout(function () { act.textContent = T('⧉ Copiar rango'); }, 1100);
-                        });
-                    }
+            } else if (a === 'copyrange') {
+                var rText = rangeText();
+                TK('share', 'range');
+                if (navigator.clipboard && rText) {
+                    navigator.clipboard.writeText(rText).then(function () {
+                        act.textContent = T('✓ Copiado');
+                        setTimeout(function () { act.textContent = T('⧉ Copiar rango'); }, 1100);
+                    });
                 }
             } else if (a === 'wa') {
-                // WhatsApp directo: 1 toque, sin hoja nativa — el canal que más convierte
-                TK('share', 'wa-btn');
-                window.open('https://wa.me/?text=' + encodeURIComponent('“' + text + '” — ' + ref + ' ' + surl), '_blank', 'noopener');
+                // WhatsApp directo: con el panel de rango abierto comparte el
+                // pasaje completo; si no, el versículo tocado
+                var wText = rangeText();
+                TK('share', wText ? 'wa-range' : 'wa-btn');
+                window.open('https://wa.me/?text=' + encodeURIComponent(wText || '“' + text + '” — ' + ref + ' ' + surl), '_blank', 'noopener');
             } else if (a === 'share') {
                 var pl = '“' + text + '” — ' + ref + ' ' + surl;
                 TK('share', navigator.share ? 'native' : 'wa');
