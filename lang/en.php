@@ -170,6 +170,9 @@ return [
     'Nuevo Testamento' => 'New Testament',
     'Elige un capítulo' => 'Choose a chapter',
     'en total' => 'in total',
+    '⬇ Descargar para leer sin conexión' => '⬇ Download to read offline',
+    'Descargando…' => 'Downloading…',
+    '✓ Guardado sin conexión' => '✓ Saved for offline reading',
 
     // Nombres de libros (66)
     'Jueces' => 'Judges', 'Rut' => 'Ruth', '1 Samuel' => '1 Samuel',

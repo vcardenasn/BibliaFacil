@@ -265,7 +265,8 @@ self.addEventListener('activate', function (e) {
     e.waitUntil(
         caches.keys().then(function (keys) {
             return Promise.all(keys.map(function (k) {
-                if (k.indexOf(VERSION) !== 0) { return caches.delete(k); }
+                // 'bf-books' (libros descargados) sobrevive los bumps de versión
+                if (k.indexOf(VERSION) !== 0 && k !== 'bf-books') { return caches.delete(k); }
             }));
         }).then(function () { return self.clients.claim(); })
     );

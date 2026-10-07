@@ -217,6 +217,41 @@
         });
     }
 
+    // ---- Descarga de libro para lectura offline (Nivel 2) ---------------------
+    // El botón solo existe en páginas de capítulos de versiones locales.
+    // Guarda cada capítulo en el caché 'bf-books' (que el SW preserva entre
+    // versiones); el fetch del SW lo encuentra vía caches.match al navegar.
+    var dlBtn = document.getElementById('dlOffline');
+    if (dlBtn && 'caches' in window) {
+        var dlKey = 'bf_dl_' + dlBtn.getAttribute('data-v') + '_' + dlBtn.getAttribute('data-b');
+        function dlState() {
+            if (localStorage.getItem(dlKey)) {
+                dlBtn.textContent = T('✓ Guardado sin conexión');
+                dlBtn.classList.add('done');
+            }
+        }
+        dlState();
+        dlBtn.addEventListener('click', function () {
+            var ver = dlBtn.getAttribute('data-v'), bk = dlBtn.getAttribute('data-b');
+            var n = parseInt(dlBtn.getAttribute('data-n'), 10), i = 0;
+            dlBtn.disabled = true;
+            TK('dl', bk);
+            caches.open('bf-books').then(function (cache) {
+                (function next() {
+                    if (i >= n) {
+                        localStorage.setItem(dlKey, '1');
+                        dlBtn.disabled = false; dlState();
+                        return;
+                    }
+                    i++;
+                    dlBtn.textContent = T('Descargando…') + ' ' + i + '/' + n;
+                    // un capítulo que falle no detiene la descarga del resto
+                    cache.add('/' + ver + '/' + bk + '/' + i).then(next, next);
+                })();
+            });
+        });
+    }
+
     // ---- Continuar donde quedé + historial/racha + scroll-restore -------------
     var bookFilter = document.getElementById('book-filter');
     if (bookFilter) {
