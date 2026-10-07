@@ -855,8 +855,15 @@ a.crumb:hover { color: var(--brand); }
 [data-spacing="on"] main { letter-spacing: .02em; word-spacing: .15em; }
 
 /* ============ Sheet: copiar rango (US-143) ============ */
-.vs-range { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .55rem 0 .2rem; border-top: 1px solid var(--border); margin-top: .55rem; font-size: .85rem; }
+.vs-range { display: flex; flex-direction: column; gap: .5rem; padding: .55rem 0 .2rem; border-top: 1px solid var(--border); margin-top: .55rem; font-size: .85rem; }
+.vs-range-row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.vs-range-info { font: 600 .8rem var(--sans); color: var(--brand); }
 .vs-range select { padding: .3rem .5rem; border: 1px solid var(--border-strong); border-radius: .4rem; background: var(--bg); color: var(--ink); font: inherit; }
+/* Versículos incluidos en el rango a compartir */
+.verse.vs-inrange {
+    background: color-mix(in srgb, var(--brand) 10%, transparent);
+    border-radius: 6px; box-decoration-break: clone; -webkit-box-decoration-break: clone;
+}
 
 /* ============ Lectura reciente en /mias (US-130) ============ */
 .hist { margin: 1rem 0 1.5rem; }

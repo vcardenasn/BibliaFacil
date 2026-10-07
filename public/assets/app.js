@@ -394,12 +394,15 @@
             '<button type="button" data-a="wa" class="va2 va-wa" aria-label="WhatsApp">' + T('WhatsApp') + '</button>' +
             '<button type="button" data-a="share" class="va2">' + T('↗ Compartir') + '</button>' +
             '<button type="button" data-a="img" class="va2">' + T('🖼 Imagen') + '</button>' +
-            '<button type="button" data-a="range" class="va2" aria-expanded="false">' + T('⇅ Rango') + '</button>' +
+            '<button type="button" data-a="range" class="va2" aria-expanded="false">' + T('⇅ Varios versículos') + '</button>' +
             (cmpUrl ? '<a class="va2" href="' + esc(cmpUrl) + '">' + T('⇄ Comparar') + '</a>' : '') +
             '</div>' +
-            '<div class="vs-range" hidden><label>' + T('Hasta v.') + ' <select class="vs-range-sel"></select></label>' +
+            '<div class="vs-range" hidden>' +
+            '<div class="vs-range-row"><label>' + T('Hasta v.') + ' <select class="vs-range-sel"></select></label>' +
+            '<span class="vs-range-info" aria-live="polite"></span></div>' +
+            '<div class="vs-range-row">' +
             '<button type="button" data-a="copyrange" class="va2">' + T('⧉ Copiar rango') + '</button>' +
-            '<button type="button" data-a="warange" class="va2 va-wa" aria-label="WhatsApp">' + T('WhatsApp') + '</button></div>' +
+            '<button type="button" data-a="warange" class="va2 va-wa" aria-label="WhatsApp">' + T('WhatsApp') + '</button></div></div>' +
             '<div class="vs-note" hidden><textarea rows="3" maxlength="2000" placeholder="' + T('Escribe tu nota…') + '">' + esc(rec.note || '') + '</textarea>' +
             '<div class="vs-note-btns"><button type="button" data-a="save" class="va2 on">' + T('Guardar') + '</button>' +
             (rec.note ? '<button type="button" data-a="delnote" class="va2">' + T('Borrar nota') + '</button>' : '') + '</div></div>' +
@@ -409,6 +412,7 @@
 
         sheet.querySelector('.vs-backdrop').addEventListener('click', closeSheet);
         sheet.querySelector('.vs-x').addEventListener('click', closeSheet);
+        sheet.querySelector('.vs-range-sel').addEventListener('change', paintRange);
 
         // Foco dentro del diálogo + trampa de Tab (UX-04)
         var closeBtn = sheet.querySelector('.vs-x');
@@ -514,9 +518,12 @@
                             sel.appendChild(o);
                         }
                     });
+                    // Por defecto un versículo más — invita a compartir un pasaje
+                    if (sel.options.length) { sel.value = sel.options[0].value; }
                 }
                 rz.hidden = !rz.hidden;
                 act.setAttribute('aria-expanded', String(!rz.hidden));
+                paintRange();
             } else if (a === 'copyrange' || a === 'warange') {
                 var rsel = sheet.querySelector('.vs-range-sel');
                 var vFrom = parseInt(sheetVerse.id.slice(1), 10);
@@ -651,8 +658,26 @@
         (firstEmpty || card.querySelector('textarea')).focus();
     }
 
+    // Resalta en el capítulo los versículos del rango elegido y muestra
+    // un resumen vivo ("Juan 3:16–21 · 6 versículos") en la hoja.
+    function paintRange() {
+        if (!sheet || !sheetVerse) { return; }
+        var sel = sheet.querySelector('.vs-range-sel');
+        var info = sheet.querySelector('.vs-range-info');
+        var vFrom = parseInt(sheetVerse.id.slice(1), 10);
+        var vTo = parseInt(sel.value || '0', 10);
+        var rangeOpen = !sheet.querySelector('.vs-range').hidden;
+        var cnt = (rangeOpen && vTo > vFrom) ? vTo - vFrom + 1 : 0;
+        document.querySelectorAll('.chapter .verse').forEach(function (v) {
+            var n = parseInt(v.id.slice(1), 10);
+            v.classList.toggle('vs-inrange', cnt > 0 && n >= vFrom && n <= vTo);
+        });
+        var base = (sheetVerse.getAttribute('data-ref') || '').replace(/:\d+.*$/, '');
+        info.textContent = cnt ? base + ':' + vFrom + '–' + vTo + ' · ' + cnt + ' ' + T('versículos') : '';
+    }
     function closeSheet() {
         if (sheet) { sheet.remove(); sheet = null; }
+        document.querySelectorAll('.verse.vs-inrange').forEach(function (v) { v.classList.remove('vs-inrange'); });
         if (sheetVerse) { sheetVerse.classList.remove('open'); sheetVerse = null; }
         if (sheetReturnFocus && sheetReturnFocus.focus) {
             sheetReturnFocus.focus();

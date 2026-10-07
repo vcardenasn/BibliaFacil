@@ -568,7 +568,7 @@ return [
     '⧉ Copiar' => '⧉ Copy',
     '↗ Compartir' => '↗ Share',
     '🖼 Imagen' => '🖼 Image',
-    '⇅ Rango' => '⇅ Range',
+    '⇅ Varios versículos' => '⇅ More verses',
     '⇄ Comparar' => '⇄ Compare',
     'Hasta v.' => 'To v.',
     '⧉ Copiar rango' => '⧉ Copy range',
