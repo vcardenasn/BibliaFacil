@@ -6,10 +6,8 @@
         <div class="home-actions">
             <a class="home-button primary" href="<?= e(url(($startVersion['code'] ?? 'rvr1909') . '/juan/1')) ?>"><?= e(t('Empezar a leer')) ?> <span aria-hidden="true">→</span></a>
             <a class="home-button secondary" href="<?= e(url('temas')) ?>"><?= e(t('Explorar temas')) ?></a>
-            <button type="button" id="pwaInstall" class="home-button secondary" hidden>📲 <?= e(t('Instalar la app')) ?></button>
             <a class="home-wa" href="https://wa.me/?text=<?= rawurlencode(t('Te comparto Palabra Fiel — la Biblia en español, gratis y sin anuncios:') . ' ' . \Biblia\Core\Seo::abs()) ?>" target="_blank" rel="noopener"><?= e(t('Compartir')) ?></a>
         </div>
-        <p id="pwaHow" class="muted pwa-how" hidden></p>
         <?php if ($continue): ?>
         <a class="home-continue" href="<?= e(url($continue['path'])) ?>"><?= e(t('Continuar leyendo:')) ?> <strong><?= e($continue['label']) ?></strong><span> · <?= e($continue['version']) ?></span> <span aria-hidden="true">→</span></a>
         <?php endif; ?>

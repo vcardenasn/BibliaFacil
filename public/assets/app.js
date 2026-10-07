@@ -217,31 +217,6 @@
         });
     }
 
-    // ---- Instalar como app (PWA) ---------------------------------------------
-    // Chrome/Android disparan beforeinstallprompt; iOS Safari no tiene API —
-    // ahí el botón muestra instrucciones ("Compartir → Añadir a pantalla…").
-    var pwaEvt = null;
-    window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); pwaEvt = e; });
-    var pwaBtn = document.getElementById('pwaInstall');
-    if (pwaBtn) {
-        var pwaHow = document.getElementById('pwaHow');
-        var standalone = window.navigator.standalone === true ||
-            (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
-        if (!standalone) {
-            pwaBtn.hidden = false;
-            pwaBtn.addEventListener('click', function () {
-                if (pwaEvt) { pwaEvt.prompt(); TK('pwa_prompt', 'show'); }
-                else if (pwaHow) {
-                    pwaHow.hidden = false;
-                    pwaHow.textContent = /iP(hone|ad|od)/.test(navigator.userAgent)
-                        ? T('Toca Compartir ⎙ y luego «Añadir a pantalla de inicio».')
-                        : T('Abre el menú del navegador ⋮ y elige «Instalar app» o «Añadir a pantalla de inicio».');
-                }
-            });
-            window.addEventListener('appinstalled', function () { pwaBtn.hidden = true; TK('pwa_install', 'ok'); });
-        }
-    }
-
     // ---- Descarga de libro para lectura offline (Nivel 2) ---------------------
     // El botón solo existe en páginas de capítulos de versiones locales.
     // Guarda cada capítulo en el caché 'bf-books' (que el SW preserva entre
