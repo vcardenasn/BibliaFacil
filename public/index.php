@@ -2,6 +2,7 @@
 
 require __DIR__ . '/../bootstrap.php';
 
+use Biblia\Api\V1\BibleReadService;
 use Biblia\Bible\BibleRepository;
 use Biblia\Bible\ReadingPlan;
 use Biblia\Bible\ReferenceParser;
@@ -23,6 +24,47 @@ $notFound = function (string $msg = 'Página no encontrada.') use ($versions): v
     http_response_code(404);
     view('notfound', ['title' => t('No encontrado'), 'message' => t($msg), 'versions' => $versions]);
 };
+
+if (($seg[0] ?? '') === 'api' && ($seg[1] ?? '') === 'v1') {
+    header('Content-Type: application/json; charset=utf-8');
+    header('X-Robots-Tag: noindex, nofollow');
+    header('Cache-Control: no-store');
+    $json = static function (int $status, array $payload, string $cache = 'no-store'): void {
+        http_response_code($status);
+        header('Cache-Control: ' . $cache);
+        echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
+        exit;
+    };
+    if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'GET') {
+        header('Allow: GET');
+        $json(405, ['error' => ['code' => 'method_not_allowed', 'message' => 'Método no permitido.']]);
+    }
+    FeatureFlags::requireEnabled('FF_NATIVE_API');
+    try {
+        $api = new BibleReadService($repo);
+        if (count($seg) === 3 && $seg[2] === 'catalog') {
+            $json(200, ['data' => $api->catalog(), 'meta' => ['api_version' => 'v1']], 'public, max-age=300');
+        }
+        if (count($seg) === 8 && $seg[2] === 'versions' && $seg[4] === 'books' && $seg[6] === 'chapters') {
+            if (!ctype_digit($seg[7]) || (int) $seg[7] < 1) {
+                $json(400, ['error' => ['code' => 'invalid_reference', 'message' => 'La referencia no es válida.']]);
+            }
+            $chapter = $api->chapter($seg[3], $seg[5], (int) $seg[7]);
+            if ($chapter === null) {
+                $json(404, ['error' => ['code' => 'not_found', 'message' => 'Recurso no disponible.']]);
+            }
+            if ($chapter['verses'] === []) {
+                $json(503, ['error' => ['code' => 'content_unavailable', 'message' => 'El capítulo no está disponible.']]);
+            }
+            $cache = $chapter['content_source'] === 'api_bible' ? 'no-store' : 'public, max-age=86400';
+            $json(200, ['data' => $chapter, 'meta' => ['api_version' => 'v1']], $cache);
+        }
+        $json(404, ['error' => ['code' => 'not_found', 'message' => 'Recurso no disponible.']]);
+    } catch (Throwable $e) {
+        error_log('API v1 failure: ' . $e::class);
+        $json(500, ['error' => ['code' => 'internal_error', 'message' => 'Ocurrió un error interno.']]);
+    }
+}
 
 // ---- /robots.txt — dinámico: el Sitemap toma el dominio actual (EPIC 18) ----
 if (($seg[0] ?? '') === 'robots.txt') {
