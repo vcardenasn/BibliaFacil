@@ -203,9 +203,17 @@
         vswitch.addEventListener('change', function () {
             var cur = vswitch.getAttribute('data-version'), next = vswitch.value;
             TK('vswitch', next);
+            // Preferencia persistente: el servidor la usa como default
+            // (versículo del día, planes…) aunque no estemos leyendo.
+            document.cookie = 'bf_ver=' + encodeURIComponent(next)
+                + ';path=/;max-age=31536000;SameSite=Lax';
             var path = window.location.pathname.replace(/^\/+/, '');
-            path = path.indexOf(cur + '/') === 0 ? next + path.slice(cur.length) : next;
-            window.location.href = '/' + path + window.location.hash;
+            if (path.indexOf(cur + '/') === 0) {
+                window.location.href = '/' + next + path.slice(cur.length) + window.location.hash;
+            } else {
+                // Página sin capítulo (Mis notas, juegos…): quedarse aquí
+                vswitch.setAttribute('data-version', next);
+            }
         });
     }
 

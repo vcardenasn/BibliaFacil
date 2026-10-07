@@ -144,7 +144,7 @@ if (($seg[0] ?? '') === 'buscar') {
 // ---- /temas — colecciones de versículos por tema (US-190) --------------------
 if (($seg[0] ?? '') === 'temas') {
     $temas = config('temas');
-    $tv = $repo->versionByCode((string) ($_GET['v'] ?? '')) ?: $repo->versionByCode((string) config('app.default_version', 'rvr1909')) ?: ($versions[0] ?? null);
+    $tv = $repo->versionByCode((string) ($_GET['v'] ?? '')) ?: $repo->versionByCode(preferredVersionCode()) ?: ($versions[0] ?? null);
     if (count($seg) === 1) {
         view('temas', ['title' => t('Versículos por tema'), 'versions' => $versions, 'version' => $tv, 'temas' => $temas]);
         exit;
@@ -190,7 +190,7 @@ if (($seg[0] ?? '') === 'versiculo' && isset($seg[1])) {
 
 // ---- /versiculo-del-dia — URL estable + archivo + RSS (US-193) ----------------
 if (($seg[0] ?? '') === 'versiculo-del-dia') {
-    $vv = $repo->versionByCode((string) ($_GET['v'] ?? '')) ?: $repo->versionByCode((string) config('app.default_version', 'rvr1909')) ?: ($versions[0] ?? null);
+    $vv = $repo->versionByCode((string) ($_GET['v'] ?? '')) ?: $repo->versionByCode(preferredVersionCode()) ?: ($versions[0] ?? null);
     if (($seg[1] ?? '') === 'rss') {
         header('Content-Type: application/rss+xml; charset=utf-8');
         echo '<?xml version="1.0" encoding="UTF-8"?>', "\n",
@@ -279,7 +279,7 @@ if (($seg[0] ?? '') === 'img' && count($seg) === 5) {
 // ---- /v/{libro}/{cap}/{ver} — URL corta compartible (US-201) -----------------
 if (($seg[0] ?? '') === 'v' && count($seg) === 4) {
     $sv = $repo->versionByCode((string) ($_GET['v'] ?? ''))
-        ?: $repo->versionByCode((string) config('app.default_version', 'rvr1909'))
+        ?: $repo->versionByCode(preferredVersionCode())
         ?: ($versions[0] ?? null);
     $sb = $repo->book($seg[1]);
     $svv = ($sv && $sb) ? $repo->verseByRef((int) $sv['id'], (string) $sb['osis'], (int) $seg[2], (int) $seg[3]) : null;
@@ -358,7 +358,7 @@ if (($seg[0] ?? '') === 'comparar') {
         $notFound('Ese capítulo no existe.');
         exit;
     }
-    $def = (string) config('app.default_version', 'rvr1909');
+    $def = preferredVersionCode();
     $va = isset($seg[3]) ? $repo->versionByCode((string) $seg[3]) : ($repo->versionByCode($def) ?: ($versions[0] ?? null));
     $vb = isset($seg[4]) ? $repo->versionByCode((string) $seg[4]) : null;
     if (!$vb || ($va && $vb['id'] === $va['id'])) {
@@ -403,10 +403,8 @@ if (($seg[0] ?? '') === 'comparar') {
 if (($seg[0] ?? '') === 'planes') {
     $plans = config('plans');
     $booksAll = $repo->books();
-    // Abre los capítulos en tu última versión usada (cookie), si no, la por defecto
-    $pvCode = (string) config('app.default_version', 'rvr1909');
-    if (preg_match('#^([a-z0-9-]+)/#', (string) ($_COOKIE['bf_pos'] ?? ''), $m)) { $pvCode = $m[1]; }
-    $planVersion = $repo->versionByCode($pvCode)
+    // Abre los capítulos en tu versión preferida (bf_ver → bf_pos → default)
+    $planVersion = $repo->versionByCode(preferredVersionCode())
         ?: $repo->versionByCode((string) config('app.default_version', 'rvr1909'))
         ?: ($versions[0] ?? null);
     if (count($seg) === 1) {
@@ -527,7 +525,7 @@ if (($seg[0] ?? '') === 'juegos') {
 
 // ---- / — portada y continuación de lectura -----------------------------------
 if ($seg === []) {
-    $homeVersion = $repo->versionByCode((string) config('app.default_version', 'rvr1909')) ?: ($versions[0] ?? null);
+    $homeVersion = $repo->versionByCode(preferredVersionCode()) ?: $repo->versionByCode((string) config('app.default_version', 'rvr1909')) ?: ($versions[0] ?? null);
     $startVersion = $repo->versionByCode('onbv') ?: $homeVersion;
     $continue = null;
     $pos = (string) ($_COOKIE['bf_pos'] ?? '');

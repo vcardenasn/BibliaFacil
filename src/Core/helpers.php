@@ -186,6 +186,20 @@ function sharebar(string $absUrl, string $text): string
     return $h . '</div>';
 }
 
+/** Código de versión preferida: bf_ver (elegida en el switcher) →
+ *  bf_pos (última versión leída) → default_version de config. */
+function preferredVersionCode(): string
+{
+    $v = (string) ($_COOKIE['bf_ver'] ?? '');
+    if ($v !== '') {
+        return $v;
+    }
+    if (preg_match('#^([a-z0-9-]+)/#', (string) ($_COOKIE['bf_pos'] ?? ''), $m)) {
+        return $m[1];
+    }
+    return (string) config('app.default_version', 'rvr1909');
+}
+
 /** Quita acentos para comparaciones (búsqueda, parser). */
 function unaccent(string $value): string
 {
