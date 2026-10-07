@@ -9,25 +9,25 @@ BFJ.define('david', function (el) {
             name: BFJ.T('Ronda 1 · El león'),
             ref: '1 ' + BFJ.T('Samuel') + ' 17:34-35',
             desc: BFJ.T('«Tu siervo apacentaba las ovejas de su padre… salió tras el león y lo hirió.»'),
-            waves: [['lion', 5]], spawnEvery: 2400, burst: 2
+            waves: [['lion', 3]], spawnEvery: 4200
         },
         {
             name: BFJ.T('Ronda 2 · El oso'),
             ref: '1 ' + BFJ.T('Samuel') + ' 17:36',
             desc: BFJ.T('«León y oso, tu siervo los mató.»'),
-            waves: [['lion', 3], ['bear', 3]], spawnEvery: 2600, burst: 2
+            waves: [['lion', 1], ['bear', 2]], spawnEvery: 4600
         },
         {
             name: BFJ.T('Ronda 3 · Goliat'),
             ref: '1 ' + BFJ.T('Samuel') + ' 17:45-49',
             desc: BFJ.T('«Tú vienes con espada; yo vengo en el nombre de Jehová.»'),
-            waves: [['lion', 2], ['bear', 3], ['goliath', 1]], spawnEvery: 2800, burst: 2
+            waves: [['lion', 1], ['bear', 1], ['goliath', 1]], spawnEvery: 5000
         },
         {
             name: BFJ.T('Libre · El buen pastor'),
             ref: BFJ.T('Salmo') + ' 23',
             desc: BFJ.T('Jehová es mi pastor. ¿Cuánto aguantas guardando el rebaño?'),
-            endless: true, waves: [['lion', 4], ['bear', 3]], spawnEvery: 2100, burst: 2
+            endless: true, waves: [['lion', 2], ['bear', 1]], spawnEvery: 5000
         }
     ];
     var KINDS = {
@@ -239,14 +239,15 @@ BFJ.define('david', function (el) {
             s.y += (s.ty - s.y) * dt * .6 + Math.sin(s.ph * 4) * .18;
         });
 
-        // oleada: ráfaga de `burst` depredadores a la vez (la presión real
-        // viene de objetivos simultáneos, no del intervalo)
-        spawnIn -= ms;
-        if (spawnIn <= 0 && (queue.length || round().endless)) {
-            var burst = round().burst || 1;
-            for (var b = 0; b < burst && (queue.length || round().endless); b++) { spawnFoe(); }
-            var gap = round().spawnEvery - Math.min(900, kills * 60);
-            spawnIn = round().endless && kills > 12 ? gap * .8 : gap;
+        // Avanza un enemigo a la vez, con pausa entre encuentros para que
+        // haya tiempo de apuntar y rescatar a las ovejas.
+        if (!foes.length && (queue.length || round().endless)) {
+            spawnIn -= ms;
+            if (spawnIn <= 0) {
+                spawnFoe();
+                var gap = round().spawnEvery - Math.min(500, kills * 30);
+                spawnIn = gap;
+            }
         }
 
         // enemigos avanzan a la oveja más cercana; leones/osos se la llevan
