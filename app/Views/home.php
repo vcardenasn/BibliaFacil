@@ -42,7 +42,9 @@
         <a href="<?= e(url('guias/como-leer')) ?>"><?= e(t('No sé por dónde empezar')) ?></a>
         <a href="<?= e(url('versiculo-del-dia')) ?>"><?= e(t('Versículo del día')) ?></a>
         <a href="<?= e(url('guias/que-version')) ?>"><?= e(t('¿Qué versión elegir?')) ?></a>
+        <button type="button" id="pwaInstall" class="link-btn" hidden>📲 <?= e(t('Instalar la app')) ?></button>
     </div>
+    <p id="pwaHow" class="muted pwa-how" hidden></p>
 </section>
 
 <section class="home-section" aria-labelledby="home-themes-title">

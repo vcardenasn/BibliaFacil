@@ -781,7 +781,9 @@ a.crumb:hover { color: var(--brand); }
 .home-input-row button:hover { background: var(--brand-strong); }
 .home-starters { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .7rem; margin-top: 1rem; font: .82rem/1.5 var(--sans); }
 .home-starters > span { color: var(--muted); }
-.home-starters a { color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+.home-starters a, .home-starters .link-btn { color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+.home-starters .link-btn { background: none; border: 0; padding: 0; font: inherit; cursor: pointer; min-height: auto; }
+.pwa-how { margin: .4rem 0 0; flex-basis: 100%; }
 .home-section-row { display: flex; align-items: end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 .home-section-row > a, .home-feature > a { font: 700 .87rem/1.4 var(--sans); }
 .home-card-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; }
