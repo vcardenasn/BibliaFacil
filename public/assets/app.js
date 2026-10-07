@@ -252,6 +252,72 @@
         });
     }
 
+    // ---- Descarga de Biblia completa (Nivel 3) --------------------------------
+    // Manifiesto JSON en la página de libros; cola de ~1189 capítulos con 3
+    // workers sobre el caché 'bf-books'. Los libros ya descargados (bandera
+    // bf_dl_<v>_<slug>) se saltan — sirve para reanudar tras cancelar.
+    var dlAll = document.getElementById('dlAll');
+    if (dlAll && 'caches' in window) {
+        var dlManifest = document.getElementById('dl-manifest');
+        var dlb = dlManifest ? JSON.parse(dlManifest.textContent) : [];
+        var dlv = dlAll.getAttribute('data-v');
+        var dlAllKey = 'bf_dlall_' + dlv;
+        var dlStop = false;
+        function bookFlag(s) { return localStorage.getItem('bf_dl_' + dlv + '_' + s); }
+        function paintAll() {
+            if (localStorage.getItem(dlAllKey)) {
+                dlAll.textContent = T('✓ Biblia completa sin conexión');
+                dlAll.classList.add('done');
+            }
+        }
+        paintAll();
+        dlAll.addEventListener('click', function () {
+            if (dlAll.dataset.busy) { dlStop = true; return; }
+            dlAll.dataset.busy = '1'; dlStop = false;
+            TK('dl_all', dlv);
+            var queue = [], bi, c;
+            for (bi = 0; bi < dlb.length; bi++) {
+                if (bookFlag(dlb[bi].s)) { continue; }
+                for (c = 1; c <= dlb[bi].n; c++) {
+                    queue.push({ u: '/' + dlv + '/' + dlb[bi].s + '/' + c, s: dlb[bi].s, n: dlb[bi].n });
+                }
+            }
+            var total = queue.length, done = 0, fails = 0, streak = 0, idx = 0;
+            var cnt = {};
+            function label() { return T('✕ Cancelar') + ' · ' + done + '/' + total; }
+            function fin() {
+                if (!(dlStop || done >= total || streak >= 8)) { return; }
+                delete dlAll.dataset.busy;
+                if (!dlStop && fails === 0) {
+                    localStorage.setItem(dlAllKey, '1');
+                    paintAll();
+                } else {
+                    dlAll.textContent = dlStop
+                        ? T('Descarga pausada — toca para continuar')
+                        : T('Hubo errores — toca para reintentar');
+                }
+            }
+            if (!total) { delete dlAll.dataset.busy; return; }
+            dlAll.textContent = label();
+            caches.open('bf-books').then(function (cache) {
+                function worker() {
+                    if (dlStop || idx >= queue.length || streak >= 8) { return fin(); }
+                    var it = queue[idx++];
+                    cache.add(it.u).then(function () {
+                        streak = 0;
+                        cnt[it.s] = (cnt[it.s] || 0) + 1;
+                        if (cnt[it.s] === it.n) { localStorage.setItem('bf_dl_' + dlv + '_' + it.s, '1'); }
+                    }, function () { fails++; streak++; }).then(function () {
+                        done++;
+                        dlAll.textContent = label();
+                        worker();
+                    });
+                }
+                worker(); worker(); worker();
+            });
+        });
+    }
+
     // ---- Continuar donde quedé + historial/racha + scroll-restore -------------
     var bookFilter = document.getElementById('book-filter');
     if (bookFilter) {

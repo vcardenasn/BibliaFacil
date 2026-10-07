@@ -173,6 +173,12 @@ return [
     '⬇ Descargar para leer sin conexión' => '⬇ Download to read offline',
     'Descargando…' => 'Downloading…',
     '✓ Guardado sin conexión' => '✓ Saved for offline reading',
+    '⬇ Descargar Biblia completa' => '⬇ Download the whole Bible',
+    '≈70 MB · queda disponible aunque no tengas internet' => '≈70 MB · stays available even without internet',
+    '✕ Cancelar' => '✕ Cancel',
+    '✓ Biblia completa sin conexión' => '✓ Whole Bible saved offline',
+    'Descarga pausada — toca para continuar' => 'Download paused — tap to resume',
+    'Hubo errores — toca para reintentar' => 'Some errors — tap to retry',
 
     // Nombres de libros (66)
     'Jueces' => 'Judges', 'Rut' => 'Ruth', '1 Samuel' => '1 Samuel',

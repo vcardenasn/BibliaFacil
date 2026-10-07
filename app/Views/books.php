@@ -22,6 +22,16 @@
 <p class="muted copyright"><?= e($version['copyright']) ?></p>
 <?php endif; ?>
 
+<?php if (empty($version['api_bible_id'])): ?>
+<div class="dl-all card">
+    <button type="button" id="dlAll" class="dl-off" data-v="<?= e($version['code']) ?>"><?= e(t('⬇ Descargar Biblia completa')) ?></button>
+    <p class="muted"><?= e(t('≈70 MB · queda disponible aunque no tengas internet')) ?></p>
+</div>
+<script type="application/json" id="dl-manifest"><?= json_encode(array_map(function ($b) {
+    return ['s' => $b['slug'], 'n' => (int) $b['chapters']];
+}, $books)) ?></script>
+<?php endif; ?>
+
 <div class="book-starter card">
     <div><strong><?= e(t('¿No sabes por dónde empezar?')) ?></strong><p><?= e(t('Juan cuenta la vida y las enseñanzas de Jesús en 21 capítulos.')) ?></p></div>
     <a href="<?= e(url("{$version['code']}/juan/1")) ?>"><?= e(t('Empieza por Juan 1')) ?> →</a>
