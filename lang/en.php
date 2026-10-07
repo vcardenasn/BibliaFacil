@@ -180,6 +180,7 @@ return [
     'Descarga pausada — toca para continuar' => 'Download paused — tap to resume',
     'Hubo errores — toca para reintentar' => 'Some errors — tap to retry',
     '📲 Instalar la app' => '📲 Install the app',
+    'APK para Android' => 'APK for Android',
     'Toca Compartir ⎙ y luego «Añadir a pantalla de inicio».' => 'Tap Share ⎙, then "Add to Home Screen".',
     'Abre el menú del navegador ⋮ y elige «Instalar app» o «Añadir a pantalla de inicio».' => 'Open the browser menu ⋮ and choose "Install app" or "Add to Home Screen".',
 

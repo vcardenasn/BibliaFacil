@@ -44,6 +44,7 @@
         <a href="<?= e(url('guias/como-leer')) ?>"><?= e(t('No sé por dónde empezar')) ?></a>
         <a href="<?= e(url('versiculo-del-dia')) ?>"><?= e(t('Versículo del día')) ?></a>
         <a href="<?= e(url('guias/que-version')) ?>"><?= e(t('¿Qué versión elegir?')) ?></a>
+        <a href="<?= e(url('descargas/palabrafiel.apk')) ?>"><?= e(t('APK para Android')) ?></a>
     </div>
 </section>
 

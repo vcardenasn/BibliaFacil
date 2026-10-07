@@ -23,6 +23,7 @@ Options -Indexes
 
 # PWA (EPIC 08): manifest con MIME correcto; sw.js/manifest sin cache largo
 AddType application/manifest+json .webmanifest
+AddType application/vnd.android.package-archive .apk
 <FilesMatch "^(sw\.js|manifest\.webmanifest)$">
   <IfModule mod_expires.c>
     ExpiresDefault "access plus 0 seconds"

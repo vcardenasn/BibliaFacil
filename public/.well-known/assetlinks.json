@@ -1,0 +1,8 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+        "namespace": "android_app",
+        "package_name": "com.palabrafiel.app",
+        "sha256_cert_fingerprints": ["81:CE:18:4F:C3:00:1D:C4:F3:4A:F9:8C:A5:2C:6A:DA:75:45:A2:8E:EC:77:A9:EC:13:39:18:A5:5C:AD:A4:B6"]
+    }
+}]
