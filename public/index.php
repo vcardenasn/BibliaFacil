@@ -59,6 +59,34 @@ if (($seg[0] ?? '') === 'api' && ($seg[1] ?? '') === 'v1') {
             $cache = $chapter['content_source'] === 'api_bible' ? 'no-store' : 'public, max-age=86400';
             $json(200, ['data' => $chapter, 'meta' => ['api_version' => 'v1']], $cache);
         }
+        if (count($seg) === 3 && $seg[2] === 'topics') {
+            $json(200, ['data' => ['topics' => $api->topics()], 'meta' => ['api_version' => 'v1']], 'public, max-age=300');
+        }
+        if (count($seg) === 4 && $seg[2] === 'topics') {
+            $v = trim((string) ($_GET['v'] ?? ''));
+            if ($v === '') {
+                $json(400, ['error' => ['code' => 'invalid_reference', 'message' => 'Falta la versión (?v=).']]);
+            }
+            $topic = $api->topic($seg[3], $v);
+            if ($topic === null) {
+                $json(404, ['error' => ['code' => 'not_found', 'message' => 'Recurso no disponible.']]);
+            }
+            $json(200, ['data' => $topic, 'meta' => ['api_version' => 'v1']], 'public, max-age=300');
+        }
+        if (count($seg) === 3 && $seg[2] === 'votd') {
+            $v = trim((string) ($_GET['v'] ?? ''));
+            if ($v === '') {
+                $json(400, ['error' => ['code' => 'invalid_reference', 'message' => 'Falta la versión (?v=).']]);
+            }
+            $votd = $api->verseOfTheDay($v);
+            if ($votd === null) {
+                $json(404, ['error' => ['code' => 'not_found', 'message' => 'Recurso no disponible.']]);
+            }
+            $json(200, ['data' => $votd, 'meta' => ['api_version' => 'v1']], 'public, max-age=600');
+        }
+        if (count($seg) === 3 && $seg[2] === 'plans') {
+            $json(200, ['data' => ['plans' => $api->plans()], 'meta' => ['api_version' => 'v1']], 'public, max-age=300');
+        }
         $json(404, ['error' => ['code' => 'not_found', 'message' => 'Recurso no disponible.']]);
     } catch (Throwable $e) {
         error_log('API v1 failure: ' . $e::class);

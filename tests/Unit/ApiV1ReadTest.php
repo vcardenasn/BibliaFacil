@@ -70,4 +70,37 @@ return function (TestCase $t): void {
     $t->run('api v1 chapter: versiones API.Bible quedan excluidas', function () use ($service, $t) {
         $t->assertNull($service->chapter('ntv', 'genesis', 1));
     });
+
+    $t->run('api v1 topics: lista los temas con conteo de referencias', function () use ($service, $t) {
+        $topics = $service->topics();
+        $t->assertTrue(count($topics) >= 10);
+        $t->assertSame('amor', $topics[0]['slug']);
+        $t->assertTrue($topics[0]['references'] > 0);
+    });
+
+    $t->run('api v1 topic: resuelve versículos por versión local y rechaza API.Bible', function () use ($service, $t) {
+        $topic = $service->topic('amor', 'rvr1909');
+        $t->assertTrue(is_array($topic) && $topic['slug'] === 'amor');
+        $t->assertTrue(count($topic['refs']) > 0);
+        $t->assertSame('JHN', $topic['refs'][0]['osis']);
+        $t->assertSame(3, $topic['refs'][0]['chapter']);
+        $t->assertNull($service->topic('amor', 'ntv'));
+        $t->assertNull($service->topic('tema-que-no-existe', 'rvr1909'));
+    });
+
+    $t->run('api v1 votd: devuelve referencia del día en versión local', function () use ($service, $t) {
+        $votd = $service->verseOfTheDay('rvr1909');
+        $t->assertTrue($votd === null || (is_array($votd) && isset($votd['ref'], $votd['text'], $votd['book']['slug'])));
+        $t->assertNull($service->verseOfTheDay('ntv'));
+    });
+
+    $t->run('api v1 plans: expone definiciones con filtro de libros', function () use ($service, $t) {
+        $plans = $service->plans();
+        $t->assertSame(3, count($plans));
+        $t->assertSame('biblia-en-un-ano', $plans[0]['slug']);
+        $t->assertSame(365, $plans[0]['days']);
+        $t->assertSame('all', $plans[0]['books']['filter']);
+        $t->assertSame('list', $plans[2]['books']['filter']);
+        $t->assertSame(['salmos', 'proverbios'], $plans[2]['books']['slugs']);
+    });
 };
