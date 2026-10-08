@@ -49,6 +49,11 @@ será necesario firmar con el certificado compatible.
 `../PalabraFielAndroid`; no se sube al deploy FTP del sitio.
 6. Resolver revisión de políticas de Google Play, en especial la declaración del
 público objetivo y las políticas aplicables a experiencias con juegos para niños.
+7. **Decidido (AND-09):** el MVP infantil cubre ambos tramos por niveles de
+   contenido (6-8 con acompañamiento, 9-12 autónomo); solo familias — maestros/aula
+   fuera de alcance (AND-14 descartada); la gamificación temporal se mantiene sin
+   cambios; la unidad piloto es una lección completa (historia + versículo +
+   reflexión + actividad). Falta la prueba con familias de AND-092 para validar.
 
 ## 3. Alcance propuesto para el MVP nativo
 
@@ -415,6 +420,9 @@ y el MVP local-first sin cuentas.
 ### AND-10 — Inicio y navegación child-first
 
 **Prioridad:** alta · **Tamaño:** M · **Dependencia:** AND-09
+*(Primer slice implementado: home con continuar/historia destacada/VOTD/tiles
+grandes; el índice canónico queda como ruta secundaria. Falta validación con
+familias e ilustraciones licenciadas en lugar de emojis.)*
 
 - AND-100 Diseñar una home que priorice continuar, una historia/actividad breve y
   explorar por tema/personaje; conservar el índice canónico de libros como ruta
@@ -436,6 +444,10 @@ y el MVP local-first sin cuentas.
 ### AND-11 — Primera unidad de historia y aprendizaje offline
 
 **Prioridad:** alta · **Tamaño:** M · **Dependencia:** AND-09, AND-10
+*(Primer slice implementado: `res/raw/lessons.json` con nivel, narración,
+referencia, reflexión y juego vinculado; dos unidades piloto que abren el lector
+y el juego relacionado. Pendiente: revisión editorial con familias (AND-092) y
+licencia/atribución de ilustraciones — hoy usa emoji, no assets ilustrados.)*
 
 - AND-110 Elegir con familias una sola historia piloto; no producir una biblioteca
   extensa hasta validar que el formato enseña y se entiende.
@@ -459,6 +471,9 @@ y el MVP local-first sin cuentas.
 ### AND-12 — Espacio para padres y cuidadores
 
 **Prioridad:** alta · **Tamaño:** M · **Dependencia:** AND-09, AND-10
+*(Primer slice implementado: sección "Para adultos" separa Descargas, Mis notas,
+Temas y Planes del recorrido infantil; sin cuentas ni barrera. Pendiente decidir
+barrera parental según políticas y añadir controles de contenido por nivel.)*
 
 - AND-120 Separar visual y navegacionalmente el espacio adulto del recorrido infantil;
   acordar si requiere una barrera parental según políticas y pruebas de uso.
@@ -480,7 +495,9 @@ y el MVP local-first sin cuentas.
 
 ### AND-13 — Gamificación amable y centrada en aprender
 
-**Prioridad:** alta · **Tamaño:** S · **Dependencia:** AND-09, AND-12
+**Prioridad:** resuelta por decisión (mantener mecánicas actuales) · **Tamaño:** S ·
+**Dependencia:** AND-09, AND-12. Se conserva como referencia de principios para
+futuras recompensas.
 
 - AND-130 Revisar rachas, desafío diario ×2, misiones semanales y stickers actuales con
   el principio de no manipulación para niños.
@@ -500,10 +517,10 @@ y el MVP local-first sin cuentas.
 - No se añaden métricas por niño, ranking público, monetización ni notificaciones
   persuasivas.
 
-### AND-14 — Uso en aula y herramientas para maestros (post-MVP, condicional)
+### AND-14 — Uso en aula y herramientas para maestros (descartada)
 
-**Prioridad:** baja hasta validar demanda · **Tamaño:** M · **Dependencia:** AND-09,
-AND-11
+**Prioridad:** descartada — decisión AND-091: el producto es solo para familias ·
+**Tamaño:** M · Se conserva documentada por si cambia el alcance; no implementar.
 
 - AND-140 Confirmar con maestros de escuela dominical si una app individual resuelve
   una necesidad distinta de los recursos web `/maestros` existentes.
@@ -567,8 +584,8 @@ secretos al `.env` salvo que una futura integración los necesite.
 7. **AND-09** validar edad, recorridos niño/cuidador y prototipos antes de la expansión.
 8. **AND-10 + AND-11 + AND-12** diseñar la home, pilotear una unidad educativa y
    construir controles adultos mínimos según los hallazgos.
-9. **AND-13** revisar gamificación con familias; **AND-14** queda post-MVP y
-   condicionada a validar necesidades docentes.
+9. **AND-13** resuelta: se mantienen las mecánicas actuales; **AND-14** descartada
+   (solo familias, decisión AND-091).
 10. **AND-07** calidad/privacidad en paralelo; **AND-08** como gate antes del release.
 
 La TWA y la PWA continúan publicadas durante el desarrollo. No retirar ninguna
