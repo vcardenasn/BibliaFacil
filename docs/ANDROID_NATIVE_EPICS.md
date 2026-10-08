@@ -421,8 +421,10 @@ y el MVP local-first sin cuentas.
 
 **Prioridad:** alta · **Tamaño:** M · **Dependencia:** AND-09
 *(Primer slice implementado: home con continuar/historia destacada/VOTD/tiles
-grandes; el índice canónico queda como ruta secundaria. Falta validación con
-familias e ilustraciones licenciadas en lugar de emojis.)*
+grandes; el índice canónico queda como ruta secundaria. Paleta pastel infantil
+aplicada a home, historias y detalle de lección; el espacio adulto usa un
+contenedor neutro diferenciado. Falta validación con familias e ilustraciones
+licenciadas en lugar de emojis.)*
 
 - AND-100 Diseñar una home que priorice continuar, una historia/actividad breve y
   explorar por tema/personaje; conservar el índice canónico de libros como ruta
