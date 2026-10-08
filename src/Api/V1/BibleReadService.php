@@ -24,6 +24,7 @@ final class BibleReadService
                 'language' => (string) $version['language'],
                 'license' => (string) $version['license'],
                 'license_status' => (string) $version['license_status'],
+                'offline_download_allowed' => OfflineLicensePolicy::allows((string) $version['license']),
                 'attribution' => $version['copyright'] === null ? null : (string) $version['copyright'],
                 'content_source' => 'local',
             ], $versions),

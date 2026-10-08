@@ -12,6 +12,7 @@ return function (TestCase $t): void {
     }
     $pdo->exec("INSERT INTO versions (code, name, language, copyright, license, license_status, active, api_bible_id)
         VALUES ('rvr1909', 'Reina-Valera 1909', 'es', 'Dominio público', 'public_domain', 'open', 1, NULL),
+               ('v1602p', 'Valera 1602 Purificada', 'es', '© Iglesia Bautista Bíblica de la Gracia', 'free-distribution', 'open', 1, NULL),
                ('ntv', 'Nueva Traducción Viviente', 'es', '© Tyndale', 'copyrighted', 'approved', 1, 'bible-provider-id')");
     $pdo->exec("INSERT INTO books (ord, osis, name, slug, aliases, testament, chapters)
         VALUES (1, 'GEN', 'Génesis', 'genesis', 'genesis', 'AT', 50)");
@@ -27,7 +28,17 @@ return function (TestCase $t): void {
                 'language' => 'es',
                 'license' => 'public_domain',
                 'license_status' => 'open',
+                'offline_download_allowed' => true,
                 'attribution' => 'Dominio público',
+                'content_source' => 'local',
+            ], [
+                'code' => 'v1602p',
+                'name' => 'Valera 1602 Purificada',
+                'language' => 'es',
+                'license' => 'free-distribution',
+                'license_status' => 'open',
+                'offline_download_allowed' => false,
+                'attribution' => '© Iglesia Bautista Bíblica de la Gracia',
                 'content_source' => 'local',
             ]],
             'books' => [[
