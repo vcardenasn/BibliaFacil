@@ -215,10 +215,12 @@ vertical/horizontal compatible.
 **Prioridad:** alta · **Tamaño:** L
 
 **Validado en AVD:** `offline_download_allowed` desplegado en el catálogo; Room
-guarda catálogo y capítulos; WorkManager descarga por libro con progreso,
-reintentos y reanudación. En modo avión el lector abre capítulos descargados y
-las versiones sin permiso no ofrecen descarga. Si el campo falta, el cliente
-niega la descarga por seguridad.
+guarda catálogo y capítulos; WorkManager descarga por libro y por versión
+completa (~1189 capítulos, ~5 MB) con progreso, reintentos, cancelación y
+reanudación. Gestor de descargas con uso de almacenamiento, borrado por libro o
+total y aviso de disco lleno. En modo avión el lector abre capítulos descargados
+y las versiones sin permiso no ofrecen descarga; si el campo falta, el cliente
+niega la descarga por seguridad. Pendiente teléfono físico.
 
 - AND-040 Guardar capítulos descargables en almacenamiento privado local (Room o
 formato local validado), no depender del caché del service worker del navegador.
