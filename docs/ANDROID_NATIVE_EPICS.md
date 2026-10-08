@@ -290,14 +290,16 @@ modificar datos; ofrece vista previa/confirmación.
 - AND-061 Portar los juegos priorizados, empezando por los que ya son client-side;
 reutilizar bancos de contenido permitidos sin cargar vistas HTML dentro de una
 pantalla nativa.
-  *(Parcial hecho y validado en AVD: vf, trivia, personaje, historia, memory y
-  libros con los mismos bancos JSON empaquetados en `res/raw` — 100% offline,
-  mismas reglas de estrellas. Pendientes: sopa, crucigrama, versiculo, david
-  y paloma.)*
+  *(Hecho y validado en AVD: los once juegos portados — vf, trivia, personaje,
+  historia, memory, libros, sopa, crucigrama, versiculo (generado desde
+  capítulos descargados en Room), david y paloma (canvas nativo con la misma
+  física). Bancos JSON empaquetados en `res/raw`, 100% offline, mismas reglas
+  de estrellas.)*
 - AND-062 Adaptar rachas, XP, estrellas y progreso a almacenamiento local nativo.
   *(Parcial: progreso en `user_prefs` con la clave `bf_games`, mismo formato
-  `{stars:{}, plays:{}}` de la PWA. Pendientes: niveles XP, stickers,
-  misiones y desafío del día.)*
+  `{stars:{}, plays:{}, vl:{}, vlb:{}}` de la PWA, incluido el desbloqueo de
+  rondas (`vl[slug]`). Pendientes: niveles XP, stickers, misiones y desafío
+  del día.)*
 - AND-063 Añadir lectura en voz alta con TextToSpeech de Android como alternativa
 o complemento a Web Speech API.
 - AND-064 Mantener controles accesibles, soporte offline donde los datos estén
