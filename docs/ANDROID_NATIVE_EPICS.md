@@ -296,10 +296,12 @@ pantalla nativa.
   física). Bancos JSON empaquetados en `res/raw`, 100% offline, mismas reglas
   de estrellas.)*
 - AND-062 Adaptar rachas, XP, estrellas y progreso a almacenamiento local nativo.
-  *(Parcial: progreso en `user_prefs` con la clave `bf_games`, mismo formato
-  `{stars:{}, plays:{}, vl:{}, vlb:{}}` de la PWA, incluido el desbloqueo de
-  rondas (`vl[slug]`). Pendientes: niveles XP, stickers, misiones y desafío
-  del día.)*
+  *(Hecho y validado en AVD: `bf_games` con el mismo formato de la PWA —
+  `{stars:{}, plays:{}, vl:{}, vlb:{}, stickers:[], missions:{}, wk:{}}` —
+  niveles por estrellas totales (8 rangos idénticos), 11 stickers con las
+  mismas condiciones, misiones semanales determinísticas por semana ISO
+  (+4⭐ en `_misiones`) y desafío del día por `crc32("Ymd")` con bonus ×2
+  persistido en `bf_daily`.)*
 - AND-063 Añadir lectura en voz alta con TextToSpeech de Android como alternativa
 o complemento a Web Speech API.
 - AND-064 Mantener controles accesibles, soporte offline donde los datos estén
