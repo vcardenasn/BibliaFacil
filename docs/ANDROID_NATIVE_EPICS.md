@@ -247,7 +247,7 @@ no se asume que la caché web existente autorice persistencia nativa.
 
 ### AND-05 — Datos personales locales y portabilidad
 
-**Prioridad:** alta · **Tamaño:** M · **Estado:** parcial — AND-050 validado en AVD
+**Prioridad:** alta · **Tamaño:** M · **Estado:** casi completa — validada en AVD; falta AND-051
 
 - AND-050 Implementar notas, favoritos y resaltados en almacenamiento privado local.
   *(Hecho: tabla `user_marks` en Room schema v2 con migración 1→2; diálogo por
@@ -256,9 +256,14 @@ no se asume que la caché web existente autorice persistencia nativa.
 - AND-051 Guardar ajustes, historial, progreso de planes, racha y puntuación local.
 - AND-052 Exportar e importar una copia validada con número de esquema, evitando
 sobrescrituras silenciosas y avisando conflictos.
+  *(Hecho: Export/Import vía SAF en "My notes"; valida tamaño, formato y campos,
+  cuenta importadas/omitidas y es aditiva — no borra marcas existentes.)*
 - AND-053 Permitir importar el JSON exportado desde Mis notas en la PWA. Android
 no puede leer directamente el IndexedDB/localStorage del navegador: la migración
 requiere acción explícita del usuario (archivo/compartir/selector de documentos).
+  *(Hecho: el export Android emite el mismo `{app:"bibliafacil", v:1, ann:[…]}`
+  de la PWA — el archivo es bidireccional; el color de resaltado hace round-trip
+  y los devocionales PWA se omiten al importar.)*
 - AND-054 Mantener privacidad local-first; no enviar contenido de notas/resaltados
 ni historial identificable al backend.
 
