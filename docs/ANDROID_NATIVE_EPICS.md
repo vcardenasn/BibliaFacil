@@ -335,10 +335,13 @@ incluidos o descargados.
 
 - AND-070 Pruebas unitarias de dominio/serialización y pruebas instrumentadas de
 navegación, almacenamiento y estados de red.
-  *(Parcial: 7 pruebas JVM cubren distribución/filtros de planes, umbrales de
-  nivel, semana ISO y selección determinística de misiones/desafío. La prueba
-  ISO de cambio de año encontró y permitió corregir `weekKey()`. Pendientes:
-  serialización JSON y pruebas instrumentadas de navegación/Room/red.)*
+  *(Parcial: 7 pruebas JVM cubren planes, niveles, semana ISO y selección de
+  misiones/desafío. 11 instrumentadas verifican decodificación JSON, round-trip
+  de anotaciones con Room, migración v1→v3 preservando datos, fallback offline
+  con licencia, navegación BookList→GamesHub y HTTP 200/503/timeout mediante
+  conexiones simuladas. La prueba ISO encontró y corrigió `weekKey()`. Ejecutadas
+  en AVD; faltan flujos completos de lector/descargas, estados de red de extremo
+  a extremo y pruebas HTTP con servidor real; AND-071 cubre contratos API.)*
 - AND-071 Pruebas contractuales de la API contra SQLite/MySQL y pruebas de
 integración para endpoints esenciales.
 - AND-072 Medir tiempos, errores y uso con métricas agregadas permitidas; respetar
@@ -380,6 +383,143 @@ para detener una release problemática.
 - Se prueba instalación limpia y actualización desde la versión anterior.
 - Hay un canal de pruebas internas y un procedimiento documentado de rollback.
 
+## Épicas propuestas AND-09–AND-14 — Experiencia infantil y familiar
+
+Estas son propuestas de producto, no alcance aprobado para implementación. AND-09
+es una puerta de decisión: no construir una nueva experiencia infantil amplia hasta
+validar audiencia, recorridos y contenido con familias. Se conserva el lector adulto
+y el MVP local-first sin cuentas.
+
+### AND-09 — Descubrimiento de producto y recorridos familiares
+
+**Prioridad:** bloqueante para la expansión infantil · **Tamaño:** S
+
+- AND-090 Acordar tramo de edad y usuario principal: niño con acompañamiento,
+  lectura autónoma por edad, o padre/maestro que facilita la actividad.
+- AND-091 Mapear recorridos separados de niño y cuidador; decidir explícitamente si
+  maestros y aula entran en el MVP o quedan para después.
+- AND-092 Probar prototipos de baja fidelidad con familias antes de cambiar la home;
+  validar comprensión, número de decisiones, lectura necesaria y regreso a la app.
+- AND-093 Definir revisión editorial bíblica, nivel lector, atribución/licencia de
+  texto e ilustraciones y límites de privacidad infantil antes de producir contenido.
+
+**Criterios de aceptación**
+
+- Quedan documentados audiencia primaria, recorridos niño/cuidador y el alcance MVP;
+  la experiencia docente no se asume sin validación.
+- Se registran hallazgos de pruebas con familias y decisiones que cambian o mantienen
+  el prototipo; ningún flujo infantil nuevo depende de una cuenta.
+- Cada unidad de contenido tiene responsable editorial, referencia y estado de
+  permiso/atribución antes de incluirse en la app.
+
+### AND-10 — Inicio y navegación child-first
+
+**Prioridad:** alta · **Tamaño:** M · **Dependencia:** AND-09
+
+- AND-100 Diseñar una home que priorice continuar, una historia/actividad breve y
+  explorar por tema/personaje; conservar el índice canónico de libros como ruta
+  secundaria para el lector tradicional.
+- AND-101 Usar tarjetas visuales e ilustraciones licenciadas, controles grandes,
+  texto breve y navegación predecible; no añadir animación decorativa por defecto.
+- AND-102 Definir estados de primera visita, contenido descargable, offline, vacío,
+  error recuperable y regreso desde lectura/juego.
+
+**Criterios de aceptación**
+
+- Niño y cuidador pueden explicar qué pueden hacer desde la home sin instrucciones
+  externas, validado en pruebas de usabilidad de AND-09.
+- Continuar una lectura y empezar una actividad están disponibles sin perder el
+  acceso al lector por libro/capítulo.
+- Flujos principales se conservan con TalkBack, ampliación de fuente, orientación
+  compatible y sin conexión cuando el contenido está guardado.
+
+### AND-11 — Primera unidad de historia y aprendizaje offline
+
+**Prioridad:** alta · **Tamaño:** M · **Dependencia:** AND-09, AND-10
+
+- AND-110 Elegir con familias una sola historia piloto; no producir una biblioteca
+  extensa hasta validar que el formato enseña y se entiende.
+- AND-111 Modelar cada unidad con edad/nivel lector, objetivo, narración editorial,
+  referencias bíblicas, versículos de fuente permitida, una pregunta/reflexión y una
+  actividad simple. Distinguir claramente texto bíblico de explicación editorial.
+- AND-112 Empaquetar los metadatos y recursos requeridos localmente para la primera
+  unidad; documentar idioma, licencia, atribución y texto alternativo de ilustraciones.
+- AND-113 Permitir abrir las referencias en el lector nativo, respetando la versión
+  disponible y sus restricciones de copia/descarga.
+
+**Criterios de aceptación**
+
+- La unidad piloto completa abre y se usa en modo avión tras instalar/descargar los
+  recursos permitidos.
+- Referencias, texto, atribución y assets pasan revisión editorial/licencias; imágenes
+  informativas tienen descripción accesible y las decorativas se omiten de TalkBack.
+- La prueba con familias confirma comprensión del relato y de la actividad antes de
+  autorizar más unidades.
+
+### AND-12 — Espacio para padres y cuidadores
+
+**Prioridad:** alta · **Tamaño:** M · **Dependencia:** AND-09, AND-10
+
+- AND-120 Separar visual y navegacionalmente el espacio adulto del recorrido infantil;
+  acordar si requiere una barrera parental según políticas y pruebas de uso.
+- AND-121 Ofrecer controles locales pertinentes: nivel lector recomendado, idioma,
+  lectura en voz alta/voz disponible, descargas y acceso al lector tradicional.
+- AND-122 Mostrar progreso educativo de forma descriptiva y privada; permitir exportar
+  o borrar los datos locales. No enviar progreso identificable al servidor.
+- AND-123 No crear cuenta, perfil con nombre/fecha de nacimiento ni sincronización en
+  este MVP; cualquier excepción requiere decisión de privacidad separada.
+
+**Criterios de aceptación**
+
+- El adulto identifica y puede cambiar preferencias sin que el niño navegue por
+  controles de sistema, licencias o mantenimiento.
+- Preferencias y progreso permanecen locales, son borrables/exportables donde aplique
+  y no generan PII en red ni logs.
+- El acceso adulto no bloquea al niño ni usa una barrera que incumpla políticas; la
+  decisión de gate queda revisada antes de distribución.
+
+### AND-13 — Gamificación amable y centrada en aprender
+
+**Prioridad:** alta · **Tamaño:** S · **Dependencia:** AND-09, AND-12
+
+- AND-130 Revisar rachas, desafío diario ×2, misiones semanales y stickers actuales con
+  el principio de no manipulación para niños.
+- AND-131 Mantener progreso aditivo: faltar un día no quita progreso, no hay vidas que
+  comprar, anuncios, avisos insistentes ni castigos por detenerse.
+- AND-132 Hacer opcionales las recompensas temporales y ofrecer al adulto una
+  preferencia local para ocultar rachas/desafíos si las pruebas detectan presión.
+- AND-133 Priorizar señales de comprensión sobre tiempo de pantalla o sesiones diarias
+  como objetivos infantiles.
+
+**Criterios de aceptación**
+
+- Se puede omitir un día o salir de una actividad sin perder progreso ni recibir una
+  urgencia/castigo en la siguiente sesión.
+- Las opciones de gamificación son comprensibles para adulto y niño, y desactivables
+  donde las pruebas con familias lo indiquen.
+- No se añaden métricas por niño, ranking público, monetización ni notificaciones
+  persuasivas.
+
+### AND-14 — Uso en aula y herramientas para maestros (post-MVP, condicional)
+
+**Prioridad:** baja hasta validar demanda · **Tamaño:** M · **Dependencia:** AND-09,
+AND-11
+
+- AND-140 Confirmar con maestros de escuela dominical si una app individual resuelve
+  una necesidad distinta de los recursos web `/maestros` existentes.
+- AND-141 Si se valida, diseñar un modo de presentación con texto/ilustración legibles
+  a distancia, selección simple de una unidad y operación offline.
+- AND-142 No crear listas de alumnos, cuentas infantiles, seguimiento de clase ni
+  infraestructura de aula en esta épica; reutilizar recursos existentes cuando sea
+  legal y funcionalmente adecuado.
+
+**Criterios de aceptación**
+
+- El modo se implementa solo con una necesidad docente validada y no duplica recursos
+  web sin valor adicional.
+- Una sesión demostrativa funciona offline, es controlable por un adulto y no recoge
+  identificadores ni progreso individual de alumnos.
+
 ## 5. Ajustes necesarios en los servicios PHP
 
 ### Backend/API
@@ -418,13 +558,18 @@ secretos al `.env` salvo que una futura integración los necesite.
 
 ## 6. Secuencia sugerida y dependencias
 
-1. **AND-00** cerrar producto, paquete, licencias, firma y política de tienda.
+1. **AND-00** cerrar producto, audiencia/políticas, paquete, licencias y firma.
 2. **AND-01** scaffold Android, build reproducible y estrategia de firma.
 3. **AND-02** contratos de API y primeros endpoints; mantener intactas rutas HTML.
 4. **AND-03** catálogo y lector funcional con conectividad.
 5. **AND-04 + AND-05** offline licenciado y datos personales locales/portables.
-6. **AND-06** portar funciones en orden de uso observado y costo.
-7. **AND-07 + AND-08** endurecimiento, pruebas, distribución y operación.
+6. **AND-06** mantener las funciones actuales; ampliar juegos solo con evidencia de uso.
+7. **AND-09** validar edad, recorridos niño/cuidador y prototipos antes de la expansión.
+8. **AND-10 + AND-11 + AND-12** diseñar la home, pilotear una unidad educativa y
+   construir controles adultos mínimos según los hallazgos.
+9. **AND-13** revisar gamificación con familias; **AND-14** queda post-MVP y
+   condicionada a validar necesidades docentes.
+10. **AND-07** calidad/privacidad en paralelo; **AND-08** como gate antes del release.
 
 La TWA y la PWA continúan publicadas durante el desarrollo. No retirar ninguna
 hasta que la app nativa haya pasado pruebas de usuario, offline, accesibilidad,
