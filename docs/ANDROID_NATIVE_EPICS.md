@@ -304,8 +304,22 @@ pantalla nativa.
   persistido en `bf_daily`.)*
 - AND-063 Añadir lectura en voz alta con TextToSpeech de Android como alternativa
 o complemento a Web Speech API.
+  *(Implementado en el lector nativo: lectura secuencial por versículo,
+  reproducir/reanudar, pausar, detener y progreso. Solo selecciona voces
+  instaladas sin conexión para el idioma de la versión; se detiene al salir,
+  cambiar capítulo o pasar la app a segundo plano. Fallback informativo cuando
+  falta voz offline. Build/lint y fallback verificados en AVD; reproducción
+  acústica pendiente de probar tras instalar una voz local, no disponible en
+  el emulador usado.)*
 - AND-064 Mantener controles accesibles, soporte offline donde los datos estén
 disponibles, controles de audio y respeto a TalkBack/reduced motion.
+  *(Mejoras implementadas en la app nativa: sopa/crucigrama anuncian
+  coordenadas, letra y estado; Memory anuncia posición y estado de cartas;
+  David/Paloma exponen acciones semánticas para lanzar y aletear. Se observa
+  `ANIMATOR_DURATION_SCALE=0` para suprimir el rebote ambiental y los efectos
+  ornamentales; se conserva el movimiento esencial de la jugabilidad. Build,
+  lint y etiquetas/acciones inspeccionadas en el árbol UI del AVD. Pendiente
+  prueba manual con TalkBack y el ajuste «Quitar animaciones» activados.)*
 
 **Criterios de aceptación**
 
@@ -321,6 +335,10 @@ incluidos o descargados.
 
 - AND-070 Pruebas unitarias de dominio/serialización y pruebas instrumentadas de
 navegación, almacenamiento y estados de red.
+  *(Parcial: 7 pruebas JVM cubren distribución/filtros de planes, umbrales de
+  nivel, semana ISO y selección determinística de misiones/desafío. La prueba
+  ISO de cambio de año encontró y permitió corregir `weekKey()`. Pendientes:
+  serialización JSON y pruebas instrumentadas de navegación/Room/red.)*
 - AND-071 Pruebas contractuales de la API contra SQLite/MySQL y pruebas de
 integración para endpoints esenciales.
 - AND-072 Medir tiempos, errores y uso con métricas agregadas permitidas; respetar
