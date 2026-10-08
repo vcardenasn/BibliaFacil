@@ -1,6 +1,6 @@
 # Palabra Fiel — Épicas para la app nativa Android
 
-**Estado:** AND-01 scaffold validado; primer slice AND-02 implementado localmente, aún no desplegado. Cliente Android en `../PalabraFielAndroid`; todavía no implementa lectura ni consume la API.
+**Estado:** AND-01 validado; AND-02 (catálogo/capítulos locales) desplegado; AND-03 inicial consume la API en el cliente nativo. Sin persistencia offline ni prueba en dispositivo todavía.
 
 ## 1. Contexto actual
 
@@ -18,7 +18,7 @@ en el servidor y el servicio PHP aplica caché de corta duración y reporte FUMS
 localmente en el navegador (IndexedDB/localStorage), sin cuenta ni sincronización.
 - Service worker web para shell, juegos, páginas visitadas y capítulos descargados.
 - Endpoints JSON puntuales (`/api/contexto` y `/juegos/api/versiculo`) y un primer
-slice `/api/v1/` de catálogo/capítulos locales, apagado por `FF_NATIVE_API=0`; no
+slice `/api/v1/` de catálogo/capítulos locales, controlado por `FF_NATIVE_API`; no
 cubre aún la experiencia completa.
 
 La aplicación Android nativa deberá ser un cliente nuevo. Se recomienda conservar
@@ -131,14 +131,14 @@ logs sin textos de búsqueda, notas ni otros datos privados.
 `/juegos/api/versiculo` durante transición; migrarlos solo cuando el nuevo cliente
 esté probado.
 
-**Slice AND-02 implementado localmente** (aún no desplegado):
+**Slice AND-02 desplegado** (primer alcance):
 
 - `GET /api/v1/catalog` devuelve versiones activas locales y libros; no expone
   identificadores de API.Bible ni afirma permisos de descarga offline.
 - `GET /api/v1/versions/{code}/books/{slug}/chapters/{n}` devuelve versículos y
   rangos `wj` para versiones locales.
-- `FF_NATIVE_API=0` lo mantiene apagado por defecto. Para activarlo en hosting,
-  agregar `FF_NATIVE_API=1` al `.env` del servidor después de desplegar.
+- `FF_NATIVE_API=0` lo mantiene apagado por defecto; el hosting ya tiene el flag
+  activado para esta primera entrega.
 - Versiones API.Bible quedan excluidas de este primer slice hasta revisar FUMS,
   caché móvil y licencia para este canal.
 
@@ -187,6 +187,10 @@ excepciones.
 ### AND-03 — Catálogo, lector y navegación
 
 **Prioridad:** alta · **Tamaño:** L
+
+**Avance inicial (online):** catálogo y selector de versión/libro; lector de capítulos
+locales, anterior/siguiente dentro del libro, atribución y estados de carga/error.
+Pendiente: prueba manual en dispositivo, navegación entre libros y preferencias.
 
 - AND-030 Mostrar versiones disponibles y atribución/copyright de cada una.
 - AND-031 Navegar por testamentos, libros y capítulos, incluyendo búsqueda de
