@@ -247,13 +247,16 @@ no se asume que la caché web existente autorice persistencia nativa.
 
 ### AND-05 — Datos personales locales y portabilidad
 
-**Prioridad:** alta · **Tamaño:** M · **Estado:** casi completa — validada en AVD; falta AND-051
+**Prioridad:** alta · **Tamaño:** M · **Estado:** completa en lo aplicable al MVP — validada en AVD
 
 - AND-050 Implementar notas, favoritos y resaltados en almacenamiento privado local.
   *(Hecho: tabla `user_marks` en Room schema v2 con migración 1→2; diálogo por
   versículo, indicadores ♥✎ en el lector y pantalla "My notes". Las marcas no
   dependen del contenido descargado y sobreviven a su borrado — verificado en AVD.)*
 - AND-051 Guardar ajustes, historial, progreso de planes, racha y puntuación local.
+  *(Hecho lo aplicable hoy: `read_days` + racha con semántica PWA, `reading_history`
+  con "Continuar" y `user_prefs` KV con última versión persistida — Room schema v3.
+  Progreso de planes y puntuación usarán `user_prefs` cuando existan en AND-06.)*
 - AND-052 Exportar e importar una copia validada con número de esquema, evitando
 sobrescrituras silenciosas y avisando conflictos.
   *(Hecho: Export/Import vía SAF en "My notes"; valida tamaño, formato y campos,
