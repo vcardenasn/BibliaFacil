@@ -1,6 +1,6 @@
 # Palabra Fiel — Épicas para la app nativa Android
 
-**Estado:** AND-01 validado; AND-02 desplegado; AND-03 inicial probado en AVD; AND-04 Room/WorkManager implementado localmente. Falta desplegar el permiso offline del catálogo y probar descarga/modo avión.
+**Estado:** AND-01 validado; AND-02 desplegado; AND-03 inicial probado en AVD; AND-04 validado end-to-end en AVD: descarga por libro, lectura en modo avión y política de licencia respetada. Pendiente teléfono físico.
 
 ## 1. Contexto actual
 
@@ -214,10 +214,11 @@ vertical/horizontal compatible.
 
 **Prioridad:** alta · **Tamaño:** L
 
-**Avance local:** Room guarda snapshot de catálogo/capítulos y WorkManager descarga
-por libro con progreso, reintentos y reanudación. El campo `offline_download_allowed`
-aún requiere deploy de API; por seguridad, el cliente niega la descarga si falta.
-La validación end-to-end en modo avión sigue pendiente.
+**Validado en AVD:** `offline_download_allowed` desplegado en el catálogo; Room
+guarda catálogo y capítulos; WorkManager descarga por libro con progreso,
+reintentos y reanudación. En modo avión el lector abre capítulos descargados y
+las versiones sin permiso no ofrecen descarga. Si el campo falta, el cliente
+niega la descarga por seguridad.
 
 - AND-040 Guardar capítulos descargables en almacenamiento privado local (Room o
 formato local validado), no depender del caché del service worker del navegador.
