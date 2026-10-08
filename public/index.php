@@ -71,7 +71,7 @@ if (($seg[0] ?? '') === 'robots.txt') {
     header('Content-Type: text/plain; charset=utf-8');
     echo "User-agent: *\nAllow: /\n",
         "Disallow: /ir\nDisallow: /check.php\nDisallow: /track.php\n",
-        "Disallow: /juegos/api/\nDisallow: /api/\nDisallow: /comparar\nDisallow: /mias\n";
+        "Disallow: /juegos/api/\nDisallow: /api/\n";
     // Versiones vía API.Bible: fuera del rastreo para proteger la cuota mensual.
     foreach ($versions as $v) {
         if (!empty($v['api_bible_id'])) {
