@@ -150,9 +150,9 @@ esté probado.
 | `GET /api/v1/versions/{code}/books/{slug}/chapters/{n}` | Capítulo con versículos y marcas de palabras de Jesús cuando existan |
 | `GET /api/v1/search?version=&q=&limit=&cursor=` | Búsqueda validada y paginable |
 | `GET /api/v1/context?version=&book=&chapter=&verse=` | Contexto alrededor de una referencia |
-| `GET /api/v1/votd?version=&date=` | Versículo del día/archivo |
-| `GET /api/v1/themes` y `GET /api/v1/themes/{slug}` | Catálogo temático y referencias/textos permitidos |
-| `GET /api/v1/plans` y `GET /api/v1/plans/{slug}` | Planes de lectura y lecturas por día |
+| `GET /api/v1/votd?v={code}` | Versículo del día (implementado; `?date=` pendiente) |
+| `GET /api/v1/topics` y `GET /api/v1/topics/{slug}?v={code}` | Catálogo temático y versículos resueltos (implementado) |
+| `GET /api/v1/plans` | Definiciones de planes; los días se computan en el cliente desde el catálogo (implementado) |
 | `GET /api/v1/games/verse-quiz` | Ronda para el juego de completar versículos |
 
 Contrato orientativo de éxito:
@@ -282,6 +282,11 @@ modificar datos; ofrece vista previa/confirmación.
 **Prioridad:** media · **Tamaño:** L
 
 - AND-060 Portar temas, versículo del día, planes de lectura y comparación.
+  *(Hecho y validado en AVD: API v1 `topics`, `topics/{slug}?v=`, `votd?v=` y
+  `plans` desplegadas; la app cachea cada respuesta en `user_prefs` para uso
+  offline. Los días del plan se computan en el cliente con el mismo algoritmo
+  que `ReadingPlan.php` y el progreso usa el formato `plan_{slug}` de la PWA.
+  "Compare" muestra dos versiones versículo a versículo sin endpoint nuevo.)*
 - AND-061 Portar los juegos priorizados, empezando por los que ya son client-side;
 reutilizar bancos de contenido permitidos sin cargar vistas HTML dentro de una
 pantalla nativa.
