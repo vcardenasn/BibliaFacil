@@ -478,7 +478,12 @@ licencia/atribución de ilustraciones — hoy usa emoji, no assets ilustrados.)*
 Temas y Planes del recorrido infantil, con tarjeta de progreso local (racha,
 capítulos leídos, estrellas, notas); sin cuentas. Barrera parental
 "mantén pulsado" implementada y cubierta con prueba instrumentada.
-Pendiente: controles de contenido por nivel y validación con familias.)*
+Control de contenido por nivel lector (AND-121 parcial): el cuidador elige
+"Todas las edades", "6-8" o "9-12"; la preferencia persiste localmente
+(`age_band`) y filtra las historias visibles para el niño, con estado vacío
+amigable si no hay unidades del nivel. Verificado manualmente en el AVD:
+filtro en ambos sentidos, persistencia tras reinicio y gate que se vuelve a
+pedir al reingresar. Pendiente: validación con familias.)*
 
 - AND-120 Separar visual y navegacionalmente el espacio adulto del recorrido infantil;
   acordar si requiere una barrera parental según políticas y pruebas de uso.
