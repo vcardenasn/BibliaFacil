@@ -488,7 +488,11 @@ Control de contenido por nivel lector (AND-121 parcial): el cuidador elige
 (`age_band`) y filtra las historias visibles para el niño, con estado vacío
 amigable si no hay unidades del nivel. Verificado manualmente en el AVD:
 filtro en ambos sentidos, persistencia tras reinicio y gate que se vuelve a
-pedir al reingresar. Pendiente: validación con familias.)*
+pedir al reingresar. Gestión de datos (AND-122 parcial): tarjeta "Datos en
+este dispositivo" con exportación de notas/marcas a JSON vía SAF y borrado de
+datos locales (marcas, racha, historial, preferencias) con confirmación;
+las descargas se conservan y se gestionan aparte. Cubierto por prueba
+instrumentada. Pendiente: validación con familias.)*
 
 - AND-120 Separar visual y navegacionalmente el espacio adulto del recorrido infantil;
   acordar si requiere una barrera parental según políticas y pruebas de uso.
