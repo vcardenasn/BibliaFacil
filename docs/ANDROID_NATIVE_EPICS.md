@@ -449,8 +449,12 @@ licenciadas en lugar de emojis.)*
 *(Primer slice implementado: `res/raw/lessons.json` con nivel, narración,
 referencia, reflexión y juego vinculado; dos unidades piloto que abren el lector
 y el juego relacionado. La narración puede escucharse con TTS offline
-("Escuchar la historia"). Pendiente: revisión editorial con familias (AND-092) y
-licencia/atribución de ilustraciones — hoy usa emoji, no assets ilustrados.)*
+("Escuchar la historia"). AND-101 parcial: las dos unidades piloto usan
+ilustraciones vectoriales originales dibujadas en Compose (`LessonArt.kt`,
+estilo "cuento suave" elegido por el usuario) con `contentDescription`
+accesible en ES/EN; sin assets externos ni atribución requerida, y el emoji
+queda como fallback para futuras unidades sin ilustración. Pendiente: revisión
+editorial con familias (AND-092).)*
 
 - AND-110 Elegir con familias una sola historia piloto; no producir una biblioteca
   extensa hasta validar que el formato enseña y se entiende.
