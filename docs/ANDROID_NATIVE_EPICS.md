@@ -476,8 +476,9 @@ licencia/atribución de ilustraciones — hoy usa emoji, no assets ilustrados.)*
 **Prioridad:** alta · **Tamaño:** M · **Dependencia:** AND-09, AND-10
 *(Primer slice implementado: sección "Para adultos" separa Descargas, Mis notas,
 Temas y Planes del recorrido infantil, con tarjeta de progreso local (racha,
-capítulos leídos, estrellas, notas); sin cuentas ni barrera. Pendiente decidir
-barrera parental según políticas y añadir controles de contenido por nivel.)*
+capítulos leídos, estrellas, notas); sin cuentas. Barrera parental
+"mantén pulsado" implementada y cubierta con prueba instrumentada.
+Pendiente: controles de contenido por nivel y validación con familias.)*
 
 - AND-120 Separar visual y navegacionalmente el espacio adulto del recorrido infantil;
   acordar si requiere una barrera parental según políticas y pruebas de uso.
