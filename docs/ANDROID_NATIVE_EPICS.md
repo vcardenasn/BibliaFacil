@@ -447,14 +447,15 @@ licenciadas en lugar de emojis.)*
 
 **Prioridad:** alta · **Tamaño:** M · **Dependencia:** AND-09, AND-10
 *(Primer slice implementado: `res/raw/lessons.json` con nivel, narración,
-referencia, reflexión y juego vinculado; dos unidades piloto que abren el lector
-y el juego relacionado. La narración puede escucharse con TTS offline
-("Escuchar la historia"). AND-101 parcial: las dos unidades piloto usan
-ilustraciones vectoriales originales dibujadas en Compose (`LessonArt.kt`,
-estilo "cuento suave" elegido por el usuario) con `contentDescription`
-accesible en ES/EN; sin assets externos ni atribución requerida, y el emoji
-queda como fallback para futuras unidades sin ilustración. Pendiente: revisión
-editorial con familias (AND-092).)*
+referencia, reflexión y juego vinculado; cinco unidades piloto que abren el
+lector y el juego relacionado (Creación 6-8, Noé 9-12, Jonás 6-8, David 9-12,
+Nacimiento 6-8). La narración puede escucharse con TTS offline
+("Escuchar la historia"). AND-101: las cinco unidades usan ilustraciones
+vectoriales originales dibujadas en Compose (`LessonArt.kt`, estilo
+"cuento suave" elegido por el usuario) con `contentDescription` accesible en
+ES/EN; sin assets externos ni atribución requerida, y el emoji queda como
+fallback para futuras unidades sin ilustración. Pendiente: revisión editorial
+con familias (AND-092) antes de seguir ampliando el catálogo.)*
 
 - AND-110 Elegir con familias una sola historia piloto; no producir una biblioteca
   extensa hasta validar que el formato enseña y se entiende.
