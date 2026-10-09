@@ -448,7 +448,8 @@ licenciadas en lugar de emojis.)*
 **Prioridad:** alta · **Tamaño:** M · **Dependencia:** AND-09, AND-10
 *(Primer slice implementado: `res/raw/lessons.json` con nivel, narración,
 referencia, reflexión y juego vinculado; dos unidades piloto que abren el lector
-y el juego relacionado. Pendiente: revisión editorial con familias (AND-092) y
+y el juego relacionado. La narración puede escucharse con TTS offline
+("Escuchar la historia"). Pendiente: revisión editorial con familias (AND-092) y
 licencia/atribución de ilustraciones — hoy usa emoji, no assets ilustrados.)*
 
 - AND-110 Elegir con familias una sola historia piloto; no producir una biblioteca
@@ -474,7 +475,8 @@ licencia/atribución de ilustraciones — hoy usa emoji, no assets ilustrados.)*
 
 **Prioridad:** alta · **Tamaño:** M · **Dependencia:** AND-09, AND-10
 *(Primer slice implementado: sección "Para adultos" separa Descargas, Mis notas,
-Temas y Planes del recorrido infantil; sin cuentas ni barrera. Pendiente decidir
+Temas y Planes del recorrido infantil, con tarjeta de progreso local (racha,
+capítulos leídos, estrellas, notas); sin cuentas ni barrera. Pendiente decidir
 barrera parental según políticas y añadir controles de contenido por nivel.)*
 
 - AND-120 Separar visual y navegacionalmente el espacio adulto del recorrido infantil;
