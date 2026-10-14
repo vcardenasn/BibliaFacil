@@ -420,11 +420,13 @@ y el MVP local-first sin cuentas.
 ### AND-10 — Inicio y navegación child-first
 
 **Prioridad:** alta · **Tamaño:** M · **Dependencia:** AND-09
-*(Primer slice implementado: home con continuar/historia destacada/VOTD/tiles
-grandes; el índice canónico queda como ruta secundaria. Paleta "Black and Gold"
-aplicada a toda la app: fondo navy #14213D, acento dorado #FCA311, tarjetas
-blanco/gris con texto navy, tiles negros con iconos dorados. Falta validación
-con familias.)*
+*(Implementado: home con continuar/historia destacada/VOTD y navegación inferior
+fija tipo app social: Inicio, Biblia, Historias, Juegos y Adultos. Biblia usa una
+fila superior desplazable estilo pestañas de Maps: Libros de la Biblia en el
+índice y Todos los libros/Comparar en el lector, junto a Notas, Descargas, Temas
+y Planes. El destino activo se marca con subrayado; Adultos conserva su gate y
+el gate oculta la navegación. Paleta Arena y mar: fondo #FBF3E4, tinta #1D3557,
+azul #1D6FA5. Falta validación con familias.)*
 
 - AND-100 Diseñar una home que priorice continuar, una historia/actividad breve y
   explorar por tema/personaje; conservar el índice canónico de libros como ruta
