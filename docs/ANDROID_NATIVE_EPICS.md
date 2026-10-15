@@ -1,6 +1,6 @@
 # Palabra Fiel — Épicas para la app nativa Android
 
-**Estado:** AND-01 validado; AND-02 desplegado; AND-03 inicial probado en AVD; AND-04 validado end-to-end en AVD: descarga por libro, lectura en modo avión y política de licencia respetada. Pendiente teléfono físico.
+**Estado:** AND-01 validado; AND-02 desplegado; AND-03 probado inicialmente en AVD y Moto G6 Plus; AND-04 validado en AVD y Moto con PDDPT/RVR1909 precargadas y lectura offline. Pendiente completar validación familiar, pruebas de accesibilidad/audio y preparación de release.
 
 ## 1. Contexto actual
 
@@ -195,7 +195,7 @@ excepciones.
 
 **Avance inicial (online):** catálogo y selector de versión/libro; lector de capítulos
 locales, anterior/siguiente dentro del libro, atribución y estados de carga/error.
-Validado en AVD; pendiente prueba en teléfono físico, navegación entre libros y preferencias.
+Validado en AVD y prueba básica en Moto G6 Plus: RVR1909 muestra Génesis con 50 capítulos disponibles offline. Pendiente probar navegación completa entre libros/capítulos y cambio/persistencia de la preferencia de versión.
 
 - AND-030 Mostrar versiones disponibles y atribución/copyright de cada una.
 - AND-031 Navegar por testamentos, libros y capítulos, incluyendo búsqueda de
@@ -219,13 +219,15 @@ vertical/horizontal compatible.
 
 **Prioridad:** alta · **Tamaño:** L
 
-**Validado en AVD:** `offline_download_allowed` desplegado en el catálogo; Room
-guarda catálogo y capítulos; WorkManager descarga por libro y por versión
-completa (~1189 capítulos, ~5 MB) con progreso, reintentos, cancelación y
-reanudación. Gestor de descargas con uso de almacenamiento, borrado por libro o
-total y aviso de disco lleno. En modo avión el lector abre capítulos descargados
-y las versiones sin permiso no ofrecen descarga; si el campo falta, el cliente
-niega la descarga por seguridad. Pendiente teléfono físico.
+**Validado en AVD y Moto G6 Plus:** `offline_download_allowed` controla los
+packs y descargas. El APK incluye PDDPT (CC BY 4.0) y Reina-Valera 1909
+(dominio público) en dos packs comprimidos (~2,75 MB en total); la primera
+apertura los siembra en Room sin reemplazar notas ni historial, el lector
+prioriza el capítulo local y PDDPT queda como predeterminada en una instalación
+nueva. El gestor marca esas versiones como incluidas y evita borrarlas. Las
+demás versiones permitidas siguen disponibles por WorkManager, por libro o
+completas, con progreso, reintentos, cancelación, reanudación y aviso de disco
+lleno. La regeneración de los packs usa `scripts/build_android_bible_pack.php`.
 
 - AND-040 Guardar capítulos descargables en almacenamiento privado local (Room o
 formato local validado), no depender del caché del service worker del navegador.
