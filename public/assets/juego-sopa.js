@@ -53,6 +53,7 @@ BFJ.define('sopa', function (el) {
         }
 
         function start(key) {
+            BFJ.started('sopa');
             var t = bank[key], S = t.size;
             try {
             var placed = buildAll(S, t.words);
@@ -206,7 +207,7 @@ BFJ.define('sopa', function (el) {
                 var stars = Math.max(1,
                     (timedOut ? found : words.length) + (flawless && !timedOut ? 2 : 0) + tBonus);
                 BFJ.celebrate({
-                    slug: 'sopa', stars: stars,
+                    slug: 'sopa', stars: stars, outcome: timedOut ? 'fail' : 'win',
                     emoji: timedOut ? '⏱' : (flawless ? '🏆' : '🔍'),
                     title: timedOut ? BFJ.T('¡Se acabó el tiempo!')
                         : (flawless ? BFJ.T('¡Vista de águila!') : BFJ.T('¡Todas encontradas!')),

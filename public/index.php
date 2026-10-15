@@ -20,8 +20,22 @@ if ($scriptDir !== '' && str_starts_with($path, $scriptDir)) {
 }
 $seg = $path === '' ? [] : explode('/', $path);
 
-$notFound = function (string $msg = 'Página no encontrada.') use ($versions): void {
+$notFound = function (string $msg = 'Página no encontrada.') use ($versions, $seg): void {
     http_response_code(404);
+    $segment = (string) ($seg[0] ?? '');
+    $versionCodes = array_column($versions, 'code');
+    $reason = match ($segment) {
+        'ir' => 'invalid_reference',
+        'temas' => 'missing_topic',
+        'versiculo' => 'missing_verse_page',
+        'guias' => 'missing_guide',
+        'comparar' => 'invalid_comparison',
+        'planes' => 'missing_plan',
+        'juegos' => 'unavailable_game',
+        'v' => 'invalid_short_reference',
+        default => in_array($segment, $versionCodes, true) ? 'invalid_bible_resource' : 'unknown_route',
+    };
+    \Biblia\Core\Metrics::bump('notfound', \Biblia\Core\Metrics::notFoundDimension($segment, $reason, $versionCodes));
     view('notfound', ['title' => t('No encontrado'), 'message' => t($msg), 'versions' => $versions]);
 };
 

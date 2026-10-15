@@ -23,6 +23,7 @@ BFJ.define('crucigrama', function (el) {
         }
 
         function play(p) {
+            BFJ.started('crucigrama');
             try {
             // mapa de celdas: "r:c" → {ch, words:[w]}
             var cells = {}, starts = {};
@@ -241,7 +242,7 @@ BFJ.define('crucigrama', function (el) {
                 var flawless = errs === 0 && hints === 0;
                 var stars = Math.max(1, p.words.length + (flawless ? 2 : 0) - hints);
                 BFJ.celebrate({
-                    slug: 'crucigrama', stars: stars,
+                    slug: 'crucigrama', stars: stars, outcome: 'win',
                     emoji: flawless ? '🏆' : '🧩',
                     title: flawless ? BFJ.T('¡Sin una sola falla!') : BFJ.T('¡Crucigrama resuelto!'),
                     perfect: flawless,

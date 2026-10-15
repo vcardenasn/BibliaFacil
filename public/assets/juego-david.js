@@ -201,7 +201,7 @@ BFJ.define('david', function (el) {
             ? (ri === 2 ? BFJ.T('¡El pastor venció al gigante!') : BFJ.T('¡Rebaño a salvo!'))
             : BFJ.T('El rebaño se dispersó…');
         BFJ.celebrate({
-            slug: 'david', stars: stars,
+            slug: 'david', stars: stars, outcome: success ? 'win' : 'fail',
             emoji: success ? '🏆' : '🐑', title: title,
             extra: kills + ' ' + BFJ.T('depredadores ahuyentados') + ' · ' + left + '/' + SHEEP_N + ' ' + BFJ.T('ovejas a salvo') +
                 (isRecord ? ' · ' + BFJ.T('✨ ¡récord!') : ''),
@@ -708,6 +708,7 @@ BFJ.define('david', function (el) {
     cv.addEventListener('touchstart', onDown, { passive: false });
 
     function startRound() {
+        BFJ.started('david');
         reset();
         over = false; won = false; playing = true;
         // .pn-menu lleva display:flex en CSS — el atributo `hidden` no le gana,

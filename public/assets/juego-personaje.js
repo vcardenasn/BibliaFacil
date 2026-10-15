@@ -6,6 +6,7 @@ BFJ.define('personaje', function (el) {
         round();
 
         function round() {
+        BFJ.started('personaje');
         var deck = BFJ.pick(bank, 5);
         var i = 0, total = 0, clue = 0, locked = false, gone = [];
 
@@ -107,7 +108,7 @@ BFJ.define('personaje', function (el) {
             var emoji = total >= 13 ? '🏆' : (total >= 8 ? '🎉' : '🔍');
             var title = total >= 13 ? BFJ.T('¡Detective bíblico!') : (total >= 8 ? BFJ.T('¡Muy buenas pistas!') : BFJ.T('¡Sigue intentando!'));
             BFJ.celebrate({
-                slug: 'personaje', stars: total, emoji: emoji, title: title, perfect: total >= 15,
+                slug: 'personaje', stars: total, emoji: emoji, title: title, outcome: total >= 8 ? 'win' : 'fail', perfect: total >= 15,
                 extra: total + '⭐ ' + BFJ.T('de 15 posibles'),
                 onAgain: round // reinicio sin recargar la página
             });

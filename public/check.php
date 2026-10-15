@@ -47,7 +47,7 @@ if (!$isCli && ((($_GET['metrics'] ?? '') === '1') || (($_GET['csv'] ?? '') === 
                 $env['DB_USER'] ?? '', $env['DB_PASS'] ?? '', [PDO::ATTR_TIMEOUT => 5]
             );
         }
-        $since = date('Y-m-d', strtotime('-30 days'));
+        $since = date('Y-m-d', strtotime('-29 days'));
         $rows = $mpdo->query("SELECT metric, dim, d, n FROM metrics_daily WHERE d >= '{$since}' ORDER BY d DESC, metric, n DESC")->fetchAll(PDO::FETCH_ASSOC);
         $dau = $mpdo->query("SELECT d, COUNT(*) AS n FROM metrics_dau WHERE d >= '{$since}' GROUP BY d ORDER BY d DESC")->fetchAll(PDO::FETCH_ASSOC);
     } catch (Throwable $e) {
@@ -63,34 +63,48 @@ if (!$isCli && ((($_GET['metrics'] ?? '') === '1') || (($_GET['csv'] ?? '') === 
         foreach ($rows as $r) {
             fputcsv($f, [$r['d'], $r['metric'], $r['dim'], $r['n']], ',', '"', '');
         }
+        foreach ($dau as $r) {
+            fputcsv($f, [$r['d'], 'client_days', 'daily_hashes', $r['n']], ',', '"', '');
+        }
         fclose($f);
         exit;
     }
 
     // Dashboard HTML — agrega últimos 7 y 30 días por métrica
     header('Content-Type: text/html; charset=utf-8');
-    $d7 = date('Y-m-d', strtotime('-7 days'));
+    $since7 = date('Y-m-d', strtotime('-6 days'));
     $agg = ['7' => [], '30' => []];
     foreach ($rows as $r) {
         foreach ([7, 30] as $w) {
-            if ($r['d'] >= date('Y-m-d', strtotime("-{$w} days"))) {
+            $from = $w === 7 ? $since7 : $since;
+            if ($r['d'] >= $from) {
                 $agg[$w][$r['metric']][$r['dim']] = ($agg[$w][$r['metric']][$r['dim']] ?? 0) + (int) $r['n'];
             }
         }
     }
-    $dau7 = array_sum(array_map(fn ($r) => (int) $r['n'], array_filter($dau, fn ($r) => $r['d'] >= $d7)));
+    $dau7 = array_sum(array_map(fn ($r) => (int) $r['n'], array_filter($dau, fn ($r) => $r['d'] >= $since7)));
     $dau30 = array_sum(array_map(fn ($r) => (int) $r['n'], $dau));
+    $avg7 = (int) round($dau7 / 7);
+    $avg30 = (int) round($dau30 / 30);
     $NAMES = [
-        'pv' => 'Páginas vistas por sección', 'ver' => 'Versión más usada', 'cap' => 'Capítulos más leídos',
+        'pv' => 'Vistas renderizadas por servidor (incluye bots)',
+        'pv_crawler' => 'Solicitudes con User-Agent de crawler conocido',
+        'pv_other' => 'Solicitudes sin crawler identificado',
+        'pv_client' => 'Cargas reportadas por JavaScript (no usuarios únicos)',
+        'ver' => 'Versión más usada', 'cap' => 'Capítulos más leídos',
         'search' => 'Búsquedas (solo conteo)', 'search_r' => 'Búsquedas con/sin resultados', 'goto' => '"Ir a" usado',
         'sheet' => 'Versículos tocados (sheet)', 'img' => 'Imágenes generadas por formato',
         'votd' => 'Versículo del día visto', 'nav' => 'Navegación anterior/siguiente',
-        'game' => 'Juegos abiertos', 'game_win' => 'Rondas completadas', 'game_stars' => 'Estrellas ganadas por juego',
-        'game_perfect' => 'Rondas perfectas', 'game_s' => 'Segundos jugando por ronda',
+        'game' => 'Aperturas de ruta de juego', 'game_start' => 'Inicios de juego',
+        'game_round' => 'Resultados de ronda (juego:resultado)', 'game_again' => 'Repeticiones elegidas',
+        'game_win' => 'Legacy: overlays de resultado (semántica anterior)',
+        'game_stars' => 'Estrellas ganadas por juego', 'game_perfect' => 'Rondas perfectas',
+        'game_s' => 'Segundos hasta resultado de ronda',
+        'notfound' => 'Errores 404 por grupo de ruta',
         'pref' => 'Cambios de preferencia', 'vswitch' => 'Cambios de versión',
         'ann' => 'Anotaciones/export', 'share' => 'Compartidos', 'listen' => 'Audio escuchado',
-        'visit_n' => 'Visita Nº del usuario', 'read_s' => 'Segundos de lectura',
-        'perf' => 'Tiempo de carga (ms total)', 'perf_c' => 'Muestras de carga',
+        'visit_n' => 'Días activos acumulados en este navegador', 'read_s' => 'Segundos de lectura',
+        'perf' => 'Tiempo hasta DOM completo (ms)', 'perf_c' => 'Muestras de carga',
         'geo' => 'Zona horaria del visitante', 'lang' => 'Idioma del navegador',
     ];
     // p75 aproximado desde el histograma perf_b (US-213)
@@ -108,9 +122,11 @@ if (!$isCli && ((($_GET['metrics'] ?? '') === '1') || (($_GET['csv'] ?? '') === 
         'table{border-collapse:collapse;width:100%;font-size:.85rem}td,th{border:1px solid #ddd;padding:.3rem .5rem;text-align:left}',
         'th{background:#eef2ff}.kpis{display:flex;gap:1rem;flex-wrap:wrap}.kpi{background:#eef2ff;border-radius:10px;padding:.7rem 1.1rem}',
         '.kpi b{font-size:1.5rem;display:block}small{color:#666}</style></head><body>',
-        '<h1>📊 Métricas — BibliaFacil <small>(anónimas, agregadas)</small></h1>',
-        '<div class="kpis"><div class="kpi"><b>', $dau7, '</b>usuarios únicos · 7d</div>',
-        '<div class="kpi"><b>', $dau30, '</b>usuarios únicos · 30d</div></div>';
+        '<h1>📊 Métricas — BibliaFacil <small>(agregadas, sin IP ni texto libre)</small></h1>',
+        '<div class="kpis"><div class="kpi"><b>', number_format($dau7), '</b>hash-días · 7d <small>promedio ', number_format($avg7), '/día</small></div>',
+        '<div class="kpi"><b>', number_format($dau30), '</b>hash-días · 30d <small>promedio ', number_format($avg30), '/día</small></div></div>',
+        '<p><small>Hash diario IP+User-Agent: no equivale a personas únicas; crawlers conocidos se excluyen desde el filtro actual, no retroactivamente.</small></p>';
+
     if ($p75) {
         echo '<h2>⏱ Velocidad de carga · 30 días</h2><table><tr><th>sección</th><th>distribución</th><th>p75 aprox</th></tr>';
         foreach ($p75 as $sec => $buckets) {
@@ -131,6 +147,8 @@ if (!$isCli && ((($_GET['metrics'] ?? '') === '1') || (($_GET['csv'] ?? '') === 
             echo '<tr><td>', htmlspecialchars($sec === '' ? '(otros)' : $sec), '</td><td><small>', htmlspecialchars($dist), '</small></td><td><b>', htmlspecialchars($p), '</b></td></tr>';
         }
         echo '</table>';
+    } else {
+        echo '<p><small>Sin muestras válidas de rendimiento en estos 30 días; verifica que el navegador envíe `perf_b`.</small></p>';
     }
     foreach ($NAMES as $m => $label) {
         $d30 = $agg[30][$m] ?? [];

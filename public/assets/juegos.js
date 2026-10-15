@@ -438,12 +438,13 @@
         var mnews = missionCheck();
         var liAfter = levelInfo();
         var lvUp = liAfter.name !== liBefore.name;
+        var outcome = o.outcome === 'win' || o.outcome === 'fail' ? o.outcome : 'complete';
         if (window.BF_TRACK) {
-            window.BF_TRACK('game_win', o.slug);
+            window.BF_TRACK('game_round', o.slug + ':' + outcome);
             window.BF_TRACK('game_stars', o.slug, o.stars);
             if (o.perfect) { window.BF_TRACK('game_perfect', o.slug); }
             var secs = BFJ._t0 ? Math.round((Date.now() - BFJ._t0) / 1000) : 0;
-            BFJ._t0 = Date.now(); // siguiente ronda mide desde aquí
+            BFJ._t0 = 0; // la siguiente ronda inicia su cronómetro en BFJ.started
             if (secs >= 3 && secs <= 1800) { window.BF_TRACK('game_s', o.slug, secs); }
         }
         var news = checkStickers({ slug: o.slug, perfect: o.perfect });
@@ -523,6 +524,7 @@
             var c = ev.target.closest('[data-c]');
             if (!c) { return; }
             if (c.getAttribute('data-c') === 'again' && o.onAgain) {
+                if (window.BF_TRACK) { window.BF_TRACK('game_again', o.slug); }
                 dismiss(false); o.onAgain();
             } else {
                 dismiss(true);
@@ -549,6 +551,10 @@
         shake: shake,
         pop: pop,
         timer: timer,
+        started: function (slug) {
+            BFJ._t0 = Date.now(); // para métrica game_s desde el inicio real de la ronda
+            if (window.BF_TRACK) { window.BF_TRACK('game_start', slug); }
+        },
         celebrate: celebrate,
         stars: {
             total: function () {
@@ -769,7 +775,6 @@
                 }
             }
             if (BFJ.games[slug]) {
-                BFJ._t0 = Date.now(); // para métrica game_s (tiempo por ronda)
                 BFJ.games[slug](app);
             } else {
                 app.innerHTML = '<section class="card notice"><p>' + T('Este juego está en camino 🔧') + '</p></section>';

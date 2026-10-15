@@ -19,6 +19,7 @@ BFJ.define('memory', function (el) {
         round();
 
         function round() {
+        BFJ.started('memory');
         var pairs = take(8);
         var cards = [];
         pairs.forEach(function (p, pi) {
@@ -98,7 +99,7 @@ BFJ.define('memory', function (el) {
         function end() {
             var stars = moves <= 10 ? 5 : (moves <= 14 ? 4 : (moves <= 18 ? 3 : (moves <= 24 ? 2 : 1)));
             BFJ.celebrate({
-                slug: 'memory', stars: stars, perfect: moves <= 10,
+                slug: 'memory', stars: stars, outcome: 'win', perfect: moves <= 10,
                 emoji: moves <= 10 ? '🏆' : '🎉',
                 title: moves <= 10 ? BFJ.T('¡Memoria de campeón!') : BFJ.T('¡Completaste el memory!'),
                 extra: BFJ.T('Encontraste') + ' ' + pairs.length + ' ' + BFJ.T('parejas en') + ' ' + moves + ' ' + BFJ.T('movimientos'),

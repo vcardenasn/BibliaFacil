@@ -32,8 +32,50 @@ return function (TestCase $t): void {
             ['hack', 'x', 1],                    // métrica no permitida
             ['pref', 'q=texto libre', 1],        // dim con espacios/= → fuera
             ['share', 'copy', 99999],            // n se capea
+            ['pv_client', 'reader', 1],
+            ['pv_client', 'unknown-route', 1],
+            ['game_start', 'david', 1],
+            ['game_start', 'private-slug', 1],
+            ['game_again', 'paloma', 1],
+            ['game_round', 'david:fail', 1],
+            ['game_round', 'david:private text', 1],
         ]);
-        $t->assertSame([['pref', 'theme:dark', 1], ['share', 'copy', 600]], $ev);
+        $t->assertSame([
+            ['pref', 'theme:dark', 1], ['share', 'copy', 600],
+            ['pv_client', 'reader', 1], ['game_start', 'david', 1],
+            ['game_again', 'paloma', 1], ['game_round', 'david:fail', 1],
+        ], $ev);
+    });
+
+    $t->run('metrics: detecta crawlers sin guardar el User-Agent', function () use ($t) {
+        $t->assertTrue(Metrics::isKnownCrawler('Googlebot/2.1 (+https://google.com/bot.html)'));
+    });
+
+    $t->run('metrics: no clasifica Chrome normal como crawler', function () use ($t) {
+        $t->assertFalse(Metrics::isKnownCrawler('Mozilla/5.0 Chrome/130.0 Safari/537.36'));
+    });
+
+    $t->run('metrics: DNT y GPC optan fuera de métricas', function () use ($t) {
+        $t->assertTrue(Metrics::isOptedOut('yes', '0'));
+        $t->assertTrue(Metrics::isOptedOut('0', '1'));
+    });
+
+    $t->run('metrics: agrupa 404 de versión sin guardar el slug', function () use ($t) {
+        $t->assertSame('version:missing_book', Metrics::notFoundDimension('rvr1909', 'missing_book', ['rvr1909', 'kjv']));
+    });
+
+    $t->run('metrics: colapsa 404 desconocidos y motivos inválidos', function () use ($t) {
+        $t->assertSame('other:unknown', Metrics::notFoundDimension('private-slug', 'texto de búsqueda', ['rvr1909']));
+    });
+
+    $t->run('metrics: no cuenta crawlers como cliente-día', function () use ($t, $pdo) {
+        $server = $_SERVER;
+        $_SERVER['HTTP_USER_AGENT'] = 'Googlebot/2.1';
+        $_SERVER['HTTP_DNT'] = '0';
+        $_SERVER['HTTP_SEC_GPC'] = '0';
+        Metrics::session();
+        $_SERVER = $server;
+        $t->assertSame(0, (int) $pdo->query('SELECT COUNT(*) FROM metrics_dau')->fetchColumn());
     });
 
     $t->run('metrics: session deduplica el mismo hash por día', function () use ($t, $pdo) {

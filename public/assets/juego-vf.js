@@ -5,6 +5,7 @@ BFJ.define('vf', function (el) {
         round();
 
         function round() {
+        BFJ.started('vf');
         var qs = BFJ.pick(bank, 10);
         var i = 0, ok = 0, streak = 0, bestStreak = 0, fast = 0, t = null, locked = false;
 
@@ -72,7 +73,8 @@ BFJ.define('vf', function (el) {
             var emoji = ok >= 9 ? '🏆' : (ok >= 6 ? '🎉' : '💪');
             var title = ok >= 9 ? BFJ.T('¡Eres un campeón!') : (ok >= 6 ? BFJ.T('¡Muy bien!') : BFJ.T('¡Sigue practicando!'));
             BFJ.celebrate({
-                slug: 'vf', stars: stars, emoji: emoji, title: title, perfect: ok === qs.length,
+                slug: 'vf', stars: stars, emoji: emoji, title: title,
+                outcome: ok >= 6 ? 'win' : 'fail', perfect: ok === qs.length,
                 extra: ok + ' ' + BFJ.T('de') + ' ' + qs.length + ' ' + BFJ.T('correctas') +
                     (bestStreak >= 3 ? ' · ' + BFJ.T('racha máx') + ' 🔥x' + bestStreak : '') +
                     (fast ? ' · ⚡x' + fast + ' ' + BFJ.T('rápidas') : '') +

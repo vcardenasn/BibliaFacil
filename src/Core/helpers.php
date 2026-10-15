@@ -122,8 +122,11 @@ function view(string $name, array $data = []): void
     }
 
     // EPIC 16 — métricas agregadas (anónimas, tolerantes a fallos)
+    $userAgent = (string) ($_SERVER['HTTP_USER_AGENT'] ?? '');
+    $crawler = \Biblia\Core\Metrics::isKnownCrawler($userAgent);
     \Biblia\Core\Metrics::session();
     \Biblia\Core\Metrics::bump('pv', $name);
+    \Biblia\Core\Metrics::bump($crawler ? 'pv_crawler' : 'pv_other', $name);
     if (!empty($data['version']['code'])) {
         \Biblia\Core\Metrics::bump('ver', $data['version']['code']);
     }

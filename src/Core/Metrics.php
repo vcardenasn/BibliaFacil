@@ -18,14 +18,52 @@ final class Metrics
     /** Métricas permitidas vía beacon (evita basura en la tabla). */
     public const ALLOWED = [
         'pref', 'vswitch', 'ann', 'share', 'listen',
-        'visit_n', 'read_s', 'perf', 'perf_c', 'perf_b',
-        'game_win', 'game_stars', 'game_perfect', 'game_s',
+        'visit_n', 'read_s', 'perf', 'perf_c', 'perf_b', 'pv_client',
+        'game_win', 'game_round', 'game_start', 'game_again', 'game_stars', 'game_perfect', 'game_s',
         'sheet', 'img', 'votd', 'nav', 'geo', 'lang',
+    ];
+
+    private const PAGE_VIEWS = [
+        'notfound', 'search', 'temas', 'tema', 'versiculo', 'votd', 'guias', 'guia',
+        'shareverse', 'comparar', 'planes', 'plan', 'licencias', 'mias', 'juegos',
+        'juego', 'home', 'books', 'chapters', 'reader', 'error',
+    ];
+    private const GAME_EVENT_METRICS = ['game_win', 'game_start', 'game_again', 'game_stars', 'game_perfect', 'game_s'];
+    private const NOT_FOUND_ROUTES = [
+        'ir', 'buscar', 'comparar', 'planes', 'temas', 'versiculo', 'versiculo-del-dia',
+        'guias', 'juegos', 'mias', 'v', 'api', 'sitemap', 'sitemap.xml',
+    ];
+    private const NOT_FOUND_REASONS = [
+        'invalid_reference', 'missing_topic', 'missing_verse_page', 'missing_guide', 'missing_verse',
+        'invalid_comparison', 'same_version', 'invalid_chapter', 'missing_versions', 'missing_plan',
+        'unavailable_game', 'unavailable_version', 'missing_book', 'invalid_bible_resource',
+        'invalid_short_reference', 'unknown_route',
     ];
 
     public static function enabled(): bool
     {
-        return env('FF_METRICS', '1') === '1';
+        return env('FF_METRICS', '1') === '1' && !self::isOptedOut();
+    }
+
+    public static function isOptedOut(?string $dnt = null, ?string $gpc = null): bool
+    {
+        $dnt = strtolower(trim($dnt ?? (string) ($_SERVER['HTTP_DNT'] ?? '')));
+        $gpc = trim($gpc ?? (string) ($_SERVER['HTTP_SEC_GPC'] ?? ''));
+        return in_array($dnt, ['1', 'yes'], true) || $gpc === '1';
+    }
+
+    public static function isKnownCrawler(string $userAgent): bool
+    {
+        return preg_match('/(?:bot\\b|crawler|spider|slurp|facebookexternalhit|facebot|twitterbot|linkedinbot|discordbot|telegrambot|whatsapp|applebot|amazonbot|bytespider|petalbot|google-inspectiontool)/i', $userAgent) === 1;
+    }
+
+    public static function notFoundDimension(string $segment, string $reason, array $versionCodes): string
+    {
+        $group = in_array($segment, $versionCodes, true)
+            ? 'version'
+            : (in_array($segment, self::NOT_FOUND_ROUTES, true) ? $segment : 'other');
+        $reason = in_array($reason, self::NOT_FOUND_REASONS, true) ? $reason : 'unknown';
+        return $group . ':' . $reason;
     }
 
     /** Suma $n a (metric, dim, hoy). Silencioso ante errores. */
@@ -64,6 +102,9 @@ final class Metrics
         try {
             $ip = (string) ($_SERVER['REMOTE_ADDR'] ?? '');
             $ua = (string) ($_SERVER['HTTP_USER_AGENT'] ?? '');
+            if (self::isKnownCrawler($ua)) {
+                return;
+            }
             $h = hash('sha256', $ip . '|' . $ua . '|' . date('Y-m-d') . '|' . env('APP_NAME', 'bibliafacil'));
             $pdo = Database::getPdo();
             $driver = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
@@ -90,6 +131,20 @@ final class Metrics
             if (!is_string($m) || !in_array($m, self::ALLOWED, true)
                 || !preg_match('/^[a-z0-9_:.+-]{0,80}$/i', $dim)) {
                 continue;
+            }
+            if ($m === 'pv_client' && !in_array($dim, self::PAGE_VIEWS, true)) {
+                continue;
+            }
+            if ($m === 'game_round' || in_array($m, self::GAME_EVENT_METRICS, true)) {
+                $games = config('games');
+                if ($m === 'game_round') {
+                    [$slug, $outcome] = array_pad(explode(':', $dim, 2), 2, '');
+                    if (!isset($games[$slug]) || !in_array($outcome, ['win', 'fail', 'complete'], true)) {
+                        continue;
+                    }
+                } elseif (!isset($games[$dim])) {
+                    continue;
+                }
             }
             $out[] = [$m, $dim, max(1, min($n, 600))];
         }

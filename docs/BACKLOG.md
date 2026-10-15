@@ -214,6 +214,38 @@ Todo CSS/JS vanilla, respeta reduced-motion y los 4 temas × 5 acentos.*
 - US-233 ✅ Desafío del día: card dorada en el hub con juego determinístico (crc32 de la fecha), ?desafio=Ymd validado contra data-daily del shell (no falsificable), bonus ×2 una sola vez vía bf_daily localStorage, estado "✅ ¡Hecho!" en hub y tag 🗓 en el juego
 - US-234 ✅ Detalles en juegos: BFJ.burst (mini-explosión ⭐), opciones tr-in que voltean escalonadas (trivia/versículo), halo verde en acierto, racha 🔥.hot (vf/trivia/versículo), silueta negra que se ilumina (personaje), palabra resaltada <mark> en versículo, burst por pareja (memory) y por slot (historia/libros)
 
+## EPIC 24 — Métricas confiables para decidir (P0) ✅
+*La línea base de 7/30 días es indicativa: el dashboard suma hashes diarios como “usuarios únicos”,
+cuenta vistas server-side sin separar crawlers y `game_win` no siempre es una victoria. Corregir
+semántica antes de optimizar; conservar la regla privacy-first (sin IP, query ni texto libre).*
+- US-235 ✅ **Actividad diaria sin inflar usuarios**: mostrar la suma de `cliente-días` y el promedio diario; no llamarlos usuarios únicos del periodo porque el hash rota cada día. Criterio: dashboard y CSV usan etiquetas correctas; sin identificadores persistentes.
+- US-236 ✅ **Vistas de servidor, navegador y crawlers**: separar vistas renderizadas por servidor de cargas JS y clasificar crawlers conocidos sin guardar IP ni User-Agent crudo. Criterio: páginas noindex rastreables, como `/comparar`, no se presentan como uso humano.
+- US-237 ✅ **Embudo real de juegos**: conservar `game` como apertura de ruta y registrar `game_start`, `game_round` (`win|fail|complete`) y `game_again`; reservar el `game_win` histórico como legado. Criterio: una derrota de David aparece como `fail`, nunca como victoria; sin identidad de jugador.
+- US-238 ✅ **Velocidad visible en el dashboard**: sustituir `performance.timing` por `PerformanceNavigationTiming` y asegurar muestras `perf_b`; mostrar p75 de lector/otras vistas. Criterio: prueba con API disponible genera histogramas y, sin API, no rompe la página.
+- US-239 ✅ **Diagnóstico agregado de 404**: contar grupo de ruta y motivo normalizado, nunca query string ni texto introducido. Criterio: el reporte distingue rutas problemáticas sin guardar URL completa ni datos del usuario.
+
+**Criterio de salida:** nombres fieles a los contadores, métricas de juego con resultados distinguibles y p75 disponible. Usar el primer periodo completo tras el cambio como nueva base; no comparar directamente con los 30 días anteriores.
+
+## EPIC 25 — Descubrimiento del lector y hábito (P1) ⬜
+*El lector concentra el uso. Hacer más visibles búsqueda, planes y compartir sin interrumpir la lectura ni registrar contenido del usuario.*
+- US-240 ⬜ **Embudo de búsqueda**: medir envío desde el campo dual palabra/referencia, resultado y apertura de un pasaje. Criterio: el dashboard muestra `result_open / search_submit` por versión y `hit|empty`; nunca se guarda el término. Hipótesis: el campo dual aumenta aperturas frente a la base posterior a su despliegue.
+- US-241 ⬜ **Activación de planes**: ofrecer entrada contextual desde lector/versículo del día; medir `plan_open`, `plan_start` y día completado con slug del plan, sin asociar progreso a una persona. Criterio: se calcula `plan_start / plan_open` y se compara con la base inicial.
+- US-242 ⬜ **Compartir versículos**: probar una acción visible junto al pasaje; registrar origen/canal y distinguir intento Web Share de resolución nativa. Para WhatsApp registrar el clic, no afirmar que el mensaje se envió. Criterio: medir acciones por exposición sin guardar versículo ni texto compartido.
+
+**KPI del EPIC:** aperturas de resultado por búsqueda enviada, inicios por apertura de plan y acciones de compartir por exposición. Establecer denominadores antes de evaluar cambios.
+
+## EPIC 26 — Primera experiencia y retorno en juegos (P1) ⬜
+*Validar la hipótesis de que la primera partida de David pierde jugadores; priorizar los datos de US-237 antes de retocar dificultad.*
+- US-243 ⬜ **David: primera ronda fácil de entender y ganar** (depende de US-237): objetivo entendible en una instrucción breve, primera oleada pequeña y sin presión simultánea. Criterio: con al menos 30 inicios de primera ronda, ≥70% obtiene una victoria; probar en móvil y escritorio y ajustar si queda por debajo.
+- US-244 ⬜ **Repetición de partida**: tras el resultado de David y Paloma, ofrecer “jugar otra” sin bloquear la salida y medir `game_again` por juego. Criterio: validar la repetición después de corregir `game_win`; no inferir jugadores únicos ni repetir a partir de los contadores actuales.
+
+**KPI del EPIC:** victorias de primera ronda por inicio en David y repeticiones por resultado en Paloma/David. Exigir al menos 30 inicios antes de decidir dificultad.
+
+## Priorización sugerida
+1. **P0:** US-235 a US-239 — limpiar definiciones y evitar decisiones con denominadores contaminados.
+2. **P1:** US-240 a US-242 — mejorar descubrimiento de funciones centrales y el loop de compartir.
+3. **P1, dependiente de US-237:** US-243 y US-244 — ajustar la primera partida y replay con eventos fiables.
+
 ## Notas técnicas
 - `use` arriba en entry points + smoke test `php -S` (convención stack).
 - MySQL prod / SQLite dev+tests (DB_DRIVER).

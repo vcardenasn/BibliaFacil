@@ -43,6 +43,7 @@ BFJ.define('versiculo', function (el) {
     }
 
     function play(lix) {
+        BFJ.started('versiculo');
         var L = LEVELS[lix];
         el.innerHTML = '<section class="card notice"><p>' + BFJ.T('Cargando… ⏳') + '</p></section>';
         fetch('/juegos/api/versiculo?n=' + L.n + '&set=' + L.set).then(function (r) {
@@ -119,7 +120,7 @@ BFJ.define('versiculo', function (el) {
                         : ' — ' + BFJ.T('necesitas') + ' ' + need + ' ' + BFJ.T('para pasar'));
                 BFJ.celebrate({
                     slug: 'versiculo', stars: ok, emoji: emoji, title: title,
-                    perfect: ok === qs.length, extra: extra,
+                    outcome: won ? 'win' : 'fail', perfect: ok === qs.length, extra: extra,
                     againLabel: won && !last ? '▶ ' + BFJ.T('Nivel') + ' ' + (lix + 2) : BFJ.T('🔄 Reintentar'),
                     onAgain: function () {
                         if (won && !last) { play(lix + 1); }

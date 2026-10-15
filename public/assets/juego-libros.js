@@ -22,6 +22,7 @@ BFJ.define('libros', function (el) {
         }
 
         function play(block) {
+            BFJ.started('libros');
             var n = block.books.length;
             var order = BFJ.shuffle(block.books.map(function (_, i) { return i; }));
             var next = 0, errors = 0, done = 0;
@@ -66,7 +67,7 @@ BFJ.define('libros', function (el) {
             function end() {
                 var stars = Math.max(1, 5 - Math.ceil(errors / 2));
                 BFJ.celebrate({
-                    slug: 'libros', stars: stars, perfect: errors === 0,
+                    slug: 'libros', stars: stars, outcome: 'win', perfect: errors === 0,
                     emoji: errors === 0 ? '🏆' : '📚',
                     title: errors === 0 ? BFJ.T('¡Orden perfecto!') : BFJ.T('¡Bloque completado!'),
                     extra: block.name + ' · ' + n + ' ' + BFJ.T('libros') + ' · ' +

@@ -21,6 +21,7 @@ BFJ.define('historia', function (el) {
         }
 
         function play(story) {
+            BFJ.started('historia');
             var n = story.scenes.length;
             var order = BFJ.shuffle(story.scenes.map(function (s, i) { return i; }));
             var next = 0, errors = 0, done = 0;
@@ -87,7 +88,7 @@ BFJ.define('historia', function (el) {
 
                 var stars = Math.max(1, 5 - errors);
                 BFJ.celebrate({
-                    slug: 'historia', stars: stars, perfect: errors === 0,
+                    slug: 'historia', stars: stars, outcome: 'win', perfect: errors === 0,
                     emoji: errors === 0 ? '🏆' : '🎬',
                     title: errors === 0 ? BFJ.T('¡Orden perfecto!') : BFJ.T('¡Historia completada!'),
                     html: comic,

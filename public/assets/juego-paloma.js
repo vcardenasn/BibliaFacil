@@ -199,6 +199,7 @@ BFJ.define('paloma', function (el) {
 
         BFJ.celebrate({
             slug: 'paloma', stars: stars, emoji: emoji, title: title, extra: extra,
+            outcome: success ? 'win' : 'fail',
             againLabel: success && fi < 3 ? BFJ.T('🕊️ Siguiente vuelo') : BFJ.T('🔁 Otra vez'),
             onAgain: function () {
                 if (success && fi < 3) { fi++; }
@@ -603,6 +604,7 @@ BFJ.define('paloma', function (el) {
     }
 
     function beginFlight() {
+        BFJ.started('paloma');
         reset();
         over = false; won = false; flying = false;
         var f = flight();

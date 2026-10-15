@@ -46,6 +46,7 @@ BFJ.define('trivia', function (el) {
         }
 
         function start(cat) {
+            BFJ.started('trivia');
             var pool = cat === 'mezcla' ? bank : bank.filter(function (q) { return q.cat === cat; });
             var qs = BFJ.pick(pool, 10);
             var i = 0, ok = 0, streak = 0, bestStreak = 0, fast = 0, t = null, locked = false;
@@ -112,7 +113,7 @@ BFJ.define('trivia', function (el) {
                 var title = ok >= 9 ? BFJ.T('¡Experto bíblico!') : (ok >= 6 ? BFJ.T('¡Muy bien!') : BFJ.T('¡Sigue practicando!'));
                 BFJ.celebrate({
                     slug: 'trivia', stars: ok + bonus + fastBonus, emoji: emoji, title: title,
-                    perfect: ok === qs.length,
+                    outcome: ok >= 6 ? 'win' : 'fail', perfect: ok === qs.length,
                     extra: ok + ' ' + BFJ.T('de') + ' ' + qs.length + ' ' + BFJ.T('correctas') + ' · ' + CATS[cat].name +
                         (bestStreak >= 3 ? ' · ' + BFJ.T('racha máx') + ' 🔥x' + bestStreak : '') +
                         (fast ? ' · ⚡x' + fast + ' ' + BFJ.T('rápidas') : '') +

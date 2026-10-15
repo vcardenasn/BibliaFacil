@@ -41,7 +41,8 @@
         t.flushNow = flush;
         return t;
     })();
-    window.BF_TRACK = TK; // lo usan también los juegos (game_win)
+    window.BF_TRACK = TK; // lo usan también los juegos (game_round)
+    TK('pv_client', document.body.getAttribute('data-view') || 'other');
 
     // Zona geográfica aproximada, una vez por sesión: zona horaria IANA +
     // idioma del navegador. Agregado anónimo — sin IP, sin GPS, sin PII.
@@ -1366,12 +1367,14 @@
     // perf: tiempo de carga de la página (ms), agregado con contador aparte.
     window.addEventListener('load', function () {
         try {
-            var pt = performance.timing;
-            var ms = pt.loadEventEnd - pt.navigationStart;
+            var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+            var ms = nav ? Math.round(nav.domComplete - nav.startTime) : 0;
+            if (ms <= 0 && performance.timing) {
+                ms = performance.timing.domComplete - performance.timing.navigationStart;
+            }
             if (ms > 0 && ms < 60000) {
                 TK('perf', chapterEl ? 'reader' : 'other', ms);
                 TK('perf_c', '', 1);
-                // US-213: histograma por buckets → p75 aproximado en el dashboard
                 var b = ms < 500 ? 'a:u05' : ms < 1000 ? 'b:u1' : ms < 2000 ? 'c:u2' : ms < 4000 ? 'd:u4' : 'e:g4';
                 TK('perf_b', (chapterEl ? 'reader.' : 'other.') + b, 1);
             }
