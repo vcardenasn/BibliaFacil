@@ -440,11 +440,13 @@
         var lvUp = liAfter.name !== liBefore.name;
         var outcome = o.outcome === 'win' || o.outcome === 'fail' ? o.outcome : 'complete';
         if (window.BF_TRACK) {
-            window.BF_TRACK('game_round', o.slug + ':' + outcome);
+            var gameKey = BFJ._gameKey === o.slug || (BFJ._gameKey && BFJ._gameKey.indexOf(o.slug + ':') === 0) ? BFJ._gameKey : o.slug;
+            window.BF_TRACK('game_round', gameKey + ':' + outcome);
             window.BF_TRACK('game_stars', o.slug, o.stars);
             if (o.perfect) { window.BF_TRACK('game_perfect', o.slug); }
             var secs = BFJ._t0 ? Math.round((Date.now() - BFJ._t0) / 1000) : 0;
             BFJ._t0 = 0; // la siguiente ronda inicia su cronómetro en BFJ.started
+            BFJ._gameKey = '';
             if (secs >= 3 && secs <= 1800) { window.BF_TRACK('game_s', o.slug, secs); }
         }
         var news = checkStickers({ slug: o.slug, perfect: o.perfect });
@@ -551,9 +553,10 @@
         shake: shake,
         pop: pop,
         timer: timer,
-        started: function (slug) {
+        started: function (slug, stage) {
             BFJ._t0 = Date.now(); // para métrica game_s desde el inicio real de la ronda
-            if (window.BF_TRACK) { window.BF_TRACK('game_start', slug); }
+            BFJ._gameKey = slug + (stage ? ':r' + stage : '');
+            if (window.BF_TRACK) { window.BF_TRACK('game_start', BFJ._gameKey); }
         },
         celebrate: celebrate,
         stars: {

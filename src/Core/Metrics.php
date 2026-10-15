@@ -31,6 +31,8 @@ final class Metrics
         'juego', 'home', 'books', 'chapters', 'reader', 'error',
     ];
     private const GAME_EVENT_METRICS = ['game_win', 'game_start', 'game_again', 'game_stars', 'game_perfect', 'game_s'];
+    private const GAME_STAGES = ['r1', 'r2', 'r3', 'r4'];
+    private const GAME_OUTCOMES = ['win', 'fail', 'complete'];
     private const SHARE_SOURCES = ['verse', 'votd', 'topic', 'reader', 'other'];
     private const SHARE_CHANNELS = ['wa', 'tg', 'x', 'fb', 'copy', 'copy_range', 'whatsapp', 'native', 'native_image', 'download_image'];
     private const NOT_FOUND_ROUTES = [
@@ -68,6 +70,24 @@ final class Metrics
             : (in_array($segment, self::NOT_FOUND_ROUTES, true) ? $segment : 'other');
         $reason = in_array($reason, self::NOT_FOUND_REASONS, true) ? $reason : 'unknown';
         return $group . ':' . $reason;
+    }
+
+    private static function validGameEventDimension(string $metric, string $dim, array $games): bool
+    {
+        $parts = explode(':', $dim);
+        $slug = array_shift($parts);
+        if (!isset($games[$slug])) {
+            return false;
+        }
+        if ($metric === 'game_round') {
+            return (count($parts) === 1 && in_array($parts[0], self::GAME_OUTCOMES, true))
+                || (count($parts) === 2 && in_array($parts[0], self::GAME_STAGES, true)
+                    && in_array($parts[1], self::GAME_OUTCOMES, true));
+        }
+        if ($metric === 'game_start' && count($parts) === 1) {
+            return in_array($parts[0], self::GAME_STAGES, true);
+        }
+        return $parts === [];
     }
 
     /** Suma $n a (metric, dim, hoy). Silencioso ante errores. */
@@ -159,13 +179,7 @@ final class Metrics
                 }
             }
             if ($m === 'game_round' || in_array($m, self::GAME_EVENT_METRICS, true)) {
-                $games = config('games');
-                if ($m === 'game_round') {
-                    [$slug, $outcome] = array_pad(explode(':', $dim, 2), 2, '');
-                    if (!isset($games[$slug]) || !in_array($outcome, ['win', 'fail', 'complete'], true)) {
-                        continue;
-                    }
-                } elseif (!isset($games[$dim])) {
+                if (!self::validGameEventDimension($m, $dim, config('games'))) {
                     continue;
                 }
             }

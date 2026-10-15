@@ -772,7 +772,7 @@ return [
     'enemigos' => 'enemies',
     'ahuyentados' => 'scared off',
     '👆 Toca a los depredadores para lanzar piedras' => '👆 Tap the predators to sling stones',
-    '👆 Toca los animales para lanzar piedras · si se llevan una oveja, ¡alcánzalos y rescátala!' => '👆 Tap the animals to sling stones · if one grabs a sheep, catch it and rescue her!',
+    '👆 Toca al animal para lanzar piedras. Si se lleva una oveja, tócalo para que la suelte.' => '👆 Tap an animal to sling stones. If it carries a sheep away, tap it to make it let go.',
     '👆 ¡Lanza piedras y rescata a tus ovejas!' => '👆 Sling stones and rescue your sheep!',
     'David y las Ovejas: toca los depredadores para lanzarles piedras' => 'David and the Sheep: tap the predators to sling stones at them',
     'David y las Ovejas: toca los animales para lanzar piedras y proteger el rebaño' => 'David and the Sheep: tap the animals to sling stones and protect the flock',

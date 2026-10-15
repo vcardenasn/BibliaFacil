@@ -9,7 +9,7 @@ BFJ.define('david', function (el) {
             name: BFJ.T('Ronda 1 · El león'),
             ref: '1 ' + BFJ.T('Samuel') + ' 17:34-35',
             desc: BFJ.T('«Tu siervo apacentaba las ovejas de su padre… salió tras el león y lo hirió.»'),
-            waves: [['lion', 3]], spawnEvery: 4200
+            waves: [['lion', 2]], spawnEvery: 5200
         },
         {
             name: BFJ.T('Ronda 2 · El oso'),
@@ -54,7 +54,7 @@ BFJ.define('david', function (el) {
                 : BFJ.T('🏁 No dejes que se lleven a tus ovejas')) + '</p>' +
             (best ? '<p class="pn-best">✨ ' + BFJ.T('Tu récord:') + ' ' + best + ' ' + BFJ.T('ahuyentados') + '</p>' : '') +
             '<button type="button" class="jbtn jbtn-main" id="dvGo">' + BFJ.T('▶ ¡A defender!') + '</button>' +
-            '<p class="pn-k">' + BFJ.T('👆 Toca los animales para lanzar piedras · si se llevan una oveja, ¡alcánzalos y rescátala!') + '</p>'
+            '<p class="pn-k">' + BFJ.T('👆 Toca al animal para lanzar piedras. Si se lleva una oveja, tócalo para que la suelte.') + '</p>'
         );
     }
 
@@ -708,7 +708,7 @@ BFJ.define('david', function (el) {
     cv.addEventListener('touchstart', onDown, { passive: false });
 
     function startRound() {
-        BFJ.started('david');
+        BFJ.started('david', ri + 1);
         reset();
         over = false; won = false; playing = true;
         // .pn-menu lleva display:flex en CSS — el atributo `hidden` no le gana,

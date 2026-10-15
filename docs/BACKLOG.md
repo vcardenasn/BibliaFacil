@@ -236,8 +236,8 @@ semántica antes de optimizar; conservar la regla privacy-first (sin IP, query n
 
 ## EPIC 26 — Primera experiencia y retorno en juegos (P1) ⬜
 *Validar la hipótesis de que la primera partida de David pierde jugadores; priorizar los datos de US-237 antes de retocar dificultad.*
-- US-243 ⬜ **David: primera ronda fácil de entender y ganar** (depende de US-237): objetivo entendible en una instrucción breve, primera oleada pequeña y sin presión simultánea. Criterio: con al menos 30 inicios de primera ronda, ≥70% obtiene una victoria; probar en móvil y escritorio y ajustar si queda por debajo.
-- US-244 ⬜ **Repetición de partida**: tras el resultado de David y Paloma, ofrecer “jugar otra” sin bloquear la salida y medir `game_again` por juego. Criterio: validar la repetición después de corregir `game_win`; no inferir jugadores únicos ni repetir a partir de los contadores actuales.
+- US-243 ⬜ **David: primera ronda fácil de entender y ganar** (depende de US-237): objetivo en una instrucción breve, oleada pequeña y un atacante a la vez. Instrumentación: `game_start=david:r1` y `game_round=david:r1:win|fail`. Criterio: dashboard muestra victorias/inicios y marca muestras menores de 30 como provisionales; con n≥30, objetivo ≥70% de victorias. Probar en móvil/escritorio y ajustar si queda por debajo.
+- US-244 ✅ **Repetición de partida**: tras el resultado de David y Paloma, ofrecer “jugar otra” sin bloquear la salida y medir `game_again` por juego. Criterio: el evento se emite al elegir repetir; no inferir jugadores únicos ni que la partida se repitió a partir de otro contador.
 
 **KPI del EPIC:** victorias de primera ronda por inicio en David y repeticiones por resultado en Paloma/David. Exigir al menos 30 inicios antes de decidir dificultad.
 

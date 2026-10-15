@@ -47,9 +47,13 @@ return function (TestCase $t): void {
             ['share_native_return', 'reader:native', 1],
             ['share_native_return', 'reader:whatsapp', 1],
             ['game_start', 'david', 1],
+            ['game_start', 'david:r1', 1],
+            ['game_start', 'david:r5', 1],
             ['game_start', 'private-slug', 1],
             ['game_again', 'paloma', 1],
             ['game_round', 'david:fail', 1],
+            ['game_round', 'david:r1:win', 1],
+            ['game_round', 'david:r1:private', 1],
             ['game_round', 'david:private text', 1],
         ]);
         $t->assertSame([
@@ -58,7 +62,8 @@ return function (TestCase $t): void {
             ['plan_discover', 'reader', 1], ['plan_start', 'biblia-en-un-ano', 1], ['plan_day_done', 'salmos-proverbios', 1],
             ['share_exposure', 'verse', 1], ['share_intent', 'topic:wa', 1],
             ['share_native_return', 'reader:native', 1], ['game_start', 'david', 1],
-            ['game_again', 'paloma', 1], ['game_round', 'david:fail', 1],
+            ['game_start', 'david:r1', 1], ['game_again', 'paloma', 1],
+            ['game_round', 'david:fail', 1], ['game_round', 'david:r1:win', 1],
         ], $ev);
     });
 

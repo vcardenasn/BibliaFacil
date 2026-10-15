@@ -86,6 +86,9 @@ if (!$isCli && ((($_GET['metrics'] ?? '') === '1') || (($_GET['csv'] ?? '') === 
     $dau30 = array_sum(array_map(fn ($r) => (int) $r['n'], $dau));
     $avg7 = (int) round($dau7 / 7);
     $avg30 = (int) round($dau30 / 30);
+    $firstStarts = (int) ($agg[30]['game_start']['david:r1'] ?? 0);
+    $firstWins = (int) ($agg[30]['game_round']['david:r1:win'] ?? 0);
+    $firstWinRate = $firstStarts ? round($firstWins * 100 / $firstStarts, 1) : null;
     $NAMES = [
         'pv' => 'Vistas renderizadas por servidor (incluye bots)',
         'pv_crawler' => 'Solicitudes con User-Agent de crawler conocido',
@@ -101,8 +104,8 @@ if (!$isCli && ((($_GET['metrics'] ?? '') === '1') || (($_GET['csv'] ?? '') === 
         'plan_start' => 'Planes iniciados', 'plan_day_done' => 'Días de plan completados',
         'share_exposure' => 'Exposición a compartir', 'share_intent' => 'Intención de compartir',
         'share_native_return' => 'Regreso del selector nativo de compartir',
-        'game' => 'Aperturas de ruta de juego', 'game_start' => 'Inicios de juego',
-        'game_round' => 'Resultados de ronda (juego:resultado)', 'game_again' => 'Repeticiones elegidas',
+        'game' => 'Aperturas de ruta de juego', 'game_start' => 'Inicios de juego/ronda',
+        'game_round' => 'Resultados de ronda (juego[:nivel]:resultado)', 'game_again' => 'Repeticiones elegidas',
         'game_win' => 'Legacy: overlays de resultado (semántica anterior)',
         'game_stars' => 'Estrellas ganadas por juego', 'game_perfect' => 'Rondas perfectas',
         'game_s' => 'Segundos hasta resultado de ronda',
@@ -132,6 +135,12 @@ if (!$isCli && ((($_GET['metrics'] ?? '') === '1') || (($_GET['csv'] ?? '') === 
         '<div class="kpis"><div class="kpi"><b>', number_format($dau7), '</b>hash-días · 7d <small>promedio ', number_format($avg7), '/día</small></div>',
         '<div class="kpi"><b>', number_format($dau30), '</b>hash-días · 30d <small>promedio ', number_format($avg30), '/día</small></div></div>',
         '<p><small>Hash diario IP+User-Agent: no equivale a personas únicas; crawlers conocidos se excluyen desde el filtro actual, no retroactivamente.</small></p>';
+
+    if ($firstStarts > 0) {
+        echo '<div class="kpis"><div class="kpi"><b>', number_format($firstWinRate, 1), '%</b>David · victoria de primera ronda <small>',
+            $firstWins, '/', $firstStarts, ' inicios · ', $firstStarts < 30 ? 'muestra pequeña (objetivo: n≥30)' : 'mínimo de 30 inicios alcanzado',
+            '</small></div></div>';
+    }
 
     if ($p75) {
         echo '<h2>⏱ Velocidad de carga · 30 días</h2><table><tr><th>sección</th><th>distribución</th><th>p75 aprox</th></tr>';
