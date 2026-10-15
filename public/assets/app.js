@@ -23,7 +23,7 @@
     // Batch en memoria → sendBeacon a /track.php. Sin cookies, sin PII,
     // nunca envía texto del usuario. Respeta DoNotTrack/GlobalPrivacyControl.
     var TK = (function () {
-        var off = navigator.doNotTrack === '1' || navigator.doNotTrack === 'yes' || navigator.globalPrivacyControl === true;
+        var off = document.body.getAttribute('data-crawler') === '1' || navigator.doNotTrack === '1' || navigator.doNotTrack === 'yes' || navigator.globalPrivacyControl === true;
         var q = [];
         function t(m, d, n) {
             if (off) { return; }
@@ -43,6 +43,9 @@
     })();
     window.BF_TRACK = TK; // lo usan también los juegos (game_round)
     TK('pv_client', document.body.getAttribute('data-view') || 'other');
+    document.querySelectorAll('.sharebar[data-share-source]').forEach(function (bar) {
+        TK('share_exposure', bar.getAttribute('data-share-source'));
+    });
 
     // Zona geográfica aproximada, una vez por sesión: zona horaria IANA +
     // idioma del navegador. Agregado anónimo — sin IP, sin GPS, sin PII.
@@ -468,6 +471,7 @@
     var sheet = null, sheetVerse = null, sheetReturnFocus = null;
     function openSheet(el) {
         TK('sheet');
+        TK('share_exposure', 'reader');
         closeSheet();
         sheetVerse = el;
         var ae = document.activeElement;
@@ -625,7 +629,7 @@
                 paintVerse(sheetVerse, rec.color || rec.note || rec.fav || rec.devotional ? rec : null);
             } else if (a === 'copy') {
                 var payload = '“' + text + '” — ' + ref + '\n' + surl;
-                TK('share', 'copy');
+                TK('share', 'copy'); TK('share_intent', 'reader:copy');
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(payload).then(function () {
                         act.textContent = T('✓ Copiado');
@@ -655,6 +659,7 @@
             } else if (a === 'copyrange') {
                 var rText = rangeText();
                 TK('share', 'range');
+                if (rText) { TK('share_intent', 'reader:copy_range'); }
                 if (navigator.clipboard && rText) {
                     navigator.clipboard.writeText(rText).then(function () {
                         act.textContent = T('✓ Copiado');
@@ -666,12 +671,17 @@
                 // pasaje completo; si no, el versículo tocado
                 var wText = rangeText();
                 TK('share', wText ? 'wa-range' : 'wa-btn');
+                TK('share_intent', 'reader:whatsapp');
                 window.open('https://wa.me/?text=' + encodeURIComponent(wText || '“' + text + '” — ' + ref + ' ' + surl), '_blank', 'noopener');
             } else if (a === 'share') {
                 var pl = '“' + text + '” — ' + ref + ' ' + surl;
                 TK('share', navigator.share ? 'native' : 'wa');
-                if (navigator.share) { navigator.share({ title: ref, text: pl }).catch(function () {}); }
-                else { window.open('https://wa.me/?text=' + encodeURIComponent(pl), '_blank', 'noopener'); }
+                TK('share_intent', navigator.share ? 'reader:native' : 'reader:whatsapp');
+                if (navigator.share) {
+                    navigator.share({ title: ref, text: pl }).then(function () {
+                        TK('share_native_return', 'reader:native');
+                    }, function () {});
+                } else { window.open('https://wa.me/?text=' + encodeURIComponent(pl), '_blank', 'noopener'); }
             } else if (a === 'img') {
                 TK('img', 'story');
                 imgMode(sheet, text, ref, 'story');
@@ -681,15 +691,21 @@
             } else if (a === 'back') {
                 var el2 = sheetVerse; closeSheet(); openSheet(el2);
             } else if (a === 'dl') {
-                TK('share', 'imgdl');
+                TK('share', 'imgdl'); TK('share_intent', 'reader:download_image');
                 sheet._cv.toBlob(function (b) { downloadBlob(b, ref); });
             } else if (a === 'shimg') {
                 TK('share', 'img');
                 sheet._cv.toBlob(function (b) {
                     var f = new File([b], 'versiculo.png', { type: 'image/png' });
                     if (navigator.canShare && navigator.canShare({ files: [f] })) {
-                        navigator.share({ files: [f], title: ref }).catch(function () {});
-                    } else { downloadBlob(b, ref); }
+                        TK('share_intent', 'reader:native_image');
+                        navigator.share({ files: [f], title: ref }).then(function () {
+                            TK('share_native_return', 'reader:native_image');
+                        }, function () {});
+                    } else {
+                        TK('share_intent', 'reader:download_image');
+                        downloadBlob(b, ref);
+                    }
                 });
             }
         });
@@ -1258,18 +1274,25 @@
             }
         }
         btnStart.addEventListener('click', function () {
-            pst.s = Date.now(); P.set(pkey, JSON.stringify(pst)); TK('plan', 'start:' + pslug); paintPlan();
+            if (!pst.s) { pst.s = Date.now(); TK('plan_start', pslug); }
+            P.set(pkey, JSON.stringify(pst)); paintPlan();
         });
         btnReset.addEventListener('click', function () {
-            pst = { s: 0, d: [] }; P.set(pkey, JSON.stringify(pst)); TK('plan', 'reset:' + pslug); paintPlan();
+            pst = { s: 0, d: [] }; P.set(pkey, JSON.stringify(pst)); paintPlan();
         });
         planApp.addEventListener('click', function (ev) {
+            var readLink = ev.target.closest ? ev.target.closest('[data-plan-read]') : null;
+            if (readLink && !pst.s) {
+                pst.s = Date.now();
+                P.set(pkey, JSON.stringify(pst));
+                TK('plan_start', pslug);
+            }
             var b = ev.target.closest ? ev.target.closest('.pd-check') : null;
             if (!b) { return; }
             var d = parseInt(b.getAttribute('data-day'), 10);
             var i = pst.d.indexOf(d);
-            if (!pst.s) { pst.s = Date.now(); }
-            if (i < 0) { pst.d.push(d); TK('plan', 'day:' + pslug); } else { pst.d.splice(i, 1); }
+            if (!pst.s) { pst.s = Date.now(); TK('plan_start', pslug); }
+            if (i < 0) { pst.d.push(d); TK('plan_day_done', pslug); } else { pst.d.splice(i, 1); }
             P.set(pkey, JSON.stringify(pst));
             paintPlan();
         });
@@ -1343,6 +1366,15 @@
         TK('votd', vswitch ? vswitch.getAttribute('data-version') : '');
     }
     document.addEventListener('click', function (ev) {
+        var sr = ev.target.closest('a[data-search-version]');
+        if (sr) { TK('search_result_open', sr.getAttribute('data-search-version')); }
+        var planLink = ev.target.closest('a[data-plan-source]');
+        if (planLink) { TK('plan_discover', planLink.getAttribute('data-plan-source')); }
+        var shareLink = ev.target.closest('.sharebar [data-share-channel]');
+        if (shareLink) {
+            var bar = shareLink.closest('.sharebar');
+            TK('share_intent', (bar.getAttribute('data-share-source') || 'other') + ':' + shareLink.getAttribute('data-share-channel'));
+        }
         var nb = ev.target.closest('a.nav-btn[rel]');
         if (nb) { TK('nav', nb.getAttribute('rel')); }
     });

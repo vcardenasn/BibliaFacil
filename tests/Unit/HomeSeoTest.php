@@ -43,6 +43,25 @@ return function (TestCase $t): void {
         $t->assertTrue(str_contains($verseHtml, '/versiculo/juan-3-16'));
     });
 
+    $t->run('sharebar: expone solo fuente y canal para medir el loop', function () use ($t) {
+        $html = sharebar('https://ejemplo.org/versiculo/juan-3-16', 'Juan 3:16', 'verse');
+        $t->assertTrue(str_contains($html, 'data-share-source="verse"'));
+    });
+
+    $t->run('lector: comparte el capítulo y presenta acceso a planes', function () use ($t) {
+        $versions = require CONFIG_PATH . '/versions.php';
+        $version = $versions[0];
+        $book = ['slug' => 'juan', 'name' => 'Juan', 'chapters' => 21];
+        $chapter = 3;
+        $nav = ['prev' => null, 'next' => null];
+        $verses = [['verse' => 1, 'text' => 'En el principio', 'wj' => null]];
+        $cmpUrl = null;
+        ob_start();
+        include __DIR__ . '/../../app/Views/reader.php';
+        $html = ob_get_clean();
+        $t->assertTrue(str_contains($html, 'data-share-source="reader"') && str_contains($html, 'data-plan-source="reader"'));
+    });
+
     $t->run('vista fallida: descarta HTML parcial antes de renderizar error', function () use ($t) {
         $level = ob_get_level();
         ob_start();
@@ -156,6 +175,7 @@ return function (TestCase $t): void {
             'results' => [['book_name' => 'Juan', 'book_slug' => 'juan', 'chapter' => 3, 'verse' => 16, 'text' => 'amor test']],
         ]);
         $t->assertTrue(str_contains($html, 'class="ctx-btn"'));
+        $t->assertTrue(str_contains($html, 'data-search-version="rvr1909"'));
         $t->assertTrue(str_contains($html, 'data-b="juan"'));
         $t->assertTrue(str_contains($html, 'aria-expanded="false"'));
     });

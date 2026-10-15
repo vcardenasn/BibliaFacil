@@ -47,7 +47,7 @@
 <script type="application/ld+json"><?= json_encode($block, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
 <?php endforeach; ?>
 </head>
-<body data-view="<?= e($name) ?>"<?= !empty($bodyClass) ? ' class="' . e($bodyClass) . '"' : '' ?><?= \Biblia\Core\FeatureFlags::enabled('FF_PWA') ? ' data-sw="' . e(url('sw.js')) . '"' : '' ?>>
+<body data-view="<?= e($name) ?>" data-crawler="<?= $crawler ? '1' : '0' ?>"<?= !empty($bodyClass) ? ' class="' . e($bodyClass) . '"' : '' ?><?= \Biblia\Core\FeatureFlags::enabled('FF_PWA') ? ' data-sw="' . e(url('sw.js')) . '"' : '' ?>>
 <a class="skip-link" href="#main-content"><?= e(t('Saltar al contenido')) ?></a>
 <header class="topbar">
     <a class="brand" href="<?= e(url('/')) ?>"><span class="cross" aria-hidden="true">✝</span> Palabra Fiel</a>

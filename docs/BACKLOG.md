@@ -228,11 +228,11 @@ semántica antes de optimizar; conservar la regla privacy-first (sin IP, query n
 
 ## EPIC 25 — Descubrimiento del lector y hábito (P1) ⬜
 *El lector concentra el uso. Hacer más visibles búsqueda, planes y compartir sin interrumpir la lectura ni registrar contenido del usuario.*
-- US-240 ⬜ **Embudo de búsqueda**: medir envío desde el campo dual palabra/referencia, resultado y apertura de un pasaje. Criterio: el dashboard muestra `result_open / search_submit` por versión y `hit|empty`; nunca se guarda el término. Hipótesis: el campo dual aumenta aperturas frente a la base posterior a su despliegue.
-- US-241 ⬜ **Activación de planes**: ofrecer entrada contextual desde lector/versículo del día; medir `plan_open`, `plan_start` y día completado con slug del plan, sin asociar progreso a una persona. Criterio: se calcula `plan_start / plan_open` y se compara con la base inicial.
-- US-242 ⬜ **Compartir versículos**: probar una acción visible junto al pasaje; registrar origen/canal y distinguir intento Web Share de resolución nativa. Para WhatsApp registrar el clic, no afirmar que el mensaje se envió. Criterio: medir acciones por exposición sin guardar versículo ni texto compartido.
+- US-240 ✅ **Embudo de búsqueda**: medir envío desde el campo dual palabra/referencia, resultado y apertura de un pasaje. Criterio: el dashboard muestra `search_result_open / search_submit` por versión y `hit|empty`; nunca se guarda el término. Hipótesis: el campo dual aumenta aperturas frente a la base posterior a su despliegue.
+- US-241 ✅ **Activación de planes**: ofrecer entrada contextual desde lector/versículo del día; medir `plan_open`, `plan_start` y día completado con slug del plan, sin asociar progreso a una persona. Criterio: se calcula `plan_start / plan_open` y se compara con la base inicial.
+- US-242 ✅ **Compartir versículos**: probar una acción visible junto al pasaje; registrar origen/canal y distinguir intento Web Share de resolución nativa. Para WhatsApp registrar el clic, no afirmar que el mensaje se envió. Criterio: medir acciones por exposición sin guardar versículo ni texto compartido.
 
-**KPI del EPIC:** aperturas de resultado por búsqueda enviada, inicios por apertura de plan y acciones de compartir por exposición. Establecer denominadores antes de evaluar cambios.
+**KPI del EPIC:** aperturas de resultado por búsqueda enviada, inicios por apertura de plan y acciones de compartir por exposición. Instrumentación implementada; revisar cambios frente a la base tras un periodo completo de 30 días.
 
 ## EPIC 26 — Primera experiencia y retorno en juegos (P1) ⬜
 *Validar la hipótesis de que la primera partida de David pierde jugadores; priorizar los datos de US-237 antes de retocar dificultad.*

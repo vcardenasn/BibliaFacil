@@ -19,6 +19,8 @@ final class Metrics
     public const ALLOWED = [
         'pref', 'vswitch', 'ann', 'share', 'listen',
         'visit_n', 'read_s', 'perf', 'perf_c', 'perf_b', 'pv_client',
+        'search_result_open', 'plan_discover', 'plan_start', 'plan_day_done',
+        'share_exposure', 'share_intent', 'share_native_return',
         'game_win', 'game_round', 'game_start', 'game_again', 'game_stars', 'game_perfect', 'game_s',
         'sheet', 'img', 'votd', 'nav', 'geo', 'lang',
     ];
@@ -29,6 +31,8 @@ final class Metrics
         'juego', 'home', 'books', 'chapters', 'reader', 'error',
     ];
     private const GAME_EVENT_METRICS = ['game_win', 'game_start', 'game_again', 'game_stars', 'game_perfect', 'game_s'];
+    private const SHARE_SOURCES = ['verse', 'votd', 'topic', 'reader', 'other'];
+    private const SHARE_CHANNELS = ['wa', 'tg', 'x', 'fb', 'copy', 'copy_range', 'whatsapp', 'native', 'native_image', 'download_image'];
     private const NOT_FOUND_ROUTES = [
         'ir', 'buscar', 'comparar', 'planes', 'temas', 'versiculo', 'versiculo-del-dia',
         'guias', 'juegos', 'mias', 'v', 'api', 'sitemap', 'sitemap.xml',
@@ -134,6 +138,25 @@ final class Metrics
             }
             if ($m === 'pv_client' && !in_array($dim, self::PAGE_VIEWS, true)) {
                 continue;
+            }
+            if ($m === 'search_result_open' && !in_array($dim, array_column(config('versions'), 'code'), true)) {
+                continue;
+            }
+            if ($m === 'plan_discover' && !in_array($dim, ['reader', 'votd'], true)) {
+                continue;
+            }
+            if (in_array($m, ['plan_start', 'plan_day_done'], true) && !isset(config('plans')[$dim])) {
+                continue;
+            }
+            if ($m === 'share_exposure' && !in_array($dim, self::SHARE_SOURCES, true)) {
+                continue;
+            }
+            if (in_array($m, ['share_intent', 'share_native_return'], true)) {
+                [$source, $channel] = array_pad(explode(':', $dim, 2), 2, '');
+                if (!in_array($source, self::SHARE_SOURCES, true) || !in_array($channel, self::SHARE_CHANNELS, true)
+                    || ($m === 'share_native_return' && !in_array($channel, ['native', 'native_image'], true))) {
+                    continue;
+                }
             }
             if ($m === 'game_round' || in_array($m, self::GAME_EVENT_METRICS, true)) {
                 $games = config('games');

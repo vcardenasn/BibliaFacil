@@ -349,6 +349,7 @@ return [
 
     // ============================ Versículos famosos =======================
     'Comparte este versículo:' => 'Share this verse:',
+    'Comparte este capítulo:' => 'Share this chapter:',
     'Juan 3:16' => 'John 3:16', 'Salmos 23:1' => 'Psalm 23:1',
     'Filipenses 4:13' => 'Philippians 4:13', 'Jeremías 29:11' => 'Jeremiah 29:11',
     'Romanos 8:28' => 'Romans 8:28', 'Proverbios 3:5' => 'Proverbs 3:5',

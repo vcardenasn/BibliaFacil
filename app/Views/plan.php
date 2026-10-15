@@ -34,9 +34,9 @@ $totalDays = count($days);
             </button>
             <span class="pd-links">
                 <?php foreach ($d['items'] as $it): ?>
-                <a href="<?= e(url("{$planVersion['code']}/{$it['slug']}/{$it['ch']}")) ?>"><?= e(t($it['name'])) ?> <?= (int) $it['ch'] ?></a>
+                <a href="<?= e(url("{$planVersion['code']}/{$it['slug']}/{$it['ch']}")) ?>" data-plan-read="<?= e($slug) ?>"><?= e(t($it['name'])) ?> <?= (int) $it['ch'] ?></a>
                 <?php endforeach; ?>
-                <a class="pd-dev" href="<?= e(url("{$planVersion['code']}/{$d['items'][0]['slug']}/{$d['items'][0]['ch']}")) ?>?dev=1"
+                <a class="pd-dev" href="<?= e(url("{$planVersion['code']}/{$d['items'][0]['slug']}/{$d['items'][0]['ch']}")) ?>?dev=1" data-plan-read="<?= e($slug) ?>"
                     title="<?= e(t('Abre la lectura en modo devocional — anota qué te enseña el pasaje')) ?>">✍️ <?= e(t('Devocional')) ?></a>
             </span>
         </li>

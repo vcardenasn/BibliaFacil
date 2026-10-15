@@ -44,6 +44,7 @@
 <?php if (!empty($cmpUrl)): ?>
 <p class="reader-tools"><a href="<?= e(url($cmpUrl)) ?>">⇄ <?= e(t('Comparar con otra versión')) ?></a></p>
 <?php endif; ?>
+<p class="reader-tools"><a class="reader-plan-entry" href="<?= e(url('planes')) ?>" data-plan-source="reader"><?= e(t('Planes de lectura')) ?> →</a></p>
 
 <div class="reader-foot">
     <?php if ($nav['prev']): ?>
@@ -54,3 +55,7 @@
     <a class="nav-btn" href="<?= e(url(ltrim($nav['next'], '/'))) ?>" rel="next"><?= e(t('Siguiente')) ?> →</a>
     <?php else: ?><span></span><?php endif; ?>
 </div>
+<?php if ($verses): ?>
+<p class="share-label"><?= e(t('Comparte este capítulo:')) ?></p>
+<?= sharebar(\Biblia\Core\Seo::abs("{$version['code']}/{$book['slug']}/{$chapter}"), t($book['name']) . " {$chapter} — {$version['name']} — Palabra Fiel", 'reader') ?>
+<?php endif; ?>

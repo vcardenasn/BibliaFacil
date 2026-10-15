@@ -34,6 +34,18 @@ return function (TestCase $t): void {
             ['share', 'copy', 99999],            // n se capea
             ['pv_client', 'reader', 1],
             ['pv_client', 'unknown-route', 1],
+            ['search_result_open', 'rvr1909', 1],
+            ['search_result_open', 'private-slug', 1],
+            ['plan_discover', 'reader', 1],
+            ['plan_discover', 'private-slug', 1],
+            ['plan_start', 'biblia-en-un-ano', 1],
+            ['plan_day_done', 'salmos-proverbios', 1],
+            ['plan_start', 'private-slug', 1],
+            ['share_exposure', 'verse', 1],
+            ['share_intent', 'topic:wa', 1],
+            ['share_intent', 'reader:term=private', 1],
+            ['share_native_return', 'reader:native', 1],
+            ['share_native_return', 'reader:whatsapp', 1],
             ['game_start', 'david', 1],
             ['game_start', 'private-slug', 1],
             ['game_again', 'paloma', 1],
@@ -42,7 +54,10 @@ return function (TestCase $t): void {
         ]);
         $t->assertSame([
             ['pref', 'theme:dark', 1], ['share', 'copy', 600],
-            ['pv_client', 'reader', 1], ['game_start', 'david', 1],
+            ['pv_client', 'reader', 1], ['search_result_open', 'rvr1909', 1],
+            ['plan_discover', 'reader', 1], ['plan_start', 'biblia-en-un-ano', 1], ['plan_day_done', 'salmos-proverbios', 1],
+            ['share_exposure', 'verse', 1], ['share_intent', 'topic:wa', 1],
+            ['share_native_return', 'reader:native', 1], ['game_start', 'david', 1],
             ['game_again', 'paloma', 1], ['game_round', 'david:fail', 1],
         ], $ev);
     });

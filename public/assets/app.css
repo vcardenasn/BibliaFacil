@@ -844,6 +844,13 @@ a.crumb:hover { color: var(--brand); }
 .cmp-cell { line-height: 1.65; }
 .cmp-copyright { font-size: .78rem; margin-top: 1rem; }
 .reader-tools { text-align: center; margin: 1.4rem 0 .3rem; font-size: .88rem; }
+.reader-plan-entry {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 44px;
+    padding: .4rem .85rem; border: 1px solid var(--border-strong); border-radius: 999px;
+    color: var(--brand); font: 600 .85rem var(--sans); text-decoration: none;
+}
+.reader-plan-entry:hover { border-color: var(--brand); text-decoration: none; }
+.reader-plan-entry:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
 @media (max-width: 560px) {
     .cmp-head { display: none; }
     .cmp-row { display: block; }

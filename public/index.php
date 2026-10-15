@@ -212,8 +212,8 @@ if (($seg[0] ?? '') === 'buscar') {
     $v = (string) ($_GET['v'] ?? '');
     $version = $repo->versionByCode($v) ?: $versions[0] ?? null;
     $results = ($version && $q !== '') ? $repo->search((int) $version['id'], $q) : [];
-    if ($q !== '') {
-        \Biblia\Core\Metrics::bump('search_r', $results === [] ? 'empty' : 'hit');
+    if ($q !== '' && !\Biblia\Core\Metrics::isKnownCrawler((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''))) {
+        \Biblia\Core\Metrics::bump('search_r', ($version['code'] ?? 'unknown') . ':' . ($results === [] ? 'empty' : 'hit'));
     }
     view('search', [
         'title' => t('Buscar'),

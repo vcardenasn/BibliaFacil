@@ -10,6 +10,7 @@
         <?= e(t($votd['book_name']) . ' ' . $votd['chapter'] . ':' . $votd['verse']) ?> → <?= e(t('leer el capítulo')) ?>
     </a>
 </article>
+<p class="ver-note"><a class="reader-plan-entry" href="<?= e(url('planes')) ?>" data-plan-source="votd"><?= e(t('Planes de lectura')) ?> →</a></p>
 <?php endif; ?>
 
 <nav class="votd-nav">
@@ -26,5 +27,5 @@
 
 <?php if ($votd): ?>
 <p class="share-label"><?= e(t('Comparte el versículo del día:')) ?></p>
-<?= sharebar(\Biblia\Core\Seo::abs('versiculo-del-dia' . ($d !== date('Y-m-d') ? '?d=' . $d : '')), t('Versículo del día:') . ' ' . t($votd['book_name']) . ' ' . $votd['chapter'] . ':' . $votd['verse'] . ' — Palabra Fiel') ?>
+<?= sharebar(\Biblia\Core\Seo::abs('versiculo-del-dia' . ($d !== date('Y-m-d') ? '?d=' . $d : '')), t('Versículo del día:') . ' ' . t($votd['book_name']) . ' ' . $votd['chapter'] . ':' . $votd['verse'] . ' — Palabra Fiel', 'votd') ?>
 <?php endif; ?>

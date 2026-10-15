@@ -133,8 +133,11 @@ function view(string $name, array $data = []): void
     if ($name === 'reader' && !empty($data['book']['slug'])) {
         \Biblia\Core\Metrics::bump('cap', $data['version']['code'] . ':' . $data['book']['slug'] . ':' . ($data['chapter'] ?? 0));
     }
-    if ($name === 'search' && ($data['q'] ?? '') !== '') {
-        \Biblia\Core\Metrics::bump('search', $data['version']['code'] ?? '');
+    if ($name === 'search' && ($data['q'] ?? '') !== '' && !$crawler) {
+        \Biblia\Core\Metrics::bump('search_submit', $data['version']['code'] ?? '');
+    }
+    if ($name === 'plan' && !empty($data['slug']) && !$crawler) {
+        \Biblia\Core\Metrics::bump('plan_open', $data['slug']);
     }
     if ($name === 'juego' && !empty($data['slug'])) {
         \Biblia\Core\Metrics::bump('game', $data['slug']);
@@ -171,8 +174,9 @@ function verseHtml(string $text, ?string $wjJson, bool $dropcap = false): string
 }
 
 /** Barra de compartir (US-202): links server-side, sin JS obligatorio. */
-function sharebar(string $absUrl, string $text): string
+function sharebar(string $absUrl, string $text, string $source = 'other'): string
 {
+    $source = in_array($source, ['reader', 'verse', 'votd', 'topic', 'other'], true) ? $source : 'other';
     $u = rawurlencode($absUrl);
     $t = rawurlencode($text);
     $btns = [
@@ -181,11 +185,11 @@ function sharebar(string $absUrl, string $text): string
         ['x', 'X', '𝕏', "https://twitter.com/intent/tweet?text={$t}&url={$u}"],
         ['fb', 'Facebook', 'ⓕ', "https://www.facebook.com/sharer/sharer.php?u={$u}"],
     ];
-    $h = '<div class="sharebar">';
+    $h = '<div class="sharebar" data-share-source="' . e($source) . '">';
     foreach ($btns as [$cls, $name, $ico, $href]) {
-        $h .= '<a class="share-btn share-' . $cls . '" href="' . e($href) . '" target="_blank" rel="noopener" title="Compartir en ' . $name . '" aria-label="' . $name . '">' . $ico . '</a>';
+        $h .= '<a class="share-btn share-' . $cls . '" data-share-channel="' . e($cls) . '" href="' . e($href) . '" target="_blank" rel="noopener" title="Compartir en ' . $name . '" aria-label="' . $name . '">' . $ico . '</a>';
     }
-    $h .= '<button type="button" class="share-btn share-cp" data-copy="' . e($absUrl) . '" title="Copiar enlace" aria-label="Copiar enlace">🔗</button>';
+    $h .= '<button type="button" class="share-btn share-cp" data-share-channel="copy" data-copy="' . e($absUrl) . '" title="Copiar enlace" aria-label="Copiar enlace">🔗</button>';
     return $h . '</div>';
 }
 

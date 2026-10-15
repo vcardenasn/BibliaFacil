@@ -16,4 +16,4 @@
 </div>
 
 <p class="share-label"><?= e(t('Comparte este versículo:')) ?></p>
-<?= sharebar(\Biblia\Core\Seo::abs('versiculo/' . $slug), t($entry['title']) . ' — Palabra Fiel') ?>
+<?= sharebar(\Biblia\Core\Seo::abs('versiculo/' . $slug), t($entry['title']) . ' — Palabra Fiel', 'verse') ?>

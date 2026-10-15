@@ -25,7 +25,7 @@
 <ul class="results">
     <?php foreach ($results as $r): ?>
     <li class="card result">
-        <a href="<?= e(url("{$version['code']}/{$r['book_slug']}/{$r['chapter']}#v{$r['verse']}")) ?>">
+        <a href="<?= e(url("{$version['code']}/{$r['book_slug']}/{$r['chapter']}#v{$r['verse']}")) ?>" data-search-version="<?= e($version['code']) ?>">
             <?= e(t($r['book_name']) . " {$r['chapter']}:{$r['verse']}") ?>
         </a>
         <p><?= preg_replace('/(' . preg_quote(e($q), '/') . ')/iu', '<mark>$1</mark>', e($r['text'])) ?></p>
